@@ -44,10 +44,10 @@
     - [失敗したジョブイベント](#failed-job-events)
 - [キューからのジョブクリア](#clearing-jobs-from-queues)
 - [キューのモニタリング](#monitoring-your-queues)
-- [Testing](#testing)
-    - [Faking A Subset Of Jobs](#faking-a-subset-of-jobs)
-    - [Testing Job Chains](#testing-job-chains)
-    - [Testing Job Batches](#testing-job-batches)
+- [テスト](#testing)
+    - [ジョブのサブセットのFake](#faking-a-subset-of-jobs)
+    - [ジョブチェーンのテスト](#testing-job-chains)
+    - [ジョブバッチのテスト](#testing-job-batches)
 - [ジョブイベント](#job-events)
 
 <a name="introduction"></a>
@@ -635,15 +635,15 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * 新しいポッドキャストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -651,7 +651,7 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
 
             ProcessPodcast::dispatch($podcast);
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -675,15 +675,15 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * 新しいポッドキャストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -692,7 +692,7 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
             ProcessPodcast::dispatch($podcast)
                         ->delay(now()->addMinutes(10));
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -729,15 +729,15 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * 新しいポッドキャストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -745,7 +745,7 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
 
             ProcessPodcast::dispatchSync($podcast);
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -856,15 +856,15 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * 新しいポッドキャストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -872,7 +872,7 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
 
             ProcessPodcast::dispatch($podcast)->onQueue('processing');
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -913,15 +913,15 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
     use App\Http\Controllers\Controller;
     use App\Jobs\ProcessPodcast;
     use App\Models\Podcast;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PodcastController extends Controller
     {
         /**
          * 新しいポッドキャストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $podcast = Podcast::create(/* ... */);
 
@@ -929,7 +929,7 @@ Laravelは、例外をスロットルすることができる`Illuminate\Queue\M
 
             ProcessPodcast::dispatch($podcast)->onConnection('sqs');
 
-            return response()->noContent();
+            return redirect('/podcasts');
         }
     }
 
@@ -1974,11 +1974,11 @@ public function boot(): void
 ```
 
 <a name="testing"></a>
-## Testing
+## テスト
 
-When testing code that dispatches jobs, you may wish to instruct Laravel to not actually execute the job itself, since the job's code can be tested directly and separately of the code that dispatches it. Of course, to test the job itself, you may instantiate a job instance and invoke the `handle` method directly in your test.
+ジョブをディスパッチするコードをテストする場合、ジョブのコードはディスパッチするコードと別に、直接テストすることができるため、ジョブ自体を実際に実行しないようLaravelへ指示したい場合があるでしょう。もちろん、ジョブそのものをテストするために、ジョブインスタンスをインスタンス化し、テスト内で`handle`メソッドを直接呼び出すこともできます。
 
-You may use the `Queue` facade's `fake` method to prevent queued jobs from actually being pushed to the queue. After calling the `Queue` facade's `fake` method, you may then assert that the application attempted to push jobs to the queue:
+`Queue`ファサードの`fake`メソッドを使用すると、キュー投入したジョブを実際にキューへプッシュされないようにできます。`Queue`ファサードの`fake`メソッドを呼び出した後で、アプリケーションがジョブをキューへ投入しようとしたことをアサートできます。
 
     <?php
 
@@ -1996,35 +1996,35 @@ You may use the `Queue` facade's `fake` method to prevent queued jobs from actua
         {
             Queue::fake();
 
-            // Perform order shipping...
+            // 注文発送処理…
 
-            // Assert that no jobs were pushed...
+            // 一つもジョブを投入しなかったことをアサート
             Queue::assertNothingPushed();
 
-            // Assert a job was pushed to a given queue...
+            // ジョブを指定キューへ投入したことをアサート
             Queue::assertPushedOn('queue-name', ShipOrder::class);
 
-            // Assert a job was pushed twice...
+            // ジョブを２回投入したことをアサート
             Queue::assertPushed(ShipOrder::class, 2);
 
-            // Assert a job was not pushed...
+            // ジョブを投入しなかったことをアサート
             Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert that a Closure was pushed to the queue...
+            // クロージャをキューへ投入したことをアサート
             Queue::assertClosurePushed();
         }
     }
 
-You may pass a closure to the `assertPushed` or `assertNotPushed` methods in order to assert that a job was pushed that passes a given "truth test". If at least one job was pushed that passes the given truth test then the assertion will be successful:
+指定する「真偽値テスト」にパスするジョブが、投入されたことをアサートするため、`assertPushed`または`assertNotPushed`メソッドへクロージャを渡せます。指定真偽値テストにパスするジョブが最低一つ投入された場合、そのアサートをパスします。
 
     Queue::assertPushed(function (ShipOrder $job) use ($order) {
         return $job->order->id === $order->id;
     });
 
 <a name="faking-a-subset-of-jobs"></a>
-### Faking A Subset Of Jobs
+### ジョブのサブセットのFake
 
-If you only need to fake specific jobs while allowing your other jobs to execute normally, you may pass the class names of the jobs that should be faked to the `fake` method:
+特定のジョブだけをFakeし、他のジョブは正常に実行させる必要がある場合は、`fake`メソッドへ偽装するジョブのクラス名を渡してください。
 
     public function test_orders_can_be_shipped(): void
     {
@@ -2032,22 +2032,22 @@ If you only need to fake specific jobs while allowing your other jobs to execute
             ShipOrder::class,
         ]);
 
-        // Perform order shipping...
+        // 注文発送処理…
 
-        // Assert a job was pushed twice...
+        // ジョブを２回投入することをアサート
         Queue::assertPushed(ShipOrder::class, 2);
     }
 
-You may fake all jobs except for a set of specified jobs using the `except` method:
+`except`メソッドを使用すると、指定したジョブセット以外のすべてのジョブをFakeできます。
 
     Queue::fake()->except([
         ShipOrder::class,
     ]);
 
 <a name="testing-job-chains"></a>
-### Testing Job Chains
+### ジョブチェーンのテスト
 
-To test job chains, you will need to utilize the `Bus` facade's faking capabilities. The `Bus` facade's `assertChained` method may be used to assert that a [chain of jobs](/docs/{{version}}/queues#job-chaining) was dispatched. The `assertChained` method accepts an array of chained jobs as its first argument:
+ジョブチェーンをテストするには、`Bus`ファサードのFake機能を利用します。`Bus`ファサードの`assertChained`メソッドは、[ジョブチェーン](/docs/{{version}}/queues#job-chaining)をディスパッチしたことをアサートするために使用します。`assertChained`メソッドは、最初の引数にチェーンするジョブの配列を取ります。
 
     use App\Jobs\RecordShipment;
     use App\Jobs\ShipOrder;
@@ -2064,7 +2064,7 @@ To test job chains, you will need to utilize the `Bus` facade's faking capabilit
         UpdateInventory::class
     ]);
 
-As you can see in the example above, the array of chained jobs may be an array of the job's class names. However, you may also provide an array of actual job instances. When doing so, Laravel will ensure that the job instances are of the same class and have the same property values of the chained jobs dispatched by your application:
+上の例でわかるように、ジョブチェーンの配列は、ジョブのクラス名の配列です。しかし、実際のジョブインスタンスの配列を指定することもできます。その場合、Laravelはジョブインスタンスが同じクラスであり、アプリケーションがディスパッチする同じジョブチェーンのプロパティ値を持つことを確認します。
 
     Bus::assertChained([
         new ShipOrder,
@@ -2072,14 +2072,14 @@ As you can see in the example above, the array of chained jobs may be an array o
         new UpdateInventory,
     ]);
 
-You may use the `assertDispatchedWithoutChain` method to assert that a job was pushed without a chain of jobs:
+`assertDispatchedWithoutChain`メソッドを使用すると、ジョブをチェーンせずに、投入したことをアサートできます。
 
     Bus::assertDispatchedWithoutChain(ShipOrder::class);
 
 <a name="testing-job-batches"></a>
-### Testing Job Batches
+### ジョブバッチのテスト
 
-The `Bus` facade's `assertBatched` method may be used to assert that a [batch of jobs](/docs/{{version}}/queues#job-batching) was dispatched. The closure given to the `assertBatched` method receives an instance of `Illuminate\Bus\PendingBatch`, which may be used to inspect the jobs within the batch:
+`Bus`ファサードの`assertBatched`メソッドは、[ジョブのバッチ](/docs/{{version}}/queues#job-batching)がディスパッチされたことをアサートするために使用します。`assertBatched`メソッドへ渡すクロージャは、`Illuminate\Bus\PendingBatch`のインスタンスを引数に取り、バッチ内のジョブを検査するために使用できます。
 
     use Illuminate\Bus\PendingBatch;
     use Illuminate\Support\Facades\Bus;
@@ -2094,9 +2094,9 @@ The `Bus` facade's `assertBatched` method may be used to assert that a [batch of
     });
 
 <a name="testing-job-batch-interaction"></a>
-#### Testing Job / Batch Interaction
+#### ジョブ／バッチの相互操作のテスト
 
-In addition, you may occasionally need to test an individual job's interaction with its underlying batch. For example, you may need to test if a job cancelled further processing for its batch. To accomplish this, you need to assign a fake batch to the job via the `withFakeBatch` method. The `withFakeBatch` method returns a tuple containing the job instance and the fake batch:
+さらに、個々のジョブとその裏で動いているバッチとの、相互作用をテストする必要がある場合もあるでしょう。例えば、あるジョブがそのバッチの処理をキャンセルしたかをテストする必要があるかもしれません。これを実現するには、`withFakeBatch`メソッドでFakeバッチをジョブに割り当てる必要があります。`withFakeBatch`メソッドは、ジョブインスタンスとFakeバッチを含むタプルを返します。
 
     [$job, $batch] = (new ShipOrder)->withFakeBatch();
 

@@ -36,7 +36,7 @@
 
 Laravelは、開発および実働用アセットをロードするため、公式プラグインとBladeディレクティブを提供し、Viteをシームレスに統合しています。
 
-> **Note**  
+> **Note**
 > Laravel Mixを実行していますか？新しいLaravelのインストールでは、Laravel MixをViteへ置き換えました。Mixのドキュメントは、[Laravel Mix](https://laravel-mix.com/)のウェブサイトをご覧ください。Viteに切り替えたい場合は、[移行ガイド](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite)を参照してください。
 
 <a name="vite-or-mix"></a>
@@ -54,13 +54,13 @@ Vite scaffoldingを使用して新しいLaravelアプリケーションを開始
 <a name="installation"></a>
 ## インストールと準備
 
-> **Note**  
+> **Note**
 > 以下のドキュメントでは、Laravel Viteプラグインを手作業でインストールし、設定する方法について説明しています。しかし、Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでにこのスカフォールドがすべて含まれており、LaravelとViteを始める最速の方法を用意しています。
 
 <a name="installing-node"></a>
 ### Nodeのインストール
 
-You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
+ViteとLaravelプラグインを実行する前に、Node.js（１６以降）とNPMを確実にインストールしてください。
 
 ```sh
 node -v
@@ -113,7 +113,7 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel([
-            'resources/css/app.css', // [tl! 削除]
+            'resources/css/app.css', // [tl! remove]
             'resources/js/app.js',
         ]),
     ],
@@ -124,7 +124,7 @@ export default defineConfig({
 
 ```js
 import './bootstrap';
-import '../css/app.css'; // [tl! 追加]
+import '../css/app.css'; // [tl! add]
 ```
 
 また、Laravelプラグインは複数のエントリーポイントに対応し、[SSRエントリーポイント](#ssr)などの高度な設定オプションにも対応しています。
@@ -144,7 +144,7 @@ export default defineConfig({
     plugins: [
         laravel({
             // ...
-            valetTls: 'my-app.test', // [tl! 追加]
+            valetTls: 'my-app.test', // [tl! add]
         }),
     ],
 });
@@ -154,20 +154,20 @@ export default defineConfig({
 
 ```js
 // ...
-import fs from 'fs'; // [tl! 追加]
+import fs from 'fs'; // [tl! add]
 
-const host = 'my-app.test'; // [tl! 追加]
+const host = 'my-app.test'; // [tl! add]
 
 export default defineConfig({
     // ...
-    server: { // [tl! 追加]
-        host, // [tl! 追加]
-        hmr: { host }, // [tl! 追加]
-        https: { // [tl! 追加]
-            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! 追加]
-            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! 追加]
-        }, // [tl! 追加]
-    }, // [tl! 追加]
+    server: { // [tl! add]
+        host, // [tl! add]
+        hmr: { host }, // [tl! add]
+        https: { // [tl! add]
+            key: fs.readFileSync(`/path/to/${host}.key`), // [tl! add]
+            cert: fs.readFileSync(`/path/to/${host}.crt`), // [tl! add]
+        }, // [tl! add]
+    }, // [tl! add]
 });
 ```
 
@@ -299,7 +299,7 @@ export default defineConfig({
 });
 ```
 
-> **Note**  
+> **Note**
 > Laravelの[スターターキット](/docs/{{version}/starter-kits)には、すでに適切なLaravel、Vue、Viteの構成が含まれています。Laravel、Vue、Viteを最速で使い始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia)をチェックしてください。
 
 <a name="react"></a>
@@ -337,7 +337,7 @@ JSXを含むすべてのファイルの拡張子を確実に、`.jsx`または`.
 
 `@viteReactRefresh`ディレクティブは、`@vite`ディレクティブの前に呼び出す必要があります。
 
-> **Note**  
+> **Note**
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、React、Viteの設定が含まれています。Laravel、React、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="inertia"></a>
@@ -360,7 +360,7 @@ createInertiaApp({
 });
 ```
 
-> **Note**  
+> **Note**
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia、Viteの構成が含まれています。Laravel、Inertia、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="url-processing"></a>
@@ -408,7 +408,7 @@ module.exports = {
 ```
 
 > **Note**
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Tailwind, PostCSS, and Vite configuration. Or, if you would like to use Tailwind and Laravel without using one of our starter kits, check out [Tailwind's installation guide for Laravel](https://tailwindcss.com/docs/guides/laravel).
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、最初から適切なTailwind、PostCSS、Viteの構成を用意しています。また、スターターキットを使わずにTailwindとLaravelを使いたい場合は、[LaravelのためのTailwindインストールガイド](https://tailwindcss.com/docs/guides/laravel)をチェックしてください。
 
 <a name="working-with-blade-and-routes"></a>
 ## Bladeとルートの操作
@@ -615,8 +615,8 @@ SSRエントリポイントの再構築を忘れないようにするために�
 ```json
 "scripts": {
      "dev": "vite",
-     "build": "vite build" // [tl! 削除]
-     "build": "vite build && vite build --ssr" // [tl! 追加]
+     "build": "vite build" // [tl! remove]
+     "build": "vite build && vite build --ssr" // [tl! add]
 }
 ```
 
@@ -627,7 +627,7 @@ npm run build
 node bootstrap/ssr/ssr.mjs
 ```
 
-> **Note**  
+> **Note**
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia SSR、Viteの構成が含まれています。Laravel、Inertia SSR、Viteを最速で使い始めるため、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="script-and-style-attributes"></a>
@@ -694,14 +694,14 @@ npm install --save-dev vite-plugin-manifest-sri
 ```js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import manifestSRI from 'vite-plugin-manifest-sri';// [tl! 追加]
+import manifestSRI from 'vite-plugin-manifest-sri';// [tl! add]
 
 export default defineConfig({
     plugins: [
         laravel({
             // ...
         }),
-        manifestSRI(),// [tl! 追加]
+        manifestSRI(),// [tl! add]
     ],
 });
 ```
@@ -753,7 +753,7 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ]);
 ```
 
-> **Warning**  
+> **Warning**
 > Vite開発サーバが起動している間は、`$chunk`と`$manifest`引数は、`null`になります。
 
 <a name="advanced-customization"></a>
@@ -806,7 +806,7 @@ Viteエコシステム内のプラグインのいくつかは、フォワード�
 <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
 ```
 
-The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option. 
+`vite-imagetools`プラグインは、出力するURLがViteによりインターセプトされ、そのプラグインが`/@imagetools` から始まるすべてのURLを処理することを期待しています。このような挙動を期待するプラグインを使用している場合、手作業でURLを修正する必要があります。これは、`vite.config.js`ファイルの`transformOnServe`オプションを使用して実現できます。
 
 この例は、生成されたコード内で、`/@imagetools`の全出現箇所に、開発サーバのURLを追加します。
 
@@ -832,4 +832,3 @@ export default defineConfig({
 - <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->
 + <img src="http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! add] -->
 ```
-

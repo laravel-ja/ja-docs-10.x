@@ -146,19 +146,21 @@ Alternatively, once a user is authenticated, you may access the authenticated us
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * Update the flight information for an existing flight.
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
-            // $request->user()
+            $user = $request->user();
 
-            return response()->noContent();
+            // ...
+
+            return redirect('/flights');
         }
     }
 
@@ -556,8 +558,6 @@ You may define your own authentication guards using the `extend` method on the `
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\Guard...
 
@@ -591,8 +591,6 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Auth::viaRequest('custom-token', function (Request $request) {
             return User::where('token', $request->token)->first();
         });
@@ -633,8 +631,6 @@ If you are not using a traditional relational database to store your users, you 
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::provider('mongo', function (Application $app, array $config) {
                 // Return an instance of Illuminate\Contracts\Auth\UserProvider...
 

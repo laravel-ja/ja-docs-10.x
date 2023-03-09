@@ -54,8 +54,6 @@ Laravelは、アクションを認可する2つの主要な方法を提供しま
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', function (User $user, Post $post) {
             return $user->id === $post->user_id;
         });
@@ -71,8 +69,6 @@ Laravelは、アクションを認可する2つの主要な方法を提供しま
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Gate::define('update-post', [PostPolicy::class, 'update']);
     }
 
@@ -87,8 +83,8 @@ Laravelは、アクションを認可する2つの主要な方法を提供しま
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Gate;
 
     class PostController extends Controller
@@ -96,7 +92,7 @@ Laravelは、アクションを認可する2つの主要な方法を提供しま
         /**
          * 指定した投稿を更新
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if (! Gate::allows('update-post', $post)) {
                 abort(403);
@@ -104,7 +100,7 @@ Laravelは、アクションを認可する2つの主要な方法を提供しま
 
             // 投稿を更新…
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -314,8 +310,6 @@ php artisan make:policy PostPolicy --model=Post
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             // ...
         }
     }
@@ -517,15 +511,15 @@ Laravelアプリケーションに含まれている`App\Models\User`モデル�
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * 指定した投稿を更新
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             if ($request->user()->cannot('update', $post)) {
                 abort(403);
@@ -533,7 +527,7 @@ Laravelアプリケーションに含まれている`App\Models\User`モデル�
 
             // 投稿を更新…
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -550,15 +544,15 @@ Laravelアプリケーションに含まれている`App\Models\User`モデル�
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
         /**
          * 投稿を作成
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             if ($request->user()->cannot('create', Post::class)) {
                 abort(403);
@@ -566,7 +560,7 @@ Laravelアプリケーションに含まれている`App\Models\User`モデル�
 
             // 投稿を作成…
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -583,8 +577,8 @@ Laravelは、`App\Models\User`モデルが提供する便利なメソッドに�
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class PostController extends Controller
     {
@@ -593,13 +587,13 @@ Laravelは、`App\Models\User`モデルが提供する便利なメソッドに�
          *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
-        public function update(Request $request, Post $post): Response
+        public function update(Request $request, Post $post): RedirectResponse
         {
             $this->authorize('update', $post);
 
             // 現在のユーザーはこのブログ投稿を更新可能
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
@@ -609,21 +603,21 @@ Laravelは、`App\Models\User`モデルが提供する便利なメソッドに�
 すでに説明したように、`create`などの一部のポリシーメソッドはモデルインスタンスを必要としません。このような状況では、クラス名を`authorize`メソッドに渡す必要があります。クラス名は、アクションを認可するときに使用するポリシーを決定するために使用されます。
 
     use App\Models\Post;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     /**
      * 新しいブログ投稿の作成
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Request $request): Response
+    public function create(Request $request): RedirectResponse
     {
         $this->authorize('create', Post::class);
 
         // 現在のユーザーはブログ投稿を作成可能
 
-        return response()->noContent();
+        return redirect('/posts');
     }
 
 <a name="authorizing-resource-controllers"></a>
@@ -788,11 +782,11 @@ Bladeテンプレートを作成するとき、ユーザーが特定のアクシ
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Post $post): Response
+    public function update(Request $request, Post $post): RedirectResponse
     {
         $this->authorize('update', [$post, $request->category]);
 
         // 現在のユーザーはブログ投稿を更新可能
 
-        return response()->noContent();
+        return redirect('/posts');
     }

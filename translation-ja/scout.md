@@ -284,7 +284,7 @@ php artisan scout:sync-index-settings
         use Searchable;
 
         /**
-         * Get the engine used to index the model.
+         * モデルのインデックスに使用するエンジンを取得
          */
         public function searchableUsing(): Engine
         {
@@ -564,7 +564,7 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
 検索インデックスはリレーショナルデータベースではないため、より高度な"where"節は現在サポートしていません。
 
 > **Warning**
-> If your application is using MeiliSearch, you must configure your application's [filterable attributes](#configuring-filterable-data-for-meilisearch) before utilizing Scout's "where" clauses.
+> アプリケーションでMeiliSearchを使用している場合、Scoutの"where"句を利用する前に、アプリケーションの[filterable属性](#configuring-filterable-data-for-meilisearch)を設定する必要があります。
 
 <a name="pagination"></a>
 ### ペジネーション

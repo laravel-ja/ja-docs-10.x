@@ -108,7 +108,7 @@ Laravelでは名前付きルートに対し、簡単に「署名付きURL」を�
 <a name="validating-signed-route-requests"></a>
 #### 署名付きルートリクエストの検査
 
-受信したリクエストに有効な署名があるかどうかを確認するには、受信した`Illuminate\Http\Request`インスタンスで`hasValidSignature`メソッドを呼び出します。
+受信リクエストに有効な署名があるかどうかを確認するには、受信した`Illuminate\Http\Request`インスタンスで`hasValidSignature`メソッドを呼び出します。
 
     use Illuminate\Http\Request;
 
@@ -126,12 +126,12 @@ Laravelでは名前付きルートに対し、簡単に「署名付きURL」を�
         abort(401);
     }
 
-Instead of validating signed URLs using the incoming request instance, you may assign the `Illuminate\Routing\Middleware\ValidateSignature` [middleware](/docs/{{version}}/middleware) to the route. If it is not already present, you may assign this middleware an alias in your HTTP kernel's `$middlewareAliases` array:
+受信リクエストインスタンスを使って署名付きURLを検証する代わりに、`Illuminate\Routing\Middleware\ValidateSignature`[ミドルウェア](/docs/{{version}}/middleware)をルートへ指定することもできます。まだ割り当てていない場合は、HTTPカーネルの`$middlewareAliases`配列へ、このミドルウェアのエイリアスを割り当ててください。
 
     /**
-     * The application's middleware aliases.
+     * アプリケーションのミドルウェアのエイリアス
      *
-     * Aliases may be used to conveniently assign middleware to routes and groups.
+     * ルートとグループへミドルウェアを便利に割り付けるため使用するエイリアス
      *
      * @var array<string, class-string|string>
      */
@@ -198,7 +198,7 @@ Instead of validating signed URLs using the incoming request instance, you may a
     class SetDefaultLocaleForUrls
     {
         /**
-         * Handle an incoming request.
+         * 受信リクエストの処理
          *
          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */

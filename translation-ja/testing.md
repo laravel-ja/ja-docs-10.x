@@ -6,7 +6,7 @@
 - [テストの実行](#running-tests)
     - [テストを並列で実行](#running-tests-in-parallel)
     - [テストカバレージのレポート](#reporting-test-coverage)
-    - [Profiling Tests](#profiling-tests)
+    - [テストのプロファイル](#profiling-tests)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -208,9 +208,9 @@ php artisan test --coverage --min=80.3
 ```
 
 <a name="profiling-tests"></a>
-### Profiling Tests
+### テストのプロファイル
 
-The Artisan test runner also includes a convenient mechanism for listing your application's slowest tests. Invoke the `test` command with the `--profile` option to be presented with a list of your ten slowest tests, allowing you to easily investigate which tests can be improved to speed up your test suite:
+Artisanテストランナは、アプリケーションの最も遅いテストをリストアップする、便利なメカニズムも用意しています。`test`コマンドへ`--profile`オプションを付けて起動すると、最も遅い１０テストのリストが表示され、テストスイートを高速化するため、どのテストを改善できるかを簡単に調査できます。
 
 ```shell
 php artisan test --profile

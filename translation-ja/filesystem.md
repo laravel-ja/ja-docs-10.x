@@ -12,6 +12,7 @@
 - [ファイルの取得](#retrieving-files)
     - [ファイルのダウンロード](#downloading-files)
     - [ファイルのURL](#file-urls)
+    - [一時的なURL](#temporary-urls)
     - [ファイルメタデータ](#file-metadata)
 - [ファイルの保存](#storing-files)
     - [ファイルの前後への追加](#prepending-appending-to-files)
@@ -21,7 +22,7 @@
     - [ファイルの可視性](#file-visibility)
 - [ファイルの削除](#deleting-files)
 - [ディレクトリ](#directories)
-- [Testing](#testing)
+- [テスト](#testing)
 - [カスタムファイルシステム](#custom-filesystems)
 
 <a name="introduction"></a>
@@ -271,8 +272,20 @@ $disk->put('image.jpg', $content);
 > **Warning**
 > `local`ドライバを使用する場合、`url`の戻り値はURLエンコードされません。このため、常に有効なURLを作成する名前を使用してファイルを保存することをお勧めします。
 
+<a name="url-host-customization"></a>
+#### URLホストのカスタマイズ
+
+もし、`Storage`ファサードを使用して生成する、URLのホストをあらかじめ定義しておきたい場合は、ディスクの設定配列へ`url`オプションを追加してください。
+
+    'public' => [
+        'driver' => 'local',
+        'root' => storage_path('app/public'),
+        'url' => env('APP_URL').'/storage',
+        'visibility' => 'public',
+    ],
+
 <a name="temporary-urls"></a>
-#### 一時的なURL
+### 一時的なURL
 
 `temporaryUrl`メソッドを使用すると、`s3`ドライバを使用して保存されたファイルへの一時URLを作成できます。このメソッドは、パスと、URLの有効期限を指定する`DateTime`インスタンスを受け入れます。
 
@@ -311,27 +324,33 @@ $disk->put('image.jpg', $content);
          */
         public function boot(): void
         {
-            Storage::disk('local')->buildTemporaryUrlsUsing(function (string $path, DateTime $expiration, array $options) {
-                return URL::temporarySignedRoute(
-                    'files.download',
-                    $expiration,
-                    array_merge($options, ['path' => $path])
-                );
-            });
+            Storage::disk('local')->buildTemporaryUrlsUsing(
+                function (string $path, DateTime $expiration, array $options) {
+                    return URL::temporarySignedRoute(
+                        'files.download',
+                        $expiration,
+                        array_merge($options, ['path' => $path])
+                    );
+                }
+            );
         }
     }
 
-<a name="url-host-customization"></a>
-#### URLホストのカスタマイズ
+<a name="temporary-upload-urls"></a>
+#### 一時的なアップロードURL
 
-`Storage`ファサードを使用して生成するURLのホストを事前に定義したい場合は、ディスクの設定配列に`url`オプションを追加できます。
+> **Warning**
+> 一時的なアップロードURLの生成機能は、`s3`ドライバのみサポートしています。
 
-    'public' => [
-        'driver' => 'local',
-        'root' => storage_path('app/public'),
-        'url' => env('APP_URL').'/storage',
-        'visibility' => 'public',
-    ],
+クライアントサイドのアプリケーションから、直接ファイルをアップロードするために使用する一時的なURLを生成する必要がある場合は、`temporaryUploadUrl`メソッドを使用します。このメソッドには、パスとURLの有効期限を指定する`DateTime`インスタンスを指定します。`temporaryUploadUrl`メソッドからは、アップロードURLとアップロードリクエストに含めるべきヘッダを連想配列で返します。
+
+    use Illuminate\Support\Facades\Storage;
+
+    ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
+        'file.jpg', now()->addMinutes(5)
+    );
+
+このメソッドは、主にクライアントサイドのアプリケーションがAmazon S3などのクラウドストレージシステムに直接ファイルをアップロードする必要があるサーバーレス環境で役立つでしょう。
 
 <a name="file-metadata"></a>
 ### ファイルメタデータ
@@ -610,9 +629,9 @@ LaravelのFlysystem統合では、「可視性」は複数のプラットフォ�
     Storage::deleteDirectory($directory);
 
 <a name="testing"></a>
-## Testing
+## テスト
 
-The `Storage` facade's `fake` method allows you to easily generate a fake disk that, combined with the file generation utilities of the `Illuminate\Http\UploadedFile` class, greatly simplifies the testing of file uploads. For example:
+`Storage`ファサードの`fake`メソッドを使うと、簡単に偽のディスクを生成できます。これを`Illuminate\Http\UploadedFile`クラスのファイル生成ユーティリティと組み合わせると、ファイルのアップロードのテストが非常に簡単になります。例えば、以下のようにです。
 
     <?php
 
@@ -633,23 +652,23 @@ The `Storage` facade's `fake` method allows you to easily generate a fake disk t
                 UploadedFile::fake()->image('photo2.jpg')
             ]);
 
-            // Assert one or more files were stored...
+            // １つ以上のファイルが保存されたことをアサート
             Storage::disk('photos')->assertExists('photo1.jpg');
             Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);
 
-            // Assert one or more files were not stored...
+            // １つ以上のファイルが保存されないことをアサート
             Storage::disk('photos')->assertMissing('missing.jpg');
             Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
 
-            // Assert that a given directory is empty...
+            // 指定ディレクトリが空であることをアサート
             Storage::disk('photos')->assertDirectoryEmpty('/wallpapers');
         }
     }
 
-By default, the `fake` method will delete all files in its temporary directory. If you would like to keep these files, you may use the "persistentFake" method instead. For more information on testing file uploads, you may consult the [HTTP testing documentation's information on file uploads](/docs/{{version}}/http-tests#testing-file-uploads).
+`fake`メソッドはデフォルトで、テンポラリディレクトリのファイルをすべて削除します。もしこれらのファイルを残しておきたい場合は、代わりに"persistentFake"メソッドを使用してください。ファイルアップロードのテストに関するより詳しい情報は、[ファイルアップロードに関するHTTPテストのドキュメント](/docs/{{version}}/http-tests#testing-file-uploads)を参照してください。
 
 > **Warning**
-> The `image` method requires the [GD extension](https://www.php.net/manual/en/book.image.php).
+> `image`メソッドには、[GD拡張](https://www.php.net/manual/ja/book.image.php)が必要です。
 
 <a name="custom-filesystems"></a>
 ## カスタムファイルシステム

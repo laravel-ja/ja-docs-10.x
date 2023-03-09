@@ -26,7 +26,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Laravel Octane](https://github.com/laravel/octane) supercharges your application's performance by serving your application using high-powered application servers, including [Open Swoole](https://openswoole.com/), [Swoole](https://github.com/swoole/swoole-src), and [RoadRunner](https://roadrunner.dev). Octane boots your application once, keeps it in memory, and then feeds it requests at supersonic speeds.
+[Laravel Octane](https://github.com/laravel/octane)（オクタン）は、[Open Swoole](https://openswoole.com/)や[Swoole](https://github.com/swoole/swoole-src)、[RoadRunner](https://roadrunner.dev)などの高性能なアプリケーションサーバを使用し、アプリケーションを提供することで、アプリケーションのパフォーマンスを向上させます。Octaneはアプリケーションを一度起動したら、メモリ内に保持し、そして超音速でリクエストを送り返します。
 
 <a name="installation"></a>
 ## インストール
@@ -106,13 +106,13 @@ pecl install swoole
 <a name="openswoole"></a>
 #### Open Swoole
 
-If you want to use the Open Swoole application server to serve your Laravel Octane application, you must install the Open Swoole PHP extension. Typically, this can be done via PECL:
+Open Swooleアプリケーションサーバーを使用してLaravel Octaneアプリケーションを提供したい場合、Open Swoole PHP拡張をインストールする必要があります。一般的に、これはPECLを介して行えます。
 
 ```shell
 pecl install openswoole
 ```
 
-Using Laravel Octane with Open Swoole grants the same functionality provided by Swoole, such as concurrent tasks, ticks, and intervals.
+Laravel OctaneとOpen Swooleを併用することで、同時並行タスク、tick、intervalなどSwooleが提供する機能と同じものが使えるようになります。
 
 <a name="swoole-via-laravel-sail"></a>
 #### Laravel SailによるSwoole

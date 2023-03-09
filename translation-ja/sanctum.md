@@ -168,7 +168,7 @@ Sanctumが認証した受信リクエストを処理する場合、`tokenCan`メ
 <a name="token-ability-middleware"></a>
 #### トークンアビリティミドルウェア
 
-Sanctum also includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given ability. To get started, add the following middleware to the `$middlewareAliases` property of your application's `app/Http/Kernel.php` file:
+また、Sanctumでは２つのミドルウェアを用意しており、受信リクエストが所定の能力を付与されたトークンで認証されていることを確認するために使用できます。最初に、アプリケーションの`app/Http/Kernel.php`ファイルの`$middlewareAliases`プロパティへ、以下のミドルウェアを追加します。
 
     'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
     'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
@@ -303,7 +303,7 @@ SPAを認証するには、SPAの「ログイン」ページで最初に`/sanctu
 
 ```js
 axios.get('/sanctum/csrf-cookie').then(response => {
-    // Login...
+    // ログイン処理…
 });
 ```
 

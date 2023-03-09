@@ -122,7 +122,7 @@ sail up -d
 
 アプリケーションのコンテナが開始されると、Webブラウザ（http:// localhost）でプロジェクトにアクセスできます。
 
-To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `stop` command:
+すべてのコンテナを停止するには、単にControl+Cキーを押して、コンテナの実行を停止してください。また、コンテナをバックグラウンドで実行している場合は、`stop`コマンドを使用します。
 
 ```shell
 sail stop
@@ -450,7 +450,7 @@ SAIL_XDEBUG_MODE=develop,debug,coverage
 
 #### LinuxホストIP設定
 
-Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux, you should ensure that you are running Docker Engine 17.06.0+ and Compose 1.16.0+. Otherwise, you will need to manually define this environment variable as shown below.
+内部的には、`XDEBUG_CONFIG`環境変数を`client_host=host.docker.internal`と定義することで、XdebugがMacとWindows（WSL2）で適切に設定されるようになります。ローカルマシンがLinuxの場合、Docker Engine17.06.0以降とCompose1.16.0以降を確実に動作させてください。そうでない場合は、以下のようにこの環境変数を手作業で定義する必要があります。
 
 まず、以下のコマンドを実行して、環境変数に追加する正しいホストIPアドレスを決定します。通常、`<container-name>`は、アプリケーションを提供するコンテナの名前であるべきで、多くの場合、`_laravel.test_1`で終わります。
 

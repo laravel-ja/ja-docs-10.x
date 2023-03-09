@@ -76,7 +76,7 @@ php artisan schema:dump --database=testing --prune
 <a name="migration-structure"></a>
 ## マイグレーションの構造
 
-移行クラスには、`up`と`down`の2つのメソッドを用意します。`up`メソッドはデータベースに新しいテーブル、カラム、またはインデックスを追加するために使用します。`down`メソッドでは、`up`メソッドによって実行する操作を逆にし、以前の状態へ戻す必要があります。
+マイグレーションクラスには、`up`と`down`の2つのメソッドを用意します。`up`メソッドはデータベースに新しいテーブル、カラム、またはインデックスを追加するために使用します。`down`メソッドでは、`up`メソッドによって実行する操作を逆にし、以前の状態へ戻す必要があります。
 
 これらの両方のメソッド内で、Laravelスキーマビルダを使用して、テーブルを明示的に作成および変更できます。`Schema`ビルダで利用可能なすべてのメソッドを学ぶには、[ドキュメントをチェックしてください](#creating-tables)。たとえば、次のマイグレーションでは、`flights`テーブルが作成されます。
 
@@ -141,7 +141,7 @@ php artisan migrate
 
 これまでどのマイグレーションが実行されているかを確認したい場合は、`migrate:status` Artisanコマンドを使用してください。
 
-```shell
+```shell移行
 php artisan migrate:status
 ```
 
@@ -188,7 +188,7 @@ php artisan migrate:rollback
 php artisan migrate:rollback --step=5
 ```
 
-You may roll back a specific "batch" of migrations by providing the `batch` option to the `rollback` command, where the `batch` option corresponds to a batch value within your application's `migrations` database table. For example, the following command will roll back all migrations in batch three:
+`rollback`コマンドで`batch`オプションを指定し、特定の 「バッチ」のマイグレーションをロールバックできます。このとき、`batch`オプションはアプリケーションの`migrations`データベーステーブル内のバッチの値に対応します。例えば、次のコマンドはバッチ3のすべてのマイグレーションをロールバックします。
 
  ```shell
  php artisan migrate:rollback --batch=3
@@ -998,7 +998,7 @@ php artisan migrate:fresh --seed
     };
 
 > **Warning**
-> Support for default expressions depends on your database driver, database version, and the field type. Please refer to your database's documentation.
+> デフォルト式のサポートは、データベースドライバー、データベースのバージョン、フィールドタイプに依存します。お使いのデータベースのドキュメントを参照してください。
 
 <a name="column-order"></a>
 #### カラム順序
@@ -1020,16 +1020,16 @@ MySQLデータベースを使用するときは、スキーマ内の既存の列
         $table->string('name', 50)->change();
     });
 
-When modifying a column, you must explicitly include all of the modifiers you want to keep on the column definition - any missing attribute will be dropped. For example, to retain the `unsigned`, `default`, and `comment` attributes, you must call each modifier explicitly when changing the column:
+カラムを変更する際には、カラムの定義に保持したいすべての修飾子を明示的に含める必要があります。属性が足りない場合は削除します。例えば、`unsigned`、`default`、`comment`属性を保持するには、カラムを変更する際に、それぞれの修飾子を明示的に呼び出す必要があります。
 
     Schema::table('users', function (Blueprint $table) {
         $table->integer('votes')->unsigned()->default(1)->comment('my comment')->change();
     });
 
 <a name="modifying-columns-on-sqlite"></a>
-#### Modifying Columns On SQLite
+#### SQLiteのカラム変更
 
-If your application is utilizing an SQLite database, you must install the `doctrine/dbal` package using the Composer package manager before modifying a column. The Doctrine DBAL library is used to determine the current state of the column and to create the SQL queries needed to make the requested changes to your column:
+アプリケーションでSQLiteデータベースを利用している場合、カラム修正の前にComposerパッケージマネージャを使い、`doctrine/dbal`パッケージをインストールする必要があります。Doctrine DBALライブラリはカラムの現在の状態を判断し、カラムに要求された変更を行うために必要なSQLクエリを作成するために使用します。
 
     composer require doctrine/dbal
 
@@ -1046,7 +1046,7 @@ use Illuminate\Database\DBAL\TimestampType;
 ```
 
 > **Warning**
-> When using the `doctrine/dbal` package, the following column types can be modified: `bigInteger`, `binary`, `boolean`, `char`, `date`, `dateTime`, `dateTimeTz`, `decimal`, `double`, `integer`, `json`, `longText`, `mediumText`, `smallInteger`, `string`, `text`, `time`, `tinyText`, `unsignedBigInteger`, `unsignedInteger`, `unsignedSmallInteger`, `ulid`, and `uuid`.
+> `doctrine/dbal`パッケージを使用している場合、以下のカラムタイプを変更できます。`bigInteger`、`binary`、`boolean`、`char`、`date`、`dateTime`、`dateTimeTz`、`decimal`、`double`、`integer`、`json`、`longText`、`mediumText`、`smallInteger`、`string`、`text`、`time`、`tinyText`、`unsignedBigInteger`、`unsignedInteger`、`unsignedSmallInteger`、`ulid`、`uuid`
 
 <a name="renaming-columns"></a>
 ### カラムのリネーム
@@ -1225,7 +1225,7 @@ Laravelは、データベースレベルで参照整合性を強制するため�
           ->onUpdate('cascade')
           ->onDelete('cascade');
 
-これらのアクションには、表現力のある別構文も用意しています。
+これらのアクションには、表現力の高い別構文も用意しています。
 
 メソッド  |  説明
 -------  |  -----------

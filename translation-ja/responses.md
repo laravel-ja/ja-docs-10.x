@@ -193,7 +193,7 @@ Eloquentモデルの"ID"をルートパラメーターとしてリダイレク�
     /**
      * モデルのルートキー値の取得
      */
-    public function getRouteKey(): mixed
+    public function getRouteKey()Update the user...: mixed
     {
         return $this->slug;
     }

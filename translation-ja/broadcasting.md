@@ -3,7 +3,7 @@
 - [イントロダクション](#introduction)
 - [サーバ側インストール](#server-side-installation)
     - [設定](#configuration)
-    - [Pusher Channels](#pusher-channels)
+    - [Pusherチャンネル](#pusher-channels)
     - [Ably](#ably)
     - [オープンソースの代替](#open-source-alternatives)
 - [クライアント側インストール](#client-side-installation)
@@ -116,7 +116,7 @@ BROADCAST_DRIVER=pusher
 ### Ably
 
 > **Note**
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
 [Ably](https://ably.com)を使用してイベントをブロードキャストする場合は、Composerパッケージマネージャを使用してAbly PHP SDKをインストールする必要があります。
 
@@ -212,7 +212,7 @@ window.Echo = new Echo({
 ### Ably
 
 > **Note**
-> The documentation below discusses how to use Ably in "Pusher compatibility" mode. However, the Ably team maintains a broadcaster and Echo client that is able to take advantage of the unique capabilities offered by Ably. For more information on using the Ably maintained drivers, please [consult Ably's Laravel broadcaster documentation](https://github.com/ably/laravel-broadcaster).
+> 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
 [Laravel Echo](https://github.com/laravel/echo)はJavaScriptライブラリであり、チャンネルをサブスクライブして、サーバ側のブロードキャストドライバがブロードキャストしたイベントを簡単にリッスンできます。NPMパッケージマネージャを介してEchoをインストールします。この例では、`pusher-js`パッケージもインストールしています。
 
@@ -306,7 +306,7 @@ Laravelのイベントブロードキャストを使用すると、WebSocketに�
     use Illuminate\Broadcasting\PrivateChannel;
 
     /**
-     * Get the channel the event should broadcast on.
+     * イベントをブロードキャストするチャンネルを取得
      */
     public function broadcastOn(): Channel
     {

@@ -46,7 +46,7 @@
     - [Slack添付](#slack-attachments)
     - [Slack通知のルート指定](#routing-slack-notifications)
 - [通知のローカライズ](#localizing-notifications)
-- [Testing](#testing)
+- [テスト](#testing)
 - [通知イベント](#notification-events)
 - [カスタムチャンネル](#custom-channels)
 
@@ -95,7 +95,7 @@ php artisan make:notification InvoicePaid
     $user->notify(new InvoicePaid($invoice));
 
 > **Note**
-> どのモデルでも`Notifiable`トレイトを使用できることを忘れないでください。`User`モデルに含めるだけに限定されません。
+> どのモデルでも`Notifiable`トレイトを使用できることを忘れないでください。`User`モデルにだけに限定して含められるわけでありません。
 
 <a name="using-the-notification-facade"></a>
 ### Notificationファサードの使用
@@ -1213,11 +1213,11 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
     $user->notify(new InvoicePaid($invoice));
 
 <a name="testing"></a>
-## Testing
+## テスト
 
-You may use the `Notification` facade's `fake` method to prevent notifications from being sent. Typically, sending notifications is unrelated to the code you are actually testing. Most likely, it is sufficient to simply assert that Laravel was instructed to send a given notification.
+`Notification`ファサードの`fake`メソッドを使用すれば、通知を実際に送信しなくてすみます。通常、通知の送信は、実際にテストしているコードとは無関係です。ほとんどの場合、Laravelが指定された通知を送信するように指示されたことを単純にアサートすれば十分です。
 
-After calling the `Notification` facade's `fake` method, you may then assert that notifications were instructed to be sent to users and even inspect the data the notifications received:
+`Notification`ファサードの`fake`メソッドを呼び出したあとに、ユーザーへ通知を送る指示したことをアサートし、その通知が受け取ったデータを調べることもできます。
 
     <?php
 
@@ -1233,27 +1233,27 @@ After calling the `Notification` facade's `fake` method, you may then assert tha
         {
             Notification::fake();
 
-            // Perform order shipping...
+            // 注文発送処理…
 
-            // Assert that no notifications were sent...
+            // 通知が一つも送信されないことをアサート
             Notification::assertNothingSent();
 
-            // Assert a notification was sent to the given users...
+            // 指定ユーザーへ通知されることをアサート
             Notification::assertSentTo(
                 [$user], OrderShipped::class
             );
 
-            // Assert a notification was not sent...
+            // 通知が送られないことをアサート
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
 
-            // Assert that a given number of notifications were sent...
+            // 指定回数の通知が送られたことをアサート
             Notification::assertCount(3);
         }
     }
 
-You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in order to assert that a notification was sent that passes a given "truth test". If at least one notification was sent that passes the given truth test then the assertion will be successful:
+指定「真偽値テスト」にパスした通知が送信されたことをアサートするため、`assertSentTo`または`assertNotSentTo`メソッドへクロージャを渡せます。指定真偽値テストにパスする通知が最低１つ送信された場合、そのアサートはパスします。
 
     Notification::assertSentTo(
         $user,
@@ -1263,13 +1263,13 @@ You may pass a closure to the `assertSentTo` or `assertNotSentTo` methods in ord
     );
 
 <a name="on-demand-notifications"></a>
-#### On-Demand Notifications
+#### オンデマンド通知
 
-If the code you are testing sends [on-demand notifications](#on-demand-notifications), you can test that the on-demand notification was sent via the `assertSentOnDemand` method:
+テストするコードが、[オンデマンド通知](#on-demand-notifications)を送信する場合、`assertSentOnDemand`メソッドでオンデマンド通知を送信したことをテストできます。
 
     Notification::assertSentOnDemand(OrderShipped::class);
 
-By passing a closure as the second argument to the `assertSentOnDemand` method, you may determine if an on-demand notification was sent to the correct "route" address:
+`assertSentOnDemand`メソッドの第２引数にクロージャを渡すことで、オンデマンド通知が正しい「ルート」アドレスに送信されたかを判断できます。
 
     Notification::assertSentOnDemand(
         OrderShipped::class,

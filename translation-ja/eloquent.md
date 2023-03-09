@@ -9,7 +9,7 @@
     - [主キータイムスタンプ](#timestamps)
     - [データベース接続](#database-connections)
     - [デフォルト属性値](#default-attribute-values)
-    - [Configuring Eloquent Strictness](#configuring-eloquent-strictness)
+    - [Eloquent厳格さの設定](#configuring-eloquent-strictness)
 - [モデルの取得](#retrieving-models)
     - [コレクション](#collections)
     - [結果の分割](#chunking-results)
@@ -98,7 +98,7 @@ php artisan make:model Member --pivot
 ```
 
 <a name="inspecting-models"></a>
-#### Inspecting Models
+#### モデルの調査
 
 モデルのコードに目を通すだけでは、そのモデルで利用可能な全ての属性とリレーションを判断するのが難しい場合があります。そのような場合は、`model:show` Artisanコマンドを使用してください。モデルの全ての属性とリレーションを簡単に確認できます。
 
@@ -337,7 +337,7 @@ Eloquentモデルの主キーへ、自動増分整数を使用する代わりに
 <a name="default-attribute-values"></a>
 ### デフォルト属性値
 
-デフォルトでは、新しくインスタンス化するモデルインスタンスに属性値は含まれません。モデルの属性の一部にデフォルト値を定義したい場合は、モデルに`$attributes`プロパティを定義できます。`$attributes`配列に格納する属性値は、データベースから読みこみたてのような、生の「保存可能」形式であるべきです。
+デフォルトでは、新しくインスタンス化するモデルインスタンスに属性値は含まれません。モデルの属性の一部にデフォルト値を定義したい場合は、モデルに`$attributes`プロパティを定義できます。`$attributes`配列に格納する属性値は、データベースから読み込んだままのような、素の「保存可能」形式であるべきです。
 
     <?php
 
@@ -637,12 +637,12 @@ Eloquentは、高度なサブクエリサポートも提供します。これに
 
     use App\Models\Flight;
 
-    // 名前でフライトを取得するか、存在しない場合は作成する
+    // 名前でフライトを取得するか、存在しない場合は作成
     $flight = Flight::firstOrCreate([
         'name' => 'London to Paris'
     ]);
 
-    // 名前でフライトを取得するか、name、delayed、arrival_time属性を使用してフライトを作成します。
+    // 名前でフライトを取得するか、name、delayed、arrival_time属性を使用してフライトを作成
     $flight = Flight::firstOrCreate(
         ['name' => 'London to Paris'],
         ['delayed' => 1, 'arrival_time' => '11:30']
@@ -682,15 +682,15 @@ Eloquentモデルを操作するときは、Laravel [クエリビルダ](/docs/{
 
     use App\Http\Controllers\Controller;
     use App\Models\Flight;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * 新しいフライトをデータベースに保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             // リクエストのバリデーション処理…
 
@@ -700,7 +700,7 @@ Eloquentモデルを操作するときは、Laravel [クエリビルダ](/docs/{
 
             $flight->save();
 
-            return response()->noContent();
+            return redirect('/flights');
         }
     }
 
@@ -956,7 +956,7 @@ JSONカラムへ代入するときは、各カラムの複数代入可能キー�
 <a name="soft-deleting"></a>
 ### ソフトデリート
 
-Eloquentは、データベースから実際にレコードを削除するだけでなく、モデルを「ソフトデリート」することもできます。モデルがソフトデリートされても、実際にはデータベースから削除されません。代わりに、モデルに「deleted_at」属性がセットされ、モデルを「削除」した日時が保存されます。モデルのソフトデリートを有効にするには、「Illuminate\Database\Eloquent\SoftDeletes」トレイトをモデルに追加します。
+Eloquentは、データベースから実際にレコードを削除するだけでなく、モデルを「ソフトデリート」することもできます。モデルがソフトデリートされても、実際にはデータベースから削除されません。代わりに、モデルに「deleted_at」属性がセットされ、モデルを「削除」した日時が保存されます。モデルのソフトデリートを有効にするには、`Illuminate\Database\Eloquent\SoftDeletes`トレイトをモデルに追加します。
 
     <?php
 
@@ -1229,7 +1229,7 @@ php artisan model:prune --pretend
     class User extends Model
     {
         /**
-         * モデルの「起動」メソッド
+         * モデルの"booted"メソッド
          */
         protected static function booted(): void
         {

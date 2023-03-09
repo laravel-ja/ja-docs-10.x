@@ -43,7 +43,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-多くの場合、データベーステーブルは相互に関連（リレーション）しています。たとえば、ブログ投稿に多くのコメントが含まれている場合や、注文がそれを行ったユーザーと関連している場合があります。Eloquentはこれらの関係の管理と操作を容易にし、さまざまな一般的な関係をサポートします。
+多くの場合、データベーステーブルは相互に関連（リレーション）しています。たとえば、ブログ投稿に多くのコメントが含まれている場合や、注文がそれを行ったユーザーと関連している場合などです。Eloquentはこれらの関係の管理と操作を容易にし、さまざまな一般的なリレーションをサポートします。
 
 <div class="content-list" markdown="1">
 
@@ -170,7 +170,7 @@ Eloquentは、リレーションメソッドの名前を調べ、メソッド名
         }
     }
 
-Eloquentは、`Comment`モデルの適切な外部キーカラムを自動的に決定することを覚えておいてください。規約により、Eloquentは親モデルの「スネークケース」名に「_id」という接尾辞を付けます。したがって、この例では、Eloquentは`Comment`モデルの外部キーカラムが`post_id`であると想定します。
+Eloquentは、`Comment`モデルの適切な外部キーカラムを自動的に決定することを覚えておきましょう。規約により、Eloquentは親モデルの「スネークケース」名に「_id」という接尾辞を付けます。したがって、この例では、Eloquentは`Comment`モデルの外部キーカラムが`post_id`であると想定します。
 
 リレーションメソッドを定義したら、`comments`プロパティにアクセスして、関連するコメントの[コレクション](/docs/{{version}}/eloquent-collections)にアクセスできます。Eloquentは「動的リレーションプロパティ」を提供するため、モデルのプロパティとして定義されているかのようにリレーションメソッドにアクセスできることを思い出してください。
 
@@ -1535,7 +1535,7 @@ Eloquentは、`withCount`メソッドに加えて、`withMin`、`withMax`、`wit
 <a name="eager-loading"></a>
 ## Eagerロード
 
-When accessing Eloquent relationships as properties, the related models are "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
+Eloquentのリレーションにプロパティとしてアクセスする場合、関連するモデルは「遅延ロード」されます。これは、プロパティに最初にアクセスするまで、リレーションデータが実際にロードされないことを意味します。しかし、Eloquentでは、親モデルへのクエリ時に、リレーションを「Eagerロード」できます。Eagerロードにより、「Ｎ＋１」クエリ問題を軽減できます。Ｎ＋１クエリの問題を理解するため、`Book`モデルが`Author`モデルに「所属している」場合を考えてみましょう。
 
     <?php
 

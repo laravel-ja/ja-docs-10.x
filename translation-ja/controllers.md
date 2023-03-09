@@ -77,11 +77,9 @@
         /**
          * 新しいWebサーバをプロビジョニング
          */
-        public function __invoke(): Response
+        public function __invoke()
         {
             // ...
-
-            return response()->noContent();
         }
     }
 
@@ -482,21 +480,21 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * 新ユーザーの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->name;
 
-            // ...
+            // Store the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -512,6 +510,7 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
 
     class UserController extends Controller
@@ -519,10 +518,10 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
         /**
          * 指定ユーザーの更新
          */
-        public function update(Request $request, string $id): Response
+        public function update(Request $request, string $id): RedirectResponse
         {
-            // ...
+            // Update the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }

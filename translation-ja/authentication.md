@@ -146,19 +146,21 @@ Laravel Breezeは、ログイン、ユーザー登録、パスワードリセッ
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class FlightController extends Controller
     {
         /**
          * 既存のフライトの情報を更新
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
-            // $request->user()
+            $user = $request->user();
 
-            return response()->noContent();
+            // ...
+
+            return redirect('/flights');
         }
     }
 
@@ -456,7 +458,7 @@ Next, attach the middleware to a route:
 
 Laravelは、現在のデバイスのセッションを無効にすることなく、他のデバイスでアクティブなそのユーザーのセッションを無効にして「ログアウト」するためのメカニズムも提供しています。この機能は通常、ユーザーがパスワードを変更または更新していて、現在のデバイスを認証したまま他のデバイスのセッションを無効にしたい状況で使用します。
 
-Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is included on the routes that should receive session authentication. Typically, you should place this middleware on a route group definition so that it can be applied to the majority of your application's routes. By default, the `AuthenticateSession` middleware may be attached to a route using the `auth.session` route middleware alias as defined in your application's HTTP kernel:
+これを使うには、まずセッション認証を受るルートへ、`Illuminate\Session\Middleware\AuthenticateSession`ミドルウェアを確実に含めてください。通常、このミドルウェアはルートグループ定義に配置し、アプリケーションのルートの大部分に適用するようにします。デフォルトで`AuthenticateSession`ミドルウェアは、アプリケーションのHTTPカーネルで定義している、`auth.session`ルートミドルウェアのエイリアスを使用して、ルートへ指定します。
 
     Route::middleware(['auth', 'auth.session'])->group(function () {
         Route::get('/', function () {
@@ -556,8 +558,6 @@ Before getting started, you should make sure that the `Illuminate\Session\Middle
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::extend('jwt', function (Application $app, string $name, array $config) {
                 // Illuminate\Contracts\Auth\Guardインスタンスを返す…
 
@@ -591,8 +591,6 @@ Before getting started, you should make sure that the `Illuminate\Session\Middle
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Auth::viaRequest('custom-token', function (Request $request) {
             return User::where('token', $request->token)->first();
         });
@@ -633,8 +631,6 @@ Before getting started, you should make sure that the `Illuminate\Session\Middle
          */
         public function boot(): void
         {
-            $this->registerPolicies();
-
             Auth::provider('mongo', function (Application $app, array $config) {
                 // Illuminate\Contracts\Auth\UserProviderのインスタンスを返す…
 

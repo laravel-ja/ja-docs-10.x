@@ -19,6 +19,7 @@
 バグレポートを提出する場合にはその問題をタイトルに含め、明確に内容を記述してください。できる限り関連する情報や、その問題をデモするコードも含めてください。バグレポートの目的はあなた自身、そして他の人でも、簡単にバグが再現でき修正されるようにすることです。
 
 Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
+バグレポートは、同じ問題を抱える他の人が協力して解決してくれることを期待して作成するものであることを忘れないでください。バグレポートが自動的に何らかの活動をしたり、他の人がそれを解決するために飛びついたりすることを期待しないでください。バグレポートを作成することは、あなた自身や他の人が問題を解決するための道筋をつけるためのものです。もしあなたが協力したいと思ったら、[課題追跡システムに登録されているバグ](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel)を修正することにより手助けできます。Laravelのすべての課題を見るには、GitHubにより認証される必要があります。
 
 LaravelのソースコードはGitHubで管理され、各Laravelプロジェクトのリポジトリが存在しています。
 
@@ -56,8 +57,8 @@ LaravelのGitHubイシュートラッカーは、Laravelのヘルプやサポー
 <div class="content-list" markdown="1">
 
 - [GitHub Discussions](https://github.com/laravel/framework/discussions)
-- [Laracasts Forums](https://laracasts.com/discuss)
-- [Laravel.io Forums](https://laravel.io/forum)
+- [Laracastsフォーラム](https://laracasts.com/discuss)
+- [Laravel.ioフォーラム](https://laravel.io/forum)
 - [StackOverflow](https://stackoverflow.com/questions/tagged/laravel)
 - [Discord](https://discord.gg/laravel)
 - [Larachat](https://larachat.co)
@@ -75,9 +76,9 @@ LaravelのGitHubイシュートラッカーは、Laravelのヘルプやサポー
 <a name="which-branch"></a>
 ## どのブランチ？
 
-**All** bug fixes should be sent to the latest version that supports bug fixes (currently `10.x`). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**すべての**バグフィックスは、バグフィックスをサポートしている最新バージョン (現在は`10.x`) に送るべきです。バグフィックスは、次期リリースにのみ存在する機能を修正するのでない限り、**決して**`master`ブランチに送ってはいけません**。
 
-**Minor** features that are **fully backward compatible** with the current release may be sent to the latest stable branch (currently `10.x`).
+現在のリリースと**完全な後方互換性**を持つ、**Minor**機能については、最新の安定版ブランチ（現在は`10.x`）に送られる可能性があります。
 
 **メジャーな（大きな）**新機能や互換性のない変更を含む機能は、常に次のリリースに含まれる`master`ブランチへ送ってください。
 
@@ -116,7 +117,7 @@ Laravelは[PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/
         // ...
     }
 
-When the `@param` or `@return` attributes are redundant due to the use of native types, they can be removed:
+ネイティブ型の使用により、`@param`属性や`@return`属性が冗長になる場合は、それらを削除することができます。
 
     /**
      * Execute the job.
@@ -126,7 +127,7 @@ When the `@param` or `@return` attributes are redundant due to the use of native
         //
     }
 
-However, when the native type is generic, please specify the generic type through the use of the `@param` or `@return` attributes:
+ただし、ネイティブ型が汎用型の場合は、`@param`属性または`@return`属性を用いて汎用型を指定してください。
 
     /**
      * Get the attachments for the message.

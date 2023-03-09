@@ -38,21 +38,21 @@ Laravelの`Illuminate\Http\Request`クラスは、アプリケーションが処
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * 新しいユーザーを保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $name = $request->input('name');
 
-            // ...
+            // Store the user...
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 
@@ -79,19 +79,19 @@ Laravelの`Illuminate\Http\Request`クラスは、アプリケーションが処
 
     namespace App\Http\Controllers;
 
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class UserController extends Controller
     {
         /**
          * 指定ユーザーを更新
          */
-        public function update(Request $request, string $id): Response
+        public function update(Request $request, string $id): RedirectResponse
         {
-            // ...
+            // ユーザーの更新処理…
 
-            return response()->noContent();
+            return redirect('/users');
         }
     }
 

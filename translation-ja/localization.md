@@ -1,7 +1,7 @@
 # 多言語化
 
 - [イントロダクション](#introduction)
-    - [Publishing The Language Files](#publishing-the-language-files)
+    - [言語ファイルのリソース公開](#publishing-the-language-files)
     - [ロケールの設定](#configuring-the-locale)
     - [言語の複数形](#pluralization-language)
 - [翻訳文字列の定義](#defining-translation-strings)
@@ -16,11 +16,11 @@
 ## イントロダクション
 
 > **Note**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> デフォルトでは、Laravelアプリケーションのスケルトンは、`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 Laravelの多言語機能は、さまざまな言語の文字列を取得する便利な方法を提供し、アプリケーション内で複数の言語を簡単にサポートできるようにしています。
 
-Laravel provides two ways to manage translation strings. First, language strings may be stored in files within the application's `lang` directory. Within this directory, there may be subdirectories for each language supported by the application. This is the approach Laravel uses to manage translation strings for built-in Laravel features such as validation error messages:
+Laravelは翻訳文字列を管理する２つの方法を提供しています。最初の方法は、言語文字列をアプリケーションの`lang`ディレクトリ内のファイルへ格納する方法です。このディレクトリ内には、アプリケーションがサポートする、各言語のサブディレクトリを用意できます。これは、バリデーションエラーメッセージのような、Laravel組み込み機能の翻訳文字列を管理するためにLaravelが使用する方法です。
 
     /lang
         /en
@@ -37,9 +37,9 @@ Laravel provides two ways to manage translation strings. First, language strings
 このドキュメントでは、翻訳文字列を管理する各アプローチについて説明します。
 
 <a name="publishing-the-language-files"></a>
-### Publishing The Language Files
+### 言語ファイルのリソース公開
 
-By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files or create your own, you should scaffold the `lang` directory via the `lang:publish` Artisan command. The `lang:publish` command will create the `lang` directory in your application and publish the default set of language files used by Laravel:
+Laravelアプリケーションのスケルトンに、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたり、独自の言語ファイルを作成したい場合は、`lang:publish` Artisanコマンドを使用して、`lang`ディレクトリをスカフォールドする必要があります。`lang:publish`コマンドは、アプリケーションに`lang`ディレクトリを作成し、Laravelが使用する言語ファイルのデフォルトセットをリソース公開します。
 
 ```shell
 php artisan lang:publish
@@ -133,7 +133,7 @@ Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレーム�
 
 翻訳可能な文字列が多数あるアプリケーションの場合、「短縮キー」ですべての文字列を定義すると、ビューでキーを参照するときに混乱する可能性があり、アプリケーションがサポートするすべての翻訳文字列のキーを継続的に作成するのは面倒です。
 
-For this reason, Laravel also provides support for defining translation strings using the "default" translation of the string as the key. Language files that use translation strings as keys are stored as JSON files in the `lang` directory. For example, if your application has a Spanish translation, you should create a `lang/es.json` file:
+このため、Laravelは文字列の「デフォルト」翻訳をキーとして、翻訳文字列を定義するサポートも提供しています。翻訳文字列をキーとして使用する言語ファイルは、JSONファイルとして`lang`ディレクトリに保存します。例えば、アプリケーションにスペイン語の翻訳がある場合、`lang/es.json`ファイルを作成する必要があります。
 
 ```json
 {
@@ -143,7 +143,7 @@ For this reason, Laravel also provides support for defining translation strings 
 
 #### キー／ファイルの競合
 
-You should not define translation string keys that conflict with other translation filenames. For example, translating `__('Action')` for the "NL" locale while a `nl/action.php` file exists but a `nl.json` file does not exist will result in the translator returning the entire contents of `nl/action.php`.
+他の翻訳ファイル名と衝突するような翻訳文字列のキーを定義してはいけません。例えば、`nl/action.php`ファイルは存在するが`nl.json`ファイルは存在しないのに、`__('Action')`を"NL"ロケールへ翻訳すると、トランスレータは結果として`nl/action.php`の内容全体を返します。
 
 <a name="retrieving-translation-strings"></a>
 ## 翻訳文字列の取得

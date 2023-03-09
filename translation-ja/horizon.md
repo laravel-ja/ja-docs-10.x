@@ -21,7 +21,7 @@
 > **Note**
 > Laravel Horizo​​nを掘り下げる前に、Laravelの基本的な[キューサービス](/docs/{{version}}/queues)をよく理解しておく必要があります。Horizo​​nは、Laravelが提供する基本的なキュー機能にまだ慣れていない場合は混乱してしまう可能性がある追加機能であり、Laravelのキューを拡張します。
 
-[Laravel Horizon](https://github.com/laravel/horizon)は、Laravelを利用した[Redisキュー](/docs/{{version}}/queues)に美しいダッシュボードとコード駆動型の設定を提供します。Horizo​​nを使用すると、ジョブのスループット、ランタイム、ジョブの失敗など、キューシステムの主要なメトリックを簡単に監視できます。
+[Laravel Horizon](https://github.com/laravel/horizon)（ホライズン、地平線）は、Laravelを利用した[Redisキュー](/docs/{{version}}/queues)に美しいダッシュボードとコード駆動型の設定を提供します。Horizo​​nを使用すると、ジョブのスループット、ランタイム、ジョブの失敗など、キューシステムの主要なメトリックを簡単に監視できます。
 
 Horizo​​nを使用する場合、すべてのキューワーカ設定は単一の単純な設定ファイルへ保存します。バージョン管理されたファイルでアプリケーションのワーカ設定を定義することにより、アプリケーションのデプロイ時に、キューワーカを簡単にスケーリングや変更できます。
 
@@ -143,7 +143,7 @@ Horizo​​nは、`/horizo​​n`のURIでダッシュボードを公開しま
 <a name="alternative-authentication-strategies"></a>
 #### その他の認証戦略
 
-Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
+Laravelは、認証したユーザーをゲートクロージャへ自動的に依存注入することを忘れないでください。アプリケーションがIP制限など別の方法でHorizonセキュリティを提供している場合、Horizonユーザーは「ログイン」する必要がない場合があります。したがって、Laravelの認証を必要としないようにするため、上記の`function (User $user)`クロージャの引数を`function (User $user = null)`に変更する必要があるでしょう。
 
 <a name="silenced-jobs"></a>
 ### 非表示のジョブ

@@ -6,7 +6,7 @@
     - [他ブラウザの使用](#using-other-browsers)
 - [利用の開始](#getting-started)
     - [テストの生成](#generating-tests)
-    - [Resetting The Database After Each Test](#resetting-the-database-after-each-test)
+    - [各テスト終了後のデータベースリセット](#resetting-the-database-after-each-test)
     - [テストの実行](#running-tests)
     - [環境の処理](#environment-handling)
 - [ブラウザの基本](#browser-basics)
@@ -56,14 +56,14 @@
 <a name="installation"></a>
 ## インストール
 
-使い始めるには、[Google Chrome](https://www.google.com/chrome)をインストールして、プロジェクトに`Laravel/Dusk`　Composer依存パッケージを追加する必要があります。
+使用を開始するには、[Google Chrome](https://www.google.com/chrome)をインストールして、プロジェクトに`Laravel/Dusk` Composer依存パッケージを追加する必要があります。
 
 ```shell
 composer require --dev laravel/dusk
 ```
 
 > **Warning**
-> 本番環境にDuskをインストールしてはいけません。インストールすると、アプリケーションに対する未認証でのアクセスを許すようになります。
+> 本番環境へDuskをインストールしてはいけません。インストールすると、アプリケーションに対する未認証でのアクセスを許すようになります。
 
 Duskパッケージをインストールし終えたら、`dusk:install` Artisanコマンドを実行します。`dusk:install`コマンドは、`tests/Browser`ディレクトリとサンプルのDuskテスト、およびオペレーティングシステムに合わせたChromeドライバのバイナリを作成します。
 
@@ -142,7 +142,7 @@ php artisan dusk:make LoginTest
 ```
 
 <a name="resetting-the-database-after-each-test"></a>
-### テスト終了毎のデータベースリセット
+### 各テスト終了後のデータベースリセット
 
 作成するテストのほとんどは、アプリケーションのデータベースからデータを取得するページを操作します。ただし、Duskテストでは`RefreshDatabase`トレイトを使用しないでください。`RefreshDatabase`トレイトは、HTTPリクエスト間で適用または利用できないデータベーストランザクションを活用します。代わりに`DatabaseMigrations`か、`DatabaseTruncation`の２トレイトを使用するオプションがあります。
 
@@ -166,7 +166,7 @@ php artisan dusk:make LoginTest
     }
 
 > **Warning**
-> Duskテストの実行時には、SQLiteインメモリデータベースを使用できません。ブラウザは独自のプロセス内で実行されるため、他のプロセスのメモリ内データベースにアクセスすることはできません。
+> Duskテストの実行時には、SQLiteメモリ内データベースを使用できません。ブラウザは独自のプロセス内で実行されるため、他のプロセスのメモリ内データベースにアクセスすることはできません。
 
 <a name="reset-truncation"></a>
 #### データベーストランザクションの利用
@@ -247,7 +247,7 @@ php artisan dusk --group=foo
 <a name="manually-starting-chromedriver"></a>
 #### ChromeDriverの手作業起動
 
-デフォルトのDuskは、ChromeDriverを自動的に起動しようとします。特定のシステムで自動起動しない場合は、`dusk`コマンドを実行する前に手作業でChromeDriverを起動することもできます。ChromeDriverを手作業起動する場合は、`tests/DuskTestCase.php`ファイルの以下の行をコメントアウトしてください。
+デフォルトのDuskは、ChromeDriverを自動的に起動しようとします。特定のシステムで自動起動しない場合は、`dusk`コマンドを実行する前に手作業でChromeDriverを起動することもできます。ChromeDriverを手作業起動する場合は、`tests/DuskTestCase.php`ファイル以下の行をコメントアウトしてください。
 
     /**
      * Duskテスト実行準備
@@ -306,7 +306,7 @@ php artisan dusk --group=foo
          * 基本的なブラウザテスト例
          */
         public function test_basic_example(): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             $user = User::factory()->create([
                 'email' => 'taylor@laravel.com',
             ]);
@@ -405,7 +405,7 @@ php artisan dusk --group=foo
          * Duskのブラウザマクロを登録
          */
         public function boot(): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             Browser::macro('scrollToElement', function (string $element = null) {
                 $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
 
@@ -1332,7 +1332,7 @@ URLの現在のハッシュフラグメントが指定するフラグメント�
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
-#### assertDontSeeLink
+#### aspublic function selectDate(Browser $browser,sertDontSeeLink
 
 指定したリンクが、ページ上に存在していないことを宣言します。
 
@@ -1766,7 +1766,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * 新しいプレイリストの作成
          */
         public function createPlaylist(Browser $browser, string $name): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             $browser->type('name', $name)
                     ->check('share')
                     ->press('Create Playlist');
@@ -1808,7 +1808,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * コンポーネントのルートセレクタ取得
          */
         public function selector(): string
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             return '.date-picker';
         }
 
@@ -1816,7 +1816,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * ブラウザページにそのコンポーネントが含まれていることを宣言
          */
         public function assert(Browser $browser): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             $browser->assertVisible($this->selector());
         }
 
@@ -1826,7 +1826,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * @return array<string, string>
          */
         public function elements(): array
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             return [
                 '@date-field' => 'input.datepicker-input',
                 '@year-list' => 'div > div.datepicker-years',
@@ -1839,7 +1839,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * 指定日付のセレクト
          */
         public function selectDate(Browser $browser, int $year, int $month, int $day): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             $browser->click('@date-field')
                     ->within('@year-list', function (Browser $browser) use ($year) {
                         $browser->click($year);
@@ -1873,7 +1873,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
          * 基本的なコンポーネントテスト例
          */
         public function test_basic_example(): void
-        public function selectDate(Browser $browser, $year, $month, $day)
+        {
             $this->browse(function (Browser $browser) {
                 $browser->visit('/')
                         ->within(new DatePicker, function (Browser $browser) {

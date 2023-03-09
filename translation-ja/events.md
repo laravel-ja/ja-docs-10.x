@@ -15,9 +15,9 @@
 - [イベントサブスクライバ](#event-subscribers)
     - [イベントサブスクライバの記述](#writing-event-subscribers)
     - [イベントサブスクライバの登録](#registering-event-subscribers)
-- [Testing](#testing)
-    - [Faking A Subset Of Events](#faking-a-subset-of-events)
-    - [Scoped Events Fakes](#scoped-event-fakes)
+- [テスト](#testing)
+    - [イベントサブセットのFake](#faking-a-subset-of-events)
+    - [イベントFakeのスコープ](#scoped-event-fakes)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -495,15 +495,15 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
     use App\Events\OrderShipped;
     use App\Http\Controllers\Controller;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
 
     class OrderShipmentController extends Controller
     {
         /**
          * 指定注文を発送
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -511,7 +511,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 
             OrderShipped::dispatch($order);
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
 
@@ -522,7 +522,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
     OrderShipped::dispatchUnless($condition, $order);
 
 > **Note**
-> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) makes it a cinch.
+> テストの際、あるイベントが実際にリスナを起動することなくディスパッチされたことをアサートできると役立ちます。Laravelに[組み込み済みのテストヘルパー](#testing)は、これを簡単に実現します。
 
 <a name="event-subscribers"></a>
 ## イベントサブスクライバ
@@ -641,9 +641,9 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 <a name="testing"></a>
 ## Testing
 
-When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners, since the listener's code can be tested directly and separately of the code that dispatches the corresponding event. Of course, to test the listener itself, you may instantiate a listener instance and invoke the `handle` method directly in your test.
+イベントをディスパッチするコードをテストする場合、イベントのリスナを実際に実行しないように、Laravelへ指示したい場合があるでしょう。リスナのコードは、対応するイベントをディスパッチするコードとは別に、直接テストすることができるからです。もちろん、リスナ自体をテストするには、リスナインスタンスをインスタンス化し、テスト内で直接`handle`メソッドを呼び出せます。
 
-Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
+`Event`ファサードの`fake`メソッドを使用し、リスナを実行しないでテスト対象のコードを実行し、`assertDispatched`、`assertNotDispatched`、`assertNothingDispatched`メソッドを使用してアプリケーションがどのイベントをディスパッチするかをアサートできます。
 
     <?php
 
@@ -657,35 +657,35 @@ Using the `Event` facade's `fake` method, you may prevent listeners from executi
     class ExampleTest extends TestCase
     {
         /**
-         * Test order shipping.
+         * 買い物の注文のテスト
          */
         public function test_orders_can_be_shipped(): void
         {
             Event::fake();
 
-            // Perform order shipping...
+            // 買い物の注文の実行…
 
-            // Assert that an event was dispatched...
+            // あるイベントがディスパッチされたことをアサート
             Event::assertDispatched(OrderShipped::class);
 
-            // Assert an event was dispatched twice...
+            // あるイベントが２回ディスパッチされたことをアサート
             Event::assertDispatched(OrderShipped::class, 2);
 
-            // Assert an event was not dispatched...
+            // あるイベントがディスパッチされないことをアサート
             Event::assertNotDispatched(OrderFailedToShip::class);
 
-            // Assert that no events were dispatched...
+            // 度のイベントもディスパッチされなかったことをアサート
             Event::assertNothingDispatched();
         }
     }
 
-You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
+クロージャを`assertDispatched`や`assertNotDispatched`メソッドに渡すと、指定したその「真理値テスト」に合格するイベントが、ディスパッチされたことをアサートできます。指定真理値テストにパスするイベントが最低１つディスパッチされた場合、アサートは成功します。
 
     Event::assertDispatched(function (OrderShipped $event) use ($order) {
         return $event->order->id === $order->id;
     });
 
-If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+イベントリスナが指定イベントをリッスンしていることを単純にアサートしたい場合は、`assertListening`メソッドを使用してください。
 
     Event::assertListening(
         OrderShipped::class,
@@ -693,15 +693,15 @@ If you would simply like to assert that an event listener is listening to a give
     );
 
 > **Warning**
-> After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+> `Event::fake()`を呼び出した後は、イベントリスナが実行されることはありません。したがって、テストがイベントに依存するモデルファクトリを使用している場合、例えば、モデルの`creating`イベント中にUUIDを作成する場合、ファクトリを使用した**後**に、`Event::fake()`を呼び出す必要があります。
 
 <a name="faking-a-subset-of-events"></a>
-### Faking A Subset Of Events
+### イベントサブセットのFake
 
-If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
+特定のイベントセットに対してのみイベントリスナをFakeしたい場合は、`fake`または`fakeFor`メソッドへそれらを渡してください。
 
     /**
-     * Test order process.
+     * 注文処理のテスト
      */
     public function test_orders_can_be_processed(): void
     {
@@ -713,20 +713,20 @@ If you only want to fake event listeners for a specific set of events, you may p
 
         Event::assertDispatched(OrderCreated::class);
 
-        // Other events are dispatched as normal...
+        // その他のイベントは、通常通りディスパッチされる
         $order->update([...]);
     }
 
-You may fake all events except for a set of specified events using the `except` method:
+`except`メソッドを使用すると、指定イベント以外のすべてのイベントをFakeできます。
 
     Event::fake()->except([
         OrderCreated::class,
     ]);
 
 <a name="scoped-event-fakes"></a>
-### Scoped Event Fakes
+### イベントFakeのスコープ
 
-If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+テストの一部分だけでイベントリスナをFakeしたい場合は、`fakeFor`メソッドを使用します。
 
     <?php
 
@@ -740,7 +740,7 @@ If you only want to fake event listeners for a portion of your test, you may use
     class ExampleTest extends TestCase
     {
         /**
-         * Test order process.
+         * 注文処理のテスト
          */
         public function test_orders_can_be_processed(): void
         {
@@ -752,7 +752,7 @@ If you only want to fake event listeners for a portion of your test, you may use
                 return $order;
             });
 
-            // Events are dispatched as normal and observers will run ...
+            // イベントは通常通りディスパッチされ、オブザーバは実行される
             $order->update([...]);
         }
     }

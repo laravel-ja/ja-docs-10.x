@@ -28,8 +28,8 @@ Laravelの暗号化を使用する前に、`config/app.php`設定ファイルで
 
     use App\Http\Controllers\Controller;
     use App\Models\User;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Crypt;
 
     class DigitalOceanTokenController extends Controller
@@ -37,13 +37,13 @@ Laravelの暗号化を使用する前に、`config/app.php`設定ファイルで
         /**
          * ユーザーのDigitalOceanAPIトークンを保存
          */
-        public function storeSecret(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $request->user()->fill([
                 'token' => Crypt::encryptString($request->token),
             ])->save();
 
-            return response()->noContent();
+            return redirect('/secrets');
         }
     }
 

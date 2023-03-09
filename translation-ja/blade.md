@@ -715,6 +715,18 @@ Bladeは、コンポーネント名のパスカルケースを使い、コンポ
 <x-inputs.button/>
 ```
 
+もし、コンポーネントを条件付きでレンダしたい場合は、コンポーネントクラスで`shouldRender`メソッドを定義してください。`shouldRender`メソッドが`false`を返した場合、コンポーネントをレンダしません。
+
+    use Illuminate\Support\Str;
+
+    /**
+     * コンポーネントをレンダするか
+     */
+    public function shouldRender(): bool
+    {
+        return Str::length($this->message) > 0;
+    }
+
 <a name="passing-data-to-components"></a>
 ### コンポーネントへのデータ渡し
 

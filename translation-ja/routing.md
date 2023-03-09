@@ -456,7 +456,7 @@ Laravelは、タイプヒントの変数名がルートセグメント名と一�
     }
 
 <a name="implicit-soft-deleted-models"></a>
-#### Soft Deleted Models
+#### ソフトデリートモデル
 
 通常、暗黙のモデル結合は、[ソフトデリート](/docs/{{version}}/eloquent#soft-deleting)されたモデルを取得しません。しかし、ルートの定義で`withTrashed`メソッドをチェーンすることにより、こうしたモデルを取得するように暗黙のバインディングで指示できます。
 

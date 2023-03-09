@@ -16,7 +16,7 @@
 
 多くのWebアプリケーションでは、ユーザーがアプリケーションを使用開始する前に電子メールアドレスを確認する必要があります。Laravelでは、作成するアプリケーションごとにこの機能を手作業で再実装する必要はなく、電子メール確認リクエストを送信および検証するための便利な組み込みサービスを提供しています。
 
-> **Note**  
+> **Note**
 > てっとり早く始めたいですか？[Laravelアプリケーションスターターキット](/docs/{{version}}/starter-kits)の１つを新しいLaravelアプリケーションにインストールしてください。スターターキットは、電子メール確認サポートを含む、認証システム全体のスカフォールドを処理します。
 
 <a name="model-preparation"></a>
@@ -76,7 +76,7 @@ php artisan migrate
 
 メール確認通知を返すルートの名前は `verification.notice`にする必要があります。[Laravelが用意している](#protecting-routes)`verified`ミドルウェアは、ユーザーがメールアドレスを確認していない場合、このルート名に自動的にリダイレクトするため、ルートへ正確にこの名前を割り当てることが重要です。
 
-> **Note**  
+> **Note**
 > 電子メール検証を手作業で実装する場合は、検証通知ビューの内容を自分で定義する必要があります。必要なすべての認証ビューと検証ビューを含むスカフォールドが必要な場合は、[Laravelアプリケーションスターターキット](/docs/{{version}}/starter-kits)をチェックしてください。
 
 <a name="the-email-verification-handler"></a>
@@ -112,7 +112,7 @@ php artisan migrate
 <a name="protecting-routes"></a>
 ### 保護下のルート
 
-[Route middleware](/docs/{{version}}/middleware) may be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware alias, which is an alias for the `Illuminate\Auth\Middleware\EnsureEmailIsVerified` class. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition. Typically, this middleware is paired with the `auth` middleware:
+[ルートミドルウェア](/docs/{{version}}/middleware)は、認証したユーザーのみに与えられたルートへのアクセスを許可するために使用ができます。Laravelは`verified`ミドルウェアのエイリアスを同梱しており、これは`Illuminate\Auth\Middleware\EnsureEmailIsVerified`クラスのエイリアスです。このミドルウェアはアプリケーションのHTTPカーネルへあらかじめ登録されているので、必要なのはミドルウェアをルート定義に指定することだけです。通常、このミドルウェアは`auth`ミドルウェアと対で使用します。
 
     Route::get('/profile', function () {
         // 確認済みのユーザーのみがこのルートにアクセス可能
@@ -148,7 +148,7 @@ php artisan migrate
         });
     }
 
-> **Note**  
+> **Note**
 > メール通知の詳細は、[メール通知ドキュメント](/docs/{{version}}/notifications#mail-notifications)を参照してください。
 
 <a name="events"></a>
@@ -158,7 +158,7 @@ php artisan migrate
 
     use App\Listeners\LogVerifiedUser;
     use Illuminate\Auth\Events\Verified;
-    
+
     /**
      * アプリケーションにマップするイベントリスナ
      *

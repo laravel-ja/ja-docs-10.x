@@ -24,9 +24,9 @@
 - [Mailableのレンダ](#rendering-mailables)
     - [ブラウザによるMailableのプレビュー](#previewing-mailables-in-the-browser)
 - [Mailableの多言語化](#localizing-mailables)
-- [Testing](#testing-mailables)
-    - [Testing Mailable Content](#testing-mailable-content)
-    - [Testing Mailable Sending](#testing-mailable-sending)
+- [テスト](#testing-mailables)
+    - [Mailable内容のテスト](#testing-mailable-content)
+    - [Mailable送信のテスト](#testing-mailable-sending)
 - [メールとローカル開発](#mail-and-local-development)
 - [イベント](#events)
 - [カスタムトランスポート](#custom-transports)
@@ -736,8 +736,8 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
     use App\Http\Controllers\Controller;
     use App\Mail\OrderShipped;
     use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Mail;
 
     class OrderShipmentController extends Controller
@@ -745,7 +745,7 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
         /**
          * 指定注文を発送
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $order = Order::findOrFail($request->order_id);
 
@@ -753,7 +753,7 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
 
             Mail::to($request->user())->send(new OrderShipped($order));
 
-            return response()->noContent();
+            return redirect('/orders');
         }
     }
 
@@ -934,7 +934,7 @@ Laravelを使用すると、リクエストの現在のロケール以外のロ�
 ## Testing
 
 <a name="testing-mailable-content"></a>
-### Testing Mailable Content
+### Mailable内容のテスト
 
 Laravelは、Mailableの構造を調べる数多くのメソッドを提供しています。さらに、期待するコンテンツがMailableに含まれているかをテストするために便利なメソッドをいくらか用意しています。これらのメソッドは以下の通りです。`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInOrderInHtml`、`assertSeeInText`、`assertDontSeeInText`、`assertSeeInOrderInText`、`assertHasAttachment`、`assertHasAttachedData`、`assertHasAttachmentFromStorage`、`assertHasAttachmentFromStorageDisk`
 
@@ -973,11 +973,11 @@ Laravelは、Mailableの構造を調べる数多くのメソッドを提供し�
     }
 
 <a name="testing-mailable-sending"></a>
-### Testing Mailable Sending
+### Mailable送信のテスト
 
-We suggest testing the content of your mailables separately from your tests that assert that a given mailable was "sent" to a specific user. Typically, the content of mailables it not relevant to the code you are testing, and it is sufficient to simply assert that Laravel was instructed to send a given mailable.
+指定Mailableが特定のユーザーに「送信」されたことをアサートするテストとは別に、Mailalbeの内容をテストすることをお勧めします。通常、Mailableの内容は、テストしているコードには関係ないため、LaravelがMailableを送信するように指示されたことを単純に主張するだけで十分です。
 
-You may use the `Mail` facade's `fake` method to prevent mail from being sent. After calling the `Mail` facade's `fake` method, you may then assert that mailables were instructed to be sent to users and even inspect the data the mailables received:
+`Mail`ファサードの`fake`メソッドを使用して、メールが実際には送信されないようにできます。`Mail`ファサードの`fake`メソッドを呼び出した後、メールソフトがユーザに送信するよう指示されたことをアサートし、受信されたMailableのデータを検査することも可能です。
 
     <?php
 
@@ -993,23 +993,23 @@ You may use the `Mail` facade's `fake` method to prevent mail from being sent. A
         {
             Mail::fake();
 
-            // Perform order shipping...
+            // 買い物の注文処理…
 
-            // Assert that no mailables were sent...
+            // Mailableが送信されなかったことをアサート
             Mail::assertNothingSent();
 
-            // Assert that a mailable was sent...
+            // １つのMailableが送られたことをアサート
             Mail::assertSent(OrderShipped::class);
 
-            // Assert a mailable was sent twice...
+            // Mailableが２回送られたことをアサート
             Mail::assertSent(OrderShipped::class, 2);
 
-            // Assert a mailable was not sent...
+            // Mailableが送られなかったことをアサート
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
 
-If you are queueing mailables for delivery in the background, you should use the `assertQueued` method instead of `assertSent`:
+バックグラウンドで配送するためMailableをキューに投入する場合は、`assertSent`の代わりに`assertQueued`メソッドを使用してください。
 
     Mail::assertQueued(OrderShipped::class);
 
@@ -1017,13 +1017,13 @@ If you are queueing mailables for delivery in the background, you should use the
 
     Mail::assertNothingQueued();
 
-You may pass a closure to the `assertSent`, `assertNotSent`, `assertQueued`, or `assertNotQueued` methods in order to assert that a mailable was sent that passes a given "truth test". If at least one mailable was sent that passes the given truth test then the assertion will be successful:
+クロージャを`assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued`メソッドへ渡すと、指定した「真理値テスト」にパスするMailableが送信されたことをアサートできます。指定した真理値テストにパスするMailableを少なくとも１つ送信した場合、アサーションをパスします。
 
     Mail::assertSent(function (OrderShipped $mail) use ($order) {
         return $mail->order->id === $order->id;
     });
 
-When calling the `Mail` facade's assertion methods, the mailable instance accepted by the provided closure exposes helpful methods for examining the mailable:
+`Mail`ファサードのアサートメソッドを呼び出すときに、指定するクロージャが引数に受けるMailableインスタンスは、Mailableを調べるための有用なメソッドを提供しています。
 
     Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {
         return $mail->hasTo($user->email) &&
@@ -1034,7 +1034,7 @@ When calling the `Mail` facade's assertion methods, the mailable instance accept
                $mail->hasSubject('...');
     });
 
-The mailable instance also includes several helpful methods for examining the attachments on a mailable:
+また、Mailableインスタンスには、Mailableに添付されたファイルを調べるための有用なメソッドを用意しています。
 
     use Illuminate\Mail\Mailables\Attachment;
 
@@ -1058,7 +1058,7 @@ The mailable instance also includes several helpful methods for examining the at
         );
     });
 
-You may have noticed that there are two methods for asserting that mail was not sent: `assertNotSent` and `assertNotQueued`. Sometimes you may wish to assert that no mail was sent **or** queued. To accomplish this, you may use the `assertNothingOutgoing` and `assertNotOutgoing` methods:
+メールが送信されていないことをアサートするためのメソッドが２つあることにお気づきでしょうか。`assertNotSent`と`assertNotQueued`です。時には、メールが送信されなかったこと、**または**キュー投入されなかったことをアサートしたい場合があります。これを行うには、`assertNothingOutgoing`と`assertNotOutgoing`メソッドを使用します。
 
     Mail::assertNothingOutgoing();
 

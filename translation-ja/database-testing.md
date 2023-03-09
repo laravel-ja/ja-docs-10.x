@@ -206,4 +206,4 @@ Laravelは、[PHPUnit](https://phpunit.de/)機能テスト用にいくつかの�
 
     $this->expectsDatabaseQueryCount(5);
 
-    // Test...
+    // テスト…

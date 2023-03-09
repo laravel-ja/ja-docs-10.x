@@ -26,7 +26,7 @@
     - [デフォルト支払い方法の変更](#updating-the-default-payment-method)
     - [支払い方法の追加](#adding-payment-methods)
     - [支払い方法の削除](#deleting-payment-methods)
-- [サブスクリプション]](#subscriptions)
+- [サブスクリプション](#subscriptions)
     - [サブスクリプションの作成](#creating-subscriptions)
     - [サブスクリプション状態のチェック](#checking-subscription-status)
     - [価格の変更](#changing-prices)
@@ -1588,7 +1588,7 @@ Webフックの検証を有効にするには、`STRIPE_WEBHOOK_SECRET`環境変
     }
 
 > **Warning**
-> The `charge` method accepts the payment amount in the lowest denominator of the currency used by your application. For example, if customers are paying in United States Dollars, amounts should be specified in pennies.
+> `charge`メソッドは、アプリケーションで使用する通貨の最小単位で支払額を引数に取ります。例えば、顧客が米ドルで支払う場合、金額はペニーで指定する必要があります。
 
 <a name="charge-with-invoice"></a>
 ### インボイス付きの支払い

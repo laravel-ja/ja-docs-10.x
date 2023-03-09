@@ -32,8 +32,8 @@ Bcryptは、その「作業係数」が調整可能であるため、パスワ�
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Hash;
 
     class PasswordController extends Controller
@@ -41,7 +41,7 @@ Bcryptは、その「作業係数」が調整可能であるため、パスワ�
         /**
          * ユーザーのパスワードを更新
          */
-        public function update(Request $request): Response
+        public function update(Request $request): RedirectResponse
         {
             // 新しいパスワードの長さをバリデート…
 
@@ -49,7 +49,7 @@ Bcryptは、その「作業係数」が調整可能であるため、パスワ�
                 'password' => Hash::make($request->newPassword)
             ])->save();
 
-            return response()->noContent();
+            return redirect('/profile');
         }
     }
 

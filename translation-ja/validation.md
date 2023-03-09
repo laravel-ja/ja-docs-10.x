@@ -13,7 +13,7 @@
     - [フォームリクエスト作成](#creating-form-requests)
     - [フォームリクエストの認可](#authorizing-form-requests)
     - [エラーメッセージのカスタマイズ](#customizing-the-error-messages)
-    - [検証のための入力準備](#preparing-input-for-validation)
+    - [バリデーションのための入力準備](#preparing-input-for-validation)
 - [バリデータの生成](#manually-creating-validators)
     - [自動リダイレクト](#automatic-redirection)
     - [名前付きエラーバッグ](#named-error-bags)
@@ -39,9 +39,9 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravelは、アプリケーションの受信データをバリデーションするために複数の異なるアプローチを提供します。すべての受信HTTPリクエストで使用可能な`validate`メソッドを使用するのがもっとも一般的です。しかし、バリデーションに対する他のアプローチについても説明します。
+Laravelは、アプリケーションの受信データをバリデーションするために複数の異なるアプローチを提供します。すべての受信HTTPリクエストで使用可能な`validate`メソッドを使用するのがもっとも一般的です。しかし、バリデーションに対する他のアプローチについても説明していきます。
 
-Laravelは、データに適用できる便利で数多くのバリデーションルールを持っており、特定のデータベーステーブルで値が一意であるかどうかをバリデーションする機能も提供します。Laravelのすべてのバリデーション機能に精通できるように、各バリデーションルールを詳しく説明します。
+Laravelは、データに適用する便利で数多くのバリデーションルールを持っており、特定のデータベーステーブルで値が一意であるかどうかをバリデーションする機能も提供しています。Laravelのすべてのバリデーション機能に精通できるよう、各バリデーションルールを詳しく説明します。
 
 <a name="validation-quickstart"></a>
 ## クイックスタート
@@ -100,16 +100,16 @@ Laravelの強力なバリデーション機能について学ぶため、フォ�
 <a name="quick-writing-the-validation-logic"></a>
 ### バリデーションロジック
 
-これで、新しいブログ投稿をバリデーションするロジックを`store`メソッドに入力する準備が整いました。これを行うには、`Illuminate\Http\Request`オブジェクトによって提供される`validate`メソッドを使用します。バリデーションルールにパスすると、コードは正常に実行され続けます。しかし、バリデーションに失敗すると`Illuminate\Validation\ValidationException`例外が投げられ、適切なエラーレスポンスが自動的にユーザーに返送されます。
+これで、新しいブログ投稿をバリデーションするロジックを`store`メソッドに入力する準備が整いました。これを行うには、`Illuminate\Http\Request`オブジェクトが提供する`validate`メソッドを使用します。バリデーションルールにパスすると、コードは正常に実行され続けます。しかし、バリデーションに失敗すると`Illuminate\Validation\ValidationException`例外を投げ、適切なエラーレスポンスを自動的にユーザーへ返送します。
 
-伝統的なHTTPリクエスト処理中にバリデーションが失敗した場合、直前のURLへのリダイレクトレスポンスが生成されます。受信リクエストがXHRリクエストの場合、[バリデーションエラーメッセージを含むJSONレスポンス](#validation-error-response-format)が返されます。
+伝統的なHTTPリクエスト処理中にバリデーションが失敗した場合、直前のURLへのリダイレクトレスポンスを生成します。受信リクエストがXHRリクエストの場合、[バリデーションエラーメッセージを含むJSONレスポンス](#validation-error-response-format)を返します。
 
 `validate`メソッドをもっとよく理解するため、`store`メソッドに取り掛かりましょう。
 
     /**
      * 新ブログポストの保存
      */
-    public function store(Request $request): Response
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'title' => 'required|unique:posts|max:255',
@@ -118,19 +118,19 @@ Laravelの強力なバリデーション機能について学ぶため、フォ�
 
         // ブログポストは有効
 
-        return response()->noContent();
+        return redirect('/posts');
     }
 
-ご覧のとおり、バリデーションルールは`validate`メソッドへ渡されます。心配いりません。利用可能なすべてのバリデーションルールは[文書化](#available-validation-rules)されています。この場合でもバリデーションが失敗したとき、適切な応答が自動的に生成されます。バリデーションにパスすると、コントローラは正常に実行を継続します。
+ご覧のとおり、バリデーションルールは`validate`メソッドへ渡します。心配いりません。利用可能なすべてのバリデーションルールは[文書化](#available-validation-rules)されています。この場合でもバリデーションが失敗したとき、適切な応答を自動的に生成します。バリデーションにパスすると、コントローラは正常に実行を継続します。
 
-もしくは、バリデーションルールを`|`で区切られた一つの文字列の代わりに、ルールの配列で指定することもできます。
+もしくは、バリデーションルールを`|`で区切る文字列の代わりに、ルールの配列で指定することもできます。
 
     $validatedData = $request->validate([
         'title' => ['required', 'unique:posts', 'max:255'],
         'body' => ['required'],
     ]);
 
-さらに、`validateWithBag`メソッドを使用して、リクエストをバリデーションした結果のエラーメッセージを[namederrorbag](#named-error-bags)内へ保存できます。
+さらに、`validateWithBag`メソッドを使用して、リクエストをバリデーションした結果のエラーメッセージを[名前付きエラーバッグ](#named-error-bags)内へ保存できます。
 
     $validatedData = $request->validateWithBag('post', [
         'title' => ['required', 'unique:posts', 'max:255'],
@@ -140,14 +140,14 @@ Laravelの強力なバリデーション機能について学ぶため、フォ�
 <a name="stopping-on-first-validation-failure"></a>
 #### 最初のバリデーション失敗時に停止
 
-最初のバリデーションに失敗したら、残りのバリデーションルールの判定を停止したいことも、ときどきあります。このためには、`bail`ルールを使ってください。
+最初のバリデーションに失敗したら、残りのバリデーションルールの判定を停止したい場合も、ときどき起きるでしょう。これには、`bail`ルールを使ってください。
 
     $request->validate([
         'title' => 'bail|required|unique:posts|max:255',
         'body' => 'required',
     ]);
 
-この例の場合、`title`属性の`unique`ルールに失敗すると、`max`ルールはチェックされません。ルールは指定した順番にバリデートされます。
+この例の場合、`title`属性の`unique`ルールに失敗すると、`max`ルールをチェックしません。ルールは指定した順番にバリデートします。
 
 <a name="a-note-on-nested-attributes"></a>
 #### ネストした属性の注意点
@@ -199,20 +199,20 @@ Laravelの強力なバリデーション機能について学ぶため、フォ�
 
 Laravelの組み込みバリデーションルールは、それぞれエラーメッセージを持っており、アプリケーションの`lang/en/validation.php`ファイルに格納しています。このファイルに各バリデーションルールの翻訳エントリーがあります。アプリケーションに合うように、これらメッセージを自由に変更・修正してください。
 
-In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+さらに、このファイルを他の言語ディレクトリにコピーして、アプリケーションように言語用メッセージを翻訳することもできます。Laravelの多言語化の詳細については、完全な[多言語化のドキュメント](/docs/{{version}}/localization)をチェックしてみてください。
 
 > **Warning**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
-
+> Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開してください。
+>
 <a name="quick-xhr-requests-and-validation"></a>
 #### XHRリクエストとバリデーション
 
-この例では、従来のフォームを使用してデータをアプリケーションに送信しました。ただし、多くのアプリケーションは、JavaScriptを利用したフロントエンドからXHRリクエストを受信します。XHRリクエスト中に`validate`メソッドを使用すると、Laravelはリダイレクト応答を生成しません。代わりに、Laravelは[すべてのバリデーションエラーを含むJSONレスポンス](#validation-error-response-format)を生成します。このJSONレスポンスは、422 HTTPステータスコードとともに送信されます。
+この例では、従来のフォームを使用してデータをアプリケーションに送信しました。ただし、多くのアプリケーションは、JavaScriptを利用したフロントエンドから、XHRリクエストを受信します。XHRリクエスト中に`validate`メソッドを使用すると、Laravelはリダイレクト応答を生成しません。代わりに、Laravelは[すべてのバリデーションエラーを含むJSONレスポンス](#validation-error-response-format)を生成します。このJSONレスポンスは、422 HTTPステータスコードとともに送信されます。
 
 <a name="the-at-error-directive"></a>
 #### `@error`ディレクティブ
 
-`@error`[Blade](/docs/{{version}}/brade)ディレクティブを使用して、特定の属性にバリデーションエラーメッセージが存在するかどうかを簡単に判断できます。`@error`ディレクティブ内で、`$message`変数をエコーし​​てエラーメッセージを表示ができます。
+`@error`[Blade](/docs/{{version}}/brade)ディレクティブを使用して、特定の属性にバリデーションエラーメッセージが存在するかを簡単に判断できます。`@error`ディレクティブ内で、`$message`変数をエコーし​​てエラーメッセージを表示ができます。
 
 ```blade
 <!-- /resources/views/post/create.blade.php -->
@@ -238,9 +238,9 @@ In addition, you may copy this file to another language directory to translate t
 <a name="repopulating-forms"></a>
 ### フォームの再取得
 
-Laravelがバリデーションエラーのためにリダイレクトレスポンスを生成するとき、フレームワークは自動的に[セッションへのリクエストのすべての入力を一時保持保存します](/docs/{{version}}/session#flash-data)。これは、直後のリクエスト時、保存しておいた入力に簡単にアクセスし、ユーザーが送信しようとしたフォームを再入力・再表示できるようにします。
+Laravelがバリデーションエラーのためにリダイレクトレスポンスを生成するとき、フレームワークは自動的に[セッションへのリクエストのすべての入力を一時保持保存します](/docs/{{version}}/session#flash-data)。これにより、直後のリクエスト時、保存しておいた入力に簡単にアクセスし、ユーザーが送信しようとしたフォームを再入力・再表示できるようにします。
 
-直前のリクエストから一時保持保存された入力を取得するには、`Illuminate\Http\Request`のインスタンスで`old`メソッドを呼び出します。`old`メソッドは、直前に一時保持保存した入力データを[session](/docs/{{version}}/session)から取り出します。
+直前のリクエストから一時保持保存された入力を取得するには、`Illuminate\Http\Request`のインスタンスで`old`メソッドを呼び出します。`old`メソッドは、直前に一時保持保存した入力データを[セッション](/docs/{{version}}/session)から取り出します。
 
     $title = $request->old('title');
 
@@ -253,7 +253,7 @@ Laravelはグローバルな`old`ヘルパも提供しています。[Bladeテ�
 <a name="a-note-on-optional-fields"></a>
 ### オプションフィールドに対する注意
 
-Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプリケーションのデフォルトグローバルミドルウェアスタックに含んでいます。これらのミドルウェアは`App\Http\Kernel`クラスでリストされています。このため、バリデータが`null`値を無効であると判定しないように、オプションフィールドへ`nullable`を付ける必要が頻繁に起きるでしょう。
+Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプリケーションのデフォルトグローバルミドルウェアスタックに含めています。これらのミドルウェアは、`App\Http\Kernel`クラスにリストされています。このため、バリデータが`null`値を無効であると判定しないように、オプションフィールドへ`nullable`を付ける必要が頻繁に起きるでしょう。
 
     $request->validate([
         'title' => 'required|unique:posts|max:255',
@@ -303,7 +303,7 @@ Laravelは`TrimStrings`と`ConvertEmptyStringsToNull`ミドルウェアをアプ
 php artisan make:request StorePostRequest
 ```
 
-生成したフォームリクエストクラスは、`app/Http/Requests`ディレクトリに配置されます。このディレクトリが存在しない場合は、`make:request`コマンドの実行時に作成されます。Laravelにより生成される各フォームリクエストには、`authorize`と`rules`の2つのメソッドがあります。
+生成するフォームリクエストクラスは、`app/Http/Requests`ディレクトリに配置します。このディレクトリが存在しない場合は、`make:request`コマンドの実行時に作成します。Laravelにが生成する各フォームリクエストには、`authorize`と`rules`の２つのメソッドがあります。
 
 ご想像のとおり、`authorize`メソッドは、現在認証されているユーザーがリクエストによって表されるアクションを実行できるかどうかを判断し、`rules`メソッドはリクエスト中のデータを検証するバリデーションルールを返します。
 
@@ -321,14 +321,14 @@ php artisan make:request StorePostRequest
     }
 
 > **Note**
-> `rules`メソッドの引数で必要な依存関係をタイプヒントにより指定することができます。それらはLaravel[サービスコンテナ](/docs/{{version}}/container)を介して自動的に依存解決されます。
+> `rules`メソッドの引数で必要な依存関係をタイプヒントにより指定できます。それらはLaravel[サービスコンテナ](/docs/{{version}}/container)を介して自動的に依存解決されます。
 
-では、どのようにバリデーションルールを実行するのでしょうか？必要なのはコントローラのメソッドで、このリクエストをタイプヒントで指定することです。やって来たフォームリクエストはコントローラメソッドが呼び出される前にバリデーションを行います。つまり、コントローラでバリデーションロジックを取っ散らかす必要はありません。
+では、どのようにバリデーションルールを実行するのでしょうか？必要なのはこのリクエストをコントローラのメソッドで、タイプヒントを使い指定することです。受信フォームリクエストは、コントローラメソッドを呼び出す前にバリデーションを行います。つまり、コントローラにバリデーションロジックを取っ散らかす必要はありません。
 
     /**
      * 新ブログポストの保存
      */
-    public function store(StorePostRequest $request): Response
+    public function store(StorePostRequest $request): RedirectResponse
     {
         // 送信されたリクエストは正しい
 
@@ -341,15 +341,15 @@ php artisan make:request StorePostRequest
 
         // Store the blog post...
 
-        return response()->noContent();
+        return redirect('/posts');
     }
 
-バリデーションが失敗した場合、リダイレクトレスポンスが生成され、ユーザーを直前の場所に送り返します。エラーもセッ​​ションに一時保持され、表示できます。リクエストがXHRリクエストの場合、422ステータスコードで、[バリデーションエラーのJSON表現を含むHTTPレスポンス](#validation-error-response-format)がユーザーに返されます。
+バリデーションが失敗した場合、リダイレクトレスポンスを生成し、ユーザーを直前のページへ送り返します。エラーもセッ​​ションへ一時保存し、表示できるようにします。リクエストがXHRリクエストの場合、422ステータスコードで、[バリデーションエラーのJSON表現を含むHTTPレスポンス](#validation-error-response-format)がユーザーに返されます。
 
 <a name="adding-after-hooks-to-form-requests"></a>
 #### フォームリクエストへのAfterフックを追加
 
-フォームリクエストに"after"のバリデーションフックを追加する場合は、`withValidator`メソッドを使用します。このメソッドは完全に構築されたバリデータを受け取り、バリデーションルールの実際の評価前に、メソッドのいずれでも呼び出せます。
+フォームリクエストで、バリデーション「後」のフック追加する場合は、`withValidator`メソッドを使用してください。このメソッドは完全にインスタンス化されたバリデータを受け取り、バリデーションルールが実際に評価される前に、どのメソッドでも呼び出せるようにします。
 
     use Illuminate\Validation\Validator;
 
@@ -381,7 +381,7 @@ php artisan make:request StorePostRequest
 <a name="customizing-the-redirect-location"></a>
 #### リダイレクト先のカスタマイズ
 
-前述のとおり、フォームリクエストのバリデーションに失敗した場合、ユーザーを元の場所に戻すためのリダイレクトレスポンスが生成されます。しかし、この動作は自由にカスタマイズ可能です。それには、フォームのリクエストで、`$redirect`プロパティを定義します。
+前述のとおり、フォームリクエストのバリデーションに失敗した場合、ユーザーを元の場所に戻すためにリダイレクトレスポンスが生成されます。しかし、この動作は自由にカスタマイズ可能です。それには、フォームのリクエストで、`$redirect`プロパティを定義します。
 
     /**
      * バリデーション失敗時に、ユーザーをリダイレクトするURI
@@ -420,7 +420,7 @@ php artisan make:request StorePostRequest
 
     Route::post('/comment/{comment}');
 
-したがって、アプリケーションが[ルートモデル結合](/docs/{{version}}/routing#route-model-binding)を利用している場合、解決されたモデルをリクエストのプロパティとしてアクセスすることで、コードをさらに簡潔にすることができます。
+したがって、アプリケーションが[ルートモデル結合](/docs/{{version}}/routing#route-model-binding)を利用している場合、解決済みモデルをリクエストのプロパティとしてアクセスすることで、コードをさらに簡潔にすることができます。
 
     return $this->user()->can('update', $this->comment);
 
@@ -475,7 +475,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
     }
 
 <a name="preparing-input-for-validation"></a>
-### 検証のための入力準備
+### バリデーションのための入力準備
 
 バリデーションルールを適用する前にリクエストからのデータを準備またはサニタイズする必要がある場合は、`prepareForValidation`メソッド使用します。
 
@@ -513,8 +513,8 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
     namespace App\Http\Controllers;
 
     use App\Http\Controllers\Controller;
+    use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
-    use Illuminate\Http\Response;
     use Illuminate\Support\Facades\Validator;
 
     class PostController extends Controller
@@ -522,7 +522,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
         /**
          * 新しいブログポストの保存
          */
-        public function store(Request $request): Response
+        public function store(Request $request): RedirectResponse
         {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|unique:posts|max:255',
@@ -544,13 +544,13 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 
             // ブログポストの保存処理…
 
-            return response()->noContent();
+            return redirect('/posts');
         }
     }
 
 `make`メソッドの第１引数は、バリデーションを行うデータです。第２引数はそのデータに適用するバリデーションルールの配列です。
 
-リクエストのバリデーションが失敗したかどうかを判断した後、`withErrors`メソッドを使用してエラーメッセージをセッションに一時保持保存できます。この方法を使用すると、リダイレクト後に`$errors`変数がビューと自動的に共有されるため、メッセージをユーザーへ簡単に表示できます。`withErrors`メソッドは、バリデータ、`MessageBag`、またはPHPの`array`を引数に取ります。
+リクエストのバリデーションが失敗したかを判断した後、`withErrors`メソッドを使用してエラーメッセージをセッションへ一時保持保存できます。この方法を使用すると、リダイレクト後に`$errors`変数がビューで自動的に共有されるため、メッセージをユーザーへ簡単に表示できます。`withErrors`メソッドは、バリデータ、`MessageBag`、またはPHPの`array`を引数に取ります。
 
 #### 最初のバリデーション失敗時に停止
 
@@ -563,7 +563,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 <a name="automatic-redirection"></a>
 ### 自動リダイレクト
 
-バリデータインスタンスを手作業で作成するが、HTTPリクエストの`validate`メソッドによって提供される自動リダイレクトを利用したい場合は、既存のバリデータインスタンスで`validate`メソッドを呼び出すことができます。バリデーションが失敗した場合、ユーザーは自動的にリダイレクトされます。XHRリクエストの場合は、[JSONレスポンスが返されます](#validation-error-response-format)。
+バリデータインスタンスを手作業で作成するが、HTTPリクエストの`validate`メソッドによって提供される自動リダイレクトを利用したい場合は、既存のバリデータインスタンスで`validate`メソッドを呼び出してください。バリデーションが失敗した場合、ユーザーは自動的にリダイレクトされます。XHRリクエストの場合は、[JSONレスポンスが返されます](#validation-error-response-format)。
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
@@ -611,7 +611,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 <a name="specifying-a-custom-message-for-a-given-attribute"></a>
 #### 特定の属性に対するカスタムメッセージ指定
 
-特定の属性に対してのみカスタムエラーメッセージを指定したい場合があります。「ドット」表記を使用してこれを行うことができます。最初に属性の名前を指定し、次にルールを指定します。
+特定の属性に対してのみカスタムエラーメッセージを指定したい場合があります。「ドット」表記を使用してこれを行えます。最初に属性の名前を指定し、次にルールを指定します。
 
     $messages = [
         'email.required' => 'We need to know your email address!',
@@ -620,7 +620,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 <a name="specifying-custom-attribute-values"></a>
 #### カスタム属性値の指定
 
-Laravelの組み込みエラーメッセージの多くには、バリデーション中のフィールドや属性の名前に置き換えられる`:attribute`プレースホルダーが含まれています。特定のフィールドでこれらのプレースホルダーを置き換える値をカスタマイズするには、カスタム属性表示名の配列を4番目の引数として`Validator::make`メソッドに渡します。
+Laravelの組み込みエラーメッセージの多くは、バリデーション中のフィールドや属性の名前に置き換えられる`:attribute`プレースホルダーを含んでいます。特定のフィールドでこれらのプレースホルダーを置き換える値をカスタマイズするには、カスタム属性表示名の配列を4番目の引数として`Validator::make`メソッドに渡します。
 
     $validator = Validator::make($input, $rules, $messages, [
         'email' => 'email address',
@@ -629,7 +629,7 @@ Laravelの組み込みエラーメッセージの多くには、バリデーシ�
 <a name="after-validation-hook"></a>
 ### バリデーション後のフック
 
-バリデーションが完了した後に実行するコールバックを添付することもできます。これにより、追加のバリデーションを簡単に実行し、メッセージコレクションにエラーメッセージを追加することもできます。利用するには、バリデータインスタンスで`after`メソッドを呼び出します。
+バリデーションが完了した後に実行するコールバックを指定することもできます。これにより、追加のバリデーションを簡単に実行し、メッセージコレクションにエラーメッセージを追加することもできます。利用するには、バリデータインスタンスで`after`メソッドを呼び出します。
 
     use Illuminate\Support\Facades;
     use Illuminate\Validation\Validator;
@@ -657,7 +657,7 @@ Laravelの組み込みエラーメッセージの多くには、バリデーシ�
 
     $validated = $validator->validated();
 
-他に、フォームリクエストやバリデータのインスタンスに対して、`safe`メソッドを呼び出すこともできます。このメソッドは、`Illuminate\Support\ValidatedInput`のインスタンスを返します。このオブジェクトは`only`、`except`、`all`メソッドを用意しており、バリデーション済みデータのサブセットや配列全体を取得できます。
+または、フォームリクエストやバリデータのインスタンスに対して、`safe`メソッドを呼び出すこともできます。このメソッドは、`Illuminate\Support\ValidatedInput`のインスタンスを返します。このオブジェクトは`only`、`except`、`all`メソッドを用意しており、バリデーション済みデータのサブセットや配列全体を取得できます。
 
     $validated = $request->safe()->only(['name', 'email']);
 
@@ -688,7 +688,7 @@ Laravelの組み込みエラーメッセージの多くには、バリデーシ�
 <a name="working-with-error-messages"></a>
 ## エラーメッセージの操作
 
-`Validator`インスタンスの`errors`メソッドを呼び出すと、エラーメッセージを操作する便利なメソッドを数揃えた、`Illuminate\Support\MessageBag`インスタンスを受け取ります。自動的に作成され、すべてのビューで使用できる`$errors`変数も、`MessageBag`クラスのインスタンスです。
+`Validator`インスタンスの`errors`メソッドを呼び出すと、エラーメッセージを操作する便利なメソッドを数揃えた、`Illuminate\Support\MessageBag`インスタンスを受け取れます。自動的に作成され、すべてのビューで使用できる`$errors`変数も、`MessageBag`クラスのインスタンスです。
 
 <a name="retrieving-the-first-error-message-for-a-field"></a>
 #### 指定フィールドの最初のエラーメッセージ取得
@@ -737,15 +737,15 @@ Laravelの組み込みエラーメッセージの多くには、バリデーシ�
 
 Laravelの組み込みバリデーションルールは、それぞれエラーメッセージを持っており、アプリケーションの`lang/en/validation.php`ファイルに格納しています。このファイルに各バリデーションルールの翻訳エントリーがあります。アプリケーションに合うように、これらメッセージを自由に変更・修正してください。
 
-In addition, you may copy this file to another language directory to translate the messages for your application's language. To learn more about Laravel localization, check out the complete [localization documentation](/docs/{{version}}/localization).
+さらに、このファイルを他の言語ディレクトリへコピーし、アプリケーションの言語用にメッセージを翻訳することもできます。Laravelの多言語化の詳細については、完全な[多言語化ドキュメント](/docs/{{version}}/localization)をチェックしてみてください。
 
 > **Warning**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 <a name="custom-messages-for-specific-attributes"></a>
 #### 特定の属性のカスタムメッセージ
 
-アプリケーションのバリデーション言語ファイルでは、特定の属性とルールの組み合わせで使用するエラーメッセージをカスタマイズできます。これを実現するには、アプリケーションの`lang/xx/validation.php`言語ファイルの`custom`配列に、カスタマイズメッセージを追加します。
+アプリケーションのバリデーション言語ファイルでは、特定の属性とルールの組み合わせで使用するエラーメッセージをカスタマイズできます。これを行うには、アプリケーションの`lang/xx/validation.php`言語ファイルの`custom`配列に、カスタマイズメッセージを追加します。
 
     'custom' => [
         'email' => [
@@ -757,19 +757,19 @@ In addition, you may copy this file to another language directory to translate t
 <a name="specifying-attribute-in-language-files"></a>
 ### 言語ファイルでの属性の指定
 
-Laravelの組み込みエラーメッセージの多くには、`:attribute`プレースホルダーが含まれており、バリデーション中のフィールドや属性の名前に置き換えられます。もし、バリデーションメッセージの`:attribute`部分をカスタム値に置き換えたい場合は、言語ファイル`lang/xx/validation.php`の`attributes`配列でカスタム属性名を指定できます。
+Laravelの組み込みエラーメッセージの多くは、`:attribute`プレースホルダーを含んでおり、バリデーション中のフィールドや属性の名前に置き換えます。もし、バリデーションメッセージの`:attribute`部分をカスタム値に置き換えたい場合は、言語ファイル`lang/xx/validation.php`の`attributes`配列でカスタム属性名を指定できます。
 
     'attributes' => [
         'email' => 'email address',
     ],
 
 > **Warning**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 <a name="specifying-values-in-language-files"></a>
 ### 言語ファイルでの値の指定
 
-Laravelの組み込みバリデーションルールエラーメッセージの一部には、リクエスト属性の現在の値に置き換えられる`:value`プレースホルダーが含まれています。ただし、バリデーションメッセージの`:value`部分を値のカスタム表現へ置き換えたい場合があるでしょう。たとえば、`payment_type`の値が`cc`の場合にクレジットカード番号が必要であることを定義する次のルールについて考えてみます。
+Laravelの組み込みバリデーションルールエラーメッセージの一部は、リクエスト属性の現在の値に置き換えられる`:value`プレースホルダーを含んでいます。しかし、バリデーションメッセージの`:value`部分を値のカスタム表現へ置き換えたい場合があるでしょう。たとえば、`payment_type`の値が`cc`の場合にクレジットカード番号が必要であることを定義する次のルールについて考えてみます。
 
     Validator::make($request->all(), [
         'credit_card_number' => 'required_if:payment_type,cc'
@@ -790,7 +790,7 @@ The credit card number field is required when payment type is cc.
     ],
 
 > **Warning**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 この値を定義したら、バリデーションルールは次のエラーメッセージを生成します。
 
@@ -838,7 +838,7 @@ The credit card number field is required when payment type is credit card.
 [日付](#rule-date)
 [同一日付](#rule-date-equals)
 [日付形式](#rule-date-format)
-[Decimal](#rule-decimal)
+[小数点以下](#rule-decimal)
 [拒否](#rule-declined)
 [条件一致時拒否](#rule-declined-if)
 [相違](#rule-different)
@@ -924,7 +924,7 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-accepted-if"></a>
 #### accepted_if:他のフィールド,値,...
 
-他のフィールドが指定した値と等しい場合、このフィールドは `"yes"`、`"on"`、`1`、`true`であることをバリデートします。これは、"Terms of Service "の了承や似たようなフィールドをバリデートするのに便利です。
+他のフィールドが指定した値と等しい場合、このフィールドは `"yes"`、`"on"`、`1`、`true`であることをバリデートします。これは、「利用規則」の了承や似たようなフィールドをバリデートするのに便利です。
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -1032,7 +1032,7 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-between"></a>
 #### between:_min_,_max_
 
-フィールドが指定した**最小値**以上で、**最大値**以下のサイズであることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが指定した*最小値*以上で、*最大値*以下のサイズであることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-boolean"></a>
 #### boolean
@@ -1054,7 +1054,7 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-date"></a>
 #### date
 
-パリデーションされる値はPHP関数の`strtotime`により、有効で相対日付ではないことをバリデートします。
+パリデーションされる値はPHP関数の`strtotime`により有効であり、相対日付ではないことをバリデートします。
 
 <a name="rule-date-equals"></a>
 #### date_equals:_日付_
@@ -1064,7 +1064,7 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-date-format"></a>
 #### date_format:_フォーマット_,…
 
-バリデーションされる値が、指定する**フォーマット**定義のどれか一つと一致するかバリデートします。バリデーション時には`date`か`date_format`の**どちらか**を使用しなくてはならず、両方はできません。このバリデーションはPHPの[DateTime](https://www.php.net/manual/ja/class.datetime.php)クラスがサポートするフォーマットをすべてサポートしています。
+バリデーションされる値が、指定する*フォーマット*定義のどれか一つと一致するかバリデートします。バリデーション時には`date`か`date_format`の*どちらか*を使用しなくてはならず、両方はできません。このバリデーションはPHPの[DateTime](https://www.php.net/manual/ja/class.datetime.php)クラスがサポートするフォーマットをすべてサポートしています。
 
 <a name="rule-decimal"></a>
 #### decimal:_min_,_max_
@@ -1090,17 +1090,17 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-different"></a>
 #### different:_フィールド_
 
-フィールドが指定された**フィールド**と異なった値を指定されていることをバリデートします。
+フィールドが指定された*フィールド*と異なった値を指定されていることをバリデートします。
 
 <a name="rule-digits"></a>
 #### digits:_値_
 
-フィールドが整数で、**値**の桁数であることをバリデートします。
+フィールドが整数で、*値*の桁数であることをバリデートします。
 
 <a name="rule-digits-between"></a>
 #### digits_between:_最小値_,_最大値_
 
-フィールドが整数で、桁数が**最小値**から**最大値**の間であることをバリデートします。
+フィールドが整数で、桁数が*最小値*から*最大値*の間であることをバリデートします。
 
 <a name="rule-dimensions"></a>
 #### dimensions
@@ -1109,9 +1109,9 @@ The credit card number field is required when payment type is credit card.
 
     'avatar' => 'dimensions:min_width=100,min_height=200'
 
-使用可能なパラメータは、**min\_width**、**max\_width**、**min\_height**、**max\_height**、**width**、**height**、**ratio**です。
+使用可能なパラメータは、*min\_width*、*max\_width*、*min\_height*、*max\_height*、*width*、*height*、*ratio*です。
 
-**_ratio_**制約は、幅を高さで割ったものとして表す必要があります。これは、`3/2`のような分数または`1.5`のようなfloatのいずれかで指定します。
+*_ratio_*制約は、幅を高さで割ったものとして表す必要があります。これは、`3/2`のような分数または`1.5`のようなfloatのいずれかで指定します。
 
     'avatar' => 'dimensions:ratio=3/2'
 
@@ -1195,7 +1195,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
     ]);
 
 > **Warning**
-> Enums are only available on PHP 8.1+.
+> EnumsはPHP8.1以上でのみ利用可能です。
 
 <a name="rule-exclude"></a>
 #### exclude
@@ -1205,7 +1205,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-exclude-if"></a>
 #### exclude_if:_他のフィールド_,_値_
 
-**他のフィールド**が**値**と等しい場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。
+*他のフィールド*が*値*と等しい場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。
 
 複雑な条件付き除外ロジックが必要な場合は、`Rule::excludeIf`メソッドが便利です。このメソッドは、論理値かクロージャを引数に取ります。クロージャを指定する場合、そのクロージャは、`true`または`false`を返し、バリデーション中のフィールドを除外するかしないかを示す必要があります。
 
@@ -1223,17 +1223,17 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-exclude-unless"></a>
 #### exclude_unless:_他のフィールド_,_値_
 
-**他のフィールド**が**値**と等しくない場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。もし**値**が`null`（`exclude_unless:name,null`）の場合は、比較フィールドが`null`であるか、比較フィールドがリクエストデータに含まれていない限り、バリデーション指定下のフィールドは除外されます。
+*他のフィールド*が*値*と等しくない場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。もし*値*が`null`（`exclude_unless:name,null`）の場合は、比較フィールドが`null`であるか、比較フィールドがリクエストデータに含まれていない限り、バリデーション指定下のフィールドは除外されます。
 
 <a name="rule-exclude-with"></a>
 #### exclude_with:_他のフィールド_
 
-**他のフィールド**が存在する場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定可のフィールドが除外されます。
+*他のフィールド*が存在する場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定可のフィールドが除外されます。
 
 <a name="rule-exclude-without"></a>
 #### exclude_without:_他のフィールド_
 
-**他のフィールド**が存在しない場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。
+*他のフィールド*が存在しない場合、`validate`と`validated`メソッドが返すリクエストデータから、バリデーション指定下のフィールドが除外されます。
 
 <a name="rule-exists"></a>
 #### exists:_テーブル_,_カラム_
@@ -1262,7 +1262,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
     'user_id' => 'exists:App\Models\User,id'
 
-バリデーションルールで実行されるクエリをカスタマイズしたい場合は、ルールをスラスラと定義できる`Rule`クラスを使ってください。下の例では、`|`文字を区切りとして使用する代わりに、バリデーションルールを配列として指定しています。
+バリデーションルールで実行されるクエリをカスタマイズしたい場合は、ルールをスムーズに定義できる`Rule`クラスを使ってください。下の例では、`|`文字を区切りとして使用する代わりに、バリデーションルールを配列として指定しています。
 
     use Illuminate\Database\Query\Builder;
     use Illuminate\Support\Facades\Validator;
@@ -1294,17 +1294,17 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-gt"></a>
 #### gt:_field_
 
-フィールドが指定した**フィールド**より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-gte"></a>
 #### gte:_field_
 
-フィールドが指定した**フィールド**以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-image"></a>
 #### image
 
-ファイルは画像（jpg、jpeg、png、bmp、gif、svg、webp）である必要があります。
+ファイルは画像（jpg、jpeg、png、bmp、gif、svg、webp）であることをバリデートします。
 
 <a name="rule-in"></a>
 #### in:foo,bar...
@@ -1341,7 +1341,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-in-array"></a>
 #### in_array:_他のフィールド_.*
 
-フィールドが、**他のフィールド**の値のどれかであることをバリデートします。
+フィールドが、*他のフィールド*の値のどれかであることをバリデートします。
 
 <a name="rule-integer"></a>
 #### integer
@@ -1349,7 +1349,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 フィールドが整数値であることをバリデートします。
 
 > **Warning**
-> このバリデーションルールは、入力が「整数」変数タイプであるか確認しません。入力がPHPの`FILTER_VALIDATE_INT`ルールで受け入れられるか検証するだけです。入力を数値として検証する必要がある場合は、このルールを[`numeric`バリデーションルール](#rule-numeric)と組み合わせて使用​​してください。
+> このバリデーションルールは、入力が「整数」変数タイプであるかを確認しません。入力がPHPの`FILTER_VALIDATE_INT`ルールで受け入れられるかバリデーションするだけです。入力を数値としてバリデーションする必要がある場合は、このルールを[`numeric`バリデーションルール](#rule-numeric)と組み合わせて使用​​してください。
 
 <a name="rule-ip"></a>
 #### ip
@@ -1374,12 +1374,12 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-lt"></a>
 #### lt:_field_
 
-フィールドが指定した**フィールド**より小さいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*より小さいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-lte"></a>
 #### lte:_field_
 
-フィールドが指定した**フィールド**以下であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*以下であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-lowercase"></a>
 #### lowercase
@@ -1394,12 +1394,12 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-max"></a>
 #### max:_値_
 
-フィールドが最大値として指定された**値**以下であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが最大値として指定された*値*以下であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-max-digits"></a>
-#### max_digits:_value_
+#### max_digits:_値_
 
-整数フィールドが、最大**値**桁数以下であることをバリデートします。
+整数フィールドが、最大*値*桁数以下であることをバリデートします。
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:*text/plain*,...
@@ -1427,17 +1427,17 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-min"></a>
 #### min:_値_
 
-フィールドが最小値として指定された**値**以上であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが最小値として指定された*値*以上であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-min-digits"></a>
-#### min_digits:_value_
+#### min_digits:_値_
 
-整数フィールドが、最小**値**桁数以上であることをバリデートします。
+整数フィールドが、最小*値*桁数以上であることをバリデートします。
 
 <a name="rule-multiple-of"></a>
 #### multiple_of:_値_
 
-フィールドが、**値**の倍数であることをバリデートします。
+フィールドが、*値*の倍数であることをバリデートします。
 
 <a name="rule-missing"></a>
 #### missing
@@ -1447,22 +1447,22 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
  <a name="rule-missing-if"></a>
  #### missing_if:_他のフィールド_,_値_,...
 
- **他のフィールド**が**値**のどれかと等しい場合、フィールドが入力データ中に存在しないことをバリデートします。
+ *他のフィールド*が*値*のどれかと等しい場合、フィールドが入力データ中に存在しないことをバリデートします。
 
  <a name="rule-missing-unless"></a>
  #### missing_unless:_他のフィールド_,_値_
 
-**他のフィールド**が**値**の全てに一致しない場合、フィールドが入力データ中に存在しないことをバリデートします。
+*他のフィールド*が*値*の全てに一致しない場合、フィールドが入力データ中に存在しないことをバリデートします。
 
  <a name="rule-missing-with"></a>
  #### missing_with:_foo_,_bar_,...
 
-  指定したフィールドのどれかが存在する**場合のみ**、フィールドが入力データ中に存在しないことをバリデートします。
+指定したフィールドのどれかが存在する*場合のみ*、フィールドが入力データ中に存在しないことをバリデートします。
 
  <a name="rule-missing-with-all"></a>
  #### missing_with_all:_foo_,_bar_,...
 
- 指定したフィールド全てが存在する**場合のみ**、フィールドが入力データ中に存在しないことをバリデートします。
+ 指定したフィールド全てが存在する*場合のみ*、フィールドが入力データ中に存在しないことをバリデートします。
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -1483,7 +1483,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
 フィールドが指定した正規表現と一致しないことをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
+内部的にこのルールは、PHPの`preg_match`関数を使用しています。指定するパターンは有効なデリミタも含め、`preg_match`が要求するものと同じフォーマットに従う必要があります。例えば、`'email' => 'not_regex:/^.+$/i'`です。
 
 > **Warning**
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに配列を使用してバリデーションルールを指定する必要があります。
@@ -1491,7 +1491,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-nullable"></a>
 #### nullable
 
-フィールドは`null`であることを許容します。
+フィールドが`null`値であることを許容します。
 
 <a name="rule-numeric"></a>
 #### numeric
@@ -1509,7 +1509,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-present"></a>
 #### present
 
-　　　　フィールドが入力データに存在していることをバリデートします。
+フィールドが入力データに存在していることをバリデートします。
 
 <a name="rule-prohibited"></a>
 #### prohibited
@@ -1528,7 +1528,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-prohibited-if"></a>
 #### prohibited_if:_他のフィールド_,_値_,…
 
-**他のフィールド**が**値**のいずれかと等しい場合、フィールドが存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、「空」であると判定します。
+*他のフィールド*が*値*のいずれかと等しい場合、フィールドが存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、「空」であると判定します。
 
 <div class="content-list" markdown="1">
 
@@ -1555,7 +1555,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_他のフィールド_,_値_,…
 
-**他のフィールド**が**値**の全てと等しくない場合、フィールドが存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、そのフィールドを「空」であると判定します。
+*他のフィールド*が*値*の全てと等しくない場合、フィールドが存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、そのフィールドを「空」であると判定します。
 
 <div class="content-list" markdown="1">
 
@@ -1569,7 +1569,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-prohibits"></a>
 #### prohibits:_他のフィールド_,…
 
-フィールドが存在し空でない場合、全ての**他のフィールド**は存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、そのフィールドを「空」であると判定します。
+フィールドが存在し空でない場合、全ての*他のフィールド*は存在しないか、空であることをバリデートします。フィールドが以下の条件のいずれかである場合、そのフィールドを「空」であると判定します。
 
 <div class="content-list" markdown="1">
 
@@ -1585,7 +1585,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 
 フィールドが指定された正規表現にマッチすることをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+内部的にこのルールはPHPの`preg_match`関数を使用しています。指定するパターンは有効なデリミタも含め、`preg_match`が要求するものと同じフォーマットに従う必要があります。例えば、`'email' => 'regex:/^.+@.+$/i'`です。
 
 > **Warning**
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに、配列でルールを指定する必要があります。
@@ -1607,7 +1607,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-required-if"></a>
 #### required\_if:_他のフィールド_,_値_,...
 
-**他のフィールド**が**値**のどれかと一致している場合、このフィールドが存在し、かつ空でないことをバリデートします。
+*他のフィールド*が*値*のどれかと一致している場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
 `required_if`ルールのより複雑な条件を作成したい場合は、`Rule::requiredIf`メソッドを使用できます。このメソッドは、ブール値またはクロージャを受け入れます。クロージャが渡されると、クロージャは「true」または「false」を返し、バリデーション中のフィールドが必要かどうかを示します。
 
@@ -1625,27 +1625,27 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-required-unless"></a>
 #### required\_unless:_他のフィールド_,_値_,...
 
-**他のフィールド**が**値**のどれとも一致していない場合、このフィールドが存在し、かつ空でないことをバリデートします。これは**値**が`null`でない限り、**他のフィールド**はリクエストデータに存在しなければならないという意味でもあります。もし**値**が`null`（`required_unless:name,null`）の場合は、比較フィールドが`null`であるか、リクエストデータに比較フィールドが存在しない限り、バリデーション対象下のフィールドは必須です。
+*他のフィールド*が*値*のどれとも一致していない場合、このフィールドが存在し、かつ空でないことをバリデートします。これは*値*が`null`でない限り、*他のフィールド*はリクエストデータに存在しなければならないという意味でもあります。もし*値*が`null`（`required_unless:name,null`）の場合は、比較フィールドが`null`であるか、リクエストデータに比較フィールドが存在しない限り、バリデーション対象下のフィールドは必須です。
 
 <a name="rule-required-with"></a>
 #### required\_with:_foo_,_bar_,...
 
-指定した他のフィールドが**一つでも存在している**場合、このフィールドが存在し、かつ空でないことをバリデートします。
+指定した他のフィールドが*一つでも存在している*場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
 <a name="rule-required-with-all"></a>
 #### required\_with_all:_foo_,_bar_,...
 
-指定した他のフィールドが**すべて存在している**場合、このフィールドが存在し、かつ空でないことをバリデートします。
+指定した他のフィールドが*すべて存在している*場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
 <a name="rule-required-without"></a>
 #### required\_without:_foo_,_bar_,...
 
-指定した他のフィールドの**どれか一つでも存在していない**場合、このフィールドが存在し、かつ空でないことをバリデートします。
+指定した他のフィールドの*どれか一つでも存在していない*場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
 <a name="rule-required-without-all"></a>
 #### required\_without_all:_foo_,_bar_,...
 
-指定した他のフィールドが**すべて存在していない**場合、このフィールドが存在し、かつ空でないことをバリデートします。
+指定した他のフィールドが*すべて存在していない*場合、このフィールドが存在し、かつ空でないことをバリデートします。
 
 <a name="rule-required-array-keys"></a>
 #### required_array_keys:_foo_,_bar_,...
@@ -1655,12 +1655,12 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="rule-same"></a>
 #### same:_フィールド_
 
-フィールドが、指定されたフィールドと同じ値であることをバリデートします。
+*フィールド*が、指定したフィールドと同じ値であることをバリデートします。
 
 <a name="rule-size"></a>
 #### size:_値_
 
-フィールドは指定された**値**と同じサイズであることをバリデートします。文字列の場合、**値**は文字長です。数値項目の場合、**値**は整数値（属性に`numeric`か`integer`ルールを持っている必要があります）です。配列の場合、**値**は配列の個数(`count`)です。ファイルの場合、**値**はキロバイトのサイズです。
+フィールドは指定した*値*と同じサイズであることをバリデートします。文字列の場合、*値*は文字長です。数値項目の場合、*値*は整数値（属性に`numeric`か`integer`ルールを持っている必要があります）です。配列の場合、*値*は配列の個数(`count`)です。ファイルの場合、*値*はキロバイトのサイズです。
 
     // 文字列長が１２文字ちょうどであることをバリデートする
     'title' => 'size:12';
@@ -1714,7 +1714,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 
 場合により、uniqueのバリデーション中に特定のIDを無視したいことがあります。たとえば、ユーザーの名前、メールアドレス、および場所を含む「プロファイルの更新」画面について考えてみます。メールアドレスが一意であることを確認したいでしょう。しかし、ユーザーが名前フィールドのみを変更し、メールフィールドは変更しない場合、ユーザーは当該電子メールアドレスの所有者であるため、バリデーションエラーが投げられるのは望ましくありません。
 
-バリデータにユーザーIDを無視するように指示するには、ルールをスラスラと定義できる`Rule`クラスを使います。以下の例の場合、さらにルールを`|`文字を区切りとして使用する代わりに、バリデーションルールを配列として指定しています。
+バリデータにユーザーIDを無視するように指示するには、ルールをスムーズに定義できる`Rule`クラスを使います。以下の例の場合、さらにルールを`|`文字を区切りとして使用する代わりに、バリデーションルールを配列として指定しています。
 
     use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Support\Facades\Validator;
@@ -1795,7 +1795,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="validating-when-present"></a>
 #### 項目存在時のバリデーション
 
-状況によっては、フィールドがバリデーション対象のデータに存在する場合にのみ、フィールドに対してバリデーションチェックを実行したい場合があります。これをすばやく実行するには、`sometimes`ルールをルールリストに追加します。
+状況によっては、フィールドがバリデーション対象のデータに存在する場合に**のみ**、フィールドに対してバリデーションチェックを実行したい場合があります。これをすばやく実行するには、`sometimes`ルールをルールリストに追加します。
 
     $v = Validator::make($data, [
         'email' => 'sometimes|required|email',
@@ -1809,7 +1809,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="complex-conditional-validation"></a>
 #### 複雑な条件のバリデーション
 
-ときどきもっと複雑な条件のロジックによりバリデーションルールを追加したい場合もあります。たとえば他のフィールドが１００より大きい場合のみ、指定したフィールドが入力されているかをバリデートしたいときなどです。もしくは２つのフィールドのどちらか一方が存在する場合は、両方共に値を指定する必要がある場合です。こうしたルールを付け加えるのも面倒ではありません。最初に`Validator`インスタンスを生成するのは、**固定ルール**の場合と同じです。
+ときどきもっと複雑な条件のロジックによりバリデーションルールを追加したい場合も起きます。たとえば他のフィールドが100より大きい場合のみ、指定したフィールドが入力されているかをバリデートしたいときなどです。もしくは２つのフィールドのどちらか一方が存在する場合は、両方共に値を指定する必要がある場合です。こうしたルールを付け加えるのも面倒ではありません。最初に`Validator`インスタンスを生成するのは、**固定ルール**の場合と同じです。
 
     use Illuminate\Support\Facades\Validator;
 
@@ -1818,7 +1818,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
         'games' => 'required|numeric',
     ]);
 
-私たちのWebアプリケーションがゲームコレクター向けであると仮定しましょう。ゲームコレクターがアプリケーションに登録し、100を超えるゲームを所有している場合は、なぜこれほど多くのゲームを所有しているのかを説明してもらいます。たとえば、ゲームの再販店を経営している場合や、ゲームの収集を楽しんでいる場合などです。この要件を条件付きで追加するには、`Validator`インスタンスで`sometimes`メソッドを使用できます。
+私たちのWebアプリケーションがゲームコレクター向けであると仮定しましょう。ゲームコレクターがアプリケーションに登録し、100を超えるゲームを所有している場合は、なぜこれほど多くのゲームを所有しているのかを説明してもらいます。たとえば、ゲームの再販店を経営している場合や、ゲームの収集を楽しんでいる場合などです。この要件を条件付きで追加するには、`Validator`インスタンスの`sometimes`メソッドが使用できます。
 
     use Illuminate\Support\Fluent;
 
@@ -1826,14 +1826,14 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
         return $input->games >= 100;
     });
 
-`sometimes`メソッドに渡される最初の引数は、条件付きでバリデーションするフィールドの名前です。２番目の引数は、追加するルールのリストです。３番目の引数として渡すクロージャが`true`を返す場合、ルールが追加されます。この方法で、複雑な条件付きバリデーションを簡単に作成できます。複数のフィールドに条件付きバリデーションを一度に追加することもできます。
+`sometimes`メソッドに渡す最初の引数は、条件付きでバリデーションするフィールドの名前です。２番目の引数は、追加するルールのリストです。３番目の引数として渡すクロージャが`true`を返す場合、ルールが追加されます。この方法で、複雑な条件付きバリデーションを簡単に作成できます。複数のフィールドに条件付きバリデーションを一度に追加することもできます。
 
     $validator->sometimes(['reason', 'cost'], 'required', function (Fluent $input) {
         return $input->games >= 100;
     });
 
 > **Note**
-> クロージャに渡される`$input`パラメーターは、`Illuminate\Support\Fluent`のインスタンスであり、バリデーション中の入力とファイルへアクセスするために使用できます。
+> クロージャへ渡される`$input`パラメーターは、`Illuminate\Support\Fluent`のインスタンスであり、バリデーション下の入力とファイルへアクセスするために使用できます。
 
 <a name="complex-conditional-array-validation"></a>
 #### 複雑な条件の配列バリデーション
@@ -1861,7 +1861,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
         return $item->type !== 'email';
     });
 
-クロージャに渡される`$input`パラメータと同様に、`$item`パラメータは属性データが配列の場合は`Illuminate\Support\Fluent`のインスタンス、そうでない場合は文字列になります。
+クロージャへ渡される`$input`パラメータと同様に、`$item`パラメータは属性データが配列の場合は`Illuminate\Support\Fluent`のインスタンス、そうでない場合は文字列になります。
 
 <a name="validating-arrays"></a>
 ## 配列のバリデーション
@@ -1913,7 +1913,7 @@ Internally, this rule uses the PHP `preg_match` function. The pattern specified 
 <a name="accessing-nested-array-data"></a>
 #### ネストした配列データへのアクセス
 
-Sometimes you may need to access the value for a given nested array element when assigning validation rules to the attribute. You may accomplish this using the `Rule::forEach` method. The `forEach` method accepts a closure that will be invoked for each iteration of the array attribute under validation and will receive the attribute's value and explicit, fully-expanded attribute name. The closure should return an array of rules to assign to the array element:
+バリデーションルールを属性に割り当てる際に、ネストした配列要素の値にアクセスする必要が起きることがあります。このような場合は、`Rule::forEach`メソッドを使用します。`forEach`メソッドは、バリデーション対象の配列属性の繰り返しごとに呼び出すクロージャを引数に取り、値と明示的で完全に展開された属性名を受け取ります。クロージャは、配列の要素に割り当てるルールの配列を返す必要があります。
 
     use App\Rules\HasPermission;
     use Illuminate\Support\Facades\Validator;
@@ -2001,7 +2001,7 @@ Laravelでは、アップロードされたファイルを検証するため、`
 <a name="validating-passwords"></a>
 ## パスワードのバリデーション
 
-パスワードが十分なレベルの複雑さがあることを確認するために、Laravelの`Password`ルールオブジェクトを使用できます。
+パスワードが十分なレベルの複雑さがあることを確認するために、Laravelの`Password`ルールオブジェクトを使用します。
 
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rules\Password;
@@ -2010,7 +2010,7 @@ Laravelでは、アップロードされたファイルを検証するため、`
         'password' => ['required', 'confirmed', Password::min(8)],
     ]);
 
-`Password`ルールオブジェクトを使用すると、文字・数字・記号を最低１文字必要にしたり、文字種を組み合わせたりのように、パスワードの指定をアプリケーションで使用する複雑さの要件に合うよう簡単にカスタマイズできます。
+`Password`ルールオブジェクトを使用すると、文字・数字・記号を最低１文字必須にしたり、文字種を組み合わせたりのように、パスワードの指定をアプリケーションで使用する複雑さの要件に合うよう簡単にカスタマイズできます。
 
     // 最低８文字必要
     Password::min(8)
@@ -2031,7 +2031,7 @@ Laravelでは、アップロードされたファイルを検証するため、`
 
     Password::min(8)->uncompromised()
 
-内部的には、`Password`ルールオブジェクトは、[k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity)モデルを使用して、ユーザーのプライバシーやセキュリティを犠牲にすることなく、パスワードが[haveibeenpwned.com](https://haveibeenpwned.com)サービスを介してリークされているかを判断します。
+内部的には、`Password`ルールオブジェクトは、[k-Anonymity](https://en.wikipedia.org/wiki/K-anonymity)モデルを使用して、ユーザーのプライバシーやセキュリティを犠牲にすることなく、パスワードが[haveibeenpwned.com](https://haveibeenpwned.com)サービスを介してリークされているかを判断しています。
 
 デフォルトでは、データリークに少なくとも1回パスワードが表示されている場合は、侵害されたと見なします。`uncompromised`メソッドの最初の引数を使用してこのしきい値をカスタマイズできます。
 
@@ -2096,7 +2096,7 @@ Laravelは有用な数多くのバリデーションルールを提供してい�
 php artisan make:rule Uppercase
 ```
 
-Once the rule has been created, we are ready to define its behavior. A rule object contains a single method: `validate`. This method receives the attribute name, its value, and a callback that should be invoked on failure with the validation error message:
+ルールを作成したら、次はその動作を定義します。ルールオブジェクトには、`validate`というメソッドが1つあります。このメソッドは、属性名とその値、バリデーションに失敗したときに、エラーメッセージとともに呼び出されるコールバックを受け取ります。
 
     <?php
 
@@ -2247,4 +2247,4 @@ php artisan make:rule Uppercase --implicit
 ```
 
 > **Warning**
-> 「暗黙の」ルールは、属性が必要であることを**暗黙的に**します。欠落している属性または空の属性を実際に無効にするかどうかは、あなた次第です。
+> 「暗黙の」ルールは、属性が必要であることを*暗黙的に*します。欠落している属性または空の属性を実際に無効にするかどうかは、あなた次第です。

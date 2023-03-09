@@ -270,7 +270,7 @@ cd ~/Sites/laravel
 valet share
 ```
 
-To stop sharing your site, you may press `Control + C`. Sharing your site using Ngrok requires you to [create an Ngrok account](https://dashboard.ngrok.com/signup) and [setup an authentication token](https://dashboard.ngrok.com/get-started/your-authtoken).
+サイトの共有を停止するには、`Control+C`キーを押してください。Ngrokを使用してサイトを共有するには、[Ngrokアカウントの作成](https://dashboard.ngrok.com/signup)と[認証トークンの設定](https://dashboard.ngrok.com/get-started/your-authtoken)が必要です。
 
 > **Note**
 > `valet share --region=eu`など、追加のNgrokパラメータをshareコマンドに渡すことができます。詳細は、[ngrokのドキュメント](https://ngrok.com/docs)を参照してください。
@@ -286,7 +286,7 @@ cd ~/Sites/laravel
 expose
 ```
 
-To stop sharing your site, you may press `Control + C`.
+サイトの共有を停止するには、`Control+C`を推してください。
 
 <a name="sharing-sites-on-your-local-network"></a>
 ### ローカルネットワークでのサイト共有

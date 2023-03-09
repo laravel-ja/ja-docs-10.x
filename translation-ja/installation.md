@@ -20,7 +20,7 @@
 
 Laravelは、表現力豊かでエレガントな構文を備えたWebアプリケーションフレームワークです。Webフレームワークは、アプリケーションを作成するための構造と開始点を提供します。これにより、細部に気を配りながら、すばらしいものの作成に集中できます。
 
-Laravelは、すばらしい開発者エクスペリエンスの提供に努めています。同時に完全な依存注入、表現力豊かなデータベース抽象化レイヤー、キューとジョブのスケジュール、ユニットと統合テストなど、強力な機能もLaravelは提供しています。
+Laravelは、すばらしい開発者エクスペリエンスの提供に努めています。同時に完全な依存注入、表現力豊かなデータベース抽象化レイヤー、キューとジョブのスケジすることでュール、ユニットと統合テストなど、強力な機能もLaravelは提供しています。
 
 PHP Webフレームワークをはじめて使用する場合も、長年の経験を持っている場合でも、Laravelは一緒に成長できるフレームワークです。私たちは皆さんがWeb開発者として最初の一歩を踏み出すのを支援したり、専門知識を次のレベルに引き上げる後押しをしたりしています。あなたが何を作り上げるのか楽しみにしています。
 
@@ -59,7 +59,7 @@ PHPとComposerをインストールしたら、Composerの`create-project`コマ
 composer create-project laravel/laravel example-app
 ```
 
-または、Composer経由でLaravelインストーラをグローバルインストールすることで、新しいLaravelプロジェクトを作成することもできます。
+または、Composer経由でLaravelインストーラをグローバルインストールし、新しいLaravelプロジェクトを作成することもできます。
 
 ```nothing
 composer global require laravel/installer
@@ -144,7 +144,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-アプリケーションのDockerコンテナを開始したら、Webブラウザでアプリケーションのhttp://localhostにアクセスできます。
+アプリケーションのDockerコンテナを開始したら、Webブラウザでアプリケーションの http://localhost へアクセスできます。
 
 > **Note**
 > Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
@@ -176,7 +176,7 @@ cd example-app
 ./vendor/bin/sail up
 ```
 
-アプリケーションのDockerコンテナを開始したら、Webブラウザでアプリケーションのhttp://localhostにアクセスできます。
+アプリケーションのDockerコンテナを開始したら、Webブラウザでアプリケーションのhttp://localhost へアクセスできます。
 
 > **Note**
 > Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
@@ -229,16 +229,16 @@ touch database/database.sqlite
 次に、Laravelが`sqlite`データベースドライバを使用するよう、`.env`設定ファイルを変更します。他のデータベース設定オプションは削除してかまいません。
 
 ```ini
-DB_CONNECTION=sqlite # [tl! 追加]
-DB_CONNECTION=mysql # [tl! 削除]
-DB_HOST=127.0.0.1 # [tl! 削除]
-DB_PORT=3306 # [tl! 削除]
-DB_DATABASE=laravel # [tl! 削除]
-DB_USERNAME=root # [tl! 削除]
-DB_PASSWORD= # [tl! 削除]
+DB_CONNECTION=sqlite # [tl! add]
+DB_CONNECTION=mysql # [tl! remove]
+DB_HOST=127.0.0.1 # [tl! remove]
+DB_PORT=3306 # [tl! remove]
+DB_DATABASE=laravel # [tl! remove]
+DB_USERNAME=root # [tl! remove]
+DB_PASSWORD= # [tl! remove]
 ```
 
-SQLiteデータベースの設定が終わったら、[データベースマイグレーション](/docs/{{version}}/migrations)を実行し、アプリケーションのデータベーステーブルを作成できます。
+SQLiteデータベースの設定が終わったら、[データベースマイグレーション](/docs/{{version}}/migrations)を実行し、アプリケーションのデータベーステーブルを作成します。
 
 ```shell
 php artisan migrate

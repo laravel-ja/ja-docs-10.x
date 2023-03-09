@@ -485,7 +485,7 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 <a name="json-where-clauses"></a>
 ### JSON WHERE句
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MySQL 5.7+, PostgreSQL, SQL Server 2016, and SQLite 3.39.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). To query a JSON column, use the `->` operator:
+Laravelは、JSONカラムタイプのサポートを提供しているデータベースでは、JSONカラムタイプのクエリもサポートしています。現在、MySQL5.7以上、PostgreSQL、SQL Server 2016、SQLite 3.39.0（[JSON1拡張](https://www.sqlite.org/json1.html)使用）が該当します。JSONカラムを問い合わせるには、`->`演算子を使用します。
 
     $users = DB::table('users')
                     ->where('preferences->dining->meal', 'salad')
@@ -687,7 +687,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
                })
                ->get();
 
-Alternatively, you may provide a query object to the `whereExists` method instead of a closure:
+もしくは、クロージャの代わりにクエリオブジェクトを`whereExists`メソッドへ渡すこともできます。
 
     $orders = DB::table('orders')
                     ->select(DB::raw(1))
@@ -697,7 +697,7 @@ Alternatively, you may provide a query object to the `whereExists` method instea
                         ->whereExists($orders)
                         ->get();
 
-Both of the examples above will produce the following SQL:
+上記の例では、どちらも以下のようなSQLを出力します。
 
 ```sql
 select * from users
@@ -962,7 +962,8 @@ havingBetween`メソッドを使うと、指定した範囲内の結果をフィ
 <a name="updating-json-columns"></a>
 ### JSONカラムの更新
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MySQL 5.7+ and PostgreSQL 9.5+:
+JSONカラムを更新する場合は、JSONオブジェクトの適切なキーを更新するために`->`構文を使用する必要があります。この操作はMySQL5.7以上とPostgreSQL9.5以上でサポートしています。
+
 
     $affected = DB::table('users')
                   ->where('id', 1)

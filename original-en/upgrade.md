@@ -38,6 +38,7 @@
 - [Relation `getBaseQuery` Method](#relation-getbasequery-method)
 - [The `Redirect::home` Method](#redirect-home)
 - [The `Bus::dispatchNow` Method](#dispatch-now)
+- [The `registerPolicies` Method](#register-policies)
 - [ULID Columns](#ulid-columns)
 
 </div>
@@ -71,6 +72,7 @@ You should update the following dependencies in your application's `composer.jso
 <div class="content-list" markdown="1">
 
 - `laravel/framework` to `^10.0`
+- `laravel/sanctum` to `^3.2`
 - `spatie/laravel-ignition` to `^2.0`
 
 </div>
@@ -107,6 +109,15 @@ If your application is customizing its "public path" by binding `path.public` in
 ```php
 app()->usePublicPath(__DIR__.'/public');
 ```
+
+### Authorization
+
+<a name="register-policies"></a>
+### The `registerPolicies` Method
+
+**Likelihood Of Impact: Low**
+
+The `registerPolicies` method of the `AuthServiceProvider` is now invoked automatically by the framework. Therefore, you may remove the call to this method from the `boot` method of your application's `AuthServiceProvider`.
 
 ### Cache
 
@@ -145,7 +156,7 @@ $string = $expression->getValue(DB::connection()->getQueryGrammar());
 
 **Likelihood Of Impact: Very Low**
 
-The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is mainly throwing this exception, you should adjust your code accordingly.
+The `Illuminate\Database\QueryException` constructor now accepts a string connection name as its first argument. If your application is manually throwing this exception, you should adjust your code accordingly.
 
 <a name="ulid-columns"></a>
 #### ULID Columns

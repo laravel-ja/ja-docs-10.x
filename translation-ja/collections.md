@@ -4,7 +4,7 @@
     - [コレクション生成](#creating-collections)
     - [コレクションの拡張](#extending-collections)
 - [利用可能なメソッド](#available-methods)
-- [Higher Order Message](#higher-order-messages)
+- [Higher Orderメッセージ](#higher-order-messages)
 - [レイジーコレクション](#lazy-collections)
     - [イントロダクション](#lazy-collection-introduction)
     - [レイジーコレクションの生成](#creating-lazy-collections)
@@ -77,7 +77,7 @@
 <a name="available-methods"></a>
 ## 利用可能なメソッド
 
-コレクションドキュメントの残りの大部分は、`Collection`クラスで使用できる各メソッドについて説明します。これらのメソッドはすべて、基になる配列をスムースに操作するためチェーン化できることを忘れないでください。さらに、ほとんどすべてのメソッドが新しい`Collection`インスタンスを返すため、必要に応じて元のコレクションを保持できます。
+コレクションドキュメントの残りの大部分は、`Collection`クラスで使用できる各メソッドについて説明します。これらのメソッドはすべて、基になる配列をスムーズに操作するためチェーン化できることを忘れないでください。さらに、ほとんどすべてのメソッドが新しい`Collection`インスタンスを返すため、必要に応じて元のコレクションを保持できます。
 
 <style>
     .collection-method-list > p {
@@ -294,7 +294,7 @@
 
     // [[1, 2, 3, 4], [5, 6, 7]]
 
-このメソッドは、[Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/)などのグリッドシステムを操作するときに[ビュー](/docs/{{version}}/views)で特に役立ちます。たとえば、グリッドに表示する[Eloquent](/docs/{{version}}/eloquent)モデルのコレクションがあるとします。
+このメソッドは、[Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/)などのグリッドシステムを操作するとき、[ビュー](/docs/{{version}}/views)で特に役立ちます。たとえば、グリッドに表示する[Eloquent](/docs/{{version}}/eloquent)モデルのコレクションがあるとします。
 
 ```blade
 @foreach ($products->chunk(3) as $chunk)
@@ -413,7 +413,7 @@
 
     // false
 
-または、文字列を`contains`メソッドに渡して、コレクションに指定アイテム値が含まれているかどうかを判断することもできます。
+または、文字列を`contains`メソッドに渡して、コレクションに指定アイテム値が含まれているかを判断することもできます。
 
     $collection = collect(['name' => 'Desk', 'price' => 100]);
 
@@ -1482,7 +1482,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 <a name="method-merge"></a>
 #### `merge()` {.collection-method}
 
-`merge`メソッドは、指定した配列かコレクションをオリジナルコレクションへマージします。指定した配列の文字列キーが、オリジナルコレクションの文字列キーと一致する場合、オリジナルコレクションの値は指定アイテムの値でオーバーライトされます。
+`merge`メソッドは、指定した配列かコレクションをオリジナルコレクションへマージします。指定した配列の文字列キーが、オリジナルコレクションの文字列キーと一致する場合、オリジナルコレクションの値を指定アイテムの値でオーバーライトします。
 
     $collection = collect(['product_id' => 1, 'price' => 100]);
 
@@ -1492,7 +1492,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // ['product_id' => 1, price' => 200, 'discount' => false]
 
-指定したアイテムのキーが数値の場合、コレクションの最後に追加されます。
+指定したアイテムのキーが数値の場合、コレクションの最後に追加します。
 
     $collection = collect(['Desk', 'Chair']);
 
@@ -1618,7 +1618,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 <a name="method-partition"></a>
 #### `partition()` {.collection-method}
 
-`partition`メソッドは、PHPの配列のデストラクションと組み合わせて、与えられた真理値テストに合格した要素とそうでない要素を分離できます。
+`partition`メソッドは、PHPの配列のデストラクションと組み合わせて、与えられた真理値テストに合格した要素とそうでない要素を分離します。
 
     $collection = collect([1, 2, 3, 4, 5, 6]);
 
@@ -1650,7 +1650,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 <a name="method-pipeinto"></a>
 #### `pipeInto()` {.collection-method}
 
-`pipeInto`メソッドは、指定クラスの新しいインスタンスを生成し、コレクションをコンストラクターに渡します。
+`pipeInto`メソッドは、指定クラスの新しいインスタンスを生成し、コレクションをコンストラクタへ渡します。
 
     class ResourceCollection
     {
@@ -1737,7 +1737,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // [['Rosa', 'Judith'], ['Abigail', 'Joey']]
 
-重複するキーが存在している場合は、最後に一致した要素が結果のコレクションへ挿入されます。
+重複するキーが存在している場合は、最後に一致した要素を結果のコレクションへ挿入します。
 
     $collection = collect([
         ['brand' => 'Tesla',  'color' => 'red'],
@@ -1854,7 +1854,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // 4 - (ランダムに取得)
 
-整数を`random`に渡して、ランダムに取得するアイテムの数を指定できます。受け取りたいアイテムの数を明示的に渡すと、アイテムのコレクションが常に返されます。
+整数を`random`に渡して、ランダムに取得するアイテムの数を指定できます。受け取りたいアイテムの数を明示的に渡すと、アイテムのコレクションを常に返します。
 
     $random = $collection->random(3);
 
@@ -1864,7 +1864,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
 コレクションインスタンスのアイテム数が要求より少ない場合、`random`メソッドは`InvalidArgumentException`を投げます。
 
-`random`メソッドはクロージャも引数に取ります。このクロージャは現在のコレクションインスタンスを受け取ります。
+`random`メソッドはクロージャも引数に取れます。このクロージャは現在のコレクションインスタンスを受け取ります。
 
     use Illuminate\Support\Collection;
 
@@ -2896,7 +2896,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 <a name="method-when"></a>
 #### `when()` {.collection-method}
 
-`when`メソッドは、メソッドの第１引数が`true`に評価される場合、コールバックを実行します。コレクションインスタンスと`when`メソッドに指定した第１引数は、クロージャへ渡されます。
+`when`メソッドは、メソッドの第１引数が`true`に評価される場合、コールバックを実行します。コレクションインスタンスと`when`メソッドに指定した第１引数をクロージャへ渡します。
 
     $collection = collect([1, 2, 3]);
 
@@ -2912,7 +2912,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 
     // [1, 2, 3, 4]
 
-２つ目のコールバックを`when`メソッドへ指定できます。２番目のコールバックは、`when`メソッドへ渡された最初の引数の評価値が`false`になったときに実行します。
+２つ目のコールバックを`when`メソッドへ指定できます。２番目のコールバックは、`when`メソッドへ渡した最初の引数の評価値が`false`になったときに実行します。
 
     $collection = collect([1, 2, 3]);
 
@@ -2954,7 +2954,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 
     // ['Adam']
 
-`whenEmpty`メソッドの２番目のクロージャは、コレクションが空でないときに実行されます。
+`whenEmpty`メソッドの２番目のクロージャは、コレクションが空でないときに実行します。
 
     $collection = collect(['Michael', 'Tom']);
 
@@ -2996,7 +2996,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 
     // []
 
-`whenNotEmpty`メソッドに渡される２番目のクロージャは、コレクションが空のときに実行されます。
+`whenNotEmpty`メソッドに渡される２番目のクロージャは、コレクションが空のときに実行します。
 
     $collection = collect();
 
@@ -3059,12 +3059,12 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 <a name="method-wherestrict"></a>
 #### `whereStrict()` {.collection-method}
 
-このメソッドの使用法は、[`where`](#method-where)メソッドと同じです。しかし、値の比較はすべて「厳格」な比較で行われます。
+このメソッドの使用法は、[`where`](#method-where)メソッドと同じです。しかし、値の比較はすべて「厳格」な比較で行います。
 
 <a name="method-wherebetween"></a>
 #### `whereBetween()` {.collection-method}
 
-`whereBetween`メソッドは、指定したアイテム値が、指定範囲内にあるかどうかを判断することにより、コレクションをフィルタリングします。
+`whereBetween`メソッドは、指定したアイテム値が、指定範囲内にあるかを判断することにより、コレクションをフィルタリングします。
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -3139,7 +3139,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 <a name="method-wherenotbetween"></a>
 #### `whereNotBetween()` {.collection-method}
 
-`whereNotBetween`メソッドは、指定アイテム値が指定範囲外にあるかどうかを判断することにより、コレクションをフィルタリングします。
+`whereNotBetween`メソッドは、指定アイテム値が指定範囲外にあるかを判断することにより、コレクションをフィルタリングします。
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -3163,7 +3163,7 @@ staticの`unwrap`メソッドは適用可能な場合、指定値からコレク
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {.collection-method}
 
-WhereNotIn`メソッドは、指定した配列内に含まれる指定項目値を持つ要素を、コレクションから削除します。
+WhereNotIn`メソッドは、指定した配列内に含まれる指定項目値を持つ要素をコレクションから削除します。
 
     $collection = collect([
         ['product' => 'Desk', 'price' => 200],
@@ -3273,11 +3273,11 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
     // [['Chair', 100], ['Desk', 200]]
 
 <a name="higher-order-messages"></a>
-## Higher Order Message
+## Higher Orderメッセージ
 
-コレクションで繁用するアクションを手短に実行できるよう、"higher order messages"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`skipUntil`](#method-skipuntil)、[`skipWhile`](#method-skipwhile)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`takeUntil`](#method-takeuntil)、[`takeWhile`](#method-takewhile)コレクションメソッドでhigher order messageが使用できます。
+コレクションで繁用するアクションを手短に実行できるよう、"Higher Orderメッセージ"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`skipUntil`](#method-skipuntil)、[`skipWhile`](#method-skipwhile)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`takeUntil`](#method-takeuntil)、[`takeWhile`](#method-takewhile)コレクションメソッドでHigher Orderメッセージが使用できます。
 
-各higher order messageへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` higher order messageを使用してみましょう。
+各Higher Orderメッセージへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` Higher Orderメッセージを使用してみましょう。
 
     use App\Models\User;
 
@@ -3285,7 +3285,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 
     $users->each->markAsVip();
 
-同様に、ユーザーのコレクションに対し、「投票（votes）」の合計数を求めるために、`sum` higher order messageを使用できます。
+同様に、ユーザーのコレクションに対し、「投票（votes）」の合計数を求めるために、`sum` Higher Orderメッセージを使用できます。
 
     $users = User::where('group', 'Development')->get();
 

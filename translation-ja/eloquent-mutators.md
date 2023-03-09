@@ -15,7 +15,7 @@
     - [配列／JSONのシリアル化](#array-json-serialization)
     - [インバウンドのキャスト](#inbound-casting)
     - [キャストのパラメータ](#cast-parameters)
-    - [Castables](#castables)
+    - [Castable](#castables)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -413,7 +413,7 @@ JSON属性の単一のフィールドをより簡潔な構文で更新するに�
 ### Enumキャスト
 
 > **Warning**
-> Enum casting is only available for PHP 8.1+.
+> Enumのキャストは、PHP8.1以降のみで有効です。
 
 Eloquentは、属性値をPHPの[Enum](https://www.php.net/manual/ja/language.enumerations.backed.php) にキャストすることも可能です。これを実現するには、モデルの`$casts`プロパティ配列にキャストしたい属性と列挙型を指定します。
 

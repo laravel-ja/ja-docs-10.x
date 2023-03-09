@@ -20,7 +20,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Laravel Envoy](https://github.com/laravel/envoy)は、リモートサーバ上で実行する一般的なタスクを実行するためのツールです。[blade](/docs/{{version}}/blade)スタイルの構文を使用し、デプロイやArtisanコマンドなどのタスクを簡単に設定できます。現在、EnvoyはMacおよびLinuxオペレーティングシステムのみをサポートしています。ただし、Windowsサポートは[WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)を使用して実現できます。
+[Laravel Envoy](https://github.com/laravel/envoy)（アンボイ：特使）は、一般的なタスクをリモートサーバ上で実行するためのツールです。[blade](/docs/{{version}}/blade)スタイルの構文を使用し、デプロイやArtisanコマンドなどのタスクを簡単に設定できます。現在、EnvoyはMacおよびLinuxオペレーティングシステムのみをサポートしています。ただし、Windowsサポートは[WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10)を使用して実現できます。
 
 <a name="installation"></a>
 ## インストール

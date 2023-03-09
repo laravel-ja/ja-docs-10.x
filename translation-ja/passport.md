@@ -47,7 +47,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Laravel Passport](https://github.com/laravel/passport)は、Laravelアプリケーションに完全なOAuth2サーバ実装を数分で提供します。Passportは、Andy MillingtonとSimon Hampがメンテナンスしている[League OAuth2 server](https://github.com/thephpleague/oauth2-server)の上に構築されています。
+[Laravel Passport](https://github.com/laravel/passport)は、Laravelアプリケーションへ完全なOAuth2サーバの実装を数分で提供します。Passportは、Andy MillingtonとSimon Hampがメンテナンスしている[League OAuth2 server](https://github.com/thephpleague/oauth2-server)の上に構築しています。
 
 > **Warning**
 > このドキュメントは、皆さんがOAuth2に慣れていることを前提にしています。OAuth2について知らなければ、この先を続けて読む前に、一般的な[用語](https://oauth2.thephpleague.com/terminology/)とOAuth2の機能について予習してください。
@@ -55,7 +55,7 @@
 <a name="passport-or-sanctum"></a>
 ### Passportか？Sanctumか？？
 
-始める前に、アプリケーションがLaravel Passport、もしくは[Laravel Sanctum](/docs/{{version}}/sanctum)のどちらがより適しているかを検討することをお勧めします。アプリケーションが絶対にOAuth2をサポートする必要がある場合は、Laravel　Passportを使用する必要があります。
+始める前に、アプリケーションがLaravel Passport、もしくは[Laravel Sanctum](/docs/{{version}}/sanctum)のどちらにより適しているかを検討することをお勧めします。アプリケーションが絶対にOAuth2をサポートする必要がある場合は、Laravel　Passportを使用する必要があります。
 
 しかし、シングルページアプリケーションやモバイルアプリケーションを認証したり、APIトークンを発行したりする場合は、[Laravel Sanctum](/docs/{{version}}/sanctum)を使用する必要があります。Laravel SanctumはOAuth2をサポートしていません。ただし、はるかにシンプルなAPI認証開発エクスペリエンスを提供します。
 
@@ -125,7 +125,7 @@ php artisan passport:install --uuids
 <a name="deploying-passport"></a>
 ### Passportのデプロイ
 
-Passportをアプリケーションのサーバに初めてデプロイするときは、`passport:keys`コマンドを実行する必要があります。このコマンドは、アクセストークンを生成するためにPassportが必要とする暗号化キーを生成します。生成されたキーは通常、ソース管理しません。
+Passportをアプリケーションのサーバへ初めてデプロイするときは、`passport:keys`コマンドを実行する必要があります。このコマンドは、アクセストークンを生成するためにPassportが必要とする暗号化キーを生成します。生成されたキーは通常、ソース管理しません。
 
 ```shell
 php artisan passport:keys
@@ -138,13 +138,11 @@ php artisan passport:keys
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
     }
 
 <a name="loading-keys-from-the-environment"></a>
-#### 環境からキーのロード
+#### 環境からのキーのロード
 
 または、`vendor:publish` Artisanコマンドを使用してPassportの設定ファイルをリソース公開することもできます。
 
@@ -156,11 +154,11 @@ php artisan vendor:publish --tag=passport-config
 
 ```ini
 PASSPORT_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
-<private key here>
+<プライベートキーをここに記述>
 -----END RSA PRIVATE KEY-----"
 
 PASSPORT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
-<public key here>
+<パブリックキーをここに記述>
 -----END PUBLIC KEY-----"
 ```
 
@@ -202,8 +200,6 @@ Passportの新しいメジャーバージョンにアップグレードすると
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::tokensExpireIn(now()->addDays(15));
         Passport::refreshTokensExpireIn(now()->addDays(30));
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
@@ -237,8 +233,6 @@ Passportの新しいメジャーバージョンにアップグレードすると
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::useTokenModel(Token::class);
         Passport::useRefreshTokenModel(RefreshToken::class);
         Passport::useAuthCodeModel(AuthCode::class);
@@ -780,8 +774,6 @@ php artisan passport:client --password
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::enableImplicitGrant();
     }
 
@@ -818,7 +810,7 @@ php artisan passport:client --password
 php artisan passport:client --client
 ```
 
-Next, to use this grant type, you may add the `CheckClientCredentials` middleware to the `$middlewareAliases` property of your application's `app/Http/Kernel.php` file:
+次に、このグラントタイプを使用するため、アプリケーションの`app/Http/Kernel.php`ファイルの`$middlewareAliases`プロパティへ、`CheckClientCredentials`ミドルウェアを追加します。
 
     use Laravel\Passport\Http\Middleware\CheckClientCredentials;
 
@@ -1021,8 +1013,6 @@ APIのスコープは、アプリケーションの`App\Providers\AuthServicePro
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::tokensCan([
             'place-orders' => 'Place orders',
             'check-status' => 'Check order status',
@@ -1066,7 +1056,7 @@ APIのスコープは、アプリケーションの`App\Providers\AuthServicePro
         ]);
 
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
-    });
+    });CheckClientCredentials
 
 <a name="when-issuing-personal-access-tokens"></a>
 #### パーソナルアクセストークン発行時
@@ -1078,7 +1068,7 @@ APIのスコープは、アプリケーションの`App\Providers\AuthServicePro
 <a name="checking-scopes"></a>
 ### スコープのチェック
 
-Passport includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware to the `$middlewareAliases` property of your `app/Http/Kernel.php` file:
+Passportは２つのミドルウェアを用意しており、受信リクエストが所定のスコープを付与されたトークンで認証されているかを確認するために使用できます。まずは、`app/Http/Kernel.php`ファイルの`$middlewareAliases`プロパティへ以下のミドルウェアを追加します。
 
     'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
     'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
@@ -1167,8 +1157,6 @@ API構築時にJavaScriptアプリケーションから、自分のAPIを利用�
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         Passport::cookie('custom_name');
     }
 

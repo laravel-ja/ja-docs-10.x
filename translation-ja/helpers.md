@@ -358,7 +358,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-array-accessible"></a>
 #### `Arr::accessible()` {.collection-method .first-collection-method}
 
-`Arr::accessible`メソッドは、指定した値が配列アクセス可能かどうかを判別します。
+`Arr::accessible`メソッドは、指定した値が配列アクセス可能かを判別します。
 
     use Illuminate\Support\Arr;
     use Illuminate\Support\Collection;
@@ -1222,7 +1222,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     $path = lang_path('en/messages.php');
 
 > **Note**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開することができます。
 
 <a name="method-mix"></a>
 #### `mix()` {.collection-method}
@@ -1264,7 +1264,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-__"></a>
 #### `__()` {.collection-method}
 
-The `__` function translates the given translation string or translation key using your [language files](/docs/{{version}}/localization):
+`__`関数は、指定する翻訳文字列や翻訳キーを[言語ファイル](/docs/{{version}}/localization)を使って翻訳します。
 
     echo __('Welcome to our application');
 
@@ -1743,7 +1743,7 @@ The `__` function translates the given translation string or translation key usi
 <a name="method-str-password"></a>
 #### `Str::password()` {.collection-method}
 
-The `Str::password` method may be used to generate a secure, random password of a given length. The password will consist of a combination of letters, numbers, symbols, and spaces. By default, passwords are 32 characters long:
+`Str::password`メソッドは、指定した長さの安全でランダムなパスワードを生成します。パスワードは文字、数字、シンボル、スペースの組み合わせで構成します。パスワードの長さは、デフォルトで３２文字です。
 
     use Illuminate\Support\Str;
 
@@ -2150,7 +2150,7 @@ Str::wordCount('Hello, world!'); // 2
 <a name="method-trans"></a>
 #### `trans()` {.collection-method}
 
-The `trans` function translates the given translation key using your [language files](/docs/{{version}}/localization):
+`trans`関数は、指定した翻訳キーを[言語ファイル](/docs/{{version}}/localization)を使い、翻訳します。
 
     echo trans('messages.welcome');
 

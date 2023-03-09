@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Laravel Fortify](https://github.com/laravel/fortify)（フォーティファイ、要塞）は、Laravelのフロントエンドにとらわれない認証バックエンドの実装です。Fortifyは、ログイン、ユーザー登録、パスワードのリセット、メールの検証など、Laravelの認証機能をすべて実装するために必要なルートとコントローラを登録します。Fortifyをインストールした後に、`route:list` Artisanコマンドを実行して、Fortifyが登録したルートを確認できます。
+[Laravel Fortify](https://github.com/laravel/fortify)（フォーティファイ、要塞）は、フロントエンドにとらわれないLaravelの認証バックエンドの実装です。Fortifyは、ログイン、ユーザー登録、パスワードのリセット、メールの検証など、Laravelの認証機能をすべて実装するために必要なルートとコントローラを登録します。Fortifyをインストールした後に、`route:list` Artisanコマンドを実行して、Fortifyが登録したルートを確認できます。
 
 Fortifyは独自のユーザーインターフェイスを提供しません。つまり、登録したルートにリクエストを送信する皆さん自身の​​のユーザーインターフェイスと組み合わせることを目的としています。このドキュメントの残りの部分で、こうしたルートにリクエストを送信する方法について正確に説明します。
 
@@ -423,9 +423,9 @@ Fortifyは、このビューを返す`/forgot-password`エンドポイントの�
 
 パスワードリセットリンクリクエストが成功した場合、Fortifyはユーザーを`/forgot-password`エンドポイントにリダイレクトし、パスワードのリセットに使用できる安全なリンクを記載したメールをユーザーに送信します。リクエストがXHRリクエストの場合、200 HTTPレスポンスを返します。
 
-After being redirected back to the `/forgot-password` endpoint after a successful request, the `status` session variable may be used to display the status of the password reset link request attempt.
+リクエストに成功し、`/forgot-password`エンドポイントへリダイレクトしたあと、`status`セッション変数を使用して、パスワードリセットリンクのリクエストのステータスを表示できます。
 
-The value of the `$status` session variable will match one of the translation strings defined within your application's `passwords` [language file](/docs/{{version}}/localization). If you would like to customize this value and have not published Laravel's language files, you may do so via the `lang:publish` Artisan command:
+ `$status`セッション変数の値は、アプリケーションの`passwords`[言語ファイル](/docs/{{version}}/localization)内に定義した翻訳文字列のいずれかに一致します。この値をカスタマイズしたいが、Laravelの言語ファイルをリソース公開していない場合は、`lang:publish` Artisanコマンドで公開してください。
 
 ```html
 @if (session('status'))

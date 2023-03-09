@@ -87,7 +87,7 @@ php artisan migrate
 `sendResetLink`メソッドは、"status"スラッグを返します。このステータスは、Laravelの[多言語化](/docs/{{version}}/localization)ヘルパを使って翻訳でき、リクエストのステータスに関するユーザーフレンドリーなメッセージをユーザーへ表示可能にします。パスワードリセットステータスの翻訳は、アプリケーションの`lang/{lang}/passwords.php`言語ファイルで決まります。ステータスのスラッグに指定できる各項目は、`passwords`言語ファイル内にあります。
 
 > **Note**
-> By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
+> Laravelアプリケーションのスケルトンは、デフォルトでは`lang`ディレクトリを含んでいません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 `Password`ファサードの`sendResetLink`メソッドを呼び出すときに、Laravelがアプリケーションのデータベースからユーザーレコードを取得する方法をどのように知っているのか疑問に思われるかもしれません。Laravelパスワードブローカは、認証システムの「ユーザープロバイダ」を利用してデータベースレコードを取得します。パスワードブローカが使用するユーザープロバイダは、`config/auth.php`設定ファイルの`passwords`設定配列内で設定します。カスタムユーザープロバイダの作成の詳細については、[認証ドキュメント](/docs/{{version}}/authentication#adding-custom-user-providers)を参照してください。
 
@@ -149,7 +149,7 @@ php artisan migrate
 
 パスワードブローカに与えられたトークン、電子メールアドレス、およびパスワードが有効である場合、`reset`メソッドに渡されたクロージャが呼び出されます。ユーザーインスタンスとパスワードリセットフォームに提供された平文テキストのパスワードを受け取るこのクロージャ内で、データベース内のユーザーのパスワードを更新します。
 
-The `reset` method returns a "status" slug. This status may be translated using Laravel's [localization](/docs/{{version}}/localization) helpers in order to display a user-friendly message to the user regarding the status of their request. The translation of the password reset status is determined by your application's `lang/{lang}/passwords.php` language file. An entry for each possible value of the status slug is located within the `passwords` language file. If your application does not contain a `lang` directory, you may create it using the `lang:publish` Artisan command.
+`reset`メソッドは、「ステータス」スラグを返します。このステータスは、リクエストのステータスに関するユーザーフレンドリーなメッセージをユーザーに表示するために、Laravelの [多言語化](/docs/{{version}}/localization)ヘルパを使用して翻訳できます。パスワードリセットステータスの翻訳は、アプリケーションの`lang/{lang}/passwords.php`言語ファイルにより行います。`passwords`言語ファイルの中に、ステータスのスラグがとり得る値のエントリを配置しています。アプリケーションに`lang` ディレクトリがない場合は、`lang:publish` Artisan コマンドを使用して作成できます。
 
 先に進む前に、`Password`ファサードの`reset`メソッドを呼び出すときに、Laravelがアプリケーションのデータベースからユーザーレコードを取得する方法をどのように知っているのか疑問に思われるかもしれません。Laravelパスワードブローカーは、認証システムの「ユーザープロバイダ」を利用してデータベースレコードを取得します。パスワードブローカが使用するユーザープロバイダは、`config/auth.php`設定ファイルの`passwords`設定配列内で設定しています。カスタムユーザープロバイダの作成の詳細については、[認証ドキュメント](/docs/{{version}}/authentication#adding-custom-user-providers)を参照してください。
 
@@ -182,8 +182,6 @@ php artisan auth:clear-resets
      */
     public function boot(): void
     {
-        $this->registerPolicies();
-
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://example.com/reset-password?token='.$token;
         });

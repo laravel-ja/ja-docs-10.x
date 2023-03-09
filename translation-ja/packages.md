@@ -8,7 +8,7 @@
     - [設定](#configuration)
     - [マイグレーション](#migrations)
     - [ルート](#routes)
-    - [Language Files](#language-files)
+    - [言語ファイル](#language-files)
     - [ビュー](#views)
     - [ビューコンポーネント](#view-components)
     - ["About" Artisanコマンド](#about-artisan-command)
@@ -80,7 +80,7 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 <a name="service-providers"></a>
 ## サービスプロバイダ
 
-[Service providers](/docs/{{version}}/providers) are the connection point between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and language files.
+[サービスプロバイダ](/docs/{{version}}/providers)は、あなたのパッケージとLaravelの接続ポイントです。サービスプロバイダは、Laravelの[サービスコンテナ](/docs/{{version}}/container)で必要なものを結合し、ビュー、設定、言語ファイルなどのパッケージリソースをロードする場所をLaravelへ知らせる役割を持っています。
 
 サービスプロバイダは`Illuminate\Support\ServiceProvider`クラスを拡張し、`register`と`boot`の２メソッドを含んでいます。ベースの`ServiceProvider`クラスは、`illuminate/support` Composerパッケージにあります。 サービスプロバイダの構造と目的について詳細を知りたければ、[ドキュメント](/docs/{{version}}/providers)を調べてください。
 
@@ -158,9 +158,9 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 パッケージのマイグレーションを登録すると、`php artisan migrate`コマンドが実行されるとき自動的に実行されます。マイグレーションをアプリケーションの`database/migrations`ディレクトリにエクスポートする必要はありません。
 
 <a name="language-files"></a>
-### Language Files
+### 言語ファイル
 
-If your package contains [language files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
+パッケージに[言語ファイル](/docs/{{version}}/localization)を用意している場合、`loadTranslationsFrom`メソッドを使用して、それらをロードする方法をLaravelへ知らせてください。例えば、パッケージの名前が`courier`の場合、サービスプロバイダの`boot`メソッドに以下を追加する必要があります。
 
     /**
      * 全パッケージサービスの初期起動処理
@@ -170,14 +170,14 @@ If your package contains [language files](/docs/{{version}}/localization), you m
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'courier');
     }
 
-Package translation lines are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
+パッケージの翻訳行は、`package::file.line`の規約で参照します。したがって、`courier`パッケージの`messages`ファイルから、`welcome`は以下のように読み込みます。
 
     echo trans('courier::messages.welcome');
 
 <a name="publishing-language-files"></a>
-#### Publishing Language Files
+#### 言語ファイルのリソース公開
 
-If you would like to publish your package's language files to the application's `lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the language files for the `courier` package, you may do the following:
+パッケージの言語ファイルをアプリケーションの`lang/vendor`ディレクトリへリソース公開したい場合は、サービスプロバイダの`publishes`メソッドを使用します。`publishes`メソッドは、パッケージのパスと公開したい場所の配列を引数に取ります。例えば、`courier`パッケージの言語ファイルを公開するには、以下のようにします。
 
     /**
      * 全パッケージサービスの初期起動処理
@@ -191,7 +191,7 @@ If you would like to publish your package's language files to the application's 
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's language files will be published to the specified publish location.
+これで、パッケージのユーザーがLaravelの`vendor:publish` Artisanコマンドを実行すると、パッケージの言語ファイルが指定した公開場所にリソース公開されます。
 
 <a name="views"></a>
 ### ビュー

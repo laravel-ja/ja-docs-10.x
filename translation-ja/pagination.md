@@ -11,7 +11,7 @@
     - [ペジネーションリンクウィンドウの調整](#adjusting-the-pagination-link-window)
     - [結果のJSONへの変換](#converting-results-to-json)
 - [ペジネーションビューのカスタマイズ](#customizing-the-pagination-view)
-    - [Using Bootstrap](#using-bootstrap)
+    - [Bootstrapの使用](#using-bootstrap)
 - [Paginator／LengthAwarePaginatorインスタンスのメソッド](#paginator-instance-methods)
 - [カーソルPaginatorインスタンスのメソッド](#cursor-paginator-instance-methods)
 
@@ -125,7 +125,7 @@ http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 
 カーソルページネータインスタンスを取得したら、`paginate`や`simplePaginate`メソッドを使うときと同様に、[ペジネーションの結果を表示](#displaying-pagination-results)します。カーソルペジネータが提供するインスタンスメソッドの詳細は、[カーソルペジネータインスタンスのドキュメント](#cursor-paginator-instance-methods)を参照してください。
 
-> **Warning**  
+> **Warning**
 > カーソルのペジネーションを利用するには、クエリに "order by"句を含める必要があります。
 
 <a name="cursor-vs-offset-pagination"></a>
@@ -162,7 +162,7 @@ select * from users where id > 15 order by id asc limit 15;
 
 つまり，`Paginator`はクエリビルダの`simplePaginate`メソッドに、`CursorPaginator`は`cursorPaginate`メソッドに，`LengthAwarePaginator`は`paginate`メソッドに、それぞれ対応しています。
 
-> **Warning**  
+> **Warning**
 > ペジネーションインスタンスを手作業で作成する場合は、ペジネーションに渡す結果の配列を手作業で「スライス」する必要があります。これを行う方法がわからない場合は、[array_slice](https://secure.php.net/manual/en/function.array-slice.php)PHP関数を確認してください。
 
 <a name="customizing-pagination-urls"></a>

@@ -117,7 +117,7 @@ php artisan make:middleware EnsureTokenIsValid
 <a name="assigning-middleware-to-routes"></a>
 ### ルートに対するミドルウェアの指定
 
-If you would like to assign middleware to specific routes, you may invoke the `middleware` method when defining the route:
+特定のルートにミドルウェアを割り当てたい場合は、ルート定義時に`middleware`メソッドを呼び出してください。
 
     use App\Http\Middleware\Authenticate;
 
@@ -125,13 +125,13 @@ If you would like to assign middleware to specific routes, you may invoke the `m
         // ...
     })->middleware(Authenticate::class);
 
-ミドルウェア名の配列を`middleware`メソッドに渡すことにより、ルートに複数のミドルウェアを割り当てることができます。
+ミドルウェア名の配列を`middleware`メソッドへ渡し、ルートに複数のミドルウェアを割り当てることもできます。
 
     Route::get('/', function () {
         // ...
     })->middleware([First::class, Second::class]);
 
-For convenience, you may assign aliases to middleware in your application's `app/Http/Kernel.php` file. By default, the `$middlewareAliases` property of this class contains entries for the middleware included with Laravel. You may add your own middleware to this list and assign it an alias of your choosing:
+アプリケーションの`app/Http/Kernel.php`ファイルで、ミドルウェアにエイリアスを割り当てておくと便利です。デフォルトで、このクラスの`$middlewareAliases`プロパティには、Laravelに含まれるミドルウェアのエントリーが含まれています。このリストに自分のミドルウェアを追加して、好きなエイリアスを割り当てられます。
 
     // App\Http\Kernelクラス内…
 
@@ -147,7 +147,7 @@ For convenience, you may assign aliases to middleware in your application's `app
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-Once the middleware alias has been defined in the HTTP kernel, you may use the alias when assigning middlware to routes:
+HTTPカーネルでミドルウェアのエイリアスを定義したら、ルートにミドルウェアを割り当てるときに、そのエイリアスを使用できます。
 
     Route::get('/profile', function () {
         // ...

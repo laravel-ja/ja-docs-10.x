@@ -19,11 +19,11 @@
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
-- MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
+- MariaDB 10.3+ ([バージョンポリシー](https://mariadb.org/about/#maintenance-policy))
+- MySQL 5.7+ ([バージョンポリシー](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 10.0+ ([バージョンポリシー](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
-- SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
+- SQL Server 2017+ ([バージョンポリシー](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
 
@@ -32,12 +32,12 @@
 
 Laravelのデータベースサービスの設定は、アプリケーションの`config/database.php`設定ファイルにあります。このファイルは、全データベース接続を定義し、デフォルトで使用する接続を指定できます。このファイル内のほとんどの設定オプションは、アプリケーションの環境変数の値によって決まります。Laravelがサポートしているデータベースシステムのほとんどの設定例をこのファイルに用意しています。
 
-デフォルトのLaravelのサンプル[環境設定](/docs/{{version}}/configuration#environment-configuration)は、[Laravel Sail](/docs/{{version}}/sail)で使用できるようになっています。SailはローカルマシンでLaravelアプリケーションを開発するためのDocker環境です。しかし、ローカルデータベースの必要に応じ、データベース設定を自由に変更してください。
+デフォルトのLaravelのサンプル[環境設定](/docs/{{version}}/configuration#environment-configuration)は、[Laravel Sail](/docs/{{version}}/sail)で使用できるようにしています。SailはローカルマシンでLaravelアプリケーションを開発するためのDocker環境です。ただし、ローカルデータベースの必要に合わせ、このデータベース設定は自由に変更してください。
 
 <a name="sqlite-configuration"></a>
 #### SQLite設定
 
-SQLiteデータベースは、ファイルシステム上の単一ファイルに含まれます。ターミナルで`touch`コマンドを使用して新しいSQLiteデータベースを作成できます。（`touch database/database.sqlite`）データベースを作成したあと、データベースへの絶対パスを`DB_DATABASE`環境変数で指定することにより、このデータベースを使用するよう簡単に設定できます。
+SQLiteデータベースは、ファイルシステム上の単一ファイルです。ターミナルで`touch`コマンドを使用して新しいSQLiteデータベースを作成してください。（`touch database/database.sqlite`）データベースを作成したあと、このデータベースへの絶対パスを`DB_DATABASE`環境変数に指定することにより、簡単にこれを使用するように設定できます。
 
 ```ini
 DB_CONNECTION=sqlite
@@ -58,7 +58,7 @@ Microsoft　SQL Serverデータベースを使用するには、`sqlsrv`、`pdo_
 <a name="configuration-using-urls"></a>
 #### URLを使用した設定
 
-通常、データベース接続は、`host`、`database`、`username`、`password`などの複数の設定値により構成します。こうした設定値には、それぞれ対応する環境変数があります。これは、運用サーバでデータベース接続情報を設定するときに、複数の環境変数を管理する必要があることを意味します。
+通常、データベース接続は、`host`、`database`、`username`、`password`などの複数の設定値により構成します。こうした設定値には、それぞれ対応する環境変数があります。つまり、運用サーバでデータベース接続情報を設定するときに、これら複数の環境変数を管理する必要があることを意味します。
 
 AWSやHerokuなどの一部のマネージドデータベースプロバイダは、データベースのすべての接続情報を単一の文字カラムで含む単一のデータベース「URL」を提供しています。データベースURLの例は、次のようになります。
 
@@ -72,12 +72,12 @@ mysql://root:password@127.0.0.1/forge?charset=UTF-8
 driver://username:password@host:port/database?options
 ```
 
-利便性のため、Laravelは複数の設定オプションを使用してデータベースを構成する代わりに、こうしたURLをサポートしています。`url`(または対応する`DATABASE_URL`環境変数)設定オプションが存在する場合は、データベース接続と接続情報を抽出するためにそれを使用します。
+便利が良いように、Laravelは複数の設定オプションを使用してデータベースを構成する代わりに、こうしたURLをサポートしています。`url`(または対応する`DATABASE_URL`環境変数)設定オプションが存在する場合は、データベース接続と接続情報を抽出するためにそれを使用します。
 
 <a name="read-and-write-connections"></a>
 ### 読み／書き接続
 
-SELECTステートメントに１つのデータベース接続を使用し、INSERT、UPDATE、およびDELETEステートメントに別のデータベース接続を使用したい場合があるでしょう。Laravelでは簡単に、素のクエリ、クエリビルダ、もしくはEloquent ORMのいずれを使用していても常に適切な接続が使用されます。
+SELECTステートメントに１つのデータベース接続を使用し、INSERT、UPDATE、およびDELETEステートメントに別のデータベース接続を使用したい場合があるでしょう。Laravelでは簡単に、素のクエリ、クエリビルダ、もしくはEloquent ORMのいずれを使用していても、常に適切な接続が使用されます。
 
 読み取り/書き込み接続を設定する方法を確認するため、以下の例を見てみましょう。
 
@@ -103,9 +103,9 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
         'prefix' => '',
     ],
 
-設定配列には、`read`、`write`、`sticky`の３キーが追加されていることに注目してください。`read`キーと`write`キーには、単一のキーとして`host`を含む配列値があります。`read`および`write`接続の残りのデータベースオプションは、メインの`mysql`設定配列からマージされます。
+設定配列には、`read`、`write`、`sticky`の３キーが追加されていることに注目してください。`read`キーと`write`キーには、単一のキーとして`host`を含む配列値があります。`read`および`write`接続の残りのデータベースオプションは、メインの`mysql`設定配列からマージします。
 
-メインの`mysql`配列の値をオーバーライドする場合にのみ、`read`配列と`write`配列へ項目を配置する必要があります。したがって、この場合、`192.168.1.1`は「読み取り」接続のホストとして使用し、`192.168.1.3`は「書き込み」接続に使用します。データベースの接続情報、プレフィックス、文字セット、およびメインの`mysql`配列内の他のすべてのオプションは、両方の接続で共有されます。`host`設定配列に複数の値が存在する場合、リクエストごとランダムにデータベースホストを選択します。
+メインの`mysql`配列の値をオーバーライドする場合にのみ、`read`配列と`write`配列へ項目を配置する必要があります。したがって、この場合、`192.168.1.1`は「読み取り」接続のホストとして使用し、`192.168.1.3`は「書き込み」接続に使用します。データベースの接続情報、プレフィックス、文字セット、およびメインの`mysql`配列内の他のすべてのオプションは、両方の接続で共有します。`host`設定配列に複数の値が存在する場合、リクエストごとランダムにデータベースホストを選択します。
 
 <a name="the-sticky-option"></a>
 #### `sticky`オプション
@@ -115,7 +115,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 <a name="running-queries"></a>
 ## SQLクエリの実行
 
-データベース接続を設定したら、`DB`ファサードを使用してクエリが実行できます。`DB`ファサードは、クエリのタイプごとに`select`、`update`、`insert`、`delete`、`statement`メソッドを提供しています。
+データベース接続を設定したら、`DB`ファサードを使用してクエリを実行できます。`DB`ファサードは、クエリのタイプごとに`select`、`update`、`insert`、`delete`、`statement`メソッドを提供します。
 
 <a name="running-a-select-query"></a>
 #### SELECTクエリの実行
@@ -216,7 +216,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
 > **Warning**
-> プリペアドではない文はパラメーターをバインドしないため、SQLインジェクションに対して脆弱である可能性があります。プリペアドではない文内では、ユーザーの値のコントロールを許可しないでください。
+> プリペアドではない文はパラメーターをバインドしないため、SQLインジェクションに対して脆弱である可能性があります。プリペアドではない文内では、ユーザーによる値のコントロールを許可しないでください。
 
 <a name="implicit-commits-in-transactions"></a>
 #### 暗黙のコミット
@@ -230,13 +230,13 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 <a name="using-multiple-database-connections"></a>
 ### 複数データベース接続の使用
 
-アプリケーションが`config/database.php`設定ファイルで複数の接続を定義している場合、`DB`ファサードが提供する`connection`メソッドを介して各接続にアクセスできます。`connection`メソッドに渡される接続名は、`config/database.php`設定ファイルにリストしている接続、または実行時に`config`ヘルパを使用して設定した接続の１つに対応している必要があります。
+アプリケーションが`config/database.php`設定ファイルで複数の接続を定義している場合、`DB`ファサードが提供する`connection`メソッドを使い、各接続にアクセスできます。`connection`メソッドに渡す接続名は、`config/database.php`設定ファイルにリストしている接続、または実行時に`config`ヘルパを使用して設定した接続の１つに対応させる必要があります。
 
     use Illuminate\Support\Facades\DB;
 
     $users = DB::connection('sqlite')->select(/* ... */);
 
-接続インスタンスで`getPdo`メソッドを使用して、接続の基になる素のPDOインスタンスにアクセスできます。
+接続インスタンスで`getPdo`メソッドを使用し、接続の基になる素のPDOインスタンスにアクセスできます。
 
     $pdo = DB::connection()->getPdo();
 
@@ -279,7 +279,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 <a name="monitoring-cumulative-query-time"></a>
 ### 累積クエリ時間の監視
 
-モダンなWebアプリケーションの一般的なパフォーマンスボトルネックは、データベースのクエリに費やす時間の長さです。幸いなことに、Laravelは、単一のリクエスト中にデータベースのクエリに時間がかかりすぎる場合、選んだクロージャやコールバックを呼び出せます。これを使うには、`whenQueryingForLongerThan`メソッドへ、クエリ時間しきい値(ミリ秒単位)とクロージャを指定します。このメソッドは、[サービスプロバイダ](/docs/{{version}}/providers)の`boot`メソッドで呼び出します
+モダンなWebアプリケーションの一般的なパフォーマンスボトルネックは、データベースのクエリに費やす時間の長さです。幸いなことに、Laravelでは、単一リクエスト中でデータベースのクエリに時間がかかりすぎる場合、指定クロージャやコールバックを呼び出せます。これを使うには、`whenQueryingForLongerThan`メソッドへ、クエリ時間しきい値(ミリ秒単位)とクロージャを指定します。このメソッドは、[サービスプロバイダ](/docs/{{version}}/providers)の`boot`メソッドで呼び出します
 
     <?php
 
@@ -327,7 +327,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 <a name="handling-deadlocks"></a>
 #### デッドロックの処理
 
-`transaction`メソッドは、デッドロックが発生したときにトランザクションを再試行する回数をオプションとして、２番目の引数に取ります。試行回数が終了した場合は、例外を投げます。
+`transaction`メソッドは、デッドロックが発生したときのトランザクション再試行回数をオプションとして、２番目の引数に取ります。試行回数を終えた場合は、例外を投げます。
 
     use Illuminate\Support\Facades\DB;
 
@@ -405,7 +405,7 @@ php artisan db:table users
 <a name="monitoring-your-databases"></a>
 ## データベースの監視
 
-`DB:monitor` Artisanコマンドを使用すると、データベースが指定した数以上の接続を開いて管理している場合、Laravelに`Illuminate\Database\Events\DatabaseBusy`イベントを発行するように指示できます。
+`DB:monitor` Artisanコマンドを使用すると、管理しているデータベースが指定した数以上の接続を開いている場合、Laravelに`Illuminate\Database\Events\DatabaseBusy`イベントを発行するように指示できます。
 
 利用するには、`db:monitor`コマンドを[毎分実行](/docs/{{version}}/scheduling)するようにタスクスケジュールしてください。このコマンドは、監視したいデータベース接続設定の名前と、イベントを発行するまで許容するオープン中の最大接続数を引数に取ります。
 

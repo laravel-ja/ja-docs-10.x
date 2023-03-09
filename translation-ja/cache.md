@@ -299,12 +299,12 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
     Cache::tags('authors')->flush();
 
 <a name="pruning-stale-cache-tags"></a>
-### Pruning Stale Cache Tags
+### 古くなったキャッシュタグの整理
 
 > **Warning**
-> Pruning stale cache tags is only necessary when using Redis as your application's cache driver.
+> アプリケーションのキャッシュドライバとしてRedisを使用する場合のみ、古いキャッシュタグの整理が必要です。
 
-In order to properly prune stale cache tag entries when using the Redis cache driver, Laravel's `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
+Redisキャッシュドライバを使用しているときに、古いキャッシュタグエントリを適切に整理するため、Laravelの`cache:prune-stale-tags` Artisanコマンドをアプリケーションの`App\Console\Kernel`クラスの[scheduled](/docs/{{version}}/scheduling)に設定する必要があります。
 
     $schedule->command('cache:prune-stale-tags')->hourly();
 
