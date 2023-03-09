@@ -261,7 +261,7 @@ protected function address(): Attribute
     ]);
 
 > **Warning**
-> `null`である属性はキャストしません。また、リレーションと同じ名前のキャスト(または属性)を定義しないでください。
+> `null`である属性はキャストしません。また、リレーションと同じ名前のキャスト（または属性）を定義したり、モデルの主キーにキャストを割り当てたりは、決してしないでください。
 
 <a name="stringable-casting"></a>
 #### Stringableのキャスト
@@ -411,9 +411,6 @@ JSON属性の単一のフィールドをより簡潔な構文で更新するに�
 
 <a name="enum-casting"></a>
 ### Enumキャスト
-
-> **Warning**
-> Enumのキャストは、PHP8.1以降のみで有効です。
 
 Eloquentは、属性値をPHPの[Enum](https://www.php.net/manual/ja/language.enumerations.backed.php) にキャストすることも可能です。これを実現するには、モデルの`$casts`プロパティ配列にキャストしたい属性と列挙型を指定します。
 

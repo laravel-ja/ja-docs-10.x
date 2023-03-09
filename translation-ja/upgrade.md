@@ -71,18 +71,21 @@
 
 <div class="content-list" markdown="1">
 
-- `laravel/framework` to `^10.0`
-- `laravel/sanctum` to `^3.2`
-- `spatie/laravel-ignition` to `^2.0`
+- `laravel/framework`を`^10.0`
+- `laravel/sanctum`を`^3.2`
+- `doctrine/dbal`を`^3.0`
+- `spatie/laravel-ignition`を`^2.0`
 
 </div>
 
-オプションですが、[PHPUnit10](https://phpunit.de/announcements/phpunit-10.html)を使用したい場合は、アプリケーションの`phpunit.xml`設定ファイルの`<coverage>`セクションから、`processUncoveredFiles`属性を削除する必要があります。次に、アプリケーションの`composer.json`ファイルで、以下の依存関係を更新します。
+Sanctum2.xリリースシリーズから3.xへアップグレードする場合は、[Sanctumアップグレードガイド](https://github.com/laravel/sanctum/blob/3.x/UPGRADE.md)を参照してください。
+
+さらに、[PHPUnit10](https://phpunit.de/announcements/phpunit-10.html)を使用したい場合は、アプリケーションの`phpunit.xml`設定ファイルの`<coverage>`セクションから、`processUncoveredFiles`属性を削除する必要があります。次に、アプリケーションの`composer.json`ファイルで、以下の依存関係を更新します。
 
 <div class="content-list" markdown="1">
 
-- `nunomaduro/collision` to `^7.0`
-- `phpunit/phpunit` to `^10.0`
+- `nunomaduro/collision`を`^7.0`
+- `phpunit/phpunit`を`^10.0`
 
 </div>
 
@@ -126,7 +129,7 @@ app()->usePublicPath(__DIR__.'/public');
 
 **影響の可能性： 中程度**
 
-Redisの[キャッシュタグ](/docs/{{version}}/cache#cache-tags)サポートは、パフォーマンスとストレージ効率向上のために書き直しました。以前のLaravelのリリースでは、アプリケーションのキャッシュドライバにRedisを使用すると、古いキャッシュタグがキャッシュに蓄積されました。
+Redisの[キャッシュタグ](/docs/{{version}}/cache#cache-tags)サポートは、パフォーマンスとストレージ効率向上のために書き直しました。以前のLaravelのリリースでは、アプリケーションのキャッシュドライバにRedisを使用すると、古いキャッシュタグがキャッシュに蓄積していました。
 
 そこで、古くなったキャッシュタグエントリーを適切に整理するため、Laravelの新しい`cache:prune-stale-tags` Artisanコマンドをアプリケーションの`App\Console\Kernel`クラスで[定期実行](/docs/{{version}}/scheduling)してください。
 

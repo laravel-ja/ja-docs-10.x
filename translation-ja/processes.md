@@ -73,6 +73,15 @@ $result = Process::run('ls -la')->throwIf($condition);
 $result = Process::path(__DIR__)->run('ls -la');
 ```
 
+<a name="input"></a>
+#### 入力
+
+入力は、`input`メソッドを使い、プロセスの「標準入力」から行えます。
+
+```php
+$result = Process::input('Hello World')->run('cat');
+```
+
 <a name="timeouts"></a>
 #### タイムアウト
 
@@ -191,12 +200,12 @@ $result = $process->wait();
 <a name="process-ids-and-signals"></a>
 ### プロセスIDとシグナル
 
-`pid`メソッドを使えば、オペレーティングシステムが割り当てた、実行中のプロセスのプロセスIDを取得できます。
+`id`メソッドを使えば、オペレーティングシステムが割り当てた、実行中のプロセスのプロセスIDを取得できます。
 
 ```php
 $process = Process::start('bash import.sh');
 
-return $process->pid();
+return $process->id();
 ```
 
 実行中のプロセスへ、「シグナル」を送るには、`signal`メソッドを使用します。定義済みのシグナル定数の一覧は、[PHPドキュメント](https://www.php.net/manual/ja/pcntl.constants.php)に記載されています。
@@ -302,7 +311,7 @@ return $results['first']->output();
 プロセスプールの`running`メソッドは、プール内で呼び出したすべてのプロセスのコレクションを提供するため、プール内のプロセスIDで簡単にアクセスできます。
 
 ```php
-$processIds = $pool->running()->each->pid();
+$processIds = $pool->running()->each->id();
 ```
 
 また、便利なように、プロセスプール上で`signal`メソッドを呼び出すと、そのプール内のすべてのプロセスへシグナルを送ることができます。

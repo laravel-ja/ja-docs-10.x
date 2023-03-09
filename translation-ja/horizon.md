@@ -108,6 +108,7 @@ Laravelのデフォルトのキューシステムとは異なり、Horizo​​n
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
                 'minProcesses' => 1,
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
@@ -116,6 +117,8 @@ Laravelのデフォルトのキューシステムとは異なり、Horizo​​n
             ],
         ],
     ],
+
+`autoScalingStrategy`設定値は、Horizonがキューをクリアするのにかかる総時間（`time`戦略）、またはキュー上のジョブの総数（`size`戦略）に基づいて、より多くのワーカープロセスをキューに割り当てるかを決めます。
 
 `balanceMaxShift`と`balanceCooldown`の設定値は、Horizo​​nがワーカの需要を満たすためにどれだけ迅速にスケーリングするかを決定します。上記の例では、３秒ごとに最大１つの新しいプロセスが作成または破棄されます。アプリケーションのニーズに基づいて、必要に応じてこれらの値を自由に調整できます。
 

@@ -146,8 +146,6 @@ Eloquentモデルが[ソフトデリート](/docs/{{version}}/eloquent#soft-dele
     {
         /**
          * モデルファクトリの設定
-         *
-         * @return $this
          */
         public function configure(): static
         {

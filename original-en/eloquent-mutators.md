@@ -261,7 +261,7 @@ If you need to add a new, temporary cast at runtime, you may use the `mergeCasts
     ]);
 
 > **Warning**  
-> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship.
+> Attributes that are `null` will not be cast. In addition, you should never define a cast (or an attribute) that has the same name as a relationship or assign a cast to the model's primary key.
 
 <a name="stringable-casting"></a>
 #### Stringable Casting
@@ -411,9 +411,6 @@ If a custom format is applied to the `date` or `datetime` cast, such as `datetim
 
 <a name="enum-casting"></a>
 ### Enum Casting
-
-> **Warning**  
-> Enum casting is only available for PHP 8.1+.
 
 Eloquent also allows you to cast your attribute values to PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To accomplish this, you may specify the attribute and enum you wish to cast in your model's `$casts` property array:
 

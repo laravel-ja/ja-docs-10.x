@@ -815,6 +815,22 @@ public function test_it_can_control_feature_values()
 
 もし機能が、`Lottery`インスタンスを返すのであれば、便利な[利用できるテストヘルパ](/docs/{{version}}/helpers#testing-lotteries)があります。
 
+<a name="store-configuration"></a>
+#### 保存域の設定
+
+アプリケーションの`phpunit.xml`ファイルで、`PENNANT_STORE`環境変数を定義すれば、テスト中にPennantが使用する保存域を設定できます。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+    <!-- ... -->
+    <php>
+        <env name="PENNANT_STORE" value="array"/>
+        <!-- ... -->
+    </php>
+</phpunit>
+```
+
 <a name="adding-custom-pennant-drivers"></a>
 ## カスタム機能ドライバの追加
 

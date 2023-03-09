@@ -1194,9 +1194,6 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> **Warning**
-> EnumsはPHP8.1以上でのみ利用可能です。
-
 <a name="rule-exclude"></a>
 #### exclude
 
@@ -2166,7 +2163,6 @@ php artisan make:rule Uppercase
          * バリデーション下のデータをセット
          *
          * @param  array<string, mixed>  $data
-         * @return $this
          */
         public function setData(array $data): static
         {

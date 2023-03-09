@@ -1915,6 +1915,19 @@ Eloquentは、リレーションへ新しいモデルを追加する便利な手
         ['message' => 'Another new comment.'],
     ]);
 
+`createQuietly`メソッドと`createManyQuietly`メソッドを使用すると、イベントをディスパッチせずにモデルを作成できます。
+
+    $user = User::find(1);
+
+    $user->posts()->createQuietly([
+        'title' => 'Post title.',
+    ]);
+
+    $user->posts()->createManyQuietly([
+        ['title' => 'First post.'],
+        ['title' => 'Second post.'],
+    ]);
+
 `findOrNew`、`firstOrNew`、`firstOrCreate`、`updateOrCreate`メソッドを使用して[関係のモデルを作成および更新](/docs/{{version}}/eloquent#upserts)することもできます。
 
 > **Note**

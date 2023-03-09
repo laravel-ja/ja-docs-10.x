@@ -33,7 +33,7 @@
 
 [Laravel Scout](https://github.com/laravel/scout)（Scout、斥候）は、[Eloquentモデル](/docs/{{version}}/eloquent)へ、シンプルなドライバベースのフルテキストサーチを提供します。モデルオブサーバを使い、Scoutは検索インデックスを自動的にEloquentレコードと同期します。
 
-現在、Scoutは[Algolia](https://www.algolia.com/), [MeiliSearch](https://www.meilisearch.com), MySQL／PostgreSQL (`database`) ドライバを用意しています。さらに、Scoutはローカル開発用途に設計された、外部依存やサードパーティサービスを必要としない「コレクション」ドライバも用意しています。加えて、カスタムドライバの作成も簡単で、独自の検索実装でScoutを自由に拡張可能です。
+現在、Scoutは[Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), MySQL／PostgreSQL (`database`) ドライバを用意しています。さらに、Scoutはローカル開発用途に設計された、外部依存やサードパーティサービスを必要としない「コレクション」ドライバも用意しています。加えて、カスタムドライバの作成も簡単で、独自の検索実装でScoutを自由に拡張可能です。
 
 <a name="installation"></a>
 ## インストール
@@ -77,17 +77,17 @@ composer require algolia/algoliasearch-client-php
 ```
 
 <a name="meilisearch"></a>
-#### MeiliSearch
+#### Meilisearch
 
-[MeiliSearch](https://www.meilisearch.com)は、非常に高速なオープンソースの検索エンジンです。ローカルマシンにMeiliSearchをインストールする方法がわからない場合は、Laravelの公式サポートのDocker開発環境である[Laravel Sail](/docs/{{version}}/sail#meilisearch)を利用できます。
+[Meilisearch](https://www.meilisearch.com)は、非常に高速なオープンソースの検索エンジンです。ローカルマシンにMeilisearchをインストールする方法がわからない場合は、Laravelの公式サポートのDocker開発環境である[Laravel Sail](/docs/{{version}}/sail#meilisearch)を利用できます。
 
-Meilisearchドライバを使用する場合は、Composerパッケージマネージャを使用して、MeiliSearch PHP SDKをインストールする必要があります。
+Meilisearchドライバを使用する場合は、Composerパッケージマネージャを使用して、Meilisearch PHP SDKをインストールする必要があります。
 
 ```shell
 composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
 ```
 
-次に、アプリケーションの`.env`ファイル内の`SCOUT_DRIVER`環境変数とMeiliSearch`host`と`key`認証情報を設定します。
+次に、アプリケーションの`.env`ファイル内の`SCOUT_DRIVER`環境変数とMeilisearch `host`と`key`認証情報を設定します。
 
 ```ini
 SCOUT_DRIVER=meilisearch
@@ -95,12 +95,12 @@ MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
 ```
 
-MeiliSearchの詳細については、[MeiliSearchのドキュメント](https://docs.meilisearch.com/learn/getting_started/quick_start.html)を参照してください。
+Meilisearchの詳細については、[Meilisearchのドキュメント](https://docs.meilisearch.com/learn/getting_started/quick_start.html)を参照してください。
 
-さらに、[MeiliSearchのバイナリ互換のドキュメント](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch)を見て、自分が使っているMeiliSearchのバイナリバージョンと互換性のあるバージョンの`meilisearch/meilisearch-php`をインストールしてください。
+さらに、[Meilisearchのバイナリ互換のドキュメント](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch)を見て、自分が使っているMeilisearchのバイナリバージョンと互換性のあるバージョンの`meilisearch/meilisearch-php`をインストールしてください。
 
 > **Warning**
-> MeiliSearchを利用しているアプリケーションのScoutをアップグレードする際には、常にMeiliSearchサービス自体に[追加の破壊的な変更](https://github.com/meilisearch/MeiliSearch/releases)がないか確認する必要があります。
+> Meilisearchを利用しているアプリケーションのScoutをアップグレードする際には、常にMeilisearchサービス自体に[追加の破壊的な変更](https://github.com/meilisearch/Meilisearch/releases)がないか確認する必要があります。
 
 <a name="queueing"></a>
 ### キュー投入
@@ -179,7 +179,7 @@ Scoutジョブで利用する接続とキューを指定するには、`queue`�
         }
     }
 
-MeiliSearchなどの検索エンジンでは、正しい型のデータに対してのみフィルタリング操作(`>`、`<`など)が行われます。したがって、これらの検索エンジンを使用して検索可能なデータをカスタマイズする場合は、数値を確実に正しい型にキャストする必要があります。
+Meilisearchなどの検索エンジンでは、正しい型のデータに対してのみフィルタリング操作(`>`、`<`など)が行われます。したがって、これらの検索エンジンを使用して検索可能なデータをカスタマイズする場合は、数値を確実に正しい型にキャストする必要があります。
 
     public function toSearchableArray()
     {
@@ -191,9 +191,9 @@ MeiliSearchなどの検索エンジンでは、正しい型のデータに対し
     }
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
-#### Filterableデータとインデックス（MeiliSearch）の設定
+#### Filterableデータとインデックス（Meilisearch）の設定
 
-Scoutの他のドライバと異なり、MeiliSearchでは、フィルタリング可能な属性（Filterable）、ソート可能な属性（Sortable）や[その他サポートされている設定フィールド](https://docs.meilisearch.com/reference/api/settings.html)などのインデックス検索設定を事前に定義しておく必要があります。
+Scoutの他のドライバと異なり、Meilisearchでは、フィルタリング可能な属性（Filterable）、ソート可能な属性（Sortable）や[その他サポートされている設定フィールド](https://docs.meilisearch.com/reference/api/settings.html)などのインデックス検索設定を事前に定義しておく必要があります。
 
 フィルタリング可能な属性とは、Scoutの`where`メソッドを呼び出す際にフィルタリングする予定の属性であり、ソート可能な属性とは、Scoutの`orderBy`メソッドを呼び出す際にソートする予定の属性のことです。インデックスの設定を行うには、アプリケーションの`scout`設定ファイルにある、`meilisearch`設定項目の`index-settings`部分を調整します。
 
@@ -226,7 +226,7 @@ use App\Models\Flight;
 ],
 ```
 
-アプリケーションのインデックス設定後に、`scout:sync-index-settings` Artisanコマンドを呼び出す必要があります。このコマンドは、現在設定しているインデックス設定をMeiliSearchに通知します。このコマンドをデプロイプロセスの一部とすると便利です。
+アプリケーションのインデックス設定後に、`scout:sync-index-settings` Artisanコマンドを呼び出す必要があります。このコマンドは、現在設定しているインデックス設定をMeilisearchに通知します。このコマンドをデプロイプロセスの一部とすると便利です。
 
 ```shell
 php artisan scout:sync-index-settings
@@ -320,7 +320,7 @@ SCOUT_IDENTIFY=true
 SCOUT_DRIVER=database
 ```
 
-データベースエンジンを好みのドライバに指定したら、[検索可能なデータの設定](#configuring-searchable-data)を行う必要があります。次に、モデルに対して[検索クエリの実行](#searching)を開始します。データベースエンジンを使用する場合、AlgoliaやMeiliSearchのように、検索エンジンのインデックス作成は必要ありません。
+データベースエンジンを好みのドライバに指定したら、[検索可能なデータの設定](#configuring-searchable-data)を行う必要があります。次に、モデルに対して[検索クエリの実行](#searching)を開始します。データベースエンジンを使用する場合、AlgoliaやMeilisearchのように、検索エンジンのインデックス作成は必要ありません。
 
 #### データベース検索戦略のカスタマイズ
 
@@ -356,7 +356,7 @@ public function toSearchableArray(): array
 <a name="collection-engine"></a>
 ### コレクションエンジン
 
-ローカル開発時には、AlgoliaやMeiliSearchの検索エンジンを自由に使用することができますが、「コレクション（collection）」エンジンでスタートした方が便利な場合もあります。コレクション・エンジンは、既存データベースからの結果に対して、"where"節とコレクション・フィルタリングを用いて、クエリに該当する検索結果を決定します。このエンジンを使用する場合、Searchableモデルをインデックス化する必要はなく、シンプルにローカル・データベースから検索します。
+ローカル開発時には、AlgoliaやMeilisearchの検索エンジンを自由に使用することができますが、「コレクション（collection）」エンジンでスタートした方が便利な場合もあります。コレクション・エンジンは、既存データベースからの結果に対して、"where"節とコレクション・フィルタリングを用いて、クエリに該当する検索結果を決定します。このエンジンを使用する場合、Searchableモデルをインデックス化する必要はなく、シンプルにローカル・データベースから検索します。
 
 コレクションエンジンを使用するには，環境変数`SCOUT_DRIVER`の値を`collection`に設定するか，アプリケーションの`scout`設定ファイルで`collection`ドライバを直接指定します。
 
@@ -364,7 +364,7 @@ public function toSearchableArray(): array
 SCOUT_DRIVER=collection
 ```
 
-コレクションドライバを使用ドライバに指定したら、モデルに対して[検索クエリの実行](#searching)を開始できます。コレクションエンジンを使用する場合、AlgoliaやMeiliSearchのインデックスのシードに必要なインデックス作成などの検索エンジンのインデックス作成は不要です。
+コレクションドライバを使用ドライバに指定したら、モデルに対して[検索クエリの実行](#searching)を開始できます。コレクションエンジンを使用する場合、AlgoliaやMeilisearchのインデックスのシードに必要なインデックス作成などの検索エンジンのインデックス作成は不要です。
 
 #### データベースエンジンとの違い
 
@@ -564,7 +564,7 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
 検索インデックスはリレーショナルデータベースではないため、より高度な"where"節は現在サポートしていません。
 
 > **Warning**
-> アプリケーションでMeiliSearchを使用している場合、Scoutの"where"句を利用する前に、アプリケーションの[filterable属性](#configuring-filterable-data-for-meilisearch)を設定する必要があります。
+> アプリケーションでMeilisearchを使用している場合、Scoutの"where"句を利用する前に、アプリケーションの[filterable属性](#configuring-filterable-data-for-meilisearch)を設定する必要があります。
 
 <a name="pagination"></a>
 ### ペジネーション

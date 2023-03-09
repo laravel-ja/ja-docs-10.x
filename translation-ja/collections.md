@@ -136,6 +136,7 @@
 [hasAny](#method-hasany)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectAssoc](#method-intersectAssoc)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
@@ -1168,6 +1169,27 @@
 
 > **Note**
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
+
+<a name="method-intersectAssoc"></a>
+#### `intersectAssoc()` {.collection-method}
+
+`intersectAssoc`メソッドは、元のコレクションと別のコレクションまたは配列（`array`）を比較し、指定したコレクションの全てに存在するキーと値のペアを返します。
+
+    $collection = collect([
+        'color' => 'red',
+        'size' => 'M',
+        'material' => 'cotton'
+    ]);
+
+    $intersect = $collection->intersectAssoc([
+        'color' => 'blue',
+        'size' => 'M',
+        'material' => 'polyester'
+    ]);
+
+    $intersect->all();
+
+    // ['size' => 'M']
 
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
@@ -3412,6 +3434,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 [has](#method-has)
 [implode](#method-implode)
 [intersect](#method-intersect)
+[intersectAssoc](#method-intersectAssoc)
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)

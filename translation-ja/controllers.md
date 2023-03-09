@@ -27,7 +27,13 @@
 <a name="basic-controllers"></a>
 ### 基本のコントローラ
 
-基本的なコントローラの一例を見てみましょう。コントローラは、Laravelに含まれている基本コントローラクラス、`App\Http\Controllers\Controller`を拡張することに注意してください::
+新しいコントローラを簡単に生成するには、`make:controller` Artisanコマンドを実行します。アプリケーションのすべてのコントローラは、デフォルトで`app/Http/Controllers`ディレクトリへ設置します。
+
+```shell
+php artisan make:controller UserController
+```
+
+基本的なコントローラの例を見てみましょう。コントローラは、HTTPリクエストに応答するパブリックメソッドをいくつでも持てます。
 
     <?php
 
@@ -49,7 +55,7 @@
         }
     }
 
-このコントローラメソッドのルートは、次のように定義できます。
+コントローラクラスとメソッドを書が書けたら、コントローラメソッドへのルートを以下のように定義できます。
 
     use App\Http\Controllers\UserController;
 

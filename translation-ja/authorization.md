@@ -469,7 +469,7 @@ Artisanコンソールを介してポリシーを生成するときに`--model`�
          */
         public function update(?User $user, Post $post): bool
         {
-            return optional($user)->id === $post->user_id;
+            return $user?->id === $post->user_id;
         }
     }
 

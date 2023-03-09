@@ -321,10 +321,10 @@ php artisan mail:send 1 --queue=default
 
     'mail:send {user} {--Q|queue}'
 
-ターミナルでそのコマンドを起動する場合、オプションのショートカットの前にハイフンを1つ付ける必要があります。
+ターミナルでコマンドを起動する場合、オプションのショートカットの先頭にハイフンを１つ付け、オプションの値を指定する際は`=`文字をつけないでください。
 
 ```shell
-php artisan mail:send 1 -Q
+php artisan mail:send 1 -Qdefault
 ```
 
 <a name="input-arrays"></a>

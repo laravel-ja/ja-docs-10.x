@@ -102,10 +102,13 @@ Valetをインストールしたら、`pingfoobar.test`などのコマンドを�
 <a name="php-versions"></a>
 #### PHPバージョン
 
+> **Note**
+> グローバルにPHPバージョンを変更する代わりに、`isolate` [コマンド](#per-site-php-versions)を使い、サイトごとのPHPバージョンを使用するようにValetへ指示できます。
+
 Valetでは、`valet use php@version`コマンドを使用してPHPのバージョンを切り替えることができます。Valetは、指定するPHPバージョンがまだインストールされていない場合、Homebrewを介してインストールします。
 
 ```shell
-valet use php@7.2
+valet use php@8.1
 
 valet use php
 ```
@@ -113,7 +116,7 @@ valet use php
 プロジェクトのルートに`.valetphprc`ファイルを作成することもできます。`.valetphprc`ファイルには、サイトで使用するPHPバージョンを指定する必要があります。
 
 ```shell
-php@7.2
+php@8.1
 ```
 
 このファイルを作成したら、`valet use`コマンドを実行してください。コマンドはファイルを読み、サイトで優先するPHPバージョンを決めます。

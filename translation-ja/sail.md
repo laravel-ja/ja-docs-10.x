@@ -13,7 +13,7 @@
 - [データベース操作](#interacting-with-sail-databases)
     - [MySQL](#mysql)
     - [Redis](#redis)
-    - [MeiliSearch](#meilisearch)
+    - [Meilisearch](#meilisearch)
 - [ファイルストレージ](#file-storage)
 - [テスト実行](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
@@ -229,11 +229,11 @@ sail yarn
 ローカルマシンからアプリケーションのRedisデータベースに接続するには、[TablePlus](https://tableplus.com)などのグラフィカルデータベース管理アプリケーションを使用できます。デフォルトでは、Redisデータベースは`localhost`のポート6379でアクセスできます。
 
 <a name="meilisearch"></a>
-### MeiliSearch
+### Meilisearch
 
-Sailのインストール時に[MeiliSearch](https://www.meilisearch.com)サービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルには、[Laravel Scout](/docs/{{version}}/scout)と[コンパチブル](https://github.com/meilisearch/meilisearch-laravel-scout)である、この強力な検索エンジンのエントリが含まれます。コンテナを起動したら、環境変数`MEILISEARCH_HOST`に`http://meilisearch:7700`を設定すると、アプリケーション内のMeiliSearchインスタンスに接続できます。
+Sailのインストール時に[Meilisearch](https://www.meilisearch.com)サービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルには、[Laravel Scout](/docs/{{version}}/scout)と[コンパチブル](https://github.com/meilisearch/meilisearch-laravel-scout)である、この強力な検索エンジンのエントリが含まれます。コンテナを起動したら、環境変数`MEILISEARCH_HOST`に`http://meilisearch:7700`を設定すると、アプリケーション内のMeilisearchインスタンスに接続できます。
 
-ローカルマシンから、Webブラウザの`http://localhost:7700`に移動して、MeiliSearchのWebベース管理パネルへアクセスできます。
+ローカルマシンから、Webブラウザの`http://localhost:7700`に移動して、MeilisearchのWebベース管理パネルへアクセスできます。
 
 <a name="file-storage"></a>
 ## ファイルストレージ

@@ -384,6 +384,33 @@ Monologにはさまざまな[利用可能なハンドラ](https://github.com/Sel
         'formatter' => 'default',
     ],
 
+
+ <a name="monolog-processors"></a>
+ #### Monologプロセッサ
+
+Monologは、メッセージをログに記録する前に処理することもできます。独自のプロセッサを作成したり、[Monologが提供する既存のプロセッサ](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)を使用したりできます。
+
+`monolog`ドライバのプロセッサをカスタマイズしたい場合は、チャネルの設定へ`processors`設定値を追加してください。
+
+     'memory' => [
+         'driver' => 'monolog',
+         'handler' => Monolog\Handler\StreamHandler::class,
+         'with' => [
+             'stream' => 'php://stderr',
+         ],
+         'processors' => [
+             // シンプルな記法
+             Monolog\Processor\MemoryUsageProcessor::class,
+
+             // 使用するオプション
+             [
+                'processor' => Monolog\Processor\PsrLogMessageProcessor::class,
+                'with' => ['removeUsedContextFields' => true],
+            ],
+         ],
+     ],
+
+
 <a name="creating-custom-channels-via-factories"></a>
 ### ファクトリによるカスタムチャンネルの生成
 

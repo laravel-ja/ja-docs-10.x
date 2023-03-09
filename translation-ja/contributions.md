@@ -20,6 +20,8 @@
 
 バグレポートは、同じ問題を抱える他の人が協力して解決してくれることを期待して作成するものであることを忘れないでください。バグレポートが自動的に何らかの活動をしたり、他の人がそれを解決するために飛びついたりすることを期待しないでください。バグレポートを作成することは、あなた自身や他の人が問題を解決するための道筋をつけるためのものです。もしあなたが協力したいと思ったら、[課題追跡システムに登録されているバグ](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel)を修正することにより手助けできます。Laravelのすべての課題を見るには、GitHubにより認証される必要があります。
 
+Laravelを使っているときに、DocBlock、PHPStan、IDEの警告に気づいた場合は、GitHub issueを作成しないでください。代わりに、問題を解決するための、プルリクエストを提出してください。
+
 LaravelのソースコードはGitHubで管理され、各Laravelプロジェクトのリポジトリが存在しています。
 
 <div class="content-list" markdown="1">
@@ -38,6 +40,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 - [Laravel Horizon](https://github.com/laravel/horizon)
 - [Laravel Jetstream](https://github.com/laravel/jetstream)
 - [Laravel Passport](https://github.com/laravel/passport)
+- [Laravel Pennant](https://github.com/laravel/pennant)
 - [Laravel Pint](https://github.com/laravel/pint)
 - [Laravel Sail](https://github.com/laravel/sail)
 - [Laravel Sanctum](https://github.com/laravel/sanctum)

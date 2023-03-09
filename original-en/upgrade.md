@@ -73,11 +73,14 @@ You should update the following dependencies in your application's `composer.jso
 
 - `laravel/framework` to `^10.0`
 - `laravel/sanctum` to `^3.2`
+- `doctrine/dbal` to `^3.0`
 - `spatie/laravel-ignition` to `^2.0`
 
 </div>
 
-Optionally, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` section of your application's `phpunit.xml` configuration file. Then, update the following dependencies in your application's `composer.json` file:
+If you are upgrading to Sanctum 3.x from the 2.x release series, please consult the [Sanctum upgrade guide](https://github.com/laravel/sanctum/blob/3.x/UPGRADE.md).
+
+Furthermore, if you wish to use [PHPUnit 10](https://phpunit.de/announcements/phpunit-10.html), you should delete the `processUncoveredFiles` attribute from the `<coverage>` section of your application's `phpunit.xml` configuration file. Then, update the following dependencies in your application's `composer.json` file:
 
 <div class="content-list" markdown="1">
 
@@ -126,7 +129,7 @@ The `registerPolicies` method of the `AuthServiceProvider` is now invoked automa
 
 **Likelihood Of Impact: Medium**
 
-Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previously releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
+Redis [cache tag](/docs/{{version}}/cache#cache-tags) support has been rewritten for better performance and storage efficiency. In previous releases of Laravel, stale cache tags would accumulate in the cache when using Redis as your application's cache driver.
 
 However, to properly prune stale cache tag entries, Laravel's new `cache:prune-stale-tags` Artisan command should be [scheduled](/docs/{{version}}/scheduling) in your application's `App\Console\Kernel` class:
 

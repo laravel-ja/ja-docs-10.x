@@ -4,6 +4,7 @@
 - [使用可能なメソッド](#available-methods)
 - [その他のユーティリティ](#other-utilities)
     - [ベンチマーク](#benchmarking)
+    - [パイプライン](#pipeline)
     - [抽選](#lottery)
 
 <a name="introduction"></a>
@@ -212,6 +213,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [mask](#method-fluent-str-mask)
 [match](#method-fluent-str-match)
 [matchAll](#method-fluent-str-match-all)
+[isMatch](#method-fluent-str-is-match)
 [newLine](#method-fluent-str-new-line)
 [padBoth](#method-fluent-str-padboth)
 [padLeft](#method-fluent-str-padleft)
@@ -2723,6 +2725,21 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 
 一致しなかった場合は、空のコレクションを返します。
 
+<a name="method-fluent-str-is-match"></a>
+#### `isMatch` {.collection-method}
+
+`isMatch`メソッドは、文字列が指定正規表現にマッチした場合に`true`を返します。
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('foo bar')->isMatch('/foo (.*)/');
+
+    // true
+
+    $result = Str::of('laravel')->match('/foo (.*)/');
+
+    // false
+
 <a name="method-fluent-str-new-line"></a>
 #### `newLine` {.collection-method}
 
@@ -4147,6 +4164,48 @@ Str::of('Hello, world!')->wordCount(); // 2
 コールバックを複数回呼び出すには、メソッドの第２引数でコールバックを呼び出す反復回数を指定してください。コールバックを複数回実行する場合、`Benchmark`クラスはコールバックの実行にかかった平均ミリ秒を返します。
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="pipeline"></a>
+### パイプライン
+
+Laravelの`Pipeline`ファサードは、指定する入力を一連の呼び出し可能なクラス、クロージャ、Callableを通して、「パイプ」接続する便利な方法を提供し、各クラスに入力を検査または修正する機会を与え、パイプラインの次のCallableを呼び出します。
+
+```php
+use Closure;
+use App\Models\User;
+use Illuminate\Support\Facades\Pipeline;
+
+$user = Pipeline::send($user)
+            ->through([
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+                function (User $user, Closure $next) {
+                    // ...
+
+                    return $next($user);
+                },
+            ])
+            ->then(fn (User $user) => $user);
+```
+
+ご覧のように、パイプライン中の呼び出し可能な各クラスやクロージャには、入力と`$next`クロージャを引数に渡します。`next`クロージャが呼び出されると、パイプラインの次の呼び出し可能なクラスを呼び出します。お気づきかもしれませんが、これは [ミドルウェア](/docs/{{version}}/middleware) と非常によく似ています。
+
+パイプラインの最後のCallableが`$next`クロージャを呼び出すと、`then`メソッドに渡されたCallableを呼び出します。一般的に、このCallableは単に与えられた入力を返すだけです。
+
+もちろん、前述したように、パイプラインに渡すのは、クロージャに限定されません。呼び出し可能なクラスを提供することもできます。クラス名が提供された場合、そのクラスはLaravelの[サービスコンテナ](/docs/{{version}}/container)を通じてインスタンス化し、呼び出し可能なクラスへ依存関係を注入します。
+
+```php
+$user = Pipeline::send($user)
+            ->through([
+                GenerateProfilePhoto::class,
+                ActivateSubscription::class,
+                SendWelcomeEmail::class,
+            ])
+            ->then(fn (User $user) => $user);
+```
 
 <a name="lottery"></a>
 ### 抽選

@@ -102,10 +102,13 @@ Valet will automatically start its required services each time your machine boot
 <a name="php-versions"></a>
 #### PHP Versions
 
+> **Note**  
+> Instead of modifying your global PHP version, you can instruct Valet to use per-site PHP versions via the `isolate` [command](#per-site-php-versions).
+
 Valet allows you to switch PHP versions using the `valet use php@version` command. Valet will install the specified PHP version via Homebrew if it is not already installed:
 
 ```shell
-valet use php@7.2
+valet use php@8.1
 
 valet use php
 ```
@@ -113,7 +116,7 @@ valet use php
 You may also create a `.valetphprc` file in the root of your project. The `.valetphprc` file should contain the PHP version the site should use:
 
 ```shell
-php@7.2
+php@8.1
 ```
 
 Once this file has been created, you may simply execute the `valet use` command and the command will determine the site's preferred PHP version by reading the file.

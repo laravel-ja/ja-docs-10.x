@@ -597,6 +597,12 @@ window.Echo = new Echo({
 
 すべての認可コールバックは、現在認証されているユーザーを最初の引数として受け取り、追加のワイルドカードパラメーターを後続の引数として受け取ります。この例では、`{orderId}`プレースホルダーを使用して、チャンネル名の「ID」部分がワイルドカードであることを示しています。
 
+`channel:list` Artisanコマンドを使用すると、アプリケーションのブロードキャスト認可コールバックのリストを表示できます。
+
+```shell
+php artisan channel:list
+```
+
 <a name="authorization-callback-model-binding"></a>
 #### 認可コールバックモデルのバインド
 

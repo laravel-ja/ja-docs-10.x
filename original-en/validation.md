@@ -1194,9 +1194,6 @@ The `Enum` rule is a class based rule that validates whether the field under val
         'status' => [new Enum(ServerStatus::class)],
     ]);
 
-> **Warning**  
-> Enums are only available on PHP 8.1+.
-
 <a name="rule-exclude"></a>
 #### exclude
 
@@ -2166,7 +2163,6 @@ If your custom validation rule class needs to access all of the other data under
          * Set the data under validation.
          *
          * @param  array<string, mixed>  $data
-         * @return $this
          */
         public function setData(array $data): static
         {

@@ -149,11 +149,6 @@ Laravelの[サービスコンテナ](/docs/{{version}}/container)を介してア
         $this->travel(5)->weeks();
         $this->travel(5)->years();
 
-        // 時間を止め、クロージャ実行後、通常時刻へ戻す
-        $this->freezeTime(function (Carbon $time) {
-            // …
-        });
-
         // 過去へ移行する
         $this->travel(-5)->hours();
 
@@ -162,4 +157,41 @@ Laravelの[サービスコンテナ](/docs/{{version}}/container)を介してア
 
         // 現在時刻へ戻る
         $this->travelBack();
+    }
+
+また、さまざまな時間移動のメソッドへ、クロージャを提供することもできます。クロージャは、指定された時刻で時間を止めたまま起動します。クロージャが実行されると、時間は通常通り再開されます。
+
+    $this->travel(5)->days(function () {
+        // ５日後の将来で、何かをテストする…
+    });
+
+    $this->travelTo(now()->subDays(10), function () {
+        // 指定した時間で、何かをテストする…
+    });
+
+`freezeTime`メソッドは、現在の時刻を停止するために使用します。同様に、`freezeSecond`メソッドは、現在の時刻で止めますが、現在秒の先頭で止めます。
+
+    use Illuminate\Support\Carbon;
+
+    // 時刻を止め、クロージャ実行後は通常どおりに再開する
+    $this->freezeTime(function (Carbon $time) {
+        // ...
+    });
+
+    // 現在秒で時刻を止め、クロージャ実行後は通常通りに再開する
+    $this->freezeSecond(function (Carbon $time) {
+        // ...
+    })
+
+ご想像の通り、上記の方法はすべて、ディスカッションフォーラムで非アクティブな投稿をロックするなど、時間に敏感なアプリケーションの動作をテストするのに主に役立ちます。
+
+    use App\Models\Thread;
+
+    public function test_forum_threads_lock_after_one_week_of_inactivity()
+    {
+        $thread = Thread::factory()->create();
+
+        $this->travel(1)->week();
+
+        $this->assertTrue($thread->isLockedByInactivity());
     }

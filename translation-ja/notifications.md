@@ -296,6 +296,7 @@ php artisan make:notification InvoicePaid
 アプリケーションの「ユーザー」として保存されていない人に通知を送信する必要がある場合があります。`Notification`ファサードの`route`メソッドを使用して、通知を送信する前にアドホックな通知ルーティング情報を指定します。
 
     use Illuminate\Broadcasting\Channel;
+    use Illuminate\Support\Facades\Notification;
 
     Notification::route('mail', 'taylor@example.com')
                 ->route('vonage', '5555555555')
