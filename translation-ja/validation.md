@@ -203,7 +203,7 @@ Laravelの組み込みバリデーションルールは、それぞれエラー�
 
 > **Warning**
 > Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開してください。
->
+
 <a name="quick-xhr-requests-and-validation"></a>
 #### XHRリクエストとバリデーション
 

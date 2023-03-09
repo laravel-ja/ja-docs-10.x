@@ -964,7 +964,6 @@ havingBetween`メソッドを使うと、指定した範囲内の結果をフィ
 
 JSONカラムを更新する場合は、JSONオブジェクトの適切なキーを更新するために`->`構文を使用する必要があります。この操作はMySQL5.7以上とPostgreSQL9.5以上でサポートしています。
 
-
     $affected = DB::table('users')
                   ->where('id', 1)
                   ->update(['options->enabled' => true]);

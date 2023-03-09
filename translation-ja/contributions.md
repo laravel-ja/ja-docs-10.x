@@ -18,7 +18,6 @@
 
 バグレポートを提出する場合にはその問題をタイトルに含め、明確に内容を記述してください。できる限り関連する情報や、その問題をデモするコードも含めてください。バグレポートの目的はあなた自身、そして他の人でも、簡単にバグが再現でき修正されるようにすることです。
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem. If you want to chip in, you can help out by fixing [any bugs listed in our issue trackers](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel). You must be authenticated with GitHub to view all of Laravel's issues.
 バグレポートは、同じ問題を抱える他の人が協力して解決してくれることを期待して作成するものであることを忘れないでください。バグレポートが自動的に何らかの活動をしたり、他の人がそれを解決するために飛びついたりすることを期待しないでください。バグレポートを作成することは、あなた自身や他の人が問題を解決するための道筋をつけるためのものです。もしあなたが協力したいと思ったら、[課題追跡システムに登録されているバグ](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Abug+user%3Alaravel)を修正することにより手助けできます。Laravelのすべての課題を見るには、GitHubにより認証される必要があります。
 
 LaravelのソースコードはGitHubで管理され、各Laravelプロジェクトのリポジトリが存在しています。

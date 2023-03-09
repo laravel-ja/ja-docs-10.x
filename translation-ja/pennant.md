@@ -201,7 +201,7 @@ Feature::someAreInactive(['new-api', 'site-redesign']);
 
 > **Note**
 > PennantをHTTPコンテキスト外で使う場合、例えばArtisanコマンドや、キュー投入したジョブでは、機能のスコープを通常[明示的に指定](#specifying-the-scope)する必要があります。あるいは、認証済みHTTPコンテキストと、認証されていないコンテキストの両方を考慮した、[デフォルトスコープ](#default-scope)を定義することもできます。
->
+
 <a name="checking-class-based-features"></a>
 #### クラスベース機能のチェック
 
@@ -237,6 +237,7 @@ class PodcastController
 ### 条件付き実行
 
 `when`メソッドは、機能がアクティブなときに、スムーズに指定クロージャを実行するために使います。また、2つ目のクロージャを指定し、機能が非アクティブの場合に実行させることもできます。
+
     <?php
 
     namespace App\Http\Controllers;
@@ -342,7 +343,7 @@ Blade内でも機能をシームレスにチェックするため、Pennantは`@
 <a name="middleware"></a>
 ### ミドルウェア
 
-Pennantは、[ミドルウェア](/docs/{{version}}/middleware)も用意しており、あるルートを呼び出す前に、現在認証しているユーザが、その機能にアクセスできることをチェックするために使用できます。これを使い始めるには、アプリケーションの`app/Http/Kernel.php`ファイルへ`EnsureFeaturesAreActive`ミドルウェアのエイリアスを追加する必要があります。
+Pennantは、[ミドルウェア](/docs/{{version}}/middleware)も用意しており、あるルートを呼び出す前に、現在認証しているユーザーが、その機能にアクセスできることをチェックするために使用できます。これを使い始めるには、アプリケーションの`app/Http/Kernel.php`ファイルへ`EnsureFeaturesAreActive`ミドルウェアのエイリアスを追加する必要があります。
 
 ```php
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
@@ -391,7 +392,7 @@ public function boot(): void
 
 機能をチェックすると、Pennantはその結果のメモリ内キャッシュを作成します。`database`ドライバを使っている場合、これは同じ機能フラグを一つのリクエストで再チェックしても、追加のデータベースクエリが発生しないことを意味します。これはまた、その機能がリクエストの間、一貫した結果を持つことを保証します。
 
-メモリ内のキャッシュを手動で消去する必要がある場合は、`Feature`ファサードが提供する`flushCache`メソッドを使用してください。
+メモリ内のキャッシュを手作業で消去する必要がある場合は、`Feature`ファサードが提供する`flushCache`メソッドを使用してください。
 
     Feature::flushCache();
 
@@ -665,7 +666,8 @@ foreach ($users as $user) {
     }
 }
 ```
-データベースドライバを使用していると仮定すると、このコードはループ内のすべてのユーザーに対してデータベースクエリを実行することになり、潜在的に数百のクエリを実行することになります。しかし、Pennantの`load`メソッドを使えば、ユーザやスコープのコレクションの値をEagerロードでき、この潜在的なパフォーマンスのボトルネックを取り除けます。
+
+データベースドライバを使用していると仮定すると、このコードはループ内のすべてのユーザーに対してデータベースクエリを実行することになり、潜在的に数百のクエリを実行することになります。しかし、Pennantの`load`メソッドを使えば、ユーザーやスコープのコレクションの値をEagerロードでき、この潜在的なパフォーマンスのボトルネックを取り除けます。
 
 ```php
 Feature::for($users)->load(['notifications-beta']);

@@ -106,7 +106,7 @@ pecl install swoole
 <a name="openswoole"></a>
 #### Open Swoole
 
-Open Swooleアプリケーションサーバーを使用してLaravel Octaneアプリケーションを提供したい場合、Open Swoole PHP拡張をインストールする必要があります。一般的に、これはPECLを介して行えます。
+Open Swooleアプリケーションサーバを使用してLaravel Octaneアプリケーションを提供したい場合、Open Swoole PHP拡張をインストールする必要があります。一般的に、これはPECLを介して行えます。
 
 ```shell
 pecl install openswoole
