@@ -94,7 +94,7 @@ Sanctum2.xリリースシリーズから3.xへアップグレードする場合�
 <a name="updating-minimum-stability"></a>
 #### 最低安定度
 
-アプリケーションの`composer.json`ファイルの`minimum-stability`設定を`stable`へ更新する必要があります。
+アプリケーションの`composer.json`ファイルの`minimum-stability`設定を`stable`へ更新する必要があります。もしくは、`minimum-stability`のデフォルト値は`stable`なので、アプリケーションの `composer.json`ファイルからこの設定を削除してください。
 
 ```json
 "minimum-stability": "stable",

@@ -1704,6 +1704,7 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 リレーションをEagerロードするだけでなく、Eagerロードクエリへクエリ条件を追加指定したい場合もあります。そのためには、リレーションの配列を`with`メソッドへ渡します。ここでの配列キーはリレーション名であり、配列値はEagerロードクエリへ制約を追加するクロージャです。
 
     use App\Models\User;
+    use Illuminate\Contracts\Database\Eloquent\Builder;
 
     $users = User::with(['posts' => function (Builder $query) {
         $query->where('title', 'like', '%code%');

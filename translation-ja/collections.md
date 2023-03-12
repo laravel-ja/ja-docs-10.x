@@ -114,6 +114,7 @@
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
+[dot](#method-dot)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
 [duplicatesStrict](#method-duplicatesstrict)
@@ -660,6 +661,19 @@
     // true
 
 `doesntContain`メソッドは、項目の値をチェックする際、「緩く」比較します。つまり、整数値を持つ文字列は同じ値の整数値と等しいとみなします。
+
+<a name="method-dot"></a>
+#### `dot()` {.collection-method}
+
+`dot`メソッドは、多次元コレクションを、次元を示す「ドット」記法を用いた、１次元のコレクションにします。
+
+    $collection = collect(['products' => ['desk' => ['price' => 100]]]);
+
+    $flattened = $collection->dot();
+
+    $flattened->all();
+
+    // ['products.desk.price' => 100]
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}
