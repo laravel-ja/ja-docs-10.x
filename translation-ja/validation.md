@@ -2210,6 +2210,7 @@ php artisan make:rule Uppercase
 アプリケーション全体でカスタムルールの機能が１回だけ必要な場合は、ルールオブジェクトの代わりにクロージャを使用できます。クロージャは、属性の名前、属性の値、およびバリデーションが失敗した場合に呼び出す必要がある`$fail`コールバックを受け取ります。
 
     use Illuminate\Support\Facades\Validator;
+    use Closure;
 
     $validator = Validator::make($request->all(), [
         'title' => [

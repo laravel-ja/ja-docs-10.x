@@ -135,6 +135,10 @@ LaravelのFlysystem統合はSFTPでも最適に機能します。ただし、サ
         'privateKey' => env('SFTP_PRIVATE_KEY'),
         'passphrase' => env('SFTP_PASSPHRASE'),
 
+        // Settings for file / directory permissions...
+        'visibility' => 'private', // `private` = 0600, `public` = 0700
+        'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
+
         // オプションのSFTP設定
         // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
         // 'maxTries' => 4,

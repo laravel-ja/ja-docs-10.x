@@ -10,8 +10,6 @@
     - [デフォルトサイトの提供](#serving-a-default-site)
     - [サイトごとのPHPバージョン](#per-site-php-versions)
 - [サイト共有](#sharing-sites)
-    - [Ngrokによるサイト共有](#sharing-sites-via-ngrok)
-    - [Exposeによるサイト共有](#sharing-sites-via-expose)
     - [ローカルネットワーク上のサイト共有](#sharing-sites-on-your-local-network)
 - [サイト限定環境変数](#site-specific-environment-variables)
 - [プロキシサーバ](#proxying-services)
@@ -113,10 +111,10 @@ valet use php@8.1
 valet use php
 ```
 
-プロジェクトのルートに`.valetphprc`ファイルを作成することもできます。`.valetphprc`ファイルには、サイトで使用するPHPバージョンを指定する必要があります。
+プロジェクトのルートに`.valetrc`ファイルを作成することもできます。`.valetrc`ファイルには、サイトで使用するPHPバージョンを指定する必要があります。
 
 ```shell
-php@8.1
+php=php@8.1
 ```
 
 このファイルを作成したら、`valet use`コマンドを実行してください。コマンドはファイルを読み、サイトで優先するPHPバージョンを決めます。
@@ -138,6 +136,19 @@ Valetインストレーションが正しく動作せずに問題が起きた時
 ### Valetのアップグレード
 
 ターミナルで`composer global require laravel/valet`コマンドを実行すると、Valetのインストールを更新できます。アップグレード後、`valet install`コマンドを実行して、Valetが必要に応じて設定ファイルへ追加のアップグレードを行うことを推奨します。
+
+<a name="upgrading-to-valet-4"></a>
+#### Valet4へのアップグレード
+
+Valet3からValet4へアップグレードするときは、Valetのインストールを以下の手順に従い、正しくアップグレードしてください。
+
+<div class="content-list" markdown="1">
+
+- サイトのPHP バージョンをカスタマイズするため、`.valetphprc`ファイルを追加している場合は、各`.valetphprc`ファイルを`.valetrc`へリネームしてください。次に、`.valetrc`ファイルの既存の内容の前に、`php=`を追加します。
+- 新しいドライバシステムの名前空間、拡張子、タイプヒント、戻り値タイプヒントが一致するように、カスタムドライバを更新してください。例としてValetの[SampleValetDriver](https://github.com/laravel/valet/blob/d7787c025e60abc24a5195dc7d4c5c6f2d984339/cli/stubs/SampleValetDriver.php)を参考にするとよいでしょう。
+- PHP7.1～7.4をサイトで使用しているなら、主に使用するバージョンでなくてもPHP8.0以上のバージョンを確実にHomebrewでインストールしてください。Valetが自身のスクリプトの実行に、このバージョンを使用します。
+
+</div>
 
 <a name="serving-sites"></a>
 ## サイト動作
@@ -260,12 +271,17 @@ valet unisolate
 <a name="sharing-sites"></a>
 ## サイト共有
 
-Valetには、ローカルサイトを世界へ公開し共有するコマンドも含まれており、モバイルデバイスでサイトをテストしたり、チームメンバーやクライアントと共有したりする簡単な方法を提供しています。
+Valetは、ローカルサイトを世界へ公開し共有するコマンドも用意しており、モバイルデバイスでサイトをテストしたり、チームメンバーやクライアントと共有したりする簡単な方法を提供しています。
 
-<a name="sharing-sites-via-ngrok"></a>
-### Ngrokを使用した公開
+はじめからValetは、ngrokやExposeを使ったサイトの共有に対応しています。サイトを共有する前に、`share-tool`コマンドを使用し、`ngrok`または`expose`を指定して、Valetの設定を更新する必要があります。
 
-サイトを共有するには、ターミナルでサイトのディレクトリに移動し、Valetの`share`コマンドを実行します。公開URLがクリップボードにコピーされ、ブラウザに直接貼り付けたり、チームと共有したりする準備が整います。
+```shell
+valet share-tool ngrok
+```
+
+選択したツールが、Homebrew（ngrokの場合）やComposer（Exposeの場合）を介して、まだインストールされていない場合、Valetは自動的にインストールするように促します。もちろん、どちらのツールでも、サイトの共有を開始する前に、ngrokもしくはExposeのアカウントを認証する必要があります。
+
+サイトを共有するには、ターミナルでサイトのディレクトリに移動し、Valetの`share`コマンドを実行します。パブリックからアクセス可能なURLがクリップボードにコピーされますので、ブラウザに直接貼り付けたり、チームと共有したりできます。
 
 ```shell
 cd ~/Sites/laravel
@@ -273,23 +289,29 @@ cd ~/Sites/laravel
 valet share
 ```
 
-サイトの共有を停止するには、`Control+C`キーを押してください。Ngrokを使用してサイトを共有するには、[Ngrokアカウントの作成](https://dashboard.ngrok.com/signup)と[認証トークンの設定](https://dashboard.ngrok.com/get-started/your-authtoken)が必要です。
+サイトの共有を停止するには、`Control+C`キーを押してください。
 
-> **Note**
-> `valet share --region=eu`など、追加のNgrokパラメータをshareコマンドに渡すことができます。詳細は、[ngrokのドキュメント](https://ngrok.com/docs)を参照してください。
+> **Warning**
+> カスタムDNSサーバ（`1.1.1.1`など）を使用している場合、ngrok共有が正しく動作しないかもしれません。このような場合は、Macのシステム設定を開き、ネットワーク設定へ行き、詳細設定を開き、DNSタブを開き、最初のDNSサーバとして`127.0.0.1`を追加します。
 
-<a name="sharing-sites-via-expose"></a>
-### Exposeによりサイトを共有する
+<a name="sharing-sites-via-ngrok"></a>
+#### Ngrokを使うサイト共有
 
-[Expose](https://expose.dev)がインストールされている場合は、ターミナルのサイトのディレクトリに移動して「expose」コマンドを実行することで、サイトを共有できます。サポートされている追加のコマンドラインパラメーターについては、[Exposeのドキュメント](https://expose.dev/docs)を参照してください。サイトを共有した後、Exposeは他のデバイスまたはチームメンバー間で使用できる共有可能なURLを表示します。
+ngrokを使用してサイトを共有するには、[ngrokアカウントの作成](https://dashboard.ngrok.com/signup)と[認証トークンの設定](https://dashboard.ngrok.com/get-started/your-authtoken)が必要です。認証トークンを取得したら、そのトークンを使ってValetの設定を更新できます。
 
 ```shell
-cd ~/Sites/laravel
-
-expose
+valet set-ngrok-token YOUR_TOKEN_HERE
 ```
 
-サイトの共有を停止するには、`Control+C`を推してください。
+> **Note**
+> `valet share --region=eu`のように、共有コマンドに追加のngrokパラメータを渡せます。詳しくは、[ngrokのドキュメント](https://ngrok.com/docs)を参照してください。
+
+<a name="sharing-sites-via-expose"></a>
+#### Exposeを使うサイト共有
+
+Exposeを使ってサイトを共有するには、[Exposeアカウントの作成](https://expose.dev/register)と[認証トークンによるExposeへの認証](https://expose.dev/docs/getting-started/getting-your-token)が必要です。
+
+Exposeがサポートしている追加のコマンドラインパラメータに関する情報は、[Exposeのドキュメント](https://expose.dev/docs)を参照してください。
 
 <a name="sharing-sites-on-your-local-network"></a>
 ### ローカルネットワークでのサイト共有
@@ -368,13 +390,8 @@ valet proxies
 
     /**
      * このドライバでリクエストを処理するか決める
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return bool
      */
-    public function serves($sitePath, $siteName, $uri)
+    public function serves(string $sitePath, string $siteName, string $uri): bool
     {
         return is_dir($sitePath.'/wp-admin');
     }
@@ -387,12 +404,9 @@ valet proxies
     /**
      * リクエストが静的なファイルであるかを判定する
      *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
      * @return string|false
      */
-    public function isStaticFile($sitePath, $siteName, $uri)
+    public function isStaticFile(string $sitePath, string $siteName, string $uri)
     {
         if (file_exists($staticFilePath = $sitePath.'/public/'.$uri)) {
             return $staticFilePath;
@@ -411,13 +425,8 @@ valet proxies
 
     /**
      * アプリケーションのフロントコントローラへの絶対パスの取得
-     *
-     * @param  string  $sitePath
-     * @param  string  $siteName
-     * @param  string  $uri
-     * @return string
      */
-    public function frontControllerPath($sitePath, $siteName, $uri)
+    public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
     {
         return $sitePath.'/public/index.php';
     }
@@ -433,26 +442,16 @@ valet proxies
     {
         /**
          * リクエストに対し、このドライバを動作させるかを決める
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return bool
          */
-        public function serves($sitePath, $siteName, $uri)
+        public function serves(string $sitePath, string $siteName, string $uri): bool
         {
             return true;
         }
 
         /**
          * アプリケーションのフロントコントローラに対する完全な解決済みパスを取得する
-         *
-         * @param  string  $sitePath
-         * @param  string  $siteName
-         * @param  string  $uri
-         * @return string
          */
-        public function frontControllerPath($sitePath, $siteName, $uri)
+        public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
         {
             return $sitePath.'/public_html/index.php';
         }
@@ -466,7 +465,9 @@ valet proxies
 コマンド |  説明
 --------------------|-----------------------------------------------------------------------------------
 `valet list` | 全Valetコマンドの一覧を表示します。
-`valet forget` | "park"された（サイト検索の親ディレクトリとして登録されたJ)ディレクトリでこのコマンドを実行し、サイト検索対象のディレクトリリストから外します。
+`valet diagnose` | Valetのデバッグを支援するための診断結果を出力します。
+`valet directory-listing` | ディレクトリ一覧の動作を決定します。デフォルトは "off "で、ディレクトリに対して404ページを表示します。
+`valet forget` | "park"された（サイト検索の親ディレクトリとして登録された）ディレクトリでこのコマンドを実行し、サイト検索対象のディレクトリリストから外します。
 `valet log` | Valetサービスにより書き込まれたログリストを表示します。
 `valet paths` | "park"されたすべてのパスを表示します。
 `valet restart` | Valetデーモンをリスタートします。
@@ -493,10 +494,6 @@ Valetのすべての設定が含まれます。定期的にこのディレクト
 #### `~/.config/valet/Drivers/`
 
 このディレクトリは、Valetのドライバを保存しています。ドライバは、特定のフレームワーク／CMSをどのように提供するかを決めています。
-
-#### `~/.config/valet/Extensions/`
-
-このディレクトリは、カスタムのValet拡張機能／コマンドを保存します。
 
 #### `~/.config/valet/Nginx/`
 

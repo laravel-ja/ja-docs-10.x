@@ -381,7 +381,7 @@ handleメソッドでレート制限を行う代わりに、レート制限を�
         {
             Redis::throttle('key')
                     ->block(0)->allow(1)->every(5)
-                    ->then(function () use (object $job, Closure $next) {
+                    ->then(function () use ($job, $next) {
                         // ロック取得
 
                         $next($job);

@@ -383,21 +383,6 @@ public function boot(): void
 Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
 ```
 
-最後に、モデル上の属性にアクセスしようとしたときに、その属性が実際にデータベースから取得されなかったり、その属性が存在しなかったりした場合に、Eloquentへ例外を投げるように指示することもできます。例えば、Eloquentクエリの`select`節に属性を追加し忘れた場合などに起こり得ます。
-
-```php
-Model::preventAccessingMissingAttributes(! $this->app->isProduction());
-```
-
-<a name="enabling-eloquent-strict-mode"></a>
-#### Eloquent「厳格モード」の有効化
-
-簡単に使えるようにするため、`shouldBeStrict`メソッドを呼び出すだけで、前記で説明した３メソッドをすべて有効にできます。
-
-```php
-Model::shouldBeStrict(! $this->app->isProduction());
-```
-
 <a name="retrieving-models"></a>
 ## モデルの取得
 

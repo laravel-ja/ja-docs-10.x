@@ -428,8 +428,8 @@ php artisan make:resource UserCollection
         }
     ],
     "links":{
-        "first": "http://example.com/pagination?page=1",
-        "last": "http://example.com/pagination?page=1",
+        "first": "http://example.com/users?page=1",
+        "last": "http://example.com/users?page=1",
         "prev": null,
         "next": null
     },
@@ -437,7 +437,7 @@ php artisan make:resource UserCollection
         "current_page": 1,
         "from": 1,
         "last_page": 1,
-        "path": "http://example.com/pagination",
+        "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
         "total": 10
@@ -474,8 +474,8 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
         }
     ],
     "links":{
-        "first": "http://example.com/pagination?page=1",
-        "last": "http://example.com/pagination?page=1",
+        "first": "http://example.com/users?page=1",
+        "last": "http://example.com/users?page=1",
         "prev": null,
         "next": null
     },
@@ -483,13 +483,35 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
         "current_page": 1,
         "from": 1,
         "last_page": 1,
-        "path": "http://example.com/pagination",
+        "path": "http://example.com/users",
         "per_page": 15,
         "to": 10,
         "total": 10
     }
 }
 ```
+
+<a name="customizing-the-pagination-information"></a>
+#### ペジネーション情報のカスタマイズ
+
+レスポンスの`links`や`meta`キーが持つ情報をカスタマイズしたい場合は、リソースに`paginationInformation`メソッドを定義してください。このメソッドは`$paginated`データと、`$default`情報の配列（`links` キーと `meta` キーを含む配列）を引数に受けます。
+
+    /**
+     * リソースのペジネーション情報のカスタマイズ
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array $paginated
+     * @param  array $default
+     * @return array
+     */
+    public function paginationInformation($request, $paginated, $default)
+    {
+        $default['links']['custom'] = 'https://example.com';
+
+        return $default;
+    }
+
+この例では、レスポンスに`links`配列は含まれなくなります。
 
 <a name="conditional-attributes"></a>
 ### 条件付き属性

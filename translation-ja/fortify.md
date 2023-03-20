@@ -222,8 +222,6 @@ Fortify::authenticateThrough(function (Request $request) {
 
 ```php
 use Laravel\Fortify\Contracts\LogoutResponse;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 /**
  * アプリケーションの全サービスの登録
@@ -231,7 +229,7 @@ use Illuminate\Http\Request;
 public function register(): void
 {
     $this->app->instance(LogoutResponse::class, new class implements LogoutResponse {
-        public function toResponse(Request $request): RedirectResponse
+        public function toResponse($request)
         {
             return redirect('/');
         }
