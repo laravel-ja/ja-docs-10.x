@@ -70,7 +70,7 @@ php artisan make:factory PostFactory
 新しいファクトリクラスは、`database/factories`ディレクトリに配置されます。
 
 <a name="factory-and-model-discovery-conventions"></a>
-#### Model & Factory Discovery Conventionsモデルとファクトリの
+#### モデルと対応するファクトリの規約
 
 ファクトリを定義したら、モデルのファクトリインスタンスをインスタンス化するために、`Illuminate\Database\Eloquent\Factories\HasFactory`トレイトが、モデルへ提供しているstaticな`factory`メソッドが使用できます。
 
@@ -95,7 +95,7 @@ php artisan make:factory PostFactory
     class FlightFactory extends Factory
     {
         /**
-         * ファクトリと対応するモデル名前
+         * このファクトリに対応するモデル名
          *
          * @var string
          */
