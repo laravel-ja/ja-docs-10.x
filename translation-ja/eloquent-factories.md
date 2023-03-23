@@ -95,7 +95,7 @@ php artisan make:factory PostFactory
     class FlightFactory extends Factory
     {
         /**
-         * モデルと対応するファクトリの名前
+         * ファクトリと対応するモデル名前
          *
          * @var string
          */
