@@ -260,7 +260,7 @@ Passportが定義するルートをカスタマイズしたい場合もあるで
     Route::group([
         'as' => 'passport.',
         'prefix' => config('passport.path', 'oauth'),
-        'namespace' => 'Laravel\Passport\Http\Controllers',
+        'namespace' => '\Laravel\Passport\Http\Controllers',
     ], function () {
         // Passportのルート…
     });
@@ -445,7 +445,8 @@ php artisan vendor:publish --tag=passport-views
 
         throw_unless(
             strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
+            InvalidArgumentException::class,
+            'Invalid state value.'
         );
 
         $response = Http::asForm()->post('http://passport-app.test/oauth/token', [

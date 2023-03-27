@@ -596,7 +596,7 @@ php artisan migrate:fresh --seed
 <a name="column-method-integer"></a>
 #### `integer()` {.collection-method}
 
-`integer`メソッドは` INTEGER`カラムを作成します。
+`integer`メソッドは`INTEGER`カラムを作成します。
 
     $table->integer('votes');
 
@@ -606,6 +606,8 @@ php artisan migrate:fresh --seed
 `ipAddress`メソッドは`VARCHAR`カラムを作成します。
 
     $table->ipAddress('visitor');
+
+Postgresを使用している場合は、`INET`カラムを作成します。
 
 <a name="column-method-json"></a>
 #### `json()` {.collection-method}

@@ -44,7 +44,7 @@ php artisan make:resource UserCollection
 <a name="concept-overview"></a>
 ## 概論
 
-> **Note**
+> **Note**  
 > これは、リソースとリソースコレクションの概要です。リソースによって提供されるカスタマイズとパワーをより深く理解するために、このドキュメントの他のセクションも読むことを強く推奨します。
 
 リソースを作成するときに利用できるすべてのオプションに飛び込む前に、まずLaravel内でリソースがどのように使用されているかを大まかに見てみましょう。リソースクラスは、JSON構造に変換する必要がある単一のモデルを表します。たとえば、以下は単純な`UserResource`リソースクラスです。
@@ -196,7 +196,7 @@ php artisan make:resource UserCollection
 <a name="writing-resources"></a>
 ## リソースの記述
 
-> **Note**
+> **Note**  
 > [概論](#concept-overview)を読んでいない場合は、このドキュメント読み進める前に一読することを強く推奨します。
 
 本質的に、リソースは単純です。特定のモデルを配列に変換するだけで済みます。したがって、各リソースには、モデルの属性をアプリケーションのルートまたはコントローラから返すことができるAPIフレンドリーな配列に変換する`toArray`メソッドが含まれています。
@@ -261,7 +261,7 @@ php artisan make:resource UserCollection
         ];
     }
 
-> **Note**
+> **Note**  
 > リレーションがすでにロードされている場合にのみリレーションを含めたい場合は、[条件付きリレーション](#conditional-relationships)のドキュメントを確認してください。
 
 <a name="writing-resource-collections"></a>
@@ -379,7 +379,7 @@ php artisan make:resource UserCollection
         }
     }
 
-> **Warning**
+> **Warning**  
 > `withoutWrapping`メソッドは最も外側のレスポンスにのみ影響し、独自のリソースコレクションに手作業で追加した`data`キーは削除しません。
 
 <a name="wrapping-nested-resources"></a>
@@ -510,9 +510,7 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
 
         return $default;
     }
-
-この例では、レスポンスに`links`配列は含まれなくなります。
-
+    
 <a name="conditional-attributes"></a>
 ### 条件付き属性
 
@@ -578,7 +576,7 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
 
 この場合も、指定する条件が`false`の場合、これらの属性は、クライアントに送信される前にリソースレスポンスから削除されます。
 
-> **Warning**
+> **Warning**  
 > `mergeWhen`メソッドは、文字列キーと数値キーが混在する配列内では使用しないでください。さらに、順番に並べられていない数値キーを持つ配列内では使用しないでください。
 
 <a name="conditional-relationships"></a>

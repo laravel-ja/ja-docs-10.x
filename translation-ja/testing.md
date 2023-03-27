@@ -107,9 +107,11 @@ php artisan test --testsuite=Feature --stop-on-failure
 <a name="running-tests-in-parallel"></a>
 ### テストを並列で実行
 
-LaravelとPhpUnitはデフォルトで、単一のプロセス内でテストを順番に実行します。しかし、複数のプロセス間で同時にテストを実行し、テスト時間を大幅に削減できます。これを利用開始するには、最初にアプリケーションの依存パッケージへバージョン`^5.3`以上の`nunomaduro/collision`を確実に含めてください。それから、`test` Artisanコマンドを実行するときに、`--parallel`オプションを指定します。
+LaravelとPhpUnitはデフォルトで、単一のプロセス内でテストを順番に実行します。しかし、複数のプロセス間で同時にテストを実行し、テスト時間を大幅に削減できます。これを利用開始するには、"dev"の依存パッケージとして`brianium/paratest` Composerパッケージを確実にインストールしてください。次に、`test` Artisanコマンドを実行するときに、`--parallel`オプションを指定します。
 
 ```shell
+composer require brianium/paratest --dev
+
 php artisan test --parallel
 ```
 

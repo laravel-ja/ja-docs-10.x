@@ -195,7 +195,7 @@ Http::withUrlParameters([
 <a name="timeout"></a>
 ### タイムアウト
 
-`timeout`メソッドを使用して、レスポンスを待機する最大秒数を指定できます。
+`timeout`メソッドを使用して、レスポンスを待機する最大秒数を指定できます。デフォルトでは、３０秒をすぎるとHTTPクライアントはタイム・アウトします。
 
     $response = Http::timeout(3)->get(/* ... */);
 
