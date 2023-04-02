@@ -214,7 +214,10 @@ Mailableクラスを生成したら、その中身を調べるために開いて
 
 ただし、アプリケーションがすべての電子メールに同じ「送信者」アドレスを使用している場合、生成する各メール可能クラスで`from`メソッドを呼び出すのは面倒です。代わりに、`config/mail.php`設定ファイルでグローバルな「送信者」アドレスを指定できます。このアドレスは、Mailableクラス内で「送信者」アドレスを指定しない場合に使用します。
 
-    'from' => ['address' => 'example@example.com', 'name' => 'App Name'],
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
 
 また、`config/mail.php`設定ファイル内でグローバルな"reply_to"アドレスも定義できます。
 

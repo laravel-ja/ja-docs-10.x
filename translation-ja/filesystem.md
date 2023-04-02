@@ -241,6 +241,10 @@ $disk->put('image.jpg', $content);
 
     $contents = Storage::get('file.jpg');
 
+取得するファイルがJSONを含んでいる場合、`json`メソッドを使用してファイルを取得し、その内容をデコードできます。
+
+    $orders = Storage::json('orders.json');
+
 `exists`メソッドを使用して、ファイルがディスクに存在するかどうかを判定できます。
 
     if (Storage::disk('s3')->exists('file.jpg')) {

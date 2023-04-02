@@ -59,7 +59,7 @@ php artisan schema:dump
 php artisan schema:dump --prune
 ```
 
-このコマンドを実行すると、Laravelはアプリケーションの`database/schema`ディレクトリへ、"schema"ファイルを書き出します。スキーマファイルの名前は、データベース接続に対応します。これで、データベースをマイグレートしようとするときに他のマイグレーションを実行していなければ、まずLaravelは使用しているデータベース接続のスキーマファイルのSQLステートメントを実行します。スキーマファイルのステートメントを実行した後、Laravelはスキーマダンプ以外の、残りのマイグレーションを実行します。
+このコマンドを実行すると、Laravelはアプリケーションの`database/schema`ディレクトリへ、「スキーマ」ファイルを書き出します。スキーマファイルの名前は、データベース接続に対応します。これで、データベースをマイグレーションするとき、他のマイグレーションを実行していなければ、まずLaravelは使用しているデータベース接続のスキーマファイル内のSQLステートメントを実行します。スキーマファイルのSQL文を実行した後、Laravelはスキーマダンプ以外の、残りのマイグレーションを実行します。
 
 アプリケーションのテストで、ローカル開発時に通常使用するものとは異なるデータベース接続を使用する場合、そのデータベース接続を使用してスキーマファイルをダンプし、テストでデータベースを構築できるようにする必要があります。この作業は、ローカル開発で通常使用するデータベース接続をダンプした後に行うとよいでしょう。
 
@@ -966,7 +966,7 @@ Postgresを使用している場合は、`INET`カラムを作成します。
 `->storedAs($expression)`  |  stored generatedカラムを作成（MySQL／PostgreSQL）
 `->unsigned()`  |  INTEGERカラムをUNSIGNEDとして設定（MySQL）
 `->useCurrent()`  |  CURRENT_TIMESTAMPをデフォルト値として使用するようにTIMESTAMPカラムを設定
-`->useCurrentOnUpdate()`  |  レコードが更新されたときにCURRENT_TIMESTAMPを使用するようにTIMESTAMPカラムを設定
+`->useCurrentOnUpdate()`  |  レコードが更新されたときにCURRENT_TIMESTAMPを使用するようにTIMESTAMPカラムを設定（MySQL）
 `->virtualAs($expression)`  |  virtual generatedカラムを作成（MySQL）
 `->generatedAs($expression)`  |  指定のシーケンスオプションで、識別カラムを生成（PostgreSQL）
 `->always()`  |  IDカラムの入力に対するシーケンス値の優先順位を定義（PostgreSQL）

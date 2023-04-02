@@ -351,6 +351,29 @@ public function largestOrder(): HasOne
 > **Warning**
 > PostgreSQLはUUID列に対する`MAX`関数の実行をサポートしていないため、今のところPostgreSQLのUUIDカラムと組み合わせて１対多の関係を使用できません。
 
+<a name="converting-many-relationships-to-has-one-relationships"></a>
+#### "Many"リレーションをHas Oneリレーションへ変換する
+
+`latestOfMany`、`oldestOfMany`、`ofMany`メソッドを使用して単一のモデルを取得するとき、多くの場合、同じモデルに対し予め"has many"リレーションが定義済みです。便利なように、Laravelはリレーションで`one`メソッドを呼び出すことにより、こうしたリレーションを"has one"リレーションへ簡単に変換できます：
+
+```php
+/**
+ * ユーザーの注文の取得
+ */
+public function orders(): HasMany
+{
+    return $this->hasMany(Order::class);
+}
+
+/**
+ * ユーザーの一番価格の高い注文の取得
+ */
+public function largestOrder(): HasOne
+{
+    return $this->orders()->one()->ofMany('price', 'max');
+}
+```
+
 <a name="advanced-has-one-of-many-relationships"></a>
 #### 上級Has One Of Manyリレーション
 
