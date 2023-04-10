@@ -607,6 +607,9 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
 <div class="collection-method-list" markdown="1">
 
+[assertAccepted](#assert-accepted)
+[assertBadRequest](#assert-bad-request)
+[assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
 [assertCookieNotExpired](#assert-cookie-not-expired)
@@ -617,6 +620,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertDownload](#assert-download)
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
+[assertFound](#assert-found)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
 [assertJson](#assert-json)
@@ -633,16 +637,19 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
 [assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
+[assertPaymentRequired](#assert-payment-required)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
+[assertRequestTimeout](#assert-request-timeout)
 [assertSee](#assert-see)
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
@@ -657,8 +664,10 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertTooManyRequests](#assert-too-many-requests)
 [assertUnauthorized](#assert-unauthorized)
 [assertUnprocessable](#assert-unprocessable)
+[assertUnsupportedMediaType](#assert-unsupported-media-type)
 [assertValid](#assert-valid)
 [assertInvalid](#assert-invalid)
 [assertViewHas](#assert-view-has)
@@ -667,6 +676,27 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertViewMissing](#assert-view-missing)
 
 </div>
+
+<a name="assert-bad-request"></a>
+#### assertBadRequest
+
+レスポンスのHTTPステータスコードが、Bad Request（400）であることを宣言します。
+
+    $response->assertBadRequest();
+
+<a name="assert-accepted"></a>
+#### assertAccepted
+
+レスポンスのHTTPステータスコードが、accepted（202）であることを宣言します。
+
+    $response->assertAccepted();
+
+<a name="assert-conflict"></a>
+#### assertConflict
+
+レスポンスのHTTPステータスコードが、conflict（409）であることを宣言します。
+
+    $response->assertConflict();
 
 <a name="assert-cookie"></a>
 #### assertCookie
@@ -741,6 +771,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 レスポンスにForbidden（403）HTTPステータスコードがあることを宣言します。
 
     $response->assertForbidden();
+
+<a name="assert-found"></a>
+#### assertFound
+
+レスポンスのHTTPステータスコードが、found（302）であることを宣言します。
+
+    $response->assertFound();
 
 <a name="assert-header"></a>
 #### assertHeader
@@ -942,6 +979,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
+<a name="assert-moved-permanently"></a>
+#### assertMovedPermanently
+
+レスポンスのHTTPステータスコードが、moved permanently（301）であることを宣言します。
+
+    $response->assertMovedPermanently();
+
 <a name="assert-location"></a>
 #### assertLocation
 
@@ -984,6 +1028,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertOk();
 
+<a name="assert-payment-required"></a>
+#### assertPaymentRequired
+
+レスポンスのHTTPステータスコードが、payment required（402）であることを宣言します。
+
+    $response->assertPaymentRequired();
+
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
@@ -1001,23 +1052,30 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
 
-レスポンスが指定文字列を含むURIへリダイレクトされることを宣言する。
+レスポンスが指定文字列を含むURIへリダイレクトされることを宣言します。
 
     $response->assertRedirectContains($string);
 
 <a name="assert-redirect-to-route"></a>
 #### assertRedirectToRoute
 
-レスポンスが指定[名前付きルート](/docs/{{version}}/routing#named-routes)へリダイレクトすることを宣言する。
+レスポンスが指定[名前付きルート](/docs/{{version}}/routing#named-routes)へリダイレクトすることを宣言します。
 
-    $response->assertRedirectToRoute($name = null, $parameters = []);
+    $response->assertRedirectToRoute($name, $parameters = []);
 
 <a name="assert-redirect-to-signed-route"></a>
 #### assertRedirectToSignedRoute
 
-レスポンスが指定[署名付きルート](/docs/{{version}}/urls#signed-urls)へリダイレクトすることを宣言する。
+レスポンスが指定[署名付きルート](/docs/{{version}}/urls#signed-urls)へリダイレクトすることを宣言します。
 
     $response->assertRedirectToSignedRoute($name = null, $parameters = []);
+
+<a name="assert-request-timeout"></a>
+#### assertRequestTimeout
+
+レスポンスのHTTPステータスコードが、request timeout（408）であることを宣言します。
+
+    $response->assertRequestTimeout();
 
 <a name="assert-see"></a>
 #### assertSee
@@ -1154,6 +1212,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertSuccessful();
 
+<a name="assert-too-many-requests"></a>
+#### assertTooManyRequests
+
+レスポンスのHTTPステータスコードが、too many requests（429）であることを宣言します。
+
+    $response->assertTooManyRequests();
+
 <a name="assert-unauthorized"></a>
 #### assertUnauthorized
 
@@ -1167,6 +1232,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 レスポンスに未処理のエンティティ(422)HTTPステータスコードがあることを宣言します。
 
     $response->assertUnprocessable();
+
+<a name="assert-unsupported-media-type"></a>
+#### assertUnsupportedMediaType
+
+レスポンスのHTTPステータスコードが、unsupported media type（415）であることを宣言します。
+
+    $response->assertUnsupportedMediaType();
 
 <a name="assert-valid"></a>
 #### assertValid

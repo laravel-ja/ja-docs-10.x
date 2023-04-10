@@ -164,6 +164,15 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
         "select count(case when food = 'burger' then 1 end) as burgers from menu"
     );
 
+<a name="selecting-multiple-result-sets"></a>
+#### 複数のクエリ結果セットのセレクト
+
+アプリケーションが複数の結果セットを返すストアドプロシージャを呼び出す場合、`selectResultSets`メソッドを使用して、返される全ての結果セットを取得できます：
+
+    [$options, $notifications] = DB::selectResultSets(
+        "CALL get_user_options_and_notifications(?)", $request->user()->id
+    );
+
 <a name="using-named-bindings"></a>
 #### 名前付きバインディングの使用
 

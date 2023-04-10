@@ -62,6 +62,7 @@
     - [サブスクリプションインボイスのプレビュー](#previewing-subscription-invoices)
     - [インボイスＰＤＦの生成](#generating-invoice-pdfs)
 - [支払い失敗の処理](#handling-failed-payments)
+    - [支払いの確認](#confirming-payments)
 - [強力な顧客認証（ＳＣＡ）](#strong-customer-authentication)
     - [追加の確認が必要な支払い](#payments-requiring-additional-confirmation)
     - [オフセッション支払い通知](#off-session-payment-notifications)
@@ -2026,6 +2027,17 @@ Checkoutは、顧客の課税IDの収集もサポートしています。チェ�
             // ...
         }
     }
+
+<a name="confirming-payments"></a>
+### 支払いの確認
+
+いくつかの支払い方法は、支払いを確認するための追加データを必要とします。例えば、SEPA（単一ユーロ決済圏）の支払いメソッドは、支払いプロセス中に追加で「委任状(mandate)」データが必要です。`withPaymentConfirmationOptions`メソッドを使用して、このデータをCashierへ指定できます：
+
+    $subscription->withPaymentConfirmationOptions([
+        'mandate_data' => '...',
+    ])->swap('price_xxx');
+
+[Stripe APドキュメント](https://stripe.com/docs/api/payment_intents/confirm)を参照すれば、支払い確認を行うときに受取れる、すべてのオプションを確認できます。
 
 <a name="strong-customer-authentication"></a>
 ## 強力な顧客認証（ＳＣＡ）

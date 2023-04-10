@@ -26,7 +26,6 @@
     - [ソフトデリート](#soft-deleting)
     - [エンジンの検索のカスタマイズ](#customizing-engine-searches)
 - [カスタムエンジン](#custom-engines)
-- [ビルダマクロ](#builder-macros)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -701,30 +700,3 @@ $orders = Order::search('Star Trek')
 エンジンを登録したら、アプリケーションの`config/scout.php`設定ファイルでデフォルトのスカウト`driver`として指定できます。
 
     'driver' => 'mysql',
-
-<a name="builder-macros"></a>
-## ビルダマクロ
-
-カスタムのScout検索ビルダメソッドを定義する場合は、`Laravel\Scout\Builder`クラスで`macro`メソッドが使用できます。通常、「マクロ」は[サービスプロバイダ](/docs/{{version}}/provider)の`boot`メソッド内で定義する必要があります。
-
-    use Illuminate\Support\Facades\Response;
-    use Illuminate\Support\ServiceProvider;
-    use Laravel\Scout\Builder;
-
-    /**
-     * 全アプリケーションサービスの初期起動処理
-     */
-    public function boot(): void
-    {
-        Builder::macro('count', function () {
-            return $this->engine->getTotalCount(
-                $this->engine()->search($this)
-            );
-        });
-    }
-
-`macro`関数は、最初の引数にマクロ名、２番目の引数にクロージャを取ります。マクロのクロージャは、`Laravel\Scout\Builder`実装からマクロ名を呼び出すときに実行されます。
-
-    use App\Models\Order;
-
-    Order::search('Star Trek')->count();

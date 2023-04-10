@@ -3,6 +3,7 @@
 - [イントロダクション](#introduction)
 - [実行成功／失敗のアサート](#success-failure-expectations)
 - [入力/出力の期待値](#input-output-expectations)
+- [コンソールイベント](#console-events)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -88,3 +89,22 @@ Laravelで`expectsQuestion`メソッドを使用すれば、コンソールコ�
             [1, 'taylor@example.com'],
             [2, 'abigail@example.com'],
         ]);
+
+<a name="console-events"></a>
+## コンソールイベント
+
+デフォルトでは、アプリケーションのテスト実行中は、`Illuminate\Console\Events\CommandStarting`と`Illuminate\Console\Events\CommandFinished`はデフォルトでディスパッチしません。しかし、テストクラスへ`Illuminate\Foundation\Testing\WithConsoleEvents`トレイトを追加すれば、これらのイベントを有効にできます：
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use Illuminate\Foundation\Testing\WithConsoleEvents;
+    use Tests\TestCase;
+
+    class ConsoleEventTest extends TestCase
+    {
+        use WithConsoleEvents;
+
+        // ...
+    }

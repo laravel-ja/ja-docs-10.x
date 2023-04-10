@@ -1848,6 +1848,10 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
     // Laravel 9.x
 
+`replace`メソッドは、`caseSensitive`引数も指定できます。デフォルトで`replace`メソッドは、大・小文字を区別します。
+
+    Str::replace('Framework', 'Laravel', caseSensitive: false);
+
 <a name="method-str-replace-array"></a>
 #### `Str::replaceArray()` {.collection-method}
 
@@ -2876,6 +2880,12 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
     $replaced = Str::of('Laravel 6.x')->replace('6.x', '7.x');
 
     // Laravel 7.x
+
+`replace`メソッドは、`caseSensitive`引数も指定できます。デフォルトで`replace`メソッドは、大・小文字を区別します。
+
+    $replaced = Str::of('macOS 13.x')->replace(
+        'macOS', 'iOS', caseSensitive: false
+    );
 
 <a name="method-fluent-str-replace-array"></a>
 #### `replaceArray` {.collection-method}
