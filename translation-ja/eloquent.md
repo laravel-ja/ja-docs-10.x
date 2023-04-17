@@ -1170,12 +1170,19 @@ php artisan model:prune --pretend
 
 グローバルスコープを使用すると、特定のモデルのすべてのクエリに制約を追加できます。Laravel独自の[ソフトデリート](#soft-deleting)機能は、グローバルスコープを利用してデータベースから「削除していない」モデルのみを取得します。独自のグローバルスコープを作成すれば、指定したモデルですべてのクエリが同じ制約を受けるようにする、便利で簡単な方法が利用できます。
 
+<a name="generating-scopes"></a>
+#### スコープの生成
+
+新しいグローバルスコープを生成するには、`make:scope` Artisanコマンドを呼び出してください。生成したスコープは、アプリケーションの`app/Models/Scopes`ディレクトリへ設置します。
+
+```shell
+php artisan make:scope AncientScope
+```
+
 <a name="writing-global-scopes"></a>
 #### グローバルスコープの作成
 
-グローバルスコープの作成は簡単です。まず、`Illuminate\Database\Eloquent\Scope`インターフェイスの実装クラスを定義します。Laravelには、スコープクラスを配置する決まった場所がないため、このクラスは任意のディレクトリへ自由に配置できます。
-
-`Scope`インターフェイスでは、`apply`という１つのメソッドを実装する必要があります。`apply`メソッドは、必要に応じて`where`制約または他のタイプの句をクエリに追加できます。
+グローバルスコープを書くのは簡単です。まず、`make:scope`コマンドを使い`Illuminate\Database\Eloquent\Scope`インターフェイスを実装したクラスを生成します。`Scope`インターフェイスは、`apply`メソッド１つの実装を求めています。必要に応じ`apply`メソッドへ、`where`制約や他のタイプの句をクエリへ追加してください。
 
     <?php
 

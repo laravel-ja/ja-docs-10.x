@@ -654,6 +654,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertSeeInOrder](#assert-see-in-order)
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
+[assertServerError](#assert-server-error)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1104,6 +1105,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 指定する文字列がレスポンステキスト内に順番に含まれていることを宣言します。このアサートは、２番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。アサートが作成される前に、レスポンスの内容が`strip_tags`PHP関数に渡されます。
 
     $response->assertSeeTextInOrder(array $values, $escaped = true);
+
+<a name="assert-server-error"></a>
+#### assertServerError
+
+レスポンスがサーバエラー（500以上、600より小さい）のHTTPステータスコードであることを宣言します。
+
+    $response->assertServerError();
 
 <a name="assert-session-has"></a>
 #### assertSessionHas

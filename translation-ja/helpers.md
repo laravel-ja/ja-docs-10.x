@@ -305,6 +305,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [decrypt](#method-decrypt)
 [dd](#method-dd)
 [dispatch](#method-dispatch)
+[dispatch_sync](#method-dispatch-sync)
 [dump](#method-dump)
 [encrypt](#method-encrypt)
 [env](#method-env)
@@ -3710,6 +3711,13 @@ Str::of('Hello, world!')->wordCount(); // 2
 `dispatch`関数は、指定した[ジョブ](/docs/{{version}}/queues#creating-jobs)をLaravelの[ジョブキュー](/docs/{{version}}/queues)へ投入します。
 
     dispatch(new App\Jobs\SendEmails);
+
+<a name="method-dispatch-sync"></a>
+#### `dispatch_sync()` {.collection-method}
+
+dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{version}}/queues#synchronous-dispatching)キューへ投入します。
+
+    dispatch_sync(new App\Jobs\SendEmails);
 
 <a name="method-dump"></a>
 #### `dump()` {.collection-method}

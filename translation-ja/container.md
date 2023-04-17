@@ -343,6 +343,12 @@ Laravelサービスコンテナを深く理解することは、強力で大規�
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
 
+`bound`メソッドは、クラスやインターフェイスをコンテナ内で明示的にバインドしているかを判定するために使用します。
+
+    if ($this->app->bound(Transistor::class)) {
+        // ...
+    }
+
 サービスプロバイダの外部で、`$app`変数にアクセスできないコードの場所では、`App`[ファサード](/docs/{{version}}/facades)、`app`[ヘルパ](/docs/{{version}}/helpers#method-app)を使用してコンテナからクラスインスタンスを依存解決します。
 
     use App\Services\Transistor;

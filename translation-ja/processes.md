@@ -4,6 +4,7 @@
 - [プロセスの起動](#invoking-processes)
     - [プロセスのオプション](#process-options)
     - [プロセス出力](#process-output)
+    - [パイプライン](#process-pipelines)
 - [非同期プロセス](#asynchronous-processes)
     - [プロセスIDとシグナル](#process-ids-and-signals)
     - [非同期プロセス出力](#asynchronous-process-output)
@@ -170,6 +171,47 @@ if (Process::run('ls -la')->seeInOutput('laravel')) {
 use Illuminate\Support\Facades\Process;
 
 $result = Process::quietly()->run('bash import.sh');
+```
+
+<a name="process-pipelines"></a>
+### パイプライン
+
+あるプロセスの出力を別のプロセスの入力にしたい場合があると思います。これはよく、あるプロセスの出力を別のプロセスへ"パイプ"すると呼んでいます。`Process`ファサードが提供する、`pipe`メソッドで、これを簡単に実現できます。`pipe`メソッドは、パイプラインで接続したプロセスを同時に実行し、パイプラインの最後のプロセスの結果を返します。
+
+```php
+use Illuminate\Process\Pipe;
+use Illuminate\Support\Facades\Process;
+
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+});
+
+if ($result->successful()) {
+    // ...
+}
+```
+
+`pipe`メソッドの第２引数へクロージャを渡すと、プロセスの出力をリアルタイムに収集できます。クロージャは２引数を取ります。出力の「タイプ」（`stdout`か`stderr`）と、出力文字列そのものです：
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->command('cat example.txt');
+    $pipe->command('grep -i "laravel"');
+}, function (string $type, string $output) {
+    echo $output;
+});
+```
+
+Laravelでは、パイプライン内の各プロセスに、`as`メソッドで文字列キーを割り当てることもできます。このキーは、`pipe`メソッドへ指定する出力クロージャにも渡され、出力がどのプロセスに属しているかを判定できます：
+
+```php
+$result = Process::pipe(function (Pipe $pipe) {
+    $pipe->as('first')->command('cat example.txt');
+    $pipe->as('second')->command('grep -i "laravel"');
+})->start(function (string $type, string $output, string $key) {
+    // …
+});
 ```
 
 <a name="asynchronous-processes"></a>

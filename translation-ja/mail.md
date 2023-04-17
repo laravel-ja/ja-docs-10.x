@@ -35,7 +35,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-メール送信を複雑にする必要はありません。Laravelは、ポピュラーな[Symfony Mailer](https://symfony.com/doc/6.0/mailer.html)コンポーネントによる、クリーンでシンプルなメールAPIを提供しています。LaravelとSymfony Mailerは、SMTP、Mailgun、Postmark、Amazon SES、`sendmail`経由でメールを送信するドライバを提供しており、ローカルまたはクラウドベースのサービスを通じて、すぐにメール送信を開始できます。
+メール送信を複雑にする必要はありません。Laravelは、ポピュラーな[Symfony Mailer](https://symfony.com/doc/6.2/mailer.html)コンポーネントによる、クリーンでシンプルなメールAPIを提供しています。LaravelとSymfony Mailerは、SMTP、Mailgun、Postmark、Amazon SES、`sendmail`経由でメールを送信するドライバを提供しており、ローカルまたはクラウドベースのサービスを通じて、すぐにメール送信を開始できます。
 
 <a name="configuration"></a>
 ### 設定

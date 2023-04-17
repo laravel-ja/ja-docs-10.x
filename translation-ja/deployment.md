@@ -6,11 +6,12 @@
     - [Nginx](#nginx)
 - [最適化](#optimization)
     - [オートローダー最適化](#autoloader-optimization)
-    - [設定ロードの最適化](#optimizing-configuration-loading)
-    - [ルートロードの最適化](#optimizing-route-loading)
-    - [ビューロードの最適化](#optimizing-view-loading)
+    - [設定のキャッシュ](#optimizing-configuration-loading)
+    - [イベントのキャッシュ](#caching-events)
+    - [ルートのキャッシュ](#optimizing-route-loading)
+    - [ビューのキャッシュ](#optimizing-view-loading)
 - [デバッグモード](#debug-mode)
-- [Forge／Vaporによるデプロイ](#deploying-with-forge-or-vapor)
+- [Forge／Vaporを利用する簡単なデプロイ](#deploying-with-forge-or-vapor)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -102,7 +103,7 @@ composer install --optimize-autoloader --no-dev
 > オートローダを最適化することに加え、プロジェクトのソースコントロールリポジトリへ、`composer.lock`ファイルをいつも確実に含めましょう。`composer.lock`ファイルが存在すると、プロジェクトの依存パッケージのインストールが、より早くなります。
 
 <a name="optimizing-configuration-loading"></a>
-### 設定ローディングの最適化
+### 設定のキャッシュ
 
 アプリケーションをプロダクションへデプロイする場合、デプロイプロセスの中で、確実に`config:cache` Artisanコマンドを実行してください。
 
@@ -115,8 +116,17 @@ php artisan config:cache
 > **Warning**
 > 開発時に`config:cache`コマンドを実行する場合は、設定ファイルの中だけで、`env`関数を呼び出していることを確認してください。設定ファイルがキャッシュされてしまうと、`.env`ファイルはロードされなくなり、`.env`変数に対する`env`関数の呼び出し結果はすべて`null`になります。
 
+<a name="caching-events"></a>
+### イベントのキャッシュ
+
+アプリケーションで[イベントディスカバリー](/docs/{{version}}/events#event-discovery)を利用している場合は、アプリケーションのイベントとリスナのマッピングをデプロイプロセス中でキャッシュするべきです。これは、デプロイ中に、`event:cache` Artisanコマンドを呼び出せば実行できます。
+
+```shell
+php artisan event:cache
+```
+
 <a name="optimizing-route-loading"></a>
-### ルートロードの最適化
+### ルートのキャッシュ
 
 多くのルートを持つ大きなアプリケーションを構築した場合、デプロイプロセス中に、`route:cache` Artisanコマンドを確実に実行すべきでしょう。
 
@@ -127,7 +137,7 @@ php artisan route:cache
 このコマンドはキャッシュファイルの中の、一つのメソッド呼び出しへ全ルート登録をまとめるため、数百のルートを登録する場合、ルート登録のパフォーマンスを向上します。
 
 <a name="optimizing-view-loading"></a>
-### ビューロードの最適化
+### ビューのキャッシュ
 
 実機環境へアプリケーションをデプロイする場合は、その手順の中で`view:cache` Artisanコマンドを実行すべきでしょう。
 
@@ -145,7 +155,7 @@ config/app.php設定ファイルのデバッグオプションは、エラーに
 **実稼働環境下では、この値は常に`false`である必要があります。本番環境で`APP_DEBUG`変数が`true`に設定されていると、機密性の高い設定値がアプリケーションのエンドユーザーに公開されるリスクがあります。**
 
 <a name="deploying-with-forge-or-vapor"></a>
-## Forge／Vaporによるデプロイ
+## Forge／Vaporを利用する簡単なデプロイ
 
 <a name="laravel-forge"></a>
 #### Laravel Forge
