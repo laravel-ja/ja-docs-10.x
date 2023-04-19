@@ -803,7 +803,7 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
 <a name="delayed-message-queueing"></a>
 #### 遅延メッセージキュー
 
-キューに投入した電子メールメッセージの配信を遅らせたい場合は、`later`メソッドを使用します。`later`メソッドは最初の引数にメッセージの送信時期を示す`DateTime`インスタンスを取ります。。
+キューに投入した電子メールメッセージの配信を遅らせたい場合は、`later`メソッドを使用します。`later`メソッドは最初の引数にメッセージの送信時期を示す`DateTime`インスタンスを取ります。
 
     Mail::to($request->user())
         ->cc($moreUsers)

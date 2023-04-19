@@ -110,7 +110,7 @@ Laravelをバックエンドで利用するシングルページアプリケー�
 
 パスポートは、アプリケーションがOAuth2仕様によって提供されるすべての機能を絶対に必要とする場合に選択できます。
 
-また、すぐに始めたい場合はLaravelの人気のある認証スタックと組み込みの認証サービス、LaravelSanctumをあらかじめ使用し、新しいLaravelアプリケーションをすばやく開始する方法として、[Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze)をおすすめします。。
+また、すぐに始めたい場合はLaravelの人気のある認証スタックと組み込みの認証サービス、LaravelSanctumをあらかじめ使用し、新しいLaravelアプリケーションをすばやく開始する方法として、[Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze)をおすすめします。
 
 <a name="authentication-quickstart"></a>
 ## 認証クイックスタート
