@@ -498,7 +498,7 @@ Switchステートメントは、`@switch`、`@case`、`@break`、`@default`、`
         @readonly($user->isNotAdmin()) />
 ```
 
-加えて、`@required`ディレクティブは、指定要素が"required"であることを表すために使用します。。
+加えて、`@required`ディレクティブは、指定要素が"required"であることを表すために使用します。
 
 ```blade
 <input type="text"
