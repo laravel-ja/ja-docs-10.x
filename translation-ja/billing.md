@@ -6,7 +6,7 @@
     - [データベースマイグレーション](#database-migrations)
 - [設定](#configuration)
     - [Billableモデル](#billable-model)
-    - [ＡＰＩキー](#api-keys)
+    - [APIキー](#api-keys)
     - [通貨設定](#currency-configuration)
     - [税設定](#tax-configuration)
     - [ログ](#logging)

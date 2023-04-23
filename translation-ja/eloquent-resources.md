@@ -1,4 +1,4 @@
-# Eloquent：ＡＰＩリソース
+# Eloquent：APIリソース
 
 - [イントロダクション](#introduction)
 - [リソースの生成](#generating-resources)
@@ -656,7 +656,7 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
         ];
     }
 
-リレーションが[カスタム中間テーブルモデル](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models)を使用している場合は、`whenPivotLoaded`メソッドへの最初の引数に中間テーブルモデルのインスタンスを渡すことができます。:
+リレーションが[カスタム中間テーブルモデル](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models)を使用している場合は、`whenPivotLoaded`メソッドへの最初の引数に中間テーブルモデルのインスタンスを渡すことができます。
 
     'expires_at' => $this->whenPivotLoaded(new Membership, function () {
         return $this->pivot->expires_at;

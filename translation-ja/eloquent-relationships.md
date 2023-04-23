@@ -787,7 +787,7 @@ return $this->throughEnvironments()->hasDeployments();
 <a name="custom-pivot-models-and-incrementing-ids"></a>
 #### カスタムピボットモデルと増分ID
 
-カスタムピボットモデルを使用する多対多の関係を定義し、そのピボットモデルに自動増分の主キーがある場合は、カスタムピボットモデルクラスで`incrementing`プロパティを確実に`true`に設定指定してください。
+カスタムピボットモデルを使用する多対多の関係を定義し、そのピボットモデルに自動増分の主キーがある場合は、カスタムピボットモデルクラスで`incrementing`プロパティを確実に`true`に設定してください。
 
     /**
      * IDの自動増分を指定する
