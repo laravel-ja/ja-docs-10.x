@@ -2741,7 +2741,7 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 
     // true
 
-    $result = Str::of('laravel')->match('/foo (.*)/');
+    $result = Str::of('laravel')->isMatch('/foo (.*)/');
 
     // false
 

@@ -328,6 +328,9 @@ Redisキャッシュドライバを使用しているときに、古いキャッ
         $table->integer('expiration');
     });
 
+> **Note**
+> `cache:table` Artisanコマンドを使用し、データベースドライバのキャッシュテーブルを作成した場合、作成したマイグレーションには、あらかじめ`cache_locks`テーブルの定義が含まれています。
+
 <a name="managing-locks"></a>
 ### ロック管理
 

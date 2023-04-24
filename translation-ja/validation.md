@@ -18,7 +18,7 @@
     - [自動リダイレクト](#automatic-redirection)
     - [名前付きエラーバッグ](#named-error-bags)
     - [エラーメッセージのカスタマイズ](#manual-customizing-the-error-messages)
-    - [バリデーション後フック](#after-validation-hook)
+    - [追加バリデーションの実行](#performing-additional-validation)
 - [バリデーション済み入力の利用](#working-with-validated-input)
 - [エラーメッセージ操作](#working-with-error-messages)
     - [言語ファイルでのカスタムメッセージの指定](#specifying-custom-messages-in-language-files)
@@ -348,28 +348,56 @@ php artisan make:request StorePostRequest
 
 バリデーションが失敗した場合、リダイレクトレスポンスを生成し、ユーザーを直前のページへ送り返します。エラーもセッ​​ションへ一時保存し、表示できるようにします。リクエストがXHRリクエストの場合、422ステータスコードで、[バリデーションエラーのJSON表現を含むHTTPレスポンス](#validation-error-response-format)がユーザーに返されます。
 
-<a name="adding-after-hooks-to-form-requests"></a>
-#### フォームリクエストへのAfterフックを追加
+<a name="performing-additional-validation-on-form-requests"></a>
+#### 追加バリデーションの実行
 
-フォームリクエストで、バリデーション「後」のフック追加する場合は、`withValidator`メソッドを使用してください。このメソッドは完全にインスタンス化されたバリデータを受け取り、バリデーションルールが実際に評価される前に、どのメソッドでも呼び出せるようにします。
+最初のバリデーションが完了した後に、追加のバリデーションを実行する必要がある場合があります。この場合、フォームリクエストの`after`メソッドを使用します。
+
+`after`メソッドは、バリデーションが完了した後に呼び出すCallableやクロージャの配列を返す必要があります。指定Callablesは、`Illuminate\Validation\Validator`インスタンスを受け取るので、必要に応じ追加のエラーメッセージを表示できます。
 
     use Illuminate\Validation\Validator;
 
     /**
-     * バリデータインスタンスの設定
+     * リクエストに対する「追加」バリデーションCallableの取得
      */
-    public function withValidator(Validator $validator): void
+    public function after(): array
     {
-        $validator->after(function (Validator $validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
+        return [
+            function (Validator $validator) {
+                if ($this->somethingElseIsInvalid()) {
+                    $validator->errors()->add(
+                        'field',
+                        'Something is wrong with this field!'
+                    );
+                }
             }
-        });
+        ];
     }
 
+前述のとおり、`after`メソッドが返す配列には、呼び出し可能なクラスも含まれます。そうしたクラスの`__invoke`メソッドは、`Illuminate\Validation\Validator`インスタンスを受け取ります。
+
+```php
+use App\Validation\ValidateShippingTime;
+use App\Validation\ValidateUserStatus;
+use Illuminate\Validation\Validator;
+
+/**
+ * リクエストに対する「追加」バリデーションCallableの取得
+ */
+public function after(): array
+{
+    return [
+        new ValidateUserStatus,
+        new ValidateShippingTime,
+        function (Validator $validator) {
+            //
+        }
+    ];
+}
+```
 
 <a name="request-stopping-on-first-validation-rule-failure"></a>
-#### 最初のバリデーション失敗属性で停止
+#### バリデーションの最初の失敗で停止
 
 リクエストクラスに`stopOnFirstFailure`プロパティを追加することで、バリデーションの失敗が起きてすぐに、すべての属性のバリデーションを停止する必要があることをバリデータへ指示できます。
 
@@ -628,17 +656,16 @@ Laravelの組み込みエラーメッセージの多くは、バリデーショ�
         'email' => 'email address',
     ]);
 
-<a name="after-validation-hook"></a>
-### バリデーション後のフック
+<a name="performing-additional-validation"></a>
+### 追加バリデーションの実行
 
-バリデーションが完了した後に実行するコールバックを指定することもできます。これにより、追加のバリデーションを簡単に実行し、メッセージコレクションにエラーメッセージを追加することもできます。利用するには、バリデータインスタンスで`after`メソッドを呼び出します。
+最初のバリデーションが完了した後に、追加のバリデーションを実行する必要がある場合があります。バリデータの`after`メソッドで実現可能です。`after`メソッドは、バリデーションが完了した後に呼び出すCallableやクロージャの配列を引数に取ります。指定Callablesは、`Illuminate\Validation\Validator`インスタンスを受け取るので、必要に応じ追加のエラーメッセージを表示できます。
 
-    use Illuminate\Support\Facades;
-    use Illuminate\Validation\Validator;
+    use Illuminate\Support\Facades\Validator;
 
-    $validator = Facades\Validator::make(/* ... */);
+    $validator = Validator::make(/* ... */);
 
-    $validator->after(function (Validator $validator) {
+    $validator->after(function ($validator) {
         if ($this->somethingElseIsInvalid()) {
             $validator->errors()->add(
                 'field', 'Something is wrong with this field!'
@@ -649,6 +676,21 @@ Laravelの組み込みエラーメッセージの多くは、バリデーショ�
     if ($validator->fails()) {
         // ...
     }
+
+前述のとおり、`after`メソッドは、呼び出し可能な配列を引数に取ります。「バリデーション後」のロジックが 実行可能なクラスへカプセル化されている場合は特に便利です。そのクラスは`__invoke`メソッドで、`Illuminate\Validation\Validator`インスタンスを受け取ります。
+
+```php
+use App\Validation\ValidateShippingTime;
+use App\Validation\ValidateUserStatus;
+
+$validator->after([
+    new ValidateUserStatus,
+    new ValidateShippingTime,
+    function ($validator) {
+        // ...
+    },
+]);
+```
 
 <a name="working-with-validated-input"></a>
 ## バリデーション済み入力の利用
