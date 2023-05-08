@@ -22,26 +22,28 @@
 
 Laravel provides a very fluent API for making HTTP requests to your application and examining the responses. For example, take a look at the feature test defined below:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+     * A basic test example.
+     */
+    public function test_the_application_returns_a_successful_response(): void
     {
-        /**
-         * A basic test example.
-         */
-        public function test_a_basic_request(): void
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->assertStatus(200);
-        }
+        $response->assertStatus(200);
     }
+}
+```
 
 The `get` method makes a `GET` request into the application, while the `assertStatus` method asserts that the returned response should have the given HTTP status code. In addition to this simple assertion, Laravel also contains a variety of assertions for inspecting the response headers, content, JSON structure, and more.
 
@@ -621,8 +623,10 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
+[assertGone](#assert-gone)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
+[assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
@@ -655,6 +659,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
+[assertServiceUnavailable](#assert-server-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -780,6 +785,13 @@ Assert that the response has a found (302) HTTP status code:
 
     $response->assertFound();
 
+<a name="assert-gone"></a>
+#### assertGone
+
+Assert that the response has a gone (410) HTTP status code:
+
+    $response->assertGone();
+
 <a name="assert-header"></a>
 #### assertHeader
 
@@ -793,6 +805,13 @@ Assert that the given header and value is present on the response:
 Assert that the given header is not present on the response:
 
     $response->assertHeaderMissing($headerName);
+
+<a name="assert-internal-server-error"></a>
+#### assertInternalServerError
+
+Assert that the response has an "Internal Server Error" (500) HTTP status code:
+
+    $response->assertInternalServerError();
 
 <a name="assert-json"></a>
 #### assertJson
@@ -1048,7 +1067,7 @@ Assert that the response contains the given unencrypted cookie:
 
 Assert that the response is a redirect to the given URI:
 
-    $response->assertRedirect($uri);
+    $response->assertRedirect($uri = null);
 
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
@@ -1113,6 +1132,13 @@ Assert that the response has a server error (>= 500 , < 600) HTTP status code:
 
     $response->assertServerError();
 
+<a name="assert-server-unavailable"></a>
+#### assertServiceUnavailable
+
+Assert that the response has a "Service Unavailable" (503) HTTP status code:
+
+    $response->assertServiceUnavailable();
+
 <a name="assert-session-has"></a>
 #### assertSessionHas
 
@@ -1159,7 +1185,7 @@ For example, if your application's session contains `name` and `status` keys, yo
 Assert that the session contains an error for the given `$keys`. If `$keys` is an associative array, assert that the session contains a specific error message (value) for each field (key). This method should be used when testing routes that flash validation errors to the session instead of returning them as a JSON structure:
 
     $response->assertSessionHasErrors(
-        array $keys, $format = null, $errorBag = 'default'
+        array $keys = [], $format = null, $errorBag = 'default'
     );
 
 For example, to assert that the `name` and `email` fields have validation error messages that were flashed to the session, you may invoke the `assertSessionHasErrors` method like so:

@@ -1206,6 +1206,8 @@ php artisan make:component Alert --inline
 時には、あるコンポーネントをレンダする必要があっても、実行時までどのコンポーネントをレンダすべきか分からないことがあります。この場合、Laravelの組み込みコンポーネントである`dynamic-component`を使用すると、実行時の値や変数に基づいてコンポーネントをレンダできます。
 
 ```blade
+// $componentName = "secondary-button";
+
 <x-dynamic-component :component="$componentName" class="mt-4" />
 ```
 

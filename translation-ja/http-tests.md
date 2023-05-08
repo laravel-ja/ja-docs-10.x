@@ -22,26 +22,28 @@
 
 Laravelは、アプリケーションにHTTPリクエストを送信し、レスポンスを調べるためにスムーズに扱えるAPIを提供しています。例として、以下に定義している機能テストをご覧ください。
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
-    use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+     * 基本のテスト例
+     */
+    public function test_the_application_returns_a_successful_response(): void
     {
-        /**
-         * 基本的なテスト例
-         */
-        public function test_a_basic_request(): void
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->assertStatus(200);
-        }
+        $response->assertStatus(200);
     }
+}
+```
 
 `get`メソッドはアプリケーションに`GET`リクエストを送信し、`assertStatus`メソッドは返えされたレスポンスに指定するHTTPステータスコードが必要であることを宣言しています。この単純なアサートに加え、Laravelはレスポンスヘッダ、コンテンツ、JSON構造などを検査するためにさまざまなアサートも用意しています。
 
@@ -621,8 +623,10 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertExactJson](#assert-exact-json)
 [assertForbidden](#assert-forbidden)
 [assertFound](#assert-found)
+[assertGone](#assert-gone)
 [assertHeader](#assert-header)
 [assertHeaderMissing](#assert-header-missing)
+[assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
 [assertJsonCount](#assert-json-count)
 [assertJsonFragment](#assert-json-fragment)
@@ -655,6 +659,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
+[assertServiceUnavailable](#assert-server-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -780,6 +785,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertFound();
 
+<a name="assert-gone"></a>
+#### assertGone
+
+レスポンスのHTTPステータスコードが、gone（410）であることを宣言します。
+
+    $response->assertGone();
+
 <a name="assert-header"></a>
 #### assertHeader
 
@@ -793,6 +805,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 指定するヘッダがレスポンスに存在しないことを宣言します。
 
     $response->assertHeaderMissing($headerName);
+
+<a name="assert-internal-server-error"></a>
+#### assertInternalServerError
+
+レスポンスのHTTPステータスコードが、Internal Server Error（500）であることを宣言します。
+
+    $response->assertInternalServerError();
 
 <a name="assert-json"></a>
 #### assertJson
@@ -1048,7 +1067,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
 レスポンスが指定するURIへのリダイレクトであることを宣言します。
 
-    $response->assertRedirect($uri);
+    $response->assertRedirect($uri = null);
 
 <a name="assert-redirect-contains"></a>
 #### assertRedirectContains
@@ -1109,9 +1128,16 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 <a name="assert-server-error"></a>
 #### assertServerError
 
-レスポンスがサーバエラー（500以上、600より小さい）のHTTPステータスコードであることを宣言します。
+レスポンスのHTTPステータスコードが、サーバエラー（500以上、600より小さい）であることを宣言します。
 
     $response->assertServerError();
+
+<a name="assert-server-unavailable"></a>
+#### assertServiceUnavailable
+
+レスポンスのHTTPステータスコードが、Service Unavailable（503）であることを宣言します。
+
+    $response->assertServiceUnavailable();
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
@@ -1159,7 +1185,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 指定する`$keys`のエラーがセッションに含まれていることを宣言します。`$keys`が連想配列の場合、セッションに各フィールド(キー)の特定のエラーメッセージ(値)が含まれていることを宣言します。このメソッドは、バリデーションエラーをJSON構造として返すのではなく、セッションに一時保存するルートをテストするときに使用する必要があります。
 
     $response->assertSessionHasErrors(
-        array $keys, $format = null, $errorBag = 'default'
+        array $keys = [], $format = null, $errorBag = 'default'
     );
 
 たとえば、`name`フィールドと`email`フィールドにセッションへ一時保存された検証エラーメッセージがあることを宣言するには、以下のように`assertSessionHasErrors`メソッドを呼び出すことができます。

@@ -385,6 +385,26 @@ LaravelのHTTPクライアントはGuzzleで動いているので、[Guzzleミ�
 
     return $responses['first']->ok();
 
+<a name="customizing-concurrent-requests"></a>
+#### 現在のリクエストのカスタマイズ
+
+`pool`メソッドは、`withHeaders`や`middleware`メソッドのような、他のHTTPクライアントメソッドとチェーンできません。プールしたリクエストへカスタムヘッダやミドルウェアを適用したい場合は、プール内の各リクエストでそれらのオプションを設定する必要があります。
+
+```php
+use Illuminate\Http\Client\Pool;
+use Illuminate\Support\Facades\Http;
+
+$headers = [
+    'X-Example' => 'example',
+];
+
+$responses = Http::pool(fn (Pool $pool) => [
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+    $pool->withHeaders($headers)->get('http://laravel.test/test'),
+]);
+```
+
 <a name="macros"></a>
 ## マクロ
 

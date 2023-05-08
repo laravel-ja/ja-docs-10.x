@@ -523,8 +523,6 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 
 同様に、バリデーションが完了した後にリクエストデータをノーマライズする必要がある場合は、 `passedValidation` メソッドを使用します。
 
-    use Illuminate\Support\Str;
-
     /**
      * Handle a passed validation attempt.
      */

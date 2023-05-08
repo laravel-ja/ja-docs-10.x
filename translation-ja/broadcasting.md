@@ -878,7 +878,7 @@ Echo.join(`chat.${roomId}`)
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('room.'.$this->message->room_id),
+            new PresenceChannel('chat.'.$this->message->room_id),
         ];
     }
 

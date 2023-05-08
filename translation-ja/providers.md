@@ -145,15 +145,15 @@ php artisan make:provider RiakServiceProvider
 <a name="registering-providers"></a>
 ## プロバイダの登録
 
-すべてのサービスプロバイダは、`config/app.php`設定ファイルで登録されています。このファイルには、サービスプロバイダの名前をリストしてある`providers`配列が含まれています。この配列にはデフォルトとして、メール送信、キュー、キャッシュなどのLaravelコアのサービスプロバイダが登録されています。
+すべてのサービスプロバイダは、`config/app.php`設定ファイルで登録されています。このファイルには、サービスプロバイダの名前をリストしてある`providers`配列が含まれています。この配列にはデフォルトとしてLaravelのコアサービスプロバイダが登録されています。デフォルトのプロバイダは、メール送信、キュー、キャッシュなどのLaravelコアのサービスプロバイダを初期起動します。
 
 プロバイダを登録するには、この配列に追加します。
 
-    'providers' => [
-        // Other Service Providers
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        // その他のサービスプロバイダ
 
         App\Providers\ComposerServiceProvider::class,
-    ],
+    ])->toArray(),
 
 <a name="deferred-providers"></a>
 ## 遅延プロバイダ

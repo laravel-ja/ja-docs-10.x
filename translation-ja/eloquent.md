@@ -95,6 +95,7 @@ php artisan make:model Flight --all
 
 # ピボットモデルを生成
 php artisan make:model Member --pivot
+php artisan make:model Member -p
 ```
 
 <a name="inspecting-models"></a>
@@ -1331,7 +1332,7 @@ Eloquentはクロージャを使用してグローバルスコープを定義す
 
 ただし、これは面倒な場合があるため、Laravelは、クロージャを使用せずにスコープを流暢にチェーンできる「高次」の「orWhere」メソッドを提供しています。
 
-    $users = App\Models\User::popular()->orWhere->active()->get();
+    $users = User::popular()->orWhere->active()->get();
 
 <a name="dynamic-scopes"></a>
 #### 動的スコープ

@@ -808,7 +808,7 @@ Viteエコシステム内のプラグインのいくつかは、フォワード�
 
 `vite-imagetools`プラグインは、出力するURLがViteによりインターセプトされ、そのプラグインが`/@imagetools` から始まるすべてのURLを処理することを期待しています。このような挙動を期待するプラグインを使用している場合、手作業でURLを修正する必要があります。これは、`vite.config.js`ファイルの`transformOnServe`オプションを使用して実現できます。
 
-この例は、生成されたコード内で、`/@imagetools`の全出現箇所に、開発サーバのURLを追加します。
+この例は、生成されたコード内における`/@imagetools`の全出現箇所で、開発サーバのURLを前へ追加します。
 
 ```js
 import { defineConfig } from 'vite';

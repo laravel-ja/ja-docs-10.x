@@ -200,7 +200,7 @@ PHPやLaravelなどのライブラリは、その機能の一部が非推奨と�
          */
         public function show(string $id): View
         {
-            Log::info('Showing the user profile for user: '.$id);
+            Log::info('Showing the user profile for user: {id}', ['id' => $id]);
 
             return view('user.profile', [
                 'user' => User::findOrFail($id)
@@ -215,7 +215,7 @@ PHPやLaravelなどのライブラリは、その機能の一部が非推奨と�
 
     use Illuminate\Support\Facades\Log;
 
-    Log::info('User failed to login.', ['id' => $user->id]);
+    Log::info('User {id} failed to login.', ['id' => $user->id]);
 
 特定のチャンネルで、後に続くすべてのログエントリに含まれるコンテキスト情報を指定したい場合もあるでしょう。例えば、アプリケーションに入ってくる各リクエストに関連付けたリクエストIDをログに記録したい場合があります。これを行うには、`Log`ファサードの`withContext`メソッドを呼び出します。
 

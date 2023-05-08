@@ -11,6 +11,7 @@
 - [初期設定](#initial-configuration)
     - [環境ベースの設定](#environment-based-configuration)
     - [データベースとマイグレーション](#databases-and-migrations)
+    - [ディレクトリ設定](#directory-configuration)
 - [次のステップ](#next-steps)
     - [Laravelフルスタックフレームワーク](#laravel-the-fullstack-framework)
     - [Laravel APIバックエンド](#laravel-the-api-backend)
@@ -243,6 +244,11 @@ SQLiteデータベースの設定が終わったら、[データベースマイ�
 ```shell
 php artisan migrate
 ```
+
+<a name="directory-configuration"></a>
+### ディレクトリ設定
+
+Laravelは常に、Webサーバに設定した「Webディレクトリ」のルートから提供する必要があります。Laravelアプリケーションを「Webディレクトリ」のサブディレクトリから提供してはいけません。そうしてしまうと、アプリケーション内の機密ファイルを公開してしまう可能性が発生します。
 
 <a name="next-steps"></a>
 ## 次のステップ

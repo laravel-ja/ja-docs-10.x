@@ -37,7 +37,7 @@ Laravelアプリケーションに含まれている`App\Providers\EventServiceP
     /**
      * アプリケーションのイベントリスナマッピング
      *
-     * @var array
+     * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
         OrderShipped::class => [
