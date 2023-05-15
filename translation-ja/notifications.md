@@ -36,7 +36,7 @@
 - [SMS通知](#sms-notifications)
     - [事前要件](#sms-prerequisites)
     - [SMS通知のフォーマット](#formatting-sms-notifications)
-    - [ショートコード通知のフォーマット](#formatting-shortcode-notifications)
+    - [ユニコードコンテンツ](#unicode-content)
     - [発信元電話番号のカスタマイズ](#customizing-the-from-number)
     - [クライアントリファレンスの追加](#adding-a-client-reference)
     - [SMS通知のルート指定](#routing-sms-notifications)
@@ -782,8 +782,8 @@ php artisan notifications:table
 php artisan migrate
 ```
 
-> **Note**  
-> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
+> **Note**
+> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
 
 <a name="formatting-database-notifications"></a>
 ### データベース通知のフォーマット
@@ -972,7 +972,7 @@ LaravelでSMS通知を送るには、[Vonage](https://www.vonage.com/)（旧Nexm
     }
 
 <a name="unicode-content"></a>
-#### Unicodeコンテンツ
+#### ユニコードコンテンツ
 
 SMSメッセージにunicodeが含まれる場合は、`VonageMessage`インスタンス作成する時に、`unicode`メソッドを呼び出す必要があります。
 

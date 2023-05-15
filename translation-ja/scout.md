@@ -462,6 +462,21 @@ Eloquentクエリインスタンスで`searchable`メソッドを呼び出して
 
     $orders->searchable();
 
+<a name="modifying-records-before-importing"></a>
+#### インポート前のレコードの変更
+
+時には検索可能にする前に、モデルのコレクションを準備する必要が起きる場合があります。例えば、関連するデータを効率よく検索インデックスに追加するため、リレーションをEagerロードしたいと思うでしょう。これを実現するには、対応するモデル上に、`makeSearchableUsing`メソッドを定義します：
+
+    use Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * 検索可能なモデルのコレクションを変更する
+     */
+    public function makeSearchableUsing(Collection $models): Collection
+    {
+        return $models->load('author');
+    }
+
 <a name="removing-records"></a>
 ### レコード削除
 

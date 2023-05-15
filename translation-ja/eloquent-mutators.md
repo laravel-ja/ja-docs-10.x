@@ -217,6 +217,7 @@ protected function address(): Attribute
 - `encrypted:collection`
 - `encrypted:object`
 - `float`
+- `hashed`
 - `integer`
 - `object`
 - `real`

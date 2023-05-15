@@ -160,6 +160,10 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
 
 `increment`メソッドと`decrement`メソッドを使用して、キャッシュ内の整数項目の値を増減できます。これらのメソッドは両方とも、アイテムの値をインクリメントまたはデクリメントする数を示すオプションの２番目の引数を取ります。
 
+    // 存在しない場合、値を初期設定
+    Cache::add('key', 0, now()->addHours(4));
+
+    // 値の増分と減分
     Cache::increment('key');
     Cache::increment('key', $amount);
     Cache::decrement('key');

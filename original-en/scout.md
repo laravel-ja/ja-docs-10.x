@@ -300,7 +300,7 @@ Scout also allows you to auto identify users when using [Algolia](https://algoli
 SCOUT_IDENTIFY=true
 ```
 
-Enabling this feature this will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
+Enabling this feature will also pass the request's IP address and your authenticated user's primary identifier to Algolia so this data is associated with any search request that is made by the user.
 
 <a name="database-and-collection-engines"></a>
 ## Database / Collection Engines
@@ -461,6 +461,21 @@ If you would like to update the search index records for all of the models in a 
 Or, if you already have a collection of Eloquent models in memory, you may call the `searchable` method on the collection instance to update the model instances in their corresponding index:
 
     $orders->searchable();
+
+<a name="modifying-records-before-importing"></a>
+#### Modifying Records Before Importing
+
+Sometimes you may need to prepare the collection of models before they are made searchable. For instance, you may want to eager load a relationship so that the relationship data can be efficiently added to your search index. To accomplish this, define a `makeSearchableUsing` method on the corresponding model:
+
+    use Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * Modify the collection of models being made searchable.
+     */
+    public function makeSearchableUsing(Collection $models): Collection
+    {
+        return $models->load('author');
+    }
 
 <a name="removing-records"></a>
 ### Removing Records
