@@ -404,8 +404,8 @@ php artisan scout:flush "App\Models\Post"
         return $query->with('author');
     }
 
-> **Warning**  
-> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.
+> **Warning**
+> キューを使用してモデルを一括インポートする場合、`makeAllSearchableUsing`メソッドは適さないでしょう。モデルコレクションをジョブで処理する際に、リレーションが[復元されない](/docs/{{バージョン}}/queues#handling-relationships)からです。
 
 <a name="adding-records"></a>
 ### レコード追加
