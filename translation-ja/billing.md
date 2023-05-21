@@ -1456,8 +1456,9 @@ Stripeは、Webフックを介してさまざまなイベントをアプリケ�
 - `customer.subscription.deleted`
 - `customer.updated`
 - `customer.deleted`
-- `invoice.payment_succeeded`
+- `payment_method.automatically_updated`
 - `invoice.payment_action_required`
+- `invoice.payment_succeeded`
 
 Cashierは、`cashier:webhook` Artisanコマンドを利便性のために用意しています。このコマンドはCashierが必要とするすべてのイベントをリッスンする、StripeのWebフックを作成します。
 

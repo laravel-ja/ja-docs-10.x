@@ -4,6 +4,7 @@
 - [Available Methods](#available-methods)
 - [Other Utilities](#other-utilities)
     - [Benchmarking](#benchmarking)
+    - [Dates](#dates)
     - [Lottery](#lottery)
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
@@ -54,6 +55,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
+[Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -709,6 +711,37 @@ The `Arr::map` method iterates through the array and passes each value and key t
     });
 
     // ['first' => 'James', 'last' => 'Kirk']
+
+<a name="method-array-map-with-keys"></a>
+#### `Arr::mapWithKeys()` {.collection-method}
+
+The `Arr::mapWithKeys` method iterates through the array and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        [
+            'name' => 'John',
+            'department' => 'Sales',
+            'email' => 'john@example.com',
+        ],
+        [
+            'name' => 'Jane',
+            'department' => 'Marketing',
+            'email' => 'jane@example.com',
+        ]
+    ];
+
+    $mapped = Arr::mapWithKeys(function (array $item, int $key) {
+        return [$item['email'] => $item['name']];
+    });
+
+    /*
+        [
+            'john@example.com' => 'John',
+            'jane@example.com' => 'Jane',
+        ]
+    */
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -2106,13 +2139,22 @@ The `Str::upper` method converts the given string to uppercase:
 <a name="method-str-ulid"></a>
 #### `Str::ulid()` {.collection-method}
 
-The `Str::ulid` method generates a ULID:
+The `Str::ulid` method generates a ULID, which is a compact, time-ordered unique identifier:
 
     use Illuminate\Support\Str;
 
     return (string) Str::ulid();
     
     // 01gd6r360bp37zj17nxb55yv40
+
+If you would like to retrieve a `Illuminate\Support\Carbon` date instance representing the date and time that a given ULID was created, you may use the `createFromId` method provided by Laravel's Carbon integration:
+
+```php
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+
+$date = Carbon::createFromId((string) Str::ulid());
+```
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -4188,6 +4230,25 @@ By default, the given callbacks will be executed once (one iteration), and their
 To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="dates"></a>
+### Dates
+
+Laravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:
+
+```php
+$now = now();
+```
+
+Or, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:
+
+```php
+use Illuminate\Support\Carbon;
+
+$now = Carbon::now();
+```
+
+For a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).
 
 <a name="lottery"></a>
 ### Lottery

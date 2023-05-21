@@ -4,6 +4,7 @@
 - [使用可能なメソッド](#available-methods)
 - [その他のユーティリティ](#other-utilities)
     - [ベンチマーク](#benchmarking)
+    - [日付](#dates)
     - [抽選](#lottery)
     - [パイプライン](#pipeline)
     - [スリープ](#sleep)
@@ -54,6 +55,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::keyBy](#method-array-keyby)
 [Arr::last](#method-array-last)
 [Arr::map](#method-array-map)
+[Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
@@ -709,6 +711,37 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     });
 
     // ['first' => 'James', 'last' => 'Kirk']
+
+<a name="method-array-map-with-keys"></a>
+#### `Arr::mapWithKeys()` {.collection-method}
+
+`Arr::mapWithKeys`メソッドは、配列を繰り返し処理し、各値を指定したコールバックへ渡します。コールバックは、キー／値のペアを１つ含む連想配列を返す必要があります。
+
+    use Illuminate\Support\Arr;
+
+    $array = [
+        [
+            'name' => 'John',
+            'department' => 'Sales',
+            'email' => 'john@example.com',
+        ],
+        [
+            'name' => 'Jane',
+            'department' => 'Marketing',
+            'email' => 'jane@example.com',
+        ]
+    ];
+
+    $mapped = Arr::mapWithKeys(function (array $item, int $key) {
+        return [$item['email'] => $item['name']];
+    });
+
+    /*
+        [
+            'john@example.com' => 'John',
+            'jane@example.com' => 'Jane',
+        ]
+    */
 
 <a name="method-array-only"></a>
 #### `Arr::only()` {.collection-method}
@@ -2106,13 +2139,22 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 <a name="method-str-ulid"></a>
 #### `Str::ulid()` {.collection-method}
 
-`Str::ulid`メソッドは、ULIDを生成します。
+`Str::ulid`メソッドは、コンパクトで時間順に並んだ一意の識別子であるULIDを生成します。
 
     use Illuminate\Support\Str;
 
     return (string) Str::ulid();
 
     // 01gd6r360bp37zj17nxb55yv40
+
+指定したULIDが作成された日時を表す`Illuminate\Support\Carbon`日付インスタンスを取得したい場合、LaravelのCarbon統合が提供している`createFromId`メソッドを使用してください。
+
+```php
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+
+$date = Carbon::createFromId((string) Str::ulid());
+```
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -4188,6 +4230,25 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
 コールバックを複数回呼び出すには、メソッドの第２引数でコールバックを呼び出す反復回数を指定してください。コールバックを複数回実行する場合、`Benchmark`クラスはコールバックの実行にかかった平均ミリ秒を返します。
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+<a name="dates"></a>
+### 日付
+
+Laravelは、強力な日付と時間の操作ライブラリである[Carbon](https://carbon.nesbot.com/docs/)を含んでいます。新しい`Carbon`インスタンスを作成するには、`now`関数を呼び出してください。この関数はLaravelアプリケーション内でグローバルに利用可能です。
+
+```php
+$now = now();
+```
+
+もしくは、`Illuminate\Support\Carbon`クラスを使い、新しい`Carbon`インスタンスを作成できます。
+
+```php
+use Illuminate\Support\Carbon;
+
+$now = Carbon::now();
+```
+
+Carbonの概要や特徴については、[Carbon公式ドキュメント](https://carbon.nesbot.com/docs/)を参照してください。
 
 <a name="lottery"></a>
 ### 抽選

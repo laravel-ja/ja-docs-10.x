@@ -238,6 +238,15 @@ Laravelのセッションは通常、現在認証しているユーザーの状�
 
     $response = $this->withoutDeprecationHandling()->get('/');
 
+`assertThrows`メソッドを使用すると、指定クロージャ内のコードが、特定の型の例外を投げることを宣言できます。
+
+```php
+$this->assertThrows(
+    fn () => (new ProcessOrder)->execute(),
+    OrderInvalid::class
+);
+```
+
 <a name="testing-json-apis"></a>
 ## JSON APIのテスト
 

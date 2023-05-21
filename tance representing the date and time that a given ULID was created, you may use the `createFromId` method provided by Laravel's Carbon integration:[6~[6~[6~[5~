@@ -1,0 +1,736 @@
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/billing.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/billing.md:1459 @[1m[1m[38;5;146m To ensure your application can handle Stripe webhooks, be sure to configure the[0m
+- `customer.subscription.deleted`[m
+- `customer.updated`[m
+- `customer.deleted`[m
+[1m[38;5;1m[31m- `[7minvoice.payment_succeed[27med`[m[0m
+[1m[38;5;2m[32m[m[32m- `[7mpayment_method.automatically_updat[27med`[m[0m
+- `invoice.payment_action_required`[m
+[1m[38;5;2m[32m[m[32m- `invoice.payment_succeeded`[m[0m
+[m
+For convenience, Cashier includes a `cashier:webhook` Artisan command. This command will create a webhook in Stripe that listens to all of the events required by Cashier:[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/helpers.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/helpers.md:7 @[1m[0m
+- [Available Methods](#available-methods)[m
+- [Other Utilities](#other-utilities)[m
+    - [Benchmarking](#benchmarking)[m
+[1m[38;5;2m[32m[m[32m    - [Dates](#dates)[m[0m
+    - [Lottery](#lottery)[m
+    - [Pipeline](#pipeline)[m
+    - [Sleep](#sleep)[m
+[36m[1m[38;5;13m@ original-en/helpers.md:58 @[1m[1m[38;5;146m Laravel includes a variety of global "helper" PHP functions. Many of these funct[0m
+[Arr::keyBy](#method-array-keyby)[m
+[Arr::last](#method-array-last)[m
+[Arr::map](#method-array-map)[m
+[1m[38;5;2m[32m[m[32m[Arr::mapWithKeys](#method-array-map-with-keys)[m[0m
+[Arr::only](#method-array-only)[m
+[Arr::pluck](#method-array-pluck)[m
+[Arr::prepend](#method-array-prepend)[m
+[36m[1m[38;5;13m@ original-en/helpers.md:715 @[1m[1m[38;5;146m The `Arr::map` method iterates through the array and passes each value and key t[0m
+[m
+    // ['first' => 'James', 'last' => 'Kirk'][m
+[m
+[1m[38;5;2m[32m[m[32m<a name="method-array-map-with-keys"></a>[m[0m
+[1m[38;5;2m[32m[m[32m#### `Arr::mapWithKeys()` {.collection-method}[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mThe `Arr::mapWithKeys` method iterates through the array and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    use Illuminate\Support\Arr;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    $array = [[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'name' => 'John',[m[0m
+[1m[38;5;2m[32m[m[32m            'department' => 'Sales',[m[0m
+[1m[38;5;2m[32m[m[32m            'email' => 'john@example.com',[m[0m
+[1m[38;5;2m[32m[m[32m        ],[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'name' => 'Jane',[m[0m
+[1m[38;5;2m[32m[m[32m            'department' => 'Marketing',[m[0m
+[1m[38;5;2m[32m[m[32m            'email' => 'jane@example.com',[m[0m
+[1m[38;5;2m[32m[m[32m        ][m[0m
+[1m[38;5;2m[32m[m[32m    ];[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    $mapped = Arr::mapWithKeys(function (array $item, int $key) {[m[0m
+[1m[38;5;2m[32m[m[32m        return [$item['email'] => $item['name']];[m[0m
+[1m[38;5;2m[32m[m[32m    });[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    /*[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'john@example.com' => 'John',[m[0m
+[1m[38;5;2m[32m[m[32m            'jane@example.com' => 'Jane',[m[0m
+[1m[38;5;2m[32m[m[32m        ][m[0m
+[1m[38;5;2m[32m[m[32m    */[m[0m
+[7m[32m [m
+<a name="method-array-only"></a>[m
+#### `Arr::only()` {.collection-method}[m
+[m
+[36m[1m[38;5;13m@ original-en/helpers.md:2142 @[1m[1m[38;5;146m The `Str::upper` method converts the given string to uppercase:[0m
+<a name="method-str-ulid"></a>[m
+#### `Str::ulid()` {.collection-method}[m
+[m
+[1m[38;5;1m[31mThe `Str::ulid` method generates a ULID[7m[27m:[m[0m
+[1m[38;5;2m[32m[m[32mThe `Str::ulid` method generates a ULID[7m, which is a compact, time-ordered unique identifier[27m:[m[0m
+[m
+    use Illuminate\Support\Str;[m
+[m
+[36m[1m[38;5;13m@ original-en/helpers.md:2150 @[1m[1m[38;5;146m The `Str::ulid` method generates a ULID:[0m
+    [m
+    // 01gd6r360bp37zj17nxb55yv40[m
+[m
+[1m[38;5;2m[32m[m[32mIf you would like to retrieve a `Illuminate\Support\Carbon` date instance representing the date and time that a given ULID was created, you may use the `createFromId` method provided by Laravel's Carbon integration:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Carbon;[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Str;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m$date = Carbon::createFromId((string) Str::ulid());[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+<a name="method-str-uuid"></a>[m
+#### `Str::uuid()` {.collection-method}[m
+[m
+[36m[1m[38;5;13m@ original-en/helpers.md:4234 @[1m[1m[38;5;146m To invoke a callback more than once, you may specify the number of iterations th[0m
+[m
+    Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms[m
+[m
+[1m[38;5;2m[32m[m[32m<a name="dates"></a>[m[0m
+[1m[38;5;2m[32m[m[32m### Dates[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mLaravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32m$now = now();[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mOr, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Carbon;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m$now = Carbon::now();[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mFor a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).[m[0m
+[7m[32m [m
+<a name="lottery"></a>[m
+### Lottery[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/http-tests.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/http-tests.md:241 @[1m[1m[38;5;146m In addition, if you would like to ensure that your application is not utilizing[0m
+[m
+    $response = $this->withoutDeprecationHandling()->get('/');[m
+[m
+[1m[38;5;2m[32m[m[32mThe `assertThrows` method may be used to assert that code within a given closure throws an exception of the specified type:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32m$this->assertThrows([m[0m
+[1m[38;5;2m[32m[m[32m    fn () => (new ProcessOrder)->execute(),[m[0m
+[1m[38;5;2m[32m[m[32m    OrderInvalid::class[m[0m
+[1m[38;5;2m[32m[m[32m);[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+<a name="testing-json-apis"></a>[m
+## Testing JSON APIs[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/notifications.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/notifications.md:97 @[1m[1m[38;5;146m The `notify` method that is provided by this trait expects to receive a notifica[0m
+[m
+    $user->notify(new InvoicePaid($invoice));[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Remember, you may use the `Notifiable` trait on any of your models. You are not limited to only including it on your `User` model.[m
+[m
+<a name="using-the-notification-facade"></a>[m
+[36m[1m[38;5;13m@ original-en/notifications.md:118 @[1m[1m[38;5;146m You can also send notifications immediately using the `sendNow` method. This met[0m
+[m
+Every notification class has a `via` method that determines on which channels the notification will be delivered. Notifications may be sent on the `mail`, `database`, `broadcast`, `vonage`, and `slack` channels.[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> If you would like to use other delivery channels such as Telegram or Pusher, check out the community driven [Laravel Notification Channels website](http://laravel-notification-channels.com).[m
+[m
+The `via` method receives a `$notifiable` instance, which will be an instance of the class to which the notification is being sent. You may use `$notifiable` to determine which channels the notification should be delivered on:[m
+[36m[1m[38;5;13m@ original-en/notifications.md:136 @[1m[1m[38;5;146m The `via` method receives a `$notifiable` instance, which will be an instance of[0m
+<a name="queueing-notifications"></a>[m
+### Queueing Notifications[m
+[m
+[1m[38;5;1m[31m> **Warning**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m[7m  [m[27m[0m
+> Before queueing notifications you should configure your queue and [start a worker](/docs/{{version}}/queues).[m
+[m
+Sending notifications can take time, especially if the channel needs to make an external API call to deliver the notification. To speed up your application's response time, let your notification be queued by adding the `ShouldQueue` interface and `Queueable` trait to your class. The interface and trait are already imported for all notifications generated using the `make:notification` command, so you may immediately add them to your notification class:[m
+[36m[1m[38;5;13m@ original-en/notifications.md:275 @[1m[1m[38;5;146m Alternatively, you may call the `afterCommit` method from your notification's co[0m
+        }[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/{{version}}/queues#jobs-and-database-transactions).[m
+[m
+<a name="determining-if-the-queued-notification-should-be-sent"></a>[m
+[36m[1m[38;5;13m@ original-en/notifications.md:338 @[1m[1m[38;5;146m The `MailMessage` class contains a few simple methods to help you build transact[0m
+                    ->line('Thank you for using our application!');[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Note we are using `$this->invoice->id` in our `toMail` method. You may pass any data your notification needs to generate its message into the notification's constructor.[m
+[m
+In this example, we register a greeting, a line of text, a call to action, and then another line of text. These methods provided by the `MailMessage` object make it simple and fast to format small transactional emails. The mail channel will then translate the message components into a beautiful, responsive HTML email template with a plain-text counterpart. Here is an example of an email generated by the `mail` channel:[m
+[m
+<img src="https://laravel.com/img/docs/notification-example-2.png">[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> When sending mail notifications, be sure to set the `name` configuration option in your `config/app.php` configuration file. This value will be used in the header and footer of your mail notification messages.[m
+[m
+<a name="error-messages"></a>[m
+[36m[1m[38;5;13m@ original-en/notifications.md:493 @[1m[1m[38;5;146m To add attachments to an email notification, use the `attach` method while build[0m
+                    ->attach('/path/to/file');[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> The `attach` method offered by notification mail messages also accepts [attachable objects](/docs/{{version}}/mail#attachable-objects). Please consult the comprehensive [attachable object documentation](/docs/{{version}}/mail#attachable-objects) to learn more.[m
+[m
+When attaching files to a message, you may also specify the display name and / or MIME type by passing an `array` as the second argument to the `attach` method:[m
+[36m[1m[38;5;13m@ original-en/notifications.md:785 @[1m[1m[38;5;146m php artisan notifications:table[0m
+php artisan migrate[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.[m
+[m
+<a name="formatting-database-notifications"></a>[m
+[36m[1m[38;5;13m@ original-en/notifications.md:830 @[1m[1m[38;5;146m If you want to retrieve only the "unread" notifications, you may use the `unread[0m
+        echo $notification->type;[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> To access your notifications from your JavaScript client, you should define a notification controller for your application which returns the notifications for a notifiable entity, such as the current user. You may then make an HTTP request to that controller's URL from your JavaScript client.[m
+[m
+<a name="marking-notifications-as-read"></a>[m
+[36m[1m[38;5;13m@ original-en/notifications.md:1295 @[1m[1m[38;5;146m When a notification is sending, the `Illuminate\Notifications\Events\Notificatio[0m
+[m
+    use App\Listeners\CheckNotificationStatus;[m
+    use Illuminate\Notifications\Events\NotificationSending;[m
+[7m[31m [m
+[1m[38;5;2m[32m[m[41m    [m[0m
+    /**[m
+     * The event listener mappings for the application.[m
+     *[m
+[36m[1m[38;5;13m@ original-en/notifications.md:1338 @[1m[1m[38;5;146m When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe[0m
+[m
+    use App\Listeners\LogNotification;[m
+    use Illuminate\Notifications\Events\NotificationSent;[m
+[7m[31m [m
+[1m[38;5;2m[32m[m[41m    [m[0m
+    /**[m
+     * The event listener mappings for the application.[m
+     *[m
+[36m[1m[38;5;13m@ original-en/notifications.md:1350 @[1m[1m[38;5;146m When a notification is sent, the `Illuminate\Notifications\Events\NotificationSe[0m
+        ],[m
+    ];[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> After registering listeners in your `EventServiceProvider`, use the `event:generate` Artisan command to quickly generate listener classes.[m
+[m
+Within an event listener, you may access the `notifiable`, `notification`, `channel`, and `response` properties on the event to learn more about the notification recipient or the notification itself:[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/octane.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/octane.md:65 @[1m[1m[38;5;146m If you plan to develop your application using [Laravel Sail](/docs/{{version}}/s[0m
+```shell[m
+./vendor/bin/sail up[m
+[m
+[1m[38;5;1m[31m./vendor/bin/sail composer require laravel/octane spiral/roadrunner[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m./vendor/bin/sail composer require laravel/octane spiral/roadrunner[7m-cli spiral/roadrunner-http[m[41m [m[27m[0m
+```[m
+[m
+Next, you should start a Sail shell and use the `rr` executable to retrieve the latest Linux based build of the RoadRunner binary:[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/queues.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/queues.md:241 @[1m[1m[38;5;146m Because loaded relationships also get serialized, the serialized job string can[0m
+[m
+Furthermore, when a job is deserialized and model relationships are re-retrieved from the database, they will be retrieved in their entirety. Any previous relationship constraints that were applied before the model was serialized during the job queueing process will not be applied when the job is deserialized. Therefore, if you wish to work with a subset of a given relationship, you should re-constrain that relationship within your queued job.[m
+[m
+[1m[38;5;2m[32m[m[32mIf a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.[m[0m
+[7m[32m [m
+<a name="unique-jobs"></a>[m
+### Unique Jobs[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/scout.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/scout.md:407 @[1m[1m[38;5;146m If you would like to modify the query that is used to retrieve all of your model[0m
+        return $query->with('author');[m
+    }[m
+[m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m  [m[0m
+[1m[38;5;2m[32m[m[32m> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.[m[0m
+[7m[32m [m
+<a name="adding-records"></a>[m
+### Adding Records[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: original-en/vite.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ original-en/vite.md:39 @[1m[0m
+[m
+Laravel integrates seamlessly with Vite by providing an official plugin and Blade directive to load your assets for development and production.[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Are you running Laravel Mix? Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).[m
+[m
+<a name="vite-or-mix"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:57 @[1m[1m[38;5;146m Have you started a new Laravel application using our Vite scaffolding but need t[0m
+<a name="installation"></a>[m
+## Installation & Setup[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> The following documentation discusses how to manually install and configure the Laravel Vite plugin. However, Laravel's [starter kits](/docs/{{version}}/starter-kits) already include all of this scaffolding and are the fastest way to get started with Laravel and Vite.[m
+[m
+<a name="installing-node"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:302 @[1m[1m[38;5;146m export default defineConfig({[0m
+});[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Vue, and Vite.[m
+[m
+<a name="react"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:340 @[1m[1m[38;5;146m You will also need to include the additional `@viteReactRefresh` Blade directive[0m
+[m
+The `@viteReactRefresh` directive must be called before the `@vite` directive.[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, React, and Vite.[m
+[m
+<a name="inertia"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:363 @[1m[1m[38;5;146m createInertiaApp({[0m
+});[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia, and Vite.[m
+[m
+<a name="url-processing"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:630 @[1m[1m[38;5;146m npm run build[0m
+node bootstrap/ssr/ssr.mjs[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration. Check out [Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) for the fastest way to get started with Laravel, Inertia SSR, and Vite.[m
+[m
+<a name="script-and-style-attributes"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:756 @[1m[1m[38;5;146m Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr[0m
+]);[m
+```[m
+[m
+[1m[38;5;1m[31m> **Warning**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m[7m  [m[27m[0m
+> The `$chunk` and `$manifest` arguments will be `null` while the Vite development server is running.[m
+[m
+<a name="advanced-customization"></a>[m
+[36m[1m[38;5;13m@ original-en/vite.md:809 @[1m[1m[38;5;146m For example, the `vite-imagetools` plugin outputs URLs like the following while[0m
+<img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">[m
+```[m
+[m
+[1m[38;5;1m[31mThe `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32mThe `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.[m[41m[7m [m[27m[0m
+[m
+In this particular example, we will prepend the dev server URL to all occurrences of `/@imagetools` within the generated code:[m
+[m
+[36m[1m[38;5;13m@ original-en/vite.md:835 @[1m[1m[38;5;146m Now, while Vite is serving Assets, it will output URLs that point to the Vite de[0m
+- <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->[m
++ <img src="http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! add] -->[m
+```[m
+[7m[41m [m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/billing.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/billing.md:1459 @[1m[1m[38;5;146m Stripeは、Webフックを介してさまざまなイベントをアプリケ[0m
+- `customer.subscription.deleted`[m
+- `customer.updated`[m
+- `customer.deleted`[m
+[1m[38;5;1m[31m- `[7minvoice.payment_succeed[27med`[m[0m
+[1m[38;5;2m[32m[m[32m- `[7mpayment_method.automatically_updat[27med`[m[0m
+- `invoice.payment_action_required`[m
+[1m[38;5;2m[32m[m[32m- `invoice.payment_succeeded`[m[0m
+[m
+Cashierは、`cashier:webhook` Artisanコマンドを利便性のために用意しています。このコマンドはCashierが必要とするすべてのイベントをリッスンする、StripeのWebフックを作成します。[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/helpers.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:7 @[1m[0m
+- [使用可能なメソッド](#available-methods)[m
+- [その他のユーティリティ](#other-utilities)[m
+    - [ベンチマーク](#benchmarking)[m
+[1m[38;5;2m[32m[m[32m    - [Dates](#dates)[m[0m
+    - [抽選](#lottery)[m
+    - [パイプライン](#pipeline)[m
+    - [スリープ](#sleep)[m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:58 @[1m[1m[38;5;146m Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し[0m
+[Arr::keyBy](#method-array-keyby)[m
+[Arr::last](#method-array-last)[m
+[Arr::map](#method-array-map)[m
+[1m[38;5;2m[32m[m[32m[Arr::mapWithKeys](#method-array-map-with-keys)[m[0m
+[Arr::only](#method-array-only)[m
+[Arr::pluck](#method-array-pluck)[m
+[Arr::prepend](#method-array-prepend)[m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:715 @[1m[1m[38;5;146m Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し[0m
+[m
+    // ['first' => 'James', 'last' => 'Kirk'][m
+[m
+[1m[38;5;2m[32m[m[32m<a name="method-array-map-with-keys"></a>[m[0m
+[1m[38;5;2m[32m[m[32m#### `Arr::mapWithKeys()` {.collection-method}[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mThe `Arr::mapWithKeys` method iterates through the array and passes each value to the given callback. The callback should return an associative array containing a single key / value pair:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    use Illuminate\Support\Arr;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    $array = [[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'name' => 'John',[m[0m
+[1m[38;5;2m[32m[m[32m            'department' => 'Sales',[m[0m
+[1m[38;5;2m[32m[m[32m            'email' => 'john@example.com',[m[0m
+[1m[38;5;2m[32m[m[32m        ],[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'name' => 'Jane',[m[0m
+[1m[38;5;2m[32m[m[32m            'department' => 'Marketing',[m[0m
+[1m[38;5;2m[32m[m[32m            'email' => 'jane@example.com',[m[0m
+[1m[38;5;2m[32m[m[32m        ][m[0m
+[1m[38;5;2m[32m[m[32m    ];[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    $mapped = Arr::mapWithKeys(function (array $item, int $key) {[m[0m
+[1m[38;5;2m[32m[m[32m        return [$item['email'] => $item['name']];[m[0m
+[1m[38;5;2m[32m[m[32m    });[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m    /*[m[0m
+[1m[38;5;2m[32m[m[32m        [[m[0m
+[1m[38;5;2m[32m[m[32m            'john@example.com' => 'John',[m[0m
+[1m[38;5;2m[32m[m[32m            'jane@example.com' => 'Jane',[m[0m
+[1m[38;5;2m[32m[m[32m        ][m[0m
+[1m[38;5;2m[32m[m[32m    */[m[0m
+[7m[32m [m
+<a name="method-array-only"></a>[m
+#### `Arr::only()` {.collection-method}[m
+[m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:2142 @[1m[1m[38;5;146m Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し[0m
+<a name="method-str-ulid"></a>[m
+#### `Str::ulid()` {.collection-method}[m
+[m
+[1m[38;5;1m[31m`Str::ulid`メソッドは、ULIDを生成します。[m[0m
+[1m[38;5;2m[32m[m[32mThe `Str::ulid` method generates a ULID, which is a compact, time-ordered unique identifier:[m[0m
+[m
+    use Illuminate\Support\Str;[m
+[m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:2150 @[1m[1m[38;5;146m Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し[0m
+[m
+    // 01gd6r360bp37zj17nxb55yv40[m
+[m
+[1m[38;5;2m[32m[m[32mIf you would like to retrieve a `Illuminate\Support\Carbon` date instance representing the date and time that a given ULID was created, you may use the `createFromId` method provided by Laravel's Carbon integration:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Carbon;[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Str;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m$date = Carbon::createFromId((string) Str::ulid());[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+<a name="method-str-uuid"></a>[m
+#### `Str::uuid()` {.collection-method}[m
+[m
+[36m[1m[38;5;13m@ translation-ja/helpers.md:4234 @[1m[1m[38;5;146m dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver[0m
+[m
+    Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms[m
+[m
+[1m[38;5;2m[32m[m[32m<a name="dates"></a>[m[0m
+[1m[38;5;2m[32m[m[32m### Dates[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mLaravel includes [Carbon](https://carbon.nesbot.com/docs/), a powerful date and time manipulation library. To create a new `Carbon` instance, you may invoke the `now` function. This function is globally available within your Laravel application:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32m$now = now();[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mOr, you may create a new `Carbon` instance using the `Illuminate\Support\Carbon` class:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32muse Illuminate\Support\Carbon;[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m$now = Carbon::now();[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32mFor a thorough discussion of Carbon and its features, please consult the [official Carbon documentation](https://carbon.nesbot.com/docs/).[m[0m
+[7m[32m [m
+<a name="lottery"></a>[m
+### 抽選[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/http-tests.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/http-tests.md:241 @[1m[1m[38;5;146m Laravelのセッションは通常、現在認証しているユーザーの状[0m
+[m
+    $response = $this->withoutDeprecationHandling()->get('/');[m
+[m
+[1m[38;5;2m[32m[m[32mThe `assertThrows` method may be used to assert that code within a given closure throws an exception of the specified type:[m[0m
+[7m[32m [m
+[1m[38;5;2m[32m[m[32m```php[m[0m
+[1m[38;5;2m[32m[m[32m$this->assertThrows([m[0m
+[1m[38;5;2m[32m[m[32m    fn () => (new ProcessOrder)->execute(),[m[0m
+[1m[38;5;2m[32m[m[32m    OrderInvalid::class[m[0m
+[1m[38;5;2m[32m[m[32m);[m[0m
+[1m[38;5;2m[32m[m[32m```[m[0m
+[7m[32m [m
+<a name="testing-json-apis"></a>[m
+## JSON APIのテスト[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/notifications.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:97 @[1m[1m[38;5;146m php artisan make:notification InvoicePaid[0m
+[m
+    $user->notify(new InvoicePaid($invoice));[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> どのモデルでも`Notifiable`トレイトを使用できることを忘れないでください。`User`モデルにだけに限定して含められるわけでありません。[m
+[m
+<a name="using-the-notification-facade"></a>[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:118 @[1m[1m[38;5;146m php artisan make:notification InvoicePaid[0m
+[m
+すべての通知クラスは、通知を配信するチャンネルを決定する、`via`メソッドを持っています。通知は`mail`、`database`、`broadcast`、`vonage`、`slack`チャンネルへ配信されるでしょう。[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> TelegramやPusherのような、他の配信チャンネルを利用したい場合は、コミュニティが管理している、[Laravel通知チャンネルのWebサイト](http://laravel-notification-channels.com)をご覧ください。[m
+[m
+`via`メソッドは、通知を送っているクラスのインスタンスである、`$notifiable`インスタンスを引数に受け取ります。`$notifiable`を使い、通知をどこのチャンネルへ配信するかを判定できます。[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:136 @[1m[1m[38;5;146m php artisan make:notification InvoicePaid[0m
+<a name="queueing-notifications"></a>[m
+### 通知のキューイング[m
+[m
+[1m[38;5;1m[31m> **Warning**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m[7m  [m[27m[0m
+> 通知をキューへ投入する前に、キューを設定して[ワーカを起動](/docs/{{version}}/queues)する必要があります。[m
+[m
+通知の送信には時間がかかる場合があります。特に、チャンネルが通知を配信するために外部API呼び出しを行う必要がある場合に当てはまります。アプリケーションのレスポンス時間を短縮するには、クラスに`ShouldQueue`インターフェイスと`Queueable`トレイトを追加して、通知をキューに入れてください。インターフェイスとトレイトは、`make:notification`コマンドを使用して生成されたすべての通知であらかじめインポートされているため、すぐに通知クラスに追加できます。[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:275 @[1m[1m[38;5;146m php artisan make:notification InvoicePaid[0m
+        }[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> この問題の回避方法の詳細は、[キュー投入されるジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。[m
+[m
+<a name="determining-if-the-queued-notification-should-be-sent"></a>[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:338 @[1m[1m[38;5;146m php artisan make:notification InvoicePaid[0m
+                    ->line('私達のアプリケーションをご利用いただき、ありがとうございます。');[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> `toMail`メソッドの中で、`$this->invoice->id`を使っていることに注意してください。通知メッセージを生成するために必要な情報は、どんなものでも通知のコンストラクタへ渡せます。[m
+[m
+この例では、挨拶、テキスト行、行動を促すフレーズ、そして別のテキスト行を登録します。`MailMessage`オブジェクトが提供するこれらのメソッドにより、小さなトランザクションメールを簡単かつ迅速にフォーマットできます。次に、メールチャンネルは、メッセージコンポーネントを、平文テキストと対応する美しいレスポンス性の高いHTML電子メールテンプレートに変換します。`mail`チャンネルが生成する電子メールの例を次に示します。[m
+[m
+<img src="https://laravel.com/img/docs/notification-example-2.png">[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> メール通知を送信するときは、必ず`config/app.php`設定ファイルで`name`設定オプションを設定してください。この値は、メール通知メッセージのヘッダとフッターに使用されます。[m
+[m
+<a name="error-messages"></a>[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:493 @[1m[1m[38;5;146m php artisan vendor:publish --tag=laravel-notifications[0m
+                    ->attach('/path/to/file');[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> 通知メールメッセージが提供する`attach`メソッドは、[Attachableオブジェクト](/docs/{{version}}/mail#attachable-objects)も受け付けます。詳細は、包括的な[Attachableオブジェクトのドキュメント](/docs/{{version}}/mail#attachable-objects)を参照してください。[m
+[m
+メッセージにファイルを添付するとき、`attach`メソッドの第２引数として配列を渡し、表示名やMIMEタイプの指定もできます。[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:785 @[1m[1m[38;5;146m php artisan notifications:table[0m
+php artisan migrate[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。[m
+[m
+<a name="formatting-database-notifications"></a>[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:830 @[1m[1m[38;5;146m php artisan migrate[0m
+        echo $notification->type;[m
+    }[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> JavaScriptクライアントから通知にアクセスするには、現在のユーザーなどのnotifiableエンティティの通知を返す、通知コントローラをアプリケーションで定義する必要があります。次に、JavaScriptクライアントからそのコントローラのURLへHTTPリクエストを送信します。[m
+[m
+<a name="marking-notifications-as-read"></a>[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:1295 @[1m[1m[38;5;146m Laravelを使用すると、HTTPリクエストの現在のロケール以外の[0m
+[m
+    use App\Listeners\CheckNotificationStatus;[m
+    use Illuminate\Notifications\Events\NotificationSending;[m
+[7m[31m [m
+[1m[38;5;2m[32m[m[41m    [m[0m
+    /**[m
+     * アプリケーションにマップするイベントリスナの登録[m
+     *[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:1338 @[1m[1m[38;5;146m Laravelを使用すると、HTTPリクエストの現在のロケール以外の[0m
+[m
+    use App\Listeners\LogNotification;[m
+    use Illuminate\Notifications\Events\NotificationSent;[m
+[7m[31m [m
+[1m[38;5;2m[32m[m[41m    [m[0m
+    /**[m
+     * アプリケーションにマップするイベントリスナの登録[m
+     *[m
+[36m[1m[38;5;13m@ translation-ja/notifications.md:1350 @[1m[1m[38;5;146m Laravelを使用すると、HTTPリクエストの現在のロケール以外の[0m
+        ],[m
+    ];[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> `EventServiceProvider`でリスナを登録した後に、`event:generate` Artisanコマンドを使うと、リスナクラスが素早く生成できます。[m
+[m
+イベントリスナ内では、イベントの `notifiable`、`notification`、`channel`、`response`プロパティにアクセスして、通知先や通知自体の詳細を知ることができます。[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/octane.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/octane.md:65 @[1m[1m[38;5;146m php artisan octane:install[0m
+```shell[m
+./vendor/bin/sail up[m
+[m
+[1m[38;5;1m[31m./vendor/bin/sail composer require laravel/octane spiral/roadrunner[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m./vendor/bin/sail composer require laravel/octane spiral/roadrunner[7m-cli spiral/roadrunner-http[m[41m [m[27m[0m
+```[m
+[m
+次に、Sailシェルを起動し、`rr`実行可能ファイルを使用して、RoadRunnerバイナリのLinuxベースの最新ビルドを取得します。[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/queues.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/queues.md:241 @[1m[1m[38;5;146m php artisan make:job ProcessPodcast[0m
+[m
+さらに、ジョブがデシリアライズで、モデルのリレーションをデータベースから再取得するとき、それらはエンティティとして取得されます。ジョブのキュー投入過程でモデルをシリアライズする前に適用された以前のリレーション制約は、ジョブがデシリアライズされるときには適用されません。したがって、特定のリレーションのサブセットを使用したい場合は、キュー投入したジョブ内でそのリレーションを再制約する必要があります。[m
+[m
+[1m[38;5;2m[32m[m[32mIf a job receives a collection or array of Eloquent models instead of a single model, the models within that collection will not have their relationships restored when the job is deserialized and executed. This is to prevent excessive resource usage on jobs that deal with large numbers of models.[m[0m
+[7m[32m [m
+<a name="unique-jobs"></a>[m
+### 一意なジョブ[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/scout.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/scout.md:407 @[1m[1m[38;5;146m php artisan scout:flush "App\Models\Post"[0m
+        return $query->with('author');[m
+    }[m
+[m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m  [m[0m
+[1m[38;5;2m[32m[m[32m> The `makeAllSearchableUsing` method may not be applicable when using a queue to batch import models. Relationships are [not restored](/docs/{{version}}/queues#handling-relationships) when model collections are processed by jobs.[m[0m
+[7m[32m [m
+<a name="adding-records"></a>[m
+### レコード追加[m
+[m
+[1m[0m[38;5;11m─────────────────────────────────────────────────────────[0m
+[38;5;11mmodified: translation-ja/vite.md
+[38;5;11m─────────────────────────────────────────────────────────[0m
+[36m[1m[38;5;13m@ translation-ja/vite.md:39 @[1m[0m
+[m
+Laravelは、開発および実働用アセットをロードするため、公式プラグインとBladeディレクティブを提供し、Viteをシームレスに統合しています。[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravel Mixを実行していますか？新しいLaravelのインストールでは、Laravel MixをViteへ置き換えました。Mixのドキュメントは、[Laravel Mix](https://laravel-mix.com/)のウェブサイトをご覧ください。Viteに切り替えたい場合は、[移行ガイド](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite)を参照してください。[m
+[m
+<a name="vite-or-mix"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:57 @[1m[1m[38;5;146m Vite scaffoldingを使用して新しいLaravelアプリケーションを開始[0m
+<a name="installation"></a>[m
+## インストールと準備[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> 以下のドキュメントでは、Laravel Viteプラグインを手作業でインストールし、設定する方法について説明しています。しかし、Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでにこのスカフォールドがすべて含まれており、LaravelとViteを始める最速の方法を用意しています。[m
+[m
+<a name="installing-node"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:302 @[1m[1m[38;5;146m export default defineConfig({[0m
+});[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Vue、Viteの構成が含まれています。Laravel、Vue、Viteを最速で使い始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia)をチェックしてください。[m
+[m
+<a name="react"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:340 @[1m[1m[38;5;146m JSXを含むすべてのファイルの拡張子を確実に、`.jsx`または`.[0m
+[m
+`@viteReactRefresh`ディレクティブは、`@vite`ディレクティブの前に呼び出す必要があります。[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、React、Viteの設定が含まれています。Laravel、React、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。[m
+[m
+<a name="inertia"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:363 @[1m[1m[38;5;146m createInertiaApp({[0m
+});[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia、Viteの構成が含まれています。Laravel、Inertia、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。[m
+[m
+<a name="url-processing"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:630 @[1m[1m[38;5;146m npm run build[0m
+node bootstrap/ssr/ssr.mjs[m
+```[m
+[m
+[1m[38;5;1m[31m> **Note**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Note**[m[41m[7m  [m[27m[0m
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia SSR、Viteの構成が含まれています。Laravel、Inertia SSR、Viteを最速で使い始めるため、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。[m
+[m
+<a name="script-and-style-attributes"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:756 @[1m[1m[38;5;146m Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr[0m
+]);[m
+```[m
+[m
+[1m[38;5;1m[31m> **Warning**[m[7m[27m[0m
+[1m[38;5;2m[32m[m[32m> **Warning**[m[41m[7m  [m[27m[0m
+> Vite開発サーバが起動している間は、`$chunk`と`$manifest`引数は、`null`になります。[m
+[m
+<a name="advanced-customization"></a>[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:809 @[1m[1m[38;5;146m Viteエコシステム内のプラグインのいくつかは、フォワード[0m
+<img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">[m
+```[m
+[m
+[1m[38;5;1m[31m`vite-imagetools`プラグインは、出力するURLがViteによりインターセプトされ、そのプラグインが`/@imagetools` から始まるすべてのURLを処理することを期待しています。このような挙動を期待するプラグインを使用している場合、手作業でURLを修正する必要があります。これは、`vite.config.js`ファイルの`transformOnServe`オプションを使用して実現できます。[m[0m
+[1m[38;5;2m[32m[m[32mThe `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.[m[41m [m[0m
+[m
+この例は、生成されたコード内における`/@imagetools`の全出現箇所で、開発サーバのURLを前へ追加します。[m
+[m
+[36m[1m[38;5;13m@ translation-ja/vite.md:835 @[1m[1m[38;5;146m export default defineConfig({[0m
+- <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->[m
++ <img src="http://[::1]:5173/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! add] -->[m
+```[m
+[7m[41m [m
