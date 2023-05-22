@@ -3795,7 +3795,7 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
     $env = env('APP_ENV', 'production');
 
 > **Warning**
-> 開発期間中に`config:cache`コマンドを実行する場合は、設定ファイルの中で必ず`env`関数だけを使用してください。設定ファイルがキャッシュされると、`.env`ファイルはロードされなくなり、`env`関数の呼び出しはすべて`null`を返します。
+> 開発手順の中で`config:cache`コマンドを実行する場合は、必ず設定ファイルの中からだけ、`env`関数を使用してください。設定ファイルがキャッシュされると、`.env`ファイルはロードされなくなり、`env`関数の呼び出しはすべて`null`を返します。
 
 <a name="method-event"></a>
 #### `event()` {.collection-method}
@@ -3828,7 +3828,7 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
 <a name="method-filled"></a>
 #### `filled()` {.collection-method}
 
-`filled`関数は、指定された値が「空白」でないかどうかを判別します。
+`filled`期間関数は、指定された値が「空白」でないかどうかを判別します。
 
     filled(0);
     filled(true);
