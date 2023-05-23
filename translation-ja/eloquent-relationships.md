@@ -354,7 +354,7 @@ public function largestOrder(): HasOne
 <a name="converting-many-relationships-to-has-one-relationships"></a>
 #### "Many"リレーションをHas Oneリレーションへ変換する
 
-`latestOfMany`、`oldestOfMany`、`ofMany`メソッドを使用して単一のモデルを取得するとき、多くの場合、同じモデルに対し予め"has many"リレーションが定義済みです。便利なように、Laravelはリレーションで`one`メソッドを呼び出すことにより、こうしたリレーションを"has one"リレーションへ簡単に変換できます：
+`latestOfMany`、`oldestOfMany`、`ofMany`メソッドを使用して単一のモデルを取得するとき、多くの場合、同じモデルに対し予め"has many"リレーションが定義済みです。便利なように、Laravelはリレーションで`one`メソッドを呼び出すことにより、こうしたリレーションを"has one"リレーションへ簡単に変換できます。
 
 ```php
 /**
