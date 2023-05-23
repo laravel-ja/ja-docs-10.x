@@ -194,7 +194,7 @@ php artisan migrate:rollback --step=5
  php artisan migrate:rollback --batch=3
  ```
 
-`migrate：reset`コマンドは、アプリケーションのすべてのマイグレーションをロールバックします。
+`migrate:reset`コマンドは、アプリケーションのすべてのマイグレーションをロールバックします。
 
 ```shell
 php artisan migrate:reset
