@@ -114,6 +114,8 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 - Go
 - Grafana
 - InfluxDB
+- Logstash
+- Mailpit <small>(Mailhogから置き換え)</small>
 - MariaDB
 - Meilisearch
 - MinIO
@@ -830,15 +832,4 @@ Homesteadは`natdnshostresolver`設定をデフォルトで`on`に設定しま�
 ```yaml
 provider: virtualbox
 natdnshostresolver: 'off'
-```
-
-<a name="symbolic-links-on-windows"></a>
-#### Windowsでのシンボリックリンク
-
-Windowsマシンでシンボリックリンクが正しく動かない場合は、`Vagrantfile`に以下のコードブロックを追加する必要があります。
-
-```ruby
-config.vm.provider "virtualbox" do |v|
-    v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
-end
 ```

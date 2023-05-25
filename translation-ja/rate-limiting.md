@@ -66,6 +66,10 @@ Laravelには、簡単に使用できるレート制限の抽象化機能があ�
         return 'Too many attempts!';
     }
 
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // メッセージ送信処理…
+
 他にも、`remaining`メソッドを使って、指定キーの残りの試行回数を取得することも可能です。指定キーに再試行回数が残っている場合は、`hit`メソッドを呼び出して総試行回数を増やせます。
 
     use Illuminate\Support\Facades\RateLimiter;
@@ -73,7 +77,7 @@ Laravelには、簡単に使用できるレート制限の抽象化機能があ�
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
         RateLimiter::hit('send-message:'.$user->id);
 
-        // メッセージ送信…
+        // メッセージ送信処理…
     }
 
 <a name="determining-limiter-availability"></a>
@@ -88,6 +92,10 @@ Laravelには、簡単に使用できるレート制限の抽象化機能があ�
 
         return 'You may try again in '.$seconds.' seconds.';
     }
+
+    RateLimiter::hit('send-message:'.$user->id);
+
+    // メッセージ送信処理…
 
 <a name="clearing-attempts"></a>
 ### 試行のクリア

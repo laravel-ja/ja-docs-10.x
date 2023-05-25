@@ -348,6 +348,9 @@ php artisan make:request StorePostRequest
 
 バリデーションが失敗した場合、リダイレクトレスポンスを生成し、ユーザーを直前のページへ送り返します。エラーもセッ​​ションへ一時保存し、表示できるようにします。リクエストがXHRリクエストの場合、422ステータスコードで、[バリデーションエラーのJSON表現を含むHTTPレスポンス](#validation-error-response-format)がユーザーに返されます。
 
+> **Note**
+> Inertiaを搭載したLaravelのフロントエンドへ、リアルタイムのフォームリクエストバリデーションを追加する必要がありますか？[Laravel Precognition](/docs/{{version}}/precognition)をチェックしてください。
+
 <a name="performing-additional-validation-on-form-requests"></a>
 #### 追加バリデーションの実行
 
