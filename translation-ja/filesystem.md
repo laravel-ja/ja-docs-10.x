@@ -82,7 +82,7 @@ php artisan storage:link
 S3ドライバを使用する前に、Composerパッケージマネージャを使用し、Flysystem S3パッケージをインストールする必要があります。
 
 ```shell
-composer require league/flysystem-aws-s3-v3 "^3.0"
+composer require league/flysystem-aws-s3-v3 "^3.0" --with-all-dependencies
 ```
 
 S3ドライバの設定情報は、`config/filesystems.php`設定ファイルにあります。このファイルには、S3ドライバの設定配列の例が含まれています。この配列は、皆さんのS3設定と認証情報を使用するため自由に変更できます。利便性のため、これらの環境変数はAWS CLIが使用する命名規則と一致させています。

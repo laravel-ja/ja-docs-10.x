@@ -27,10 +27,10 @@ Laravel Precognitionを使用すると、フロントエンドのVueアプリケ
 最初に、ルートに対するPrecognitionを有効にするには、ルート定義へ`HandlePrecognitiveRequests`ミドルウェアを追加する必要があります。さらに、ルートのバリデーションルールを格納するため、[フォームリクエスト](/docs/{{version}}/validation#form-request-validation)を作成する必要もあります。
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
@@ -184,10 +184,10 @@ Laravel Precognitionを使用すると、フロントエンドのReactアプリ�
 最初に、ルートでPrecognitionを有効にするには、ルート定義で`HandlePrecognitiveRequests`ミドルウェアを追加する必要があります。また、ルートのバリデーションルールを格納するために、[フォームrequest](/docs/{{version}}/validation#form-request-validation)を作成する必要があります。
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
@@ -226,7 +226,7 @@ export default function Form() {
                 onChange={(e) => form.setData('name', e.target.value)}
                 onBlur={() => form.validate('name')}
             />
-            {form.invalid('name') ? (<div>{form.errors.name}</div>) : null}
+            {form.invalid('name') && <div>{form.errors.name}</div>}
 
             <label for="email">Email</label>
             <input
@@ -235,7 +235,7 @@ export default function Form() {
                 onChange={(e) => form.setData('email', e.target.value)}
                 onBlur={() => form.validate('email')}
             />
-            {form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
+            {form.invalid('email') && <div>{form.errors.email}</div>}
 
             <button>Create User</button>
         </form>
@@ -252,27 +252,27 @@ form.setValidationTimeout(3000);
 バリデーション要求がやり取り中の場合、フォームの`validating`プロパティは`true` になります。
 
 ```jsx
-{form.validating ? (<div>Validating...</div>) : null}
+{form.validating && <div>Validating...</div>}
 ```
 
 バリデーションリクエストやフォーム送信時に返される全てのバリデーションエラーは、自動的にフォームの`errors`オブジェクトへ格納します。
 
 ```jsx
-{form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
+{form.invalid('email') && <div>{form.errors.email}</div>}
 ```
 
 フォームにエラーがあるかは、フォームの`hasErrors`プロパティで判断できます。
 
 ```jsx
-{form.hasErrors ? (<div><!-- ... --></div>) : null}
+{form.hasErrors && <div><!-- ... --></div>}
 ```
 
 また、入力がバリデーションに合格したか失敗したかを判断するには、入力名をフォームの`valid`関数か`invalid`関数へ渡してください。
 
 ```jsx
-{form.valid('email') ? (<span>✅</span>) : null}
+{form.valid('email') && <span>✅</span>}
 
-{form.invalid('email') ? (<span>❌</span>) : null}
+{form.invalid('email') && <span>❌</span>}
 ```
 
 > **Warning**

@@ -27,10 +27,10 @@ Using Laravel Precognition, you can offer live validation experiences to your us
 First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{{version}}/validation#form-request-validation) to house the route's validation rules:
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
@@ -184,10 +184,10 @@ Using Laravel Precognition, you can offer live validation experiences to your us
 First, to enable Precognition for a route, the `HandlePrecognitiveRequests` middleware should be added to the route definition. You should also create a [form request](/docs/{version}/validation#form-request-validation) to house the route's validation rules:
 
 ```php
-use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
-Route::post('/users', function (CreateUserRequest $request) {
+Route::post('/users', function (StoreUserRequest $request) {
     // ...
 })->middleware([HandlePrecognitiveRequests::class]);
 ```
@@ -226,7 +226,7 @@ export default function Form() {
                 onChange={(e) => form.setData('name', e.target.value)}
                 onBlur={() => form.validate('name')}
             />
-            {form.invalid('name') ? (<div>{form.errors.name}</div>) : null}
+            {form.invalid('name') && <div>{form.errors.name}</div>}
 
             <label for="email">Email</label>
             <input
@@ -235,7 +235,7 @@ export default function Form() {
                 onChange={(e) => form.setData('email', e.target.value)}
                 onBlur={() => form.validate('email')}
             />
-            {form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
+            {form.invalid('email') && <div>{form.errors.email}</div>}
 
             <button>Create User</button>
         </form>
@@ -252,27 +252,27 @@ form.setValidationTimeout(3000);
 When a validation request is in-flight, the form's `validating` property will be `true`:
 
 ```jsx
-{form.validating ? (<div>Validating...</div>) : null}
+{form.validating && <div>Validating...</div>}
 ```
 
 Any validation errors returned during a validation request or a form submission will automatically populate the form's `errors` object:
 
 ```jsx
-{form.invalid('email') ? (<div>{form.errors.email}</div>) : null}
+{form.invalid('email') && <div>{form.errors.email}</div>}
 ```
 
 You can determine if the form has any errors using the form's `hasErrors` property:
 
 ```jsx
-{form.hasErrors ? (<div><!-- ... --></div>) : null}
+{form.hasErrors && <div><!-- ... --></div>}
 ```
 
 You may also determine if an input has passed or failed validation by passing the input's name to the form's `valid` and `invalid` functions, respectively:
 
 ```jsx
-{form.valid('email') ? (<span>✅</span>) : null}
+{form.valid('email') && <span>✅</span>}
 
-{form.invalid('email') ? (<span>❌</span>) : null}
+{form.invalid('email') && <span>❌</span>}
 ```
 
 > **Warning**

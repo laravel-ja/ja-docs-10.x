@@ -341,7 +341,7 @@ php artisan make:request StorePostRequest
         $validated = $request->safe()->only(['name', 'email']);
         $validated = $request->safe()->except(['name', 'email']);
 
-        // Store the blog post...
+        // ブログ投稿の保存処理…
 
         return redirect('/posts');
     }

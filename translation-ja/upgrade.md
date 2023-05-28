@@ -32,6 +32,7 @@
 <div class="content-list" markdown="1">
 
 - [クロージャバリデーションルールメッセージ](#closure-validation-rule-messages)
+- [フォームリクエストの`after`メソッド](#form-request-after-method)
 - [Publicパスの結合](#public-path-binding)
 - [クエリ例外のコンストラクタ](#query-exception-constructor)
 - [レート制限の戻り値](#rate-limiter-return-values)
@@ -295,6 +296,13 @@ public function rules()
     ],
 }
 ```
+
+<a name="form-request-after-method"></a>
+#### フォームリクエストのafterメソッド
+
+**影響の可能性： かなり低い**
+
+フォームリクエスト内で`after`メソッドは、[Laravelの予約語](https://github.com/laravel/framework/pull/46757)にしました。フォームリクエストで`after`メソッドを定義している場合は、Laravelのフォームリクエストの新しい機能である「バリデーションのafter」を利用するために、このメソッドの名前を変更するか、修正する必要があります。
 
 <a name="miscellaneous"></a>
 ### その他

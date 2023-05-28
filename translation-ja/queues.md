@@ -440,7 +440,7 @@ handleメソッドでレート制限を行う代わりに、レート制限を�
 
     return Limit::perMinute(50)->by($job->user->id);
 
-レート制限を定義したら、`Illuminate\Queue\Middleware\RateLimited`ミドルウェアを使用してレートリミッターをバックアップジョブにアタッチできます。ジョブがレート制限を超えるたびに、このミドルウェアは、レート制限期間に基づいて適切な遅延でジョブをキューに戻します。
+レート制限を定義したら、`Illuminate\Queue\Middleware\RateLimited`ミドルウェアを使用してレートリミッターをジョブにアタッチできます。ジョブがレート制限を超えるたびに、このミドルウェアは、レート制限期間に基づいて適切な遅延でジョブをキューに戻します。
 
     use Illuminate\Queue\Middleware\RateLimited;
 
