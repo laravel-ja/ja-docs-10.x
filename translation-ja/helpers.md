@@ -732,7 +732,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
         ]
     ];
 
-    $mapped = Arr::mapWithKeys(function (array $item, int $key) {
+    $mapped = Arr::mapWithKeys($array, function (array $item, int $key) {
         return [$item['email'] => $item['name']];
     });
 
@@ -4434,4 +4434,19 @@ Laravelの`Sleep`クラスは、PHPネイティブの`sleep`と`usleep`関数の
     // Sleepが呼び出されても、実行が中断されないことをアサート
     Sleep::assertInsomniac();
 
-Laravelは実行を一時停止するとき、にいつでも内部的に`Sleep`クラスを使用しています。例えば、[`retry`](#method-retry)ヘルパはスリープ時に`Sleep`クラスを使用し、そのヘルパを使用する際のテストの実行性を揚げています。
+アプリケーションコードで、Fakeスリープが発生するたびに、アクションを実行できれば便利な場合が時々あるでしょう。これを行うには、`whenFakingSleep`メソッドへコールバックを渡します。以下の例では、Laravelの[時間操作ヘルパ](/docs/{{version}}/mocking#interacting-with-time)を使い、Sleepの間隔ごとで、瞬時に時間を進めています。
+
+```php
+use Carbon\CarbonInterval as Duration;
+
+$this->freezeTime();
+
+Sleep::fake();
+
+Sleep::whenFakingSleep(function (Duration $duration) {
+    // SleepをFakeした時点で、時間を進める
+    $this->travel($duration->totalMilliseconds)->milliseconds();
+});
+```
+
+Laravelは実行を一時停止するとき、にいつでも内部的に`Sleep`クラスを使用しています。例えば、[`retry`](#method-retry)ヘルパはスリープ時に`Sleep`クラスを使用し、そのヘルパを使用する際のテストの実行性を上げています。

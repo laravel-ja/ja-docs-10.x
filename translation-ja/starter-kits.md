@@ -101,6 +101,16 @@ php artisan breeze:install vue --ssr
 php artisan breeze:install react --ssr
 ```
 
+<a name="typescript"></a>
+#### TypeScript
+
+VueやReactのスタックを使用する場合、`--typescript`オプションを指定することで、TypeScriptのサポートを含むスカフォールドを生成できます：
+
+```shell
+php artisan breeze:install vue --typescript
+php artisan breeze:install react --typescript
+```
+
 <a name="breeze-and-next"></a>
 ### BreezeとNext.js／API
 

@@ -6,7 +6,9 @@
     - [VueとInertiaの使用](#using-vue-and-inertia)
     - [Reactの使用](#using-react)
     - [ReactとInertiaの使用](#using-react-and-inertia)
+    - [AlpineとBladeの使用](#using-alpine)
 - [バリデーションルールのカスタマイズ](#customizing-validation-rules)
+- [ファイルアップロードの処理](#handling-file-uploads)
 - [副作用の管理](#managing-side-effects)
 
 <a name="introduction"></a>
@@ -129,6 +131,20 @@ form.setValidationTimeout(3000);
 
 > **Warning**
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
+
+Precognitionでフォームの入力のサブセットをバリデートしている場合、エラーを手作業でクリアできると便利です。それには、フォームの`forgetError`関数を使用します。
+
+```html
+<input
+    id="avatar"
+    type="file"
+    @change="(e) => {
+        form.avatar = e.target.files[0]
+
+        form.forgetError('avatar')
+    }"
+>
+```
 
 もちろん、フォーム送信に対するレスポンスに反応してコードを実行することもできます。フォームの`submit`関数は、AxiosのリクエストPromiseを返します。これは、レスポンスペイロードへのアクセス、送信成功時のフォーム入力のリセット、または失敗したリクエストの処理に便利な方法を提供します。
 
@@ -278,6 +294,20 @@ form.setValidationTimeout(3000);
 > **Warning**
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
 
+Precognitionでフォーム入力のサブセットをバリデートしている場合、エラーを手作業でクリアできると便利です。それには、フォームの`forgetError`関数を使用します。
+
+```jsx
+<input
+    id="avatar"
+    type="file"
+    onChange={(e) =>
+        form.setData('avatar', e.target.value);
+
+        form.forgetError('avatar');
+    }
+>
+```
+
 もちろん、フォーム送信に対するレスポンスに反応してコードを実行することもできます。フォームの`submit`関数は、AxiosのリクエストPromiseを返します。これは、レスポンスペイロードへのアクセス、送信成功時のフォーム入力のリセット、または失敗したリクエストの処理に便利な方法を提供します。
 
 ```js
@@ -330,6 +360,162 @@ const submit = (e) => {
 };
 ```
 
+<a name="using-alpine"></a>
+### AlpineとBladeの使用
+
+Laravel Precognitionを使用し、フロントエンドのAlpineアプリケーションでバリデーションルールを複製しなくても、ユーザーへライブバリデーション体験を提供することができます。その仕組みを説明するために、アプリケーション内で新規ユーザーを作成するフォームを作成してみましょう。
+
+まず、ルートのPrecognitionを有効にするには、ルート定義へ`HandlePrecognitiveRequests`ミドルウェアを追加する必要があります。また、ルートのバリデーションルールを格納するため、[フォームリクエスト](/docs/{{version}}/validation#form-request-validation)も作成する必要があります。
+
+```php
+use App\Http\Requests\CreateUserRequest;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
+
+Route::post('/users', function (CreateUserRequest $request) {
+    // ...
+})->middleware([HandlePrecognitiveRequests::class]);
+```
+
+次に、Alpine用のLaravel PrecognitionフロントエンドヘルパをNPMでインストールします。
+
+```shell
+npm install laravel-precognition-alpine
+```
+
+それから、PrecognitionプラグインをAlpineへ登録するために、`resources/js/app.js`ファイルへ登録します。
+
+```js
+import Alpine from 'alpinejs';
+import Precognition from 'laravel-precognition-alpine';
+
+window.Alpine = Alpine;
+
+Alpine.plugin(Precognition);
+Alpine.start();
+```
+
+Laravel Precognitionパッケージをインストール、登録した状態で、Precognitionの`$form`の「マジック」を使い、HTTPメソッド（`post`）、ターゲットURL（`/users`）、初期フォームデータを指定してフォームオブジェクトを作成できるようになりました。
+
+ライブバリデーションを有効にするため、フォームのデータを関連する入力と結合し、各入力の`change`イベントをリッスンする必要があります。`change`イベントハンドラは、フォームの`validate`メソッドを呼び出し、入力名を指定する必要があります。
+
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '',
+        email: '',
+    }),
+}">
+    @csrf
+    <label for="name">Name</label>
+    <input
+        id="name"
+        name="name"
+        x-model="form.name"
+        @change="form.validate('name')"
+    />
+    <template x-if="form.invalid('name')">
+        <div x-text="form.errors.name"></div>
+    </template>
+
+    <label for="email">Email</label>
+    <input
+        id="email"
+        name="email"
+        x-model="form.email"
+        @change="form.validate('email')"
+    />
+    <template x-if="form.invalid('email')">
+        <div x-text="form.errors.email"></div>
+    </template>
+
+    <button>Create User</button>
+</form>
+```
+
+ユーザーがフォームを入力すると、Precognitionはルートのフォームリクエストの中にあるバリデーションルールにより、ライブバリデーション出力を提供します。フォーム入力が変更されると、デバウンスした「事前認識型」バリデーションリクエストをLaravelアプリケーションへ送信します。デバウンスのタイムアウトは、フォームの`setValidationTimeout`関数を呼び出し設定します。
+
+```js
+form.setValidationTimeout(3000);
+```
+
+バリデーションリクエストがやり取り中の間、フォームの`validating`プロパティは`true`になります。
+
+```html
+<template x-if="form.validating">
+    <div>Validating...</div>
+</template>
+```
+
+バリデーションリクエストやフォーム送信の全バリデーションエラーは、自動的にフォームの`errors`オブジェクトへ格納します。
+
+```html
+<template x-if="form.invalid('email')">
+    <div x-text="form.errors.email"></div>
+</template>
+```
+
+フォームの`hasErrors`プロパティで、フォームにエラーがあるかを判定できます。
+
+```html
+<template x-if="form.hasErrors">
+    <div><!-- ... --></div>
+</template>
+```
+
+また、入力がバリデーションに合格したか、失敗したかを判定するには、入力名をフォームの`valid` 関数と`invalid`関数へ渡してください。
+
+```html
+<template x-if="form.valid('email')">
+    <span>✅</span>
+</template>
+
+<template x-if="form.invalid('email')">
+    <span>❌</span>
+</template>
+```
+
+> **Warning**
+> フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
+
+<a name="repopulating-old-form-data"></a>
+#### 直前のフォームデータの再取得
+
+前述のユーザー作成の例では、Precognitionを使用してライブバリデーションを実行しています。しかし、フォームを送信するために従来のサーバサイドフォーム送信を実行しています。そのため、フォームにはサーバサイドのフォーム送信から返された「古い」入力やバリデーションエラーを保持しているでしょう。
+
+```html
+<form x-data="{
+    form: $form('post', '/register', {
+        name: '{{ old('name') }}',
+        email: '{{ old('email') }}',
+    }).setErrors({{ Js::from($errors->messages()) }}),
+}">
+```
+
+他の方法として、XHRでフォームを送信したい場合は、Axiosリクエストプロミスを返す、フォームの`submit`関数を使用します。
+
+```html
+<form
+    x-data="{
+        form: $form('post', '/register', {
+            name: '',
+            email: '',
+        }),
+        submit() {
+            this.form.submit()
+                .then(response => {
+                    form.reset();
+
+                    alert('User created.')
+                })
+                .catch(error => {
+                    alert('An error occurred.');
+                });
+        },
+    }"
+    @submit.prevent="submit"
+>
+```
+
 <a name="customizing-validation-rules"></a>
 ## バリデーションルールのカスタマイズ
 
@@ -365,6 +551,39 @@ class StoreUserRequest extends FormRequest
         ];
     }
 }
+```
+
+<a name="handling-file-uploads"></a>
+## ファイルアップロードの処理
+
+Laravel Precognitionは、事前認識型バリデーションリクエスト中にファイルのアップロードや検証をデフォルトでは行いません。これにより、大きなファイルが不必要に何度もアップロードされないようにしています。
+
+この振る舞いのため、アプリケーションで[対応するフォームリクエストのバリデーションルールをカスタマイズする](#customizing-validation-rules)ことで、完全なフォーム送信にのみ、このフィールドが必要であることを指定する必要があります。
+
+```php
+/**
+ * このリクエストに適用するバリデーションルールの取得
+ *
+ * @return array
+ */
+protected function rules()
+{
+    return [
+        'avatar' => [
+            ...$this->isPrecognitive() ? [] : ['required'],
+            'image',
+            'mimes:jpg,png'
+            'dimensions:ratio=3/2',
+        ],
+        // ...
+    ];
+}
+```
+
+すべてのバリデーションリクエストへファイルを含めたい場合は、クライアント側のフォームインスタンスで`validateFiles`関数を呼び出します。
+
+```js
+form.validateFiles();
 ```
 
 <a name="managing-side-effects"></a>

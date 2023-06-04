@@ -173,6 +173,26 @@ export default defineConfig({
 
 もし、あなたのシステムで信頼できる証明書を生成できない場合は、[`@vitejs/plugin-basic-ssl`プラグイン](https://github.com/vitejs/vite-plugin-basic-ssl)をインストールし、設定してください。信頼できない証明書を使用する場合は、`npm run dev`コマンドを実行する際にコンソールの"Local"リンクをたどり、ブラウザからVite開発サーバが出す証明書の警告を受け入れる必要があります。
 
+<a name="configuring-hmr-in-sail-on-wsl2"></a>
+#### WSL2上のSailの中で開発サーバを実行する
+
+Windows Subsystem for Linux 2(WSL2)上の[Laravel Sail](/docs/{{version}}/sail)内で、Vite 開発サーバを実行する場合は、ブラウザが開発サーバと通信できるように`vite.config.js`ファイルへ以下の設定を追加する必要があります。
+
+```js
+// ...
+
+export default defineConfig({
+    // ...
+    server: { // [tl! add:start]
+        hmr: {
+            host: 'localhost',
+        },
+    }, // [tl! add:end]
+});
+```
+
+開発サーバ実行中に、ファイルの変更がブラウザへ反映されない場合は、Viteの[`server.watch.usePolling`オプション](https://vitejs.dev/config/server-options.html#server-watch)の設定も必要です。
+
 <a name="loading-your-scripts-and-styles"></a>
 ### スクリプトとスタイルの読み込み
 
@@ -225,6 +245,8 @@ npm run dev
 # 実働用にアセットをバンドルし、バージョン付けする
 npm run build
 ```
+
+WSL2上の[Sail](/docs/{{version}}/sail)で開発サーバを動作させている場合、いくつかの[追加設定](#configuring-hmr-in-sail-on-wsl2)オプションが必要です。
 
 <a name="working-with-scripts"></a>
 ## JavaScriptの操作

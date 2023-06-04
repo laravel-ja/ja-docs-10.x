@@ -1731,7 +1731,15 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-timezone"></a>
 #### timezone
 
-`timezone_identifiers_list` PHP関数の値に基づき、フィールドがタイムゾーンとして識別されることをバリデートします。
+The field under validation must be a valid timezone identifier according to the `DateTimeZone::listIdentifiers` method.
+
+The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://www.php.net/manual/en/datetimezone.listidentifiers.php) may also be provided to this validation rule:
+
+    'timezone' => 'required|timezone:all';
+
+    'timezone' => 'required|timezone:Africa';
+
+    'timezone' => 'required|timezone:per_country,US';
 
 <a name="rule-unique"></a>
 #### unique:_テーブル_,_カラム_
