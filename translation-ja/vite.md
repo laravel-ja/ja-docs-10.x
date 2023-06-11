@@ -196,7 +196,7 @@ export default defineConfig({
 <a name="loading-your-scripts-and-styles"></a>
 ### スクリプトとスタイルの読み込み
 
-Viteのエントリーポイントを設定したら、アプリケーションのルートテンプレートの`<head>`へ追加する、`@vite()` Bladeディレクティブで参照するだけです。
+Viteのエントリーポイントを設定したら、アプリケーションのルートテンプレートの`<head>`へ`@vite()` Bladeディレクティブを追加し、参照できるようになります。
 
 ```blade
 <!doctype html>

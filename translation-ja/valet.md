@@ -81,7 +81,7 @@ brew update
 brew install php
 ```
 
-PHPをインストールしたら、[Composerパッケージマネージャ](https://getcomposer.org)をインストールする準備が整います。さらに、`〜/.composer/vendor/bin`ディレクトリがシステムの「PATH」にあることを確認する必要があります。Composerをインストールできたら、Laravel ValetをグローバルComposerパッケージとしてインストールできます。
+PHPをインストールしたら、[Composerパッケージマネージャ](https://getcomposer.org)をインストールする準備が整います。さらに、`$HOME/.composer/vendor/bin`ディレクトリがシステムの「PATH」にあることを確認する必要があります。Composerをインストールできたら、Laravel ValetをグローバルComposerパッケージとしてインストールできます。
 
 ```shell
 composer global require laravel/valet

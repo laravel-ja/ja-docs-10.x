@@ -27,8 +27,6 @@ Laravel provides a very fluent API for making HTTP requests to your application 
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -58,8 +56,6 @@ Instead of returning an `Illuminate\Http\Response` instance, test request method
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -492,8 +488,6 @@ The `Illuminate\Http\UploadedFile` class provides a `fake` method which may be u
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
     use Tests\TestCase;
@@ -650,6 +644,7 @@ Laravel's `Illuminate\Testing\TestResponse` class provides a variety of custom a
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertMethodNotAllowed](#assert-method-not-allowed)
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
@@ -1008,6 +1003,13 @@ Assert the response has any JSON validation errors for the given key:
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
+<a name="assert-method-not-allowed"></a>
+#### assertMethodNotAllowed
+
+Assert that the response has a method not allowed (405) HTTP status code:
+
+    $response->assertMethodNotAllowed();
+
 <a name="assert-moved-permanently"></a>
 #### assertMovedPermanently
 
@@ -1169,6 +1171,8 @@ Assert that the session has a given value in the [flashed input array](/docs/{{v
     $response->assertSessionHasInput($key, $value = null);
 
 If needed, a closure can be provided as the second argument to the `assertSessionHasInput` method. The assertion will pass if the closure returns `true`:
+
+    use Illuminate\Support\Facades\Crypt;
 
     $response->assertSessionHasInput($key, function (string $value) {
         return Crypt::decryptString($value) === 'secret';

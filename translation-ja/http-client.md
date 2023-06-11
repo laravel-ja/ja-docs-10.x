@@ -174,6 +174,18 @@ Http::withUrlParameters([
 
     $response = Http::acceptJson()->get('http://example.com/users');
 
+`withHeaders`メソッドは、新しいヘッダをリクエストの既存のヘッダへマージします。必要であれば、`replaceHeaders`メソッドを使用し、すべてのヘッダを完全に置き換えることもできます。
+
+```php
+$response = Http::withHeaders([
+    'X-Original' => 'foo',
+])->replaceHeaders([
+    'X-Replacement' => 'bar',
+])->post('http://example.com/users', [
+    'name' => 'Taylor',
+]);
+```
+
 <a name="authentication"></a>
 ### 認証
 

@@ -27,8 +27,6 @@ Laravelは、アプリケーションにHTTPリクエストを送信し、レス
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -58,8 +56,6 @@ class ExampleTest extends TestCase
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Tests\TestCase;
 
     class ExampleTest extends TestCase
@@ -492,8 +488,6 @@ JSONレスポンス内のプロパティが特定の型のものであること�
 
     namespace Tests\Feature;
 
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
     use Illuminate\Http\UploadedFile;
     use Illuminate\Support\Facades\Storage;
     use Tests\TestCase;
@@ -650,6 +644,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertJsonValidationErrorFor](#assert-json-validation-error-for)
 [assertLocation](#assert-location)
+[assertMethodNotAllowed](#assert-method-not-allowed)
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
@@ -1008,6 +1003,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertJsonValidationErrorFor(string $key, $responseKey = 'errors');
 
+<a name="assert-method-not-allowed"></a>
+#### assertMethodNotAllowed
+
+レスポンスのHTTPステータスコードが、method not allowed（405）であることを宣言します。
+
+    $response->assertMethodNotAllowed();
+
 <a name="assert-moved-permanently"></a>
 #### assertMovedPermanently
 
@@ -1169,6 +1171,8 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
     $response->assertSessionHasInput($key, $value = null);
 
 必要であれば、クロージャを`assertSessionHasInput`メソッドの第２引数へ指定できます。クロージャが`true`を返せば、アサートは成功します。
+
+    use Illuminate\Support\Facades\Crypt;
 
     $response->assertSessionHasInput($key, function (string $value) {
         return Crypt::decryptString($value) === 'secret';

@@ -194,6 +194,12 @@ php artisan migrate:rollback --step=5
  php artisan migrate:rollback --batch=3
  ```
 
+実際にマイグレーションを実行せず、そのマイグレーションが実行するSQL文を確認したい場合は、`--pretend`フラグを`migrate:rollback`コマンドへ指定します。
+
+```shell
+php artisan migrate:rollback --pretend
+```
+
 `migrate:reset`コマンドは、アプリケーションのすべてのマイグレーションをロールバックします。
 
 ```shell
