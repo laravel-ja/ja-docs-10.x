@@ -89,9 +89,9 @@ Laravelサービスコンテナを深く理解することは、強力で大規�
         // ...
     });
 
-多くの場合、自動依存注入と[ファサード](/docs/{{version}}/facades)のおかげで、コンテナから手作業でバインドしたり依存解決したりすることなく、Laravelアプリケーションを構築できます。**では、いつ手作業でコンテナを操作するのでしょう？**２つの状況を調べてみましょう。
+多くの場合、自動依存注入と[ファサード](/docs/{{version}}/facades)のおかげで、コンテナから手作業で結合したり依存解決したりすることなく、Laravelアプリケーションを構築できます。**では、いつ手作業でコンテナを操作するのでしょう？**２つの状況を調べてみましょう。
 
-第１に、インターフェイスを実装するクラスを作成し、そのインターフェイスをルートまたはクラスコンストラクターで型指定する場合は、[コンテナにそのインターフェイスを解決する方法を指示する](#binding-interfaces-to-implementations)必要があります。第２に、他のLaravel開発者と共有する予定の[Laravelパッケージの作成](/docs/{{version}}/packages)の場合、パッケージのサービスをコンテナにバインドする必要がある場合があります。
+第１に、インターフェイスを実装するクラスを作成し、そのインターフェイスをルートまたはクラスコンストラクターで型指定する場合は、[コンテナにそのインターフェイスを解決する方法を指示する](#binding-interfaces-to-implementations)必要があります。第２に、他のLaravel開発者と共有する予定の[Laravelパッケージの作成](/docs/{{version}}/packages)の場合、パッケージのサービスをコンテナに結合する必要がある場合があります。
 
 <a name="binding"></a>
 ## 結合
@@ -135,12 +135,12 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 ```
 
 > **Note**
-> クラスがどのインターフェイスにも依存しない場合、クラスをコンテナにバインドする必要はありません。コンテナは、リフレクションを使用してこれらのオブジェクトを自動的に解決できるため、これらのオブジェクトの作成方法を指示する必要はありません。
+> クラスがどのインターフェイスにも依存しない場合、クラスをコンテナに結合する必要はありません。コンテナは、リフレクションを使用してこれらのオブジェクトを自動的に解決できるため、これらのオブジェクトの作成方法を指示する必要はありません。
 
 <a name="binding-a-singleton"></a>
 #### シングルトンの結合
 
-`singleton`メソッドは、クラスまたはインターフェイスをコンテナにバインドしますが、これは１回のみ依存解決される必要がある結合です。シングルトン結合が依存解決されたら、コンテナに対する後続の呼び出しで、同じオブジェクトインスタンスが返されます。
+`singleton`メソッドは、クラスまたはインターフェイスをコンテナに結合しますが、これは１回のみ依存解決される必要がある結合です。シングルトン結合が依存解決されたら、コンテナに対する後続の呼び出しで、同じオブジェクトインスタンスが返されます。
 
     use App\Services\Transistor;
     use App\Services\PodcastParser;
@@ -149,6 +149,14 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
     $this->app->singleton(Transistor::class, function (Application $app) {
         return new Transistor($app->make(PodcastParser::class));
     });
+
+指定する型に対する結合がまだ登録されていない場合にのみ、シングルトンコンテナ結合を登録したい場合は`singletonIf`メソッドを使用します。
+
+```php
+$this->app->singletonIf(Transistor::class, function (Application $app) {
+    return new Transistor($app->make(PodcastParser::class));
+});
+```
 
 <a name="binding-scoped"></a>
 #### スコープ付きシングルトンの結合
@@ -351,7 +359,7 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 
     $transistor = $this->app->makeWith(Transistor::class, ['id' => 1]);
 
-`bound`メソッドは、クラスやインターフェイスをコンテナ内で明示的にバインドしているかを判定するために使用します。
+`bound`メソッドは、クラスやインターフェイスをコンテナ内で明示的に結合しているかを判定するために使用します。
 
     if ($this->app->bound(Transistor::class)) {
         // ...

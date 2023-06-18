@@ -1768,7 +1768,6 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
 
 バリデータにユーザーIDを無視するように指示するには、ルールをスムーズに定義できる`Rule`クラスを使います。以下の例の場合、さらにルールを`|`文字を区切りとして使用する代わりに、バリデーションルールを配列として指定しています。
 
-    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Support\Facades\Validator;
     use Illuminate\Validation\Rule;
 

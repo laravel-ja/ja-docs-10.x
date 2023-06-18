@@ -49,7 +49,7 @@ ComposerでLaravel Breezeパッケージをインストールしたら、`breeze
 デフォルトのBreeze「スタック」はBladeスタックで、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)を使用して、アプリケーションのフロントエンドをレンダします。Bladeスタックは、`breeze:install`コマンドを追加引数なしで実行することでインストールできます。Breezeの雛形をインストールしたら、アプリケーションのフロントエンドアセットをコンパイルする必要があります。
 
 ```shell
-php artisan breeze:install
+php artisan breeze:install blade
 
 php artisan migrate
 npm install

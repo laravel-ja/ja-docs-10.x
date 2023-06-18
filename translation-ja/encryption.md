@@ -26,8 +26,6 @@ Laravelの暗号化を使用する前に、`config/app.php`設定ファイルで
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
-    use App\Models\User;
     use Illuminate\Http\RedirectResponse;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Crypt;
