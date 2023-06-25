@@ -1747,15 +1747,14 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 
 `morphTo`リレーションをEagerロードする場合、Eloquentは複数のクエリを実行して各タイプの関連モデルをフェッチします。`MorphTo`リレーションの`constrain`メソッドを使用して、これらの各クエリに制約を追加できます。
 
-    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Relations\MorphTo;
 
     $comments = Comment::with(['commentable' => function (MorphTo $morphTo) {
         $morphTo->constrain([
-            Post::class => function (Builder $query) {
+            Post::class => function ($query) {
                 $query->whereNull('hidden_at');
             },
-            Video::class => function (Builder $query) {
+            Video::class => function ($query) {
                 $query->where('type', 'educational');
             },
         ]);
@@ -1769,9 +1768,8 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 リレーションが存在するかどうかをチェックすると同時に、同じ条件に基づいてそのリレーションをロードする必要がある場合があります。例えば、与えられたクエリ条件と一致する`Post`モデルの子を持つ`User`モデルのみを取得し、同時に一致する投稿をEagerロードしたいことがあります。このような場合は、`withWhereHas`メソッドを使用します。
 
     use App\Models\User;
-    use Illuminate\Database\Eloquent\Builder;
 
-    $users = User::withWhereHas('posts', function (Builder $query) {
+    $users = User::withWhereHas('posts', function ($query) {
         $query->where('featured', true);
     })->get();
 

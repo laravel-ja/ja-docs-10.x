@@ -452,7 +452,7 @@ MongoDB接続を使用してこれらの各メソッドを実装する必要が�
     use Illuminate\Support\Facades\Cache;
     use Illuminate\Support\ServiceProvider;
 
-    class CacheServiceProvider extends ServiceProvider
+    class AppServiceProvider extends ServiceProvider
     {
         /**
          * アプリケーションの全サービスの登録

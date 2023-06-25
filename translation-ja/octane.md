@@ -62,7 +62,7 @@ php artisan octane:install
 ```shell
 ./vendor/bin/sail up
 
-./vendor/bin/sail composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http 
+./vendor/bin/sail composer require laravel/octane spiral/roadrunner-cli spiral/roadrunner-http
 ```
 
 次に、Sailシェルを起動し、`rr`実行可能ファイルを使用して、RoadRunnerバイナリのLinuxベースの最新ビルドを取得します。

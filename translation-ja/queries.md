@@ -455,7 +455,7 @@ DB::table('users')->where('active', false)
 
     $users = DB::table('users')
                 ->where('votes', '>', 100)
-                ->orWhere(function(Builder $query) {
+                ->orWhere(function (Builder $query) {
                     $query->where('name', 'Abigail')
                           ->where('votes', '>', 50);
                 })

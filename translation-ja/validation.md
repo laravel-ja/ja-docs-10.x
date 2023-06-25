@@ -1930,7 +1930,7 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
     ];
 
     Validator::make($input, [
-        'user' => 'array:username,locale',
+        'user' => 'array:name,username',
     ]);
 
 一般的に、配列内に存在することが許される配列キーを常に指定する必要があります。そうしないと、バリデータの`validate`と`validated`メソッドは他のネストした配列バリデーションルールにより検証されていなくても、配列とそのすべてのキーを含むバリデーション済みデータをすべて返してしまうことになります。
