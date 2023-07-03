@@ -118,6 +118,13 @@ Http::withUrlParameters([
         'page' => 1,
     ]);
 
+あるいは、`withQueryParameters`メソッドを使うこともできます。
+
+    Http::retry(3, 100)->withQueryParameters([
+        'name' => 'Taylor',
+        'page' => 1,
+    ])->get('http://example.com/users')
+
 <a name="sending-form-url-encoded-requests"></a>
 #### フォームURLエンコードされたリクエストの送信
 
@@ -325,35 +332,48 @@ Guzzleのデフォルト動作とは異なり、LaravelのHTTPクライアント
 <a name="guzzle-middleware"></a>
 ### Guzzleミドルウェア
 
-LaravelのHTTPクライアントはGuzzleで動いているので、[Guzzleミドルウェア](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html)を利用して、送信するリクエストの操作や受信したレスポンスの検査ができます。送信リクエストを操作するには、`withMiddleware`メソッドとGuzzleの`mapRequest`ミドルウェアファクトリを組み合わせて、Guzzleミドルウェアを登録します。
+LaravelのHTTPクライアントはGuzzleで動いているので、[Guzzleミドルウェア](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html)を利用して、送信するリクエストの操作や受信したレスポンスの検査ができます。送信リクエストを操作するには、`withRequestMiddleware`でGuzzleミドルウェアを登録します。
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\RequestInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapRequest(function (RequestInterface $request) {
-            $request = $request->withHeader('X-Example', 'Value');
-
-            return $request;
-        })
+    $response = Http::withRequestMiddleware(
+        function (RequestInterface $request) {
+            return $request->withHeader('X-Example', 'Value');
+        }
     )->get('http://example.com');
 
-同様に、Guzzleの`mapResponse`ミドルウェアファクトリと組み合わせて`withMiddleware`メソッドをを登録すれば、受信HTTPレスポンスを検査できます。
+同様に、`withResponseMiddleware`メソッドでミドルウェアを登録すれば、受信HTTPレスポンスを検査できます。
 
-    use GuzzleHttp\Middleware;
     use Illuminate\Support\Facades\Http;
     use Psr\Http\Message\ResponseInterface;
 
-    $response = Http::withMiddleware(
-        Middleware::mapResponse(function (ResponseInterface $response) {
+    $response = Http::withResponseMiddleware(
+        function (ResponseInterface $response) {
             $header = $response->getHeader('X-Example');
 
             // ...
 
             return $response;
-        })
+        }
     )->get('http://example.com');
+
+<a name="global-middleware"></a>
+#### グローバルミドルウェア
+
+時には、すべての送信リクエストと受信レスポンスへ適用するミドルウェアを登録したいこともあるでしょう。それには、`globalRequestMiddleware`メソッドと`globalResponseMiddleware`メソッドを使います。通常、これらのメソッドはアプリケーションの`AppServiceProvider`で、`boot`メソッドから呼び出す必要があります。
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::globalRequestMiddleware(fn ($request) => $request->withHeader(
+    'User-Agent', 'Example Application/1.0'
+));
+
+Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
+    'X-Finished-At', now()->toDateTimeString()
+));
+```
 
 <a name="guzzle-options"></a>
 ### Guzzleオプション

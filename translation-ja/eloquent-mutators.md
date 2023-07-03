@@ -627,6 +627,22 @@ php artisan make:cast Json
 > **Note**
 > 値オブジェクトを含むEloquentモデルをJSONまたは配列にシリアル化する場合は、値オブジェクトに`Illuminate\Contracts\Support\Arrayable`および`JsonSerializable`インターフェイスを実装する必要があります。
 
+<a name="value-object-caching"></a>
+#### 値オブジェクトのキャッシュ
+
+値オブジェクトへキャストする属性を解決する場合、Eloquentはそれらをキャッシュします。そのため、属性へ再度アクセスすると、同じオブジェクトのインスタンスを返します。
+
+カスタムキャストクラスのオブジェクトキャッシュ動作を無効にしたい場合は、カスタムキャストクラスでpublicの`withoutObjectCaching`プロパティを宣言してください。
+
+```php
+class Address implements CastsAttributes
+{
+    public bool $withoutObjectCaching = true;
+
+    // ...
+}
+```
+
 <a name="array-json-serialization"></a>
 ### 配列／JSONのシリアル化
 
@@ -670,7 +686,7 @@ php artisan make:cast Hash --inbound
          * 新しいキャストクラスインスタンスの生成
          */
         public function __construct(
-            protected string $algorithm = null,
+            protected string|null $algorithm = null,
         ) {}
 
         /**

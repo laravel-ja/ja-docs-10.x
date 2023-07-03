@@ -635,6 +635,15 @@ Laravel ペジネータインスタンスをリソースの`collection`メソッ
 
 この例では、`posts`リレーションのカウントがロードされていない場合、`posts_count`キーはクライアントへ送信される前に、リソースレスポンスから削除されます。
 
+`avg`、`sum`、`min`、`max`など、他の種類の集約も、`whenAggregated`メソッドを使い条件付きでロードできます。
+
+```php
+'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),
+'words_sum' => $this->whenAggregated('posts', 'words', 'sum'),
+'words_min' => $this->whenAggregated('posts', 'words', 'min'),
+'words_max' => $this->whenAggregated('posts', 'words', 'max'),
+```
+
 <a name="conditional-pivot-information"></a>
 #### 条件付きピボット情報
 

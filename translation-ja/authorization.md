@@ -633,7 +633,6 @@ Laravelは、`App\Models\User`モデルが提供する便利なメソッドに�
 
     use App\Http\Controllers\Controller;
     use App\Models\Post;
-    use Illuminate\Http\Request;
 
     class PostController extends Controller
     {

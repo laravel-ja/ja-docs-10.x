@@ -1051,6 +1051,22 @@ public function __construct(
 @endif
 ```
 
+配列を`has`メソッドへ渡した場合、このメソッドは与えた属性がすべてコンポーネントに存在するかを判定します。
+
+```blade
+@if ($attributes->has(['name', 'class']))
+    <div>All of the attributes are present</div>
+@endif
+```
+
+`hasAny`メソッドは、指定属性のいずれかがコンポーネントに存在するかを判定するために使用します。
+
+```blade
+@if ($attributes->hasAny(['href', ':href', 'v-bind:href']))
+    <div>One of the attributes is present</div>
+@endif
+```
+
 `get`メソッドを使用して特定の属性の値を取得できます。
 
 ```blade

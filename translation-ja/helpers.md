@@ -70,6 +70,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
 [Arr::toCssClasses](#method-array-to-css-classes)
+[Arr::toCssStyles](#method-array-to-css-styles)
 [Arr::undot](#method-array-undot)
 [Arr::where](#method-array-where)
 [Arr::whereNotNull](#method-array-where-not-null)
@@ -1023,6 +1024,23 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
     /*
         'p-4 bg-red'
     */
+
+<a name="method-array-to-css-styles"></a>
+#### `Arr::toCssStyles()` {.collection-method}
+
+`Arr::toCssStyles`は、CSSスタイルの文字列を条件付きでコンパイルします。このメソッドはクラスの配列を受け付けます。配列のキーには追加するクラスを含め、値には論理値を指定します。配列のキーが数値の場合は、レンダーするクラスのリストへ常に含めます。
+
+```php
+$hasColor = true;
+
+$array = ['background-color: blue', 'color: blue' => $hasColor];
+
+$classes = Arr::toCssStyles($array);
+
+/*
+    'background-color: blue; color: blue;'
+*/
+```
 
 このメソッドは、[Bladeコンポーネントのアトリビュートバッグを使ったクラスのマージ](/docs/{{version}}/blade#conditionally-merge-classes)と、`@class` [Bladeディレクティブ](/docs/{{version}}/blade#conditional-classes)を提供するLaravelの機能を強化します。
 

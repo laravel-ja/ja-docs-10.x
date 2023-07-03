@@ -352,6 +352,7 @@ Laravelは、[Bootstrap CSS](https://getbootstrap.com/)を使用し構築した�
 `$paginator->url($page)`  |  指定するページ番号のURLを取得
 `$paginator->getPageName()`  |  ページの保存に使用するクエリ文字列変数を取得
 `$paginator->setPageName($name)`  |  ページの保存に使用するクエリ文字列変数を設定
+`$paginator->through($callback)`  |  コールバックを使い、各アイテムを変換
 
 <a name="cursor-paginator-instance-methods"></a>
 ## カーソルPaginatorインスタンスのメソッド
