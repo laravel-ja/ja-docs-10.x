@@ -170,7 +170,7 @@ php artisan dusk:make LoginTest
 > Duskテストの実行時には、SQLiteメモリ内データベースを使用できません。ブラウザは独自のプロセス内で実行されるため、他のプロセスのメモリ内データベースにアクセスすることはできません。
 
 <a name="reset-truncation"></a>
-#### データベーストランザクションの利用
+#### データベースの切り捨て
 
 `DatabaseTruncation`トレイトを使用する場合は、事前にComposerパッケージマネージャを使用し、`doctrine/dbal`パッケージをインストールする必要があります。
 
@@ -212,10 +212,10 @@ composer require --dev doctrine/dbal
      */
     protected $exceptTables = ['users'];
 
-テーブルを切り詰めるデータベースの接続を指定するには、テストクラスに `$connectionsToTruncate`プロパティを定義してください。
+テーブルを切り捨てるデータベースの接続を指定するには、テストクラスに `$connectionsToTruncate`プロパティを定義してください。
 
     /**
-     * テーブルを切り詰める接続を指定
+     * テーブルを切り捨てる接続を指定
      *
      * @var array
      */
