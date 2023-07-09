@@ -47,7 +47,7 @@ Laravelのメールサービスは、アプリケーションの`config/mail.php
 <a name="driver-prerequisites"></a>
 ### ドライバ／トランスポートの前提条件
 
-MailgunやPostmarkなどのAPIベースドライバは、SMTPサーバを経由してメールを送信するよりもシンプルで高速です。可能であれば、こうしたドライバのいずれかを使用することをお勧めします。
+Mailgun、Postmark、 MailerSendなどのAPIベースドライバは、SMTPサーバを経由してメールを送信するよりもシンプルで高速です。可能であれば、こうしたドライバのいずれかを使用することをお勧めします。
 
 <a name="mailgun-driver"></a>
 #### Mailgunドライバ
@@ -137,6 +137,27 @@ Laravelがメール送信時に、AWS SDKの`SendEmail`メソッドへ渡す、[
         ],
     ],
 
+<a name="mailersend-driver"></a>
+#### MailerSendドライバ
+
+トランザクションメールとSMSサービスの[MailerSend](https://www.mailersend.com/)は、Laravel用の独自APIベースのメールドライバを保守しています。ドライバを含むパッケージは、Composerパッケージマネージャ経由でインストールできます。
+
+```shell
+composer require mailersend/laravel-driver
+```
+
+パッケージをインストールしたら、アプリケーションの`.env`ファイルへ`MAILERSEND_API_KEY`環境変数を追加します。さらに、`MAIL_MAILER`環境変数を`mailersend`と定義する必要があります。
+
+```shell
+MAIL_MAILER=mailersend
+MAIL_FROM_ADDRESS=app@yourdomain.com
+MAIL_FROM_NAME="App Name"
+
+MAILERSEND_API_KEY=your-api-key
+```
+
+ホストしたテンプレートの使用方法など、MailerSendの詳細は、[MailerSendドライバのドキュメント](https://github.com/mailersend/mailersend-laravel-driver#usage)を参照してください。
+
 <a name="failover-configuration"></a>
 ### フェイルオーバー設定
 
@@ -212,7 +233,7 @@ Mailableクラスを生成したら、その中身を調べるために開いて
 <a name="using-a-global-from-address"></a>
 #### グローバル`from`アドレスの使用
 
-ただし、アプリケーションがすべての電子メールに同じ「送信者」アドレスを使用している場合、生成する各メール可能クラスで`from`メソッドを呼び出すのは面倒です。代わりに、`config/mail.php`設定ファイルでグローバルな「送信者」アドレスを指定できます。このアドレスは、Mailableクラス内で「送信者」アドレスを指定しない場合に使用します。
+ただし、アプリケーションがすべての電子メールに同じ「送信者」アドレスを使用している場合、生成する各Mailableクラスへ`from`を追加するのは面倒です。代わりに、`config/mail.php`設定ファイルでグローバルな「送信者」アドレスを指定できます。このアドレスは、Mailableクラス内で「送信者」アドレスを指定しない場合に使用します。
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),

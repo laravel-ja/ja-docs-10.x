@@ -3003,10 +3003,9 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 `replaceMatches`メソッドは、指定したパターンに一致する文字列の各部分で呼び出されるクロージャも受け入れます。これにより、クロージャ内で置換ロジックを実行し、置換した値を返せます。
 
     use Illuminate\Support\Str;
-    use Illuminate\Support\Stringable;
 
-    $replaced = Str::of('123')->replaceMatches('/\d/', function (Stringable $match) {
-        return '['.$match[0].']';
+    $replaced = Str::of('123')->replaceMatches('/\d/', function (array $matches) {
+        return '['.$matches[0].']';
     });
 
     // '[1][2][3]'

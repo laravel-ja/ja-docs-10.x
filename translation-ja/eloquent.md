@@ -1343,6 +1343,7 @@ Eloquentはクロージャを使用してグローバルスコープを定義す
 
     namespace App\Models;
 
+    use Illuminate\Database\Eloquent\Builder;
     use Illuminate\Database\Eloquent\Model;
 
     class User extends Model

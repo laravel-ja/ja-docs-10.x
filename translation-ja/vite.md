@@ -646,7 +646,13 @@ SSRエントリポイントの再構築を忘れないようにするために�
 
 ```sh
 npm run build
-node bootstrap/ssr/ssr.mjs
+node bootstrap/ssr/ssr.js
+```
+
+[SSRをInertia](https://inertiajs.com/server-side-rendering)で使用している場合、代わりに`inertia:start-ssr` Artisanコマンドを使用してSSRサーバを起動してください。
+
+```sh
+php artisan inertia:start-ssr
 ```
 
 > **Note**

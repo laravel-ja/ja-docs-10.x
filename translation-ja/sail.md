@@ -62,6 +62,9 @@ php artisan sail:install
 ./vendor/bin/sail up
 ```
 
+> **Warning**
+> Linux用のDocker Desktopを使用している場合は、`docker context use default`コマンドを実行して、`default` Dockerコンテキストを使用する必要があります。
+
 <a name="adding-additional-services"></a>
 #### サービスの追加
 

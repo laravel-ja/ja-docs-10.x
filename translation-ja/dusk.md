@@ -236,7 +236,7 @@ php artisan dusk
 php artisan dusk:fails
 ```
 
-`dusk`コマンドは、特定の[グループ](https://phpunit.readthedocs.io/en/9.5/annotations.html#group)のテストのみを実行できるようにするなど、PHPUnitテストランナが通常受け付ける引数を全て受け入れます。
+`dusk`コマンドは、特定の[グループ](https://phpunit.readthedocs.io/en/10.1/annotations.html#group)のテストのみを実行できるようにするなど、PHPUnitテストランナが通常受け付ける引数を全て受け入れます。
 
 ```shell
 php artisan dusk --group=foo

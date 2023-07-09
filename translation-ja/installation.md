@@ -159,7 +159,15 @@ cd example-app
 <a name="getting-started-on-linux"></a>
 ### Linuxで始める
 
-Linuxで開発しており、[Docker Compose](https://docs.docker.com/compose/install/)がインストール済みの場合は、簡単なターミナルコマンドを使用して新しいLaravelプロジェクトを作成できます。たとえば、"example-app"という名前のディレクトリに新しいLaravelアプリケーションを作成するには、ターミナルで次のコマンドを実行します。
+Linuxで開発しており、[Docker Compose](https://docs.docker.com/compose/install/)を既にインストールしている場合は、簡単なターミナルコマンドで新しいLaravelプロジェクトを作成できます。
+
+まず、Docker Desktop for Linuxを使用している場合は、以下のコマンドを実行してください。Docker Desktop for Linuxを使用していない場合は、このステップを飛ばしてください。
+
+```shell
+docker context use default
+```
+
+次に、"example-app "ディレクトリへ新しいLaravelアプリケーションを作成するために、ターミナルで以下のコマンドを実行します。
 
 ```shell
 curl -s https://laravel.build/example-app | bash
