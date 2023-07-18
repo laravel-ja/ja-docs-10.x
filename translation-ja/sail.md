@@ -297,6 +297,8 @@ sail artisan test
 ```yaml
 selenium:
     image: 'selenium/standalone-chrome'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     volumes:
         - '/dev/shm:/dev/shm'
     networks:
@@ -326,6 +328,8 @@ sail dusk
 ```yaml
 selenium:
     image: 'seleniarm/standalone-chromium'
+    extra_hosts:
+        - 'host.docker.internal:host-gateway'
     volumes:
         - '/dev/shm:/dev/shm'
     networks:

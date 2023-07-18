@@ -43,8 +43,9 @@
 - [Slack通知](#slack-notifications)
     - [事前要件](#slack-prerequisites)
     - [Slack通知のフォーマット](#formatting-slack-notifications)
-    - [Slack添付](#slack-attachments)
+    - [Slack操作](#slack-interactivity)
     - [Slack通知のルート指定](#routing-slack-notifications)
+    - [外部のSlackワークスペースへの通知](#notifying-external-slack-workspaces)
 - [通知のローカライズ](#localizing-notifications)
 - [テスト](#testing)
 - [通知イベント](#notification-events)
@@ -94,7 +95,7 @@ php artisan make:notification InvoicePaid
 
     $user->notify(new InvoicePaid($invoice));
 
-> **Note**  
+> **Note**
 > どのモデルでも`Notifiable`トレイトを使用できることを忘れないでください。`User`モデルにだけに限定して含められるわけでありません。
 
 <a name="using-the-notification-facade"></a>
@@ -115,7 +116,7 @@ php artisan make:notification InvoicePaid
 
 すべての通知クラスは、通知を配信するチャンネルを決定する、`via`メソッドを持っています。通知は`mail`、`database`、`broadcast`、`vonage`、`slack`チャンネルへ配信されるでしょう。
 
-> **Note**  
+> **Note**
 > TelegramやPusherのような、他の配信チャンネルを利用したい場合は、コミュニティが管理している、[Laravel通知チャンネルのWebサイト](http://laravel-notification-channels.com)をご覧ください。
 
 `via`メソッドは、通知を送っているクラスのインスタンスである、`$notifiable`インスタンスを引数に受け取ります。`$notifiable`を使い、通知をどこのチャンネルへ配信するかを判定できます。
@@ -133,7 +134,7 @@ php artisan make:notification InvoicePaid
 <a name="queueing-notifications"></a>
 ### 通知のキューイング
 
-> **Warning**  
+> **Warning**
 > 通知をキューへ投入する前に、キューを設定して[ワーカを起動](/docs/{{version}}/queues)する必要があります。
 
 通知の送信には時間がかかる場合があります。特に、チャンネルが通知を配信するために外部API呼び出しを行う必要がある場合に当てはまります。アプリケーションのレスポンス時間を短縮するには、クラスに`ShouldQueue`インターフェイスと`Queueable`トレイトを追加して、通知をキューに入れてください。インターフェイスとトレイトは、`make:notification`コマンドを使用して生成されたすべての通知であらかじめインポートされているため、すぐに通知クラスに追加できます。
@@ -272,7 +273,7 @@ php artisan make:notification InvoicePaid
         }
     }
 
-> **Note**  
+> **Note**
 > この問題の回避方法の詳細は、[キュー投入されるジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
@@ -335,14 +336,14 @@ php artisan make:notification InvoicePaid
                     ->line('私達のアプリケーションをご利用いただき、ありがとうございます。');
     }
 
-> **Note**  
+> **Note**
 > `toMail`メソッドの中で、`$this->invoice->id`を使っていることに注意してください。通知メッセージを生成するために必要な情報は、どんなものでも通知のコンストラクタへ渡せます。
 
 この例では、挨拶、テキスト行、行動を促すフレーズ、そして別のテキスト行を登録します。`MailMessage`オブジェクトが提供するこれらのメソッドにより、小さなトランザクションメールを簡単かつ迅速にフォーマットできます。次に、メールチャンネルは、メッセージコンポーネントを、平文テキストと対応する美しいレスポンス性の高いHTML電子メールテンプレートに変換します。`mail`チャンネルが生成する電子メールの例を次に示します。
 
 <img src="https://laravel.com/img/docs/notification-example-2.png">
 
-> **Note**  
+> **Note**
 > メール通知を送信するときは、必ず`config/app.php`設定ファイルで`name`設定オプションを設定してください。この値は、メール通知メッセージのヘッダとフッターに使用されます。
 
 <a name="error-messages"></a>
@@ -490,7 +491,7 @@ php artisan vendor:publish --tag=laravel-notifications
                     ->attach('/path/to/file');
     }
 
-> **Note**  
+> **Note**
 > 通知メールメッセージが提供する`attach`メソッドは、[Attachableオブジェクト](/docs/{{version}}/mail#attachable-objects)も受け付けます。詳細は、包括的な[Attachableオブジェクトのドキュメント](/docs/{{version}}/mail#attachable-objects)を参照してください。
 
 メッセージにファイルを添付するとき、`attach`メソッドの第２引数として配列を渡し、表示名やMIMEタイプの指定もできます。
@@ -782,7 +783,7 @@ php artisan notifications:table
 php artisan migrate
 ```
 
-> **Note**  
+> **Note**
 > 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
 
 <a name="formatting-database-notifications"></a>
@@ -827,7 +828,7 @@ php artisan migrate
         echo $notification->type;
     }
 
-> **Note**  
+> **Note**
 > JavaScriptクライアントから通知にアクセスするには、現在のユーザーなどのnotifiableエンティティの通知を返す、通知コントローラをアプリケーションで定義する必要があります。次に、JavaScriptクライアントからそのコントローラのURLへHTTPリクエストを送信します。
 
 <a name="marking-notifications-as-read"></a>
@@ -1054,20 +1055,39 @@ Vonageの通知を適切な電話番号に回すには、Notifiableなエンテ�
 <a name="slack-prerequisites"></a>
 ### 事前要件
 
-Slackへの通知を送信し始める前に、ComposerによりSlack通知チャンネルをインストールする必要があります。
+Slack通知を送信する前にComposeを使い、Slack通知チャンネルをインストールする必要があります。
 
 ```shell
 composer require laravel/slack-notification-channel
 ```
 
-チーム用の[Slackアプリ](https://api.slack.com/apps?new_app=1)も作成する必要があります。アプリを作成したら、ワークスペースの「受信Webhook」を設定する必要があります。Slackは更に[Slack通知のルーティング](#routing-slack-notifications)に使用できるWebhookのURLも提供します。
+さらに、Slackワークスペース用の[Slack App](https://api.slack.com/apps?new_app=1)を作成する必要もあります。
+
+作成したAppと同じSlackワークスペースにのみ通知を送る必要がある場合は、Appへ`chat:write`、`chat:write.public`、`chat:write.customize`のスコープを確実に持たせてください。これらのスコープは、Slack内の"OAuth & Permissions" App管理タブで追加できます。
+
+次に、アプリの"Bot User OAuth Token"をコピーし、アプリケーションの`services.php`設定ファイル内の`slack`設定配列内へ配置します。このトークンはSlackの"OAuth & Permissions"タブにあります。
+
+    'slack' => [
+        'notifications' => [
+            'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
+            'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
+        ],
+    ],
+
+<a name="slack-app-distribution"></a>
+#### アプリ配信
+
+アプリケーションのユーザーが所有する外部のSlackワークスペースへ通知を送信する場合は、Slack経由でアプリケーションを「配布（distribution）」する必要があります。アプリの配布は、Slack内のアプリの"Manage Distribution"タブから管理できます。アプリを配布したら、[Socialite](/docs/{{version}}/socialite)を使い、アプリのユーザーに代わり、[Slack Botトークンを取得](/docs/{{version}}/socialite#slack-bot-scopes)する必要があります。
 
 <a name="formatting-slack-notifications"></a>
 ### Slack通知のフォーマット
 
-通知がSlackメッセージとしての送信をサポートする場合、通知クラスに`toSlack`メソッドを定義する必要があります。このメソッドは`$notifiable`エンティティを受け取り、`Illuminate\Notifications\Messages\SlackMessage`インスタンスを返す必要があります。Slackメッセージはテキストと同時に、追加テキストのフォーマットか、フィールドの配列を「添付」として含みます。基本的な`toSlack`の例を見てください。
+通知をSlackメッセージとして送信することをサポートする場合、Notificationクラスに `toSlack`メソッドを定義する必要があります。このメソッドは`$notifiable`エンティティを受け取り、`Illuminate\Notifications\Slack\SlackMessage`インスタンスを返します。[SlackのBlock Kit API](https://api.slack.com/block-kit)を使ってリッチな通知を構築できます。以下の例は、[SlackのBlock Kit builder](https://app.slack.com/block-kit-builder/T01KWS6K23Z#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Invoice%20Paid%22%7D%7D,%7B%22type%22:%22context%22,%22elements%22:%5B%7B%22type%22:%22plain_text%22,%22text%22:%22Customer%20%231234%22%7D%5D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22An%20invoice%20has%20been%20paid.%22%7D,%22fields%22:%5B%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20No:*%5Cn1000%22%7D,%7B%22type%22:%22mrkdwn%22,%22text%22:%22*Invoice%20Recipient:*%5Cntaylor@laravel.com%22%7D%5D%7D,%7B%22type%22:%22divider%22%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Congratulations!%22%7D%7D%5D%7D)の中で確認できます。
 
-    use Illuminate\Notifications\Messages\SlackMessage;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
+    use Illuminate\Notifications\Slack\SlackMessage;
 
     /**
      * 通知のSlackプレゼンテーションを取得
@@ -1075,88 +1095,115 @@ composer require laravel/slack-notification-channel
     public function toSlack(object $notifiable): SlackMessage
     {
         return (new SlackMessage)
-                    ->content('請求の一つが支払われました。');
+                ->text('One of your invoices has been paid!')
+                ->headerBlock('Invoice Paid')
+                ->contextBlock(function (ContextBlock $block) {
+                    $block->text('Customer #1234');
+                })
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('An invoice has been paid.');
+                    $block->field("*Invoice No:*\n1000")->markdown();
+                    $block->field("*Invoice Recipient:*\ntaylor@laravel.com")->markdown();
+                })
+                ->dividerBlock()
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('Congratulations!');
+                });
     }
 
-<a name="slack-attachments"></a>
-### Slack添付
+<a name="slack-interactivity"></a>
+### Slack操作
 
-Slackメッセージに「添付」を追加することもできます。添付はシンプルなテキストメッセージよりも、リッチなフォーマットのオプションを提供します。以下の例では、アプリケーションで起きた例外についてのエラー通知で、例外についての詳細情報を表示するリンクを含めています。
+SlackのBlock Kit通知システムは、[ユーザーインタラクションを処理する](https://api.slack.com/interactivity/handling)ための強力な機能を提供します。この機能を利用するには、Slackアプリで"Interactivity"を有効にし、アプリケーションが提供するURLを指す、"Request URL"を設定する必要があります。これらの設定は、Slack内の "Interactivity & Shortcuts"アプリ管理タブから管理できます。
 
-    use Illuminate\Notifications\Messages\SlackAttachment;
-    use Illuminate\Notifications\Messages\SlackMessage;
+以下の例では`actionsBlock`メソッドを利用していますが、SlackはボタンをクリックしたSlackユーザー、クリックしたボタンのIDなどを含むペイロードを持つ、`POST`リクエストを"Request URL"へ送信します。あなたのアプリケーションは、ペイロードに基づいて実行するアクションを決定することができます。また、[リクエスト](https://api.slack.com/authentication/verifying-requests-from-slack)がSlackによって行われたことを確認する必要があります。
+
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
+    use Illuminate\Notifications\Slack\SlackMessage;
 
     /**
      * 通知のSlackプレゼンテーションを取得
      */
     public function toSlack(object $notifiable): SlackMessage
     {
-        $url = url('/exceptions/'.$this->exception->id);
-
         return (new SlackMessage)
-                    ->error()
-                    ->content('Whoops! Something went wrong.')
-                    ->attachment(function (SlackAttachment $attachment) use ($url) {
-                        $attachment->title('Exception: File Not Found', $url)
-                                   ->content('File [background.jpg] was not found.');
-                    });
+                ->text('One of your invoices has been paid!')
+                ->headerBlock('Invoice Paid')
+                ->contextBlock(function (ContextBlock $block) {
+                    $block->text('Customer #1234');
+                })
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('An invoice has been paid.');
+                })
+                ->actionsBlock(function (ActionsBlock $block) {
+                     // ID defaults to "button_acknowledge_invoice"...
+                    $block->button('Acknowledge Invoice')->primary();
+
+                    // Manually configure the ID...
+                    $block->button('Deny')->danger()->id('deny_invoice');
+                });
     }
 
-添付ではさらに、ユーザーに対し表示すべきデータの配列を指定することもできます。簡単によめるよう指定したデータは、テーブルスタイルの形式で表示されます。
+<a name="slack-confirmation-modals"></a>
+#### モデルの確認
 
-    use Illuminate\Notifications\Messages\SlackAttachment;
-    use Illuminate\Notifications\Messages\SlackMessage;
+ユーザーがアクションを実行する前に確認したい場合は、ボタンを定義するときに`confirm`メソッドを呼び出します。`confirm`メソッドはメッセージと`ConfirmObject`インスタンスを受けるクロージャを引数に取ります。
+
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
+    use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
+    use Illuminate\Notifications\Slack\SlackMessage;
 
     /**
      * 通知のSlackプレゼンテーションを取得
      */
     public function toSlack(object $notifiable): SlackMessage
     {
-        $url = url('/invoices/'.$this->invoice->id);
-
         return (new SlackMessage)
-                    ->success()
-                    ->content('One of your invoices has been paid!')
-                    ->attachment(function (SlackAttachment $attachment) use ($url) {
-                        $attachment->title('Invoice 1322', $url)
-                                   ->fields([
-                                        'Title' => 'Server Expenses',
-                                        'Amount' => '$1,234',
-                                        'Via' => 'American Express',
-                                        'Was Overdue' => ':-1:',
-                                    ]);
-                    });
+                ->text('One of your invoices has been paid!')
+                ->headerBlock('Invoice Paid')
+                ->contextBlock(function (ContextBlock $block) {
+                    $block->text('Customer #1234');
+                })
+                ->sectionBlock(function (SectionBlock $block) {
+                    $block->text('An invoice has been paid.');
+                })
+                ->actionsBlock(function (ActionsBlock $block) {
+                    $block->button('Acknowledge Invoice')
+                        ->primary()
+                        ->confirm(
+                            'Acknowledge the payment and send a thank you email?',
+                            function (ConfirmObject $dialog) {
+                                $dialog->confirm('Yes');
+                                $dialog->deny('No');
+                            }
+                        );
+                });
     }
 
-<a name="markdown-attachment-content"></a>
-#### Markdown添付コンテンツ
+<a name="inspecting-slack-blocks"></a>
+#### Slackブロックの調査
 
-添付フィールドをMarkdownで構成している場合、`markdown`メソッドでSlackへ指定した添付フィールドがMarkdown形式のテキストであるため、パースしてから表示するように指示します。このメソッドが受け取る値は、`pretext`、`text`、`fields`です。Slackの添付形式についての詳細は、[Slack APIドキュメント](https://api.slack.com/docs/message-formatting#message_formatting)をご覧ください。
+ビルドしているブロックをすぐに確認したい場合は、`SlackMessage`インスタンスの`dd`メソッドを呼び出します。`dd`メソッドは Slackの[Block Kit Builder](https://app.slack.com/block-kit-builder/)へのURLを生成してダンプし、ペイロードと通知のプレビューをブラウザに表示します。生のペイロードをダンプするには`dd`メソッドへ`true`を渡します。
 
-    use Illuminate\Notifications\Messages\SlackAttachment;
-    use Illuminate\Notifications\Messages\SlackMessage;
-
-    /**
-     * 通知のSlackプレゼンテーションを取得
-     */
-    public function toSlack(object $notifiable): SlackMessage
-    {
-        $url = url('/exceptions/'.$this->exception->id);
-
-        return (new SlackMessage)
-                    ->error()
-                    ->content('Whoops! Something went wrong.')
-                    ->attachment(function (SlackAttachment $attachment) use ($url) {
-                        $attachment->title('Exception: File Not Found', $url)
-                                   ->content('File [background.jpg] was *not found*.')
-                                   ->markdown(['text']);
-                    });
-    }
+    return (new SlackMessage)
+            ->text('One of your invoices has been paid!')
+            ->headerBlock('Invoice Paid')
+            ->dd();
 
 <a name="routing-slack-notifications"></a>
 ### Slack通知のルート指定
 
-Slack通知を適切なSlackチームとチャンネルにルーティングするには、通知エンティティで`routeNotificationForSlack`メソッドを定義します。これは通知の配信先となるWebフックURLを返します。WebフックURLは、Slackチームに「IncomingWebhook」サービスを追加することで生成できます。
+Slackの通知を適切なSlackチームとチャンネルへ送るには、通知可能モデルに`routeNotificationForSlack`メソッドを定義します。このメソッドは３つの値のどれかを返します。
+
+- `null` - これは通知自体に設定したチャンネルへ、ルーティングを委ねます。`SlackMessage`をビルドするときに`to`メソッドを使用して、通知内でチャネルを設定してください。
+- 通知を送信するSlack チャンネルを指定する文字列。例：`#support-channel`
+- `SlackRoute`インスタンス。OAuthトークンとチャンネル名が指定できます。例：`SlackRoute::make($this->slack_channel, $this->slack_token)`このメソッドは、外部のワークスペースへ通知を送るときに使用します。
+
+一例として、`routeNotificationForSlack`メソッドから`#support-channel`を返すことにより、アプリケーションの`services.php`設定ファイルにある、Bot User OAuthトークンへ関連付けたワークスペースの、`#support-channel`チャネルへ通知を送信してみましょう。
 
     <?php
 
@@ -1168,14 +1215,46 @@ Slack通知を適切なSlackチームとチャンネルにルーティングす�
 
     class User extends Authenticatable
     {
+        use Notifiable;
+
+        /**
+         * Slackチャンネルへの通知ルート
+         */
+        public function routeNotificationForSlack(Notification $notification): mixed
+        {
+            return '#support-channel';
+        }
+    }
+
+<a name="notifying-external-slack-workspaces"></a>
+### 外部のSlackワークスペースへの通知
+
+> **Note**
+> 外部Slackワークスペースへ通知を送信する前に、Slackアプリを[配布](#slack-app-distribution)する必要があります。
+
+もちろん、アプリケーションのユーザーが所有するSlackワークスペースへ、通知を送りたいことも多いでしょう。そのためには、まずユーザーのSlack OAuthトークンを取得する必要があります。嬉しいことに、[Laravel Socialite](/docs/{{version}}/socialite)にはSlackドライバが含まれており、アプリケーションのユーザーをSlackで簡単に認証し、[ボットトークンを取得](/docs/{{version}}/socialite#slack-bot-scopes)できます。
+
+ボットトークンを取得し、アプリケーションのデータベースへ保存したら、`SlackRoute::make`メソッドを使用して、ユーザーのワークスペースへ通知をルーティングできます。さらに、あなたのアプリケーションでは、通知をどのチャンネルに送るかをユーザーが指定できるようにする必要があるでしょう：
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Notifications\Notification;
+    use Illuminate\Notifications\Slack\SlackRoute;
+
+    class User extends Authenticatable
+    {
      * @return \Illuminate\Notifications\Message\SlackMessage
 
         /**
          * Slackチャンネルに対する通知をルートする
          */
-        public function routeNotificationForSlack(Notification $notification): string
+        public function routeNotificationForSlack(Notification $notification): mixed
         {
-            return 'https://hooks.slack.com/services/...';
+            return SlackRoute::make($this->slack_channel, $this->slack_token);
         }
     }
 
@@ -1292,7 +1371,7 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
 
     use App\Listeners\CheckNotificationStatus;
     use Illuminate\Notifications\Events\NotificationSending;
-    
+
     /**
      * アプリケーションにマップするイベントリスナの登録
      *
@@ -1335,7 +1414,7 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
 
     use App\Listeners\LogNotification;
     use Illuminate\Notifications\Events\NotificationSent;
-    
+
     /**
      * アプリケーションにマップするイベントリスナの登録
      *
@@ -1347,7 +1426,7 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
         ],
     ];
 
-> **Note**  
+> **Note**
 > `EventServiceProvider`でリスナを登録した後に、`event:generate` Artisanコマンドを使うと、リスナクラスが素早く生成できます。
 
 イベントリスナ内では、イベントの `notifiable`、`notification`、`channel`、`response`プロパティにアクセスして、通知先や通知自体の詳細を知ることができます。

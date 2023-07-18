@@ -78,6 +78,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
+[data_forget](#method-data-forget)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -127,6 +128,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
 [Str::isUlid](#method-str-is-ulid)
+[Str::isUrl](#method-str-is-url)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -144,6 +146,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
+[Str::repeat](#method-str-repeat)
 [Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
@@ -207,6 +210,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
 [isUlid](#method-fluent-str-is-ulid)
+[isUrl](#method-fluent-str-is-url)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -227,6 +231,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
+[repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -1211,6 +1216,37 @@ By default, any existing values are overwritten. If you wish to only set a value
 
     // ['products' => ['desk' => ['price' => 100]]]
 
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
+
+The `data_forget` function removes a value within a nested array or object using "dot" notation:
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_forget($data, 'products.desk.price');
+
+    // ['products' => ['desk' => []]]
+
+This function also accepts wildcards using asterisks and will remove values on the target accordingly:
+
+    $data = [
+        'products' => [
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
+        ],
+    ];
+
+    data_forget($data, 'products.*.price');
+
+    /*
+        [
+            'products' => [
+                ['name' => 'Desk 1'],
+                ['name' => 'Desk 2'],
+            ],
+        ]
+    */
+
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
@@ -1619,6 +1655,21 @@ The `Str::isJson` method determines if the given string is valid JSON:
 
     // false
 
+<a name="method-str-is-url"></a>
+#### `Str::isUrl()` {.collection-method}
+
+The `Str::isUrl` method determines if the given string is a valid URL:
+
+    use Illuminate\Support\Str;
+
+    $isUrl = Str::isUrl('http://example.com');
+
+    // true
+
+    $isUrl = Str::isUrl('laravel');
+
+    // false
+
 <a name="method-str-is-ulid"></a>
 #### `Str::isUlid()` {.collection-method}
 
@@ -1892,6 +1943,21 @@ The `Str::remove` method removes the given value or array of values from the str
     // Ptr Pipr pickd a pck of pickld ppprs.
 
 You may also pass `false` as a third argument to the `remove` method to ignore case when removing strings.
+
+<a name="method-str-repeat"></a>
+#### `Str::repeat()` {.collection-method}
+
+The `Str::repeat` method repeats the given string:
+
+```php
+use Illuminate\Support\Str;
+
+$string = 'a';
+
+$repeat = Str::repeat($string, 5);
+
+// aaaaa
+```
 
 <a name="method-str-replace"></a>
 #### `Str::replace()` {.collection-method}
@@ -2628,6 +2694,21 @@ The `isUlid` method determines if a given string is a ULID:
 
     // false
 
+<a name="method-fluent-str-is-url"></a>
+#### `isUrl` {.collection-method}
+
+The `isUrl` method determines if a given string is a URL:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('http://example.com')->isUrl();
+
+    // true
+
+    $result = Str::of('Taylor')->isUrl();
+
+    // false
+
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
 
@@ -2936,6 +3017,19 @@ The `remove` method removes the given value or array of values from the string:
     // Arkansas is beautiful!
 
 You may also pass `false` as a second parameter to ignore case when removing strings.
+
+<a name="method-fluent-str-repeat"></a>
+#### `repeat` {.collection-method}
+
+The `repeat` method repeats the given string:
+
+```php
+use Illuminate\Support\Str;
+
+$repeated = Str::of('a')->repeat(5);
+
+// aaaaa
+```
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}

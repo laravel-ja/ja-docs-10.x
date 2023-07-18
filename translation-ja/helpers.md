@@ -78,6 +78,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [data_fill](#method-data-fill)
 [data_get](#method-data-get)
 [data_set](#method-data-set)
+[data_forget](#method-data-forget)
 [head](#method-head)
 [last](#method-last)
 </div>
@@ -127,6 +128,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::isAscii](#method-str-is-ascii)
 [Str::isJson](#method-str-is-json)
 [Str::isUlid](#method-str-is-ulid)
+[Str::isUrl](#method-str-is-url)
 [Str::isUuid](#method-str-is-uuid)
 [Str::kebab](#method-kebab-case)
 [Str::lcfirst](#method-str-lcfirst)
@@ -144,6 +146,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::pluralStudly](#method-str-plural-studly)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
+[Str::repeat](#method-str-repeat)
 [Str::replace](#method-str-replace)
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
@@ -207,6 +210,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [isNotEmpty](#method-fluent-str-is-not-empty)
 [isJson](#method-fluent-str-is-json)
 [isUlid](#method-fluent-str-is-ulid)
+[isUrl](#method-fluent-str-is-url)
 [isUuid](#method-fluent-str-is-uuid)
 [kebab](#method-fluent-str-kebab)
 [lcfirst](#method-fluent-str-lcfirst)
@@ -227,6 +231,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [plural](#method-fluent-str-plural)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
+[repeat](#method-fluent-str-repeat)
 [replace](#method-fluent-str-replace)
 [replaceArray](#method-fluent-str-replace-array)
 [replaceFirst](#method-fluent-str-replace-first)
@@ -1211,6 +1216,37 @@ $classes = Arr::toCssStyles($array);
 
     // ['products' => ['desk' => ['price' => 100]]]
 
+<a name="method-data-forget"></a>
+#### `data_forget()` {.collection-method}
+
+`data_forget`関数は「ドット」記法を使い、ネストした配列やオブジェクト内の値を削除します。
+
+    $data = ['products' => ['desk' => ['price' => 100]]];
+
+    data_forget($data, 'products.desk.price');
+
+    // ['products' => ['desk' => []]]
+
+この関数は、アスタリスクを使ったワイルドカードも受け付け、適応するターゲットの値を削除します。
+
+    $data = [
+        'products' => [
+            ['name' => 'Desk 1', 'price' => 100],
+            ['name' => 'Desk 2', 'price' => 150],
+        ],
+    ];
+
+    data_forget($data, 'products.*.price');
+
+    /*
+        [
+            'products' => [
+                ['name' => 'Desk 1'],
+                ['name' => 'Desk 2'],
+            ],
+        ]
+    */
+
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
@@ -1619,6 +1655,21 @@ $classes = Arr::toCssStyles($array);
 
     // false
 
+<a name="method-str-is-url"></a>
+#### `Str::isUrl()` {.collection-method}
+
+`Str::isUrl`メソッドは、指定文字列が有効なURLかを判定します。
+
+    use Illuminate\Support\Str;
+
+    $isUrl = Str::isUrl('http://example.com');
+
+    // true
+
+    $isUrl = Str::isUrl('laravel');
+
+    // false
+
 <a name="method-str-is-ulid"></a>
 #### `Str::isUlid()` {.collection-method}
 
@@ -1892,6 +1943,21 @@ $classes = Arr::toCssStyles($array);
     // Ptr Pipr pickd a pck of pickld ppprs.
 
 文字列を削除するときにケースを無視するには、`remove`メソッドの３番目の引数に`false`を渡してください。
+
+<a name="method-str-repeat"></a>
+#### `Str::repeat()` {.collection-method}
+
+`Str::repeat`メソッドは、指定文字列を繰り返します。
+
+```php
+use Illuminate\Support\Str;
+
+$string = 'a';
+
+$repeat = Str::repeat($string, 5);
+
+// aaaaa
+```
 
 <a name="method-str-replace"></a>
 #### `Str::replace()` {.collection-method}
@@ -2628,6 +2694,21 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 
     // false
 
+<a name="method-fluent-str-is-url"></a>
+#### `isUrl` {.collection-method}
+
+`isUrl`メソッドは、指定文字列がURLであるか判定します。
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('http://example.com')->isUrl();
+
+    // true
+
+    $result = Str::of('Taylor')->isUrl();
+
+    // false
+
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}
 
@@ -2936,6 +3017,19 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
     // Arkansas is beautiful!
 
 文字列削除時にケースを無視するため２番目のパラメータへ`false`を渡すこともできます。
+
+<a name="method-fluent-str-repeat"></a>
+#### `repeat` {.collection-method}
+
+`repeat`メソッドは、指定文字列を繰り返します。
+
+```php
+use Illuminate\Support\Str;
+
+$repeated = Str::of('a')->repeat(5);
+
+// aaaaa
+```
 
 <a name="method-fluent-str-replace"></a>
 #### `replace` {.collection-method}

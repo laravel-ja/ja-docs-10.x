@@ -12,6 +12,7 @@
     - [バックグランドタスク](#background-tasks)
     - [メンテナンスモード](#maintenance-mode)
 - [スケジュールの実行](#running-the-scheduler)
+    - [秒単位のタスクスケジュール](#sub-minute-scheduled-tasks)
     - [スケジュールをローカルで実行](#running-the-scheduler-locally)
 - [タスク出力](#task-output)
 - [タスクフック](#task-hooks)
@@ -106,6 +107,13 @@ php artisan schedule:list
 メソッド  | 説明
 ------------- | -------------
 `->cron('* * * * *');`  |  カスタムcronスケジュールでタスクを実行
+`->everySecond();`  |  毎秒タスク実行
+`->everyTwoSeconds();`  |  ２秒毎にタスク実行
+`->everyFiveSeconds();`  |  ５秒毎にタスク実行
+`->everyTenSeconds();`  |  １０秒ごとにタスク実行
+`->everyFifteenSeconds();`  |  １５秒毎にタスク実行
+`->everyTwentySeconds();`  |  ２０秒ごとにタスク実行
+`->everyThirtySeconds();`  |  ３０秒ごとにタスク実行
 `->everyMinute();`  |  毎分タスク実行
 `->everyTwoMinutes();`  |  ２分毎にタスク実行
 `->everyThreeMinutes();`  |  ３分毎にタスク実行
@@ -345,8 +353,38 @@ $schedule->call(fn () => User::resetApiRequestCount())
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
+<a name="sub-minute-scheduled-tasks"></a>
+### 秒単位のタスクスケジュール
+
+ほとんどのオペレーティングシステムでは、cronジョブの実行は最短で１分に１回に制限されています。しかし、Laravelのスケジューラーを使えば、１秒に１回など、より細かい間隔でタスクを実行できます。
+
+    $schedule->call(function () {
+        DB::table('recent_users')->delete();
+    })->everySecond();
+
+アプリケーション内で秒単位実行タスクが定義されている場合、`schedule:run`コマンドは実行後即時終了せず、現在の分が終了するまで実行し続けます。これにより、その分内で実行する必要がある、全ての秒単位実行タスクを起動します。
+
+秒単位実行タスクの実行に予想以上の時間がかかると、後の秒単位実行タスクの実行が遅れる可能性があるため、すべての秒単位実行タスクは、キュー投入ジョブまたはバックグラウンドコマンドをディスパッチし、確実にタスクを処理できるようにすることを推奨します。
+
+    use App\Jobs\DeleteRecentUsers;
+
+    $schedule->job(new DeleteRecentUsers)->everyTenSeconds();
+
+    $schedule->command('users:delete')->everyTenSeconds()->runInBackground();
+
+<a name="interrupting-sub-minute-tasks"></a>
+#### Interrupting Sub-Minute Tasks
+
+`schedule:run`コマンドは秒単位実行タスクが定義されている場合、起動した分の間ずっと実行を持続するため、アプリケーションをデプロイするときにコマンドを中断する必要があるかもしれません。そうしないと、すでに実行されている`schedule:run`コマンドのインスタンスは現在の分が終了するまで、アプリケーションの以前にデプロイされたコードを使い続けることになります。
+
+実行中の`schedule:run`コマンドを中断するには、アプリケーションのデプロイスクリプトへ、`schedule:interrupt`コマンドを追加します。このコマンドはアプリケーションのデプロイが終わった後に実行する必要があります：
+
+```shell
+php artisan schedule:interrupt
+```
+
 <a name="running-the-scheduler-locally"></a>
-## スケジュールをローカルで実行
+### スケジュールをローカルで実行
 
 通常、ローカル開発マシンにスケジューラのcronエントリを追加することはありません。代わりに、`schedule:work` Artisanコマンドを使用できます。このコマンドはフォアグラウンドで実行し、コマンドを終了するまで１分ごとにスケジューラーを呼び出します。
 

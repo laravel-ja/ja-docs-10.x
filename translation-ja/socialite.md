@@ -8,13 +8,14 @@
     - [ルート](#routing)
     - [認証と保存](#authentication-and-storage)
     - [アクセススコープ](#access-scopes)
+    - [Slack Botスコープ](#slack-bot-scopes)
     - [オプションのパラメータ](#optional-parameters)
 - [ユーザー詳細情報の取得](#retrieving-user-details)
 
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravelは、一般的なフォームベースの認証に加えて、[Laravel Socialite](https://github.com/laravel/socialite)(ソーシャライト：名士)を使用したOAuthプロバイダで認証するためのシンプルで便利な方法も提供します。Socialiteは現在、Facebook、Twitter、LinkedIn、Google、GitHub、GitLab、Bitbucketでの認証をサポートしています。
+Laravelは、一般的なフォームベースの認証に加えて、[Laravel Socialite](https://github.com/laravel/socialite)(ソーシャライト：名士)を使用したOAuthプロバイダで認証するためのシンプルで便利な方法も提供します。Socialiteは現在、Facebook、Twitter、LinkedIn、Google、GitHub、GitLab、Bitbucket、Slackでの認証をサポートしています。
 
 > **Note**
 > 他のプラットフォームのアダプタは、コミュニティにより管理されている[Socialiteプロバイダ](https://socialiteproviders.com/)Webサイトから利用できます。
@@ -38,7 +39,7 @@ Socialiteの新しいメジャーバージョンにアップグレードする�
 
 Socialiteを使用する前に、アプリケーションが利用するOAuthプロバイダの認証情報を追加する必要があります。通常、これらの認証情報は、認証するサービスのダッシュボード内で「開発者用アプリケーション」を作成することで取得できます。
 
-こうした認証情報は、アプリケーションの`config/services.php`設定ファイルへ記述します。キーは`facebook`, `twitter`（OAuth1.0）、`twitter-oauth-2`（OAuth 2.0）、`linkedin`、`google`、`github`、`gitlab`、`bitbucket`で、アプリケーションで必要なプロバイダによります。
+こうした認証情報は、アプリケーションの`config/services.php`設定ファイルへ記述します。キーは`facebook`, `twitter`（OAuth1.0）、`twitter-oauth-2`（OAuth 2.0）、`linkedin`、`google`、`github`、`gitlab`、`bitbucket`、`slack`で、アプリケーションで必要なプロバイダによります。
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
@@ -116,6 +117,33 @@ OAuthプロバイダからユーザーを取得したら、そのユーザーが
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
+
+<a name="slack-bot-scopes"></a>
+### Slack Botスコープ
+
+SlackのAPIは[さまざまなタイプのアクセストークン](https://api.slack.com/authentication/token-types)を提供しており、それぞれに[許可スコープ](https://api.slack.com/scopes)が設定されています。Socialiteは以下のSlackのアクセストークンに対応しています：
+
+<div class="content-list" markdown="1">
+
+- Bot (`xoxb-`のプレフィックス)
+- User (`xoxp-`のプレフィックス)
+
+</div>
+
+`slack`ドライバはデフォルトで、`user`トークンを生成し、ドライバの`user`メソッドを呼び出すと、そのユーザーの詳細を返します。
+
+ボットトークンは主に、アプリケーションのユーザーが所有する、外部のSlackワークスペースへ通知を送信する場合に便利です。ボットトークンを生成するには、ユーザーを認証のためにSlackにリダイレクトする前に、`asBotUser`メソッドを呼び出します：
+
+    return Socialite::driver('slack')
+        ->asBotUser()
+        ->setScopes(['chat:write', 'chat:write.public', 'chat:write.customize'])
+        ->redirect();
+
+さらに、認証後にSlackがユーザーをアプリケーションへリダイレクトした後、`user`メソッドを呼び出す前に`asBotUser`メソッドを呼び出す必要があります。
+
+    $user = Socialite::driver('slack')->asBotUser()->user();
+
+ボットトークンを生成するときでも、`user`メソッドは`Laravel\Socialite\Two\User`インスタンスを返しますが、`token`プロパティだけがハイドレートされます。このトークンは、[認証されたユーザーのSlackワークスペースに通知を送る](/docs/{{version}}/notifications#notifying-external-slack-workspaces)ために保存しておくべきでしょう。
 
 <a name="optional-parameters"></a>
 ### オプションのパラメータ

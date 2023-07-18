@@ -834,7 +834,7 @@ Viteエコシステム内のプラグインのいくつかは、フォワード�
 <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
 ```
 
-`vite-imagetools`プラグインは、出力するURLがViteによりインターセプトされ、そのプラグインが`/@imagetools` から始まるすべてのURLを処理することを期待しています。このような挙動を期待するプラグインを使用している場合、手作業でURLを修正する必要があります。これは、`vite.config.js`ファイルの`transformOnServe`オプションを使用して実現できます。
+The `vite-imagetools` plugin is expecting that the output URL will be intercepted by Vite and the plugin may then handle all URLs that start with `/@imagetools`. If you are using plugins that are expecting this behaviour, you will need to manually correct the URLs. You can do this in your `vite.config.js` file by using the `transformOnServe` option.
 
 この例は、生成されたコード内における`/@imagetools`の全出現箇所で、開発サーバのURLを前へ追加します。
 

@@ -7,6 +7,7 @@
     - [ジョブクラスの生成](#generating-job-classes)
     - [クラスの構造](#class-structure)
     - [一意なジョブ](#unique-jobs)
+    - [ジョブの暗号化](#encrypted-jobs)
 - [ジョブミドルウェア](#job-middleware)
     - [レート制限](#rate-limiting)
     - [ジョブのオーバーラップの防止](#preventing-job-overlaps)
@@ -337,6 +338,21 @@ php artisan make:job ProcessPodcast
 
 > **Note**
 > ジョブの同時処理を制限するだけでよい場合は、代わりに[`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps)ジョブミドルウェアを使用してください。
+
+<a name="encrypted-jobs"></a>
+### ジョブの暗号化
+
+Laravelでは、[暗号化](/docs/{{version}}/encryption)により、ジョブのデータのプライバシーと完全性を確保できます。これを始めるには、ジョブクラスへ`ShouldBeEncrypted`インターフェイスを追加するだけです。このインターフェイスがクラスへ追加されると、Laravelはジョブをキューにプッシュする前に自動的に暗号化します。
+
+    <?php
+
+    use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+
+    class UpdateSearchIndex implements ShouldQueue, ShouldBeEncrypted
+    {
+        // ...
+    }
 
 <a name="job-middleware"></a>
 ## ジョブミドルウェア

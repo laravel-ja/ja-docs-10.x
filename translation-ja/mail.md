@@ -1030,16 +1030,18 @@ Laravelは、Mailableの構造を調べる数多くのメソッドを提供し�
 
             // Mailableが送られなかったことをアサート
             Mail::assertNotSent(AnotherMailable::class);
+
+            // 合計で３つのMailableが送られたことをアサート
+            Mail::assertSentCount(3);
         }
     }
 
 バックグラウンドで配送するためMailableをキューに投入する場合は、`assertSent`の代わりに`assertQueued`メソッドを使用してください。
 
     Mail::assertQueued(OrderShipped::class);
-
     Mail::assertNotQueued(OrderShipped::class);
-
     Mail::assertNothingQueued();
+    Mail::assertQueuedCount(3);
 
 クロージャを`assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued`メソッドへ渡すと、指定した「真理値テスト」にパスするMailableが送信されたことをアサートできます。指定した真理値テストにパスするMailableを少なくとも１つ送信した場合、アサーションをパスします。
 
