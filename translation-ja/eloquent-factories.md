@@ -97,7 +97,7 @@ php artisan make:factory PostFactory
         /**
          * このファクトリに対応するモデル名
          *
-         * @var string
+         * @var class-string<\Illuminate\Database\Eloquent\Model>
          */
         protected $model = Flight::class;
     }
