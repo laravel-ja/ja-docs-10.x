@@ -52,12 +52,12 @@ Laravelでアプリケーションを構築する場合、フロントエンド�
 
 一方で、自分が使い慣れたバックエンド言語にこだわる人たちは、そのバックエンド言語を主に利用しながら、最新のWebアプリケーションUIの構築を可能にするソリューションを開発しました。たとえば、[Rails](https://rubyonrails.org/) のエコシステムでは、[Turbo](https://turbo.hotwired.dev/) や[Hotwire]、[Stimulus](https://stimulus.hotwired.dev/) などのライブラリ作成が勢いづいています。
 
-Laravelのエコシステムでは、主にPHPを使い、モダンでダイナミックなフロントエンドを作りたいというニーズから、[Laravel Livewire](https://laravel-livewire.com)と[Alpine.js](https://alpinejs.dev/)が生まれました。
+Laravelのエコシステムでは、主にPHPを使い、モダンでダイナミックなフロントエンドを作りたいというニーズから、[Laravel Livewire](https://livewire.laravel.com)と[Alpine.js](https://alpinejs.dev/)が生まれました。
 
 <a name="livewire"></a>
 ### Livewire
 
-[Laravel Livewire](https://laravel-livewire.com)は、VueやReactといったモダンなJavaScriptフレームワークで作られたフロントエンドのように、ダイナミックでモダン、そして生き生きとしたLaravelで動作するフロントエンドを構築するためのフレームワークです。
+[Laravel Livewire](https://livewire.laravel.com)は、VueやReactといったモダンなJavaScriptフレームワークで作られたフロントエンドのように、ダイナミックでモダン、そして生き生きとしたLaravelで動作するフロントエンドを構築するためのフレームワークです。
 
 Livewireを使用する場合、レンダし、アプリケーションのフロントエンドから呼び出したり操作したりできるメソッドやデータを公開するUI部分をLivewire「コンポーネント」として作成します。例えば、シンプルな"Counter"コンポーネントは、以下のようなものです。
 
@@ -97,7 +97,7 @@ class Counter extends Component
 
 多くの人にとって、LivewireはLaravelでのフロントエンド開発に革命を起こし、Laravelの快適さを保ちながら、モダンでダイナミックなWebアプリケーションを構築することを可能にしました。通常、Livewireを使用している開発者は、[Alpine.js](https://alpinejs.dev/)も利用して、ダイアログウィンドウのレンダーなど、必要な場合にのみフロントエンドにJavaScriptを「トッピング」します。
 
-Laravelに慣れていない方は、[ビュー](/docs/{{version}}/views)と[Blade](/docs/{{version}}/blade)の基本的な使い方に、まず慣れることをお勧めします。その後、公式の[Laravel Livewireドキュメント](https://laravel-livewire.com/docs)を参照し、インタラクティブなLivewireコンポーネントでアプリケーションを次のレベルに引き上げる方法を学んでください。
+Laravelに慣れていない方は、[ビュー](/docs/{{version}}/views)と[Blade](/docs/{{version}}/blade)の基本的な使い方に、まず慣れることをお勧めします。その後、公式の[Laravel Livewireドキュメント](https://livewire.laravel.com/docs)を参照し、インタラクティブなLivewireコンポーネントでアプリケーションを次のレベルに引き上げる方法を学んでください。
 
 <a name="php-starter-kits"></a>
 ### スターターキット

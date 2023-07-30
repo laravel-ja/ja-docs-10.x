@@ -59,7 +59,7 @@ Bladeビューは、グローバルな`view`ヘルパを使用してルートま
 <a name="supercharging-blade-with-livewire"></a>
 ### LivewireでBladeを強化する
 
-Bladeテンプレートを次のレベルに引き上げ、ダイナミックなインターフェイスを簡単に構築したくありませんか？[Laravel Livewire](https://laravel-livewire.com)をチェックしてください。Livewireは、ReactやVueのようなフロントエンドフレームワークにのみ可能な動的機能で拡張したBladeコンポーネントを書けるようになります。多くのJavaScriptフレームワークの複雑さ、クライアントサイドレンダリング、構築ステップなしで、モダンなリアクティブフロントエンドを構築する素晴らしいアプローチです。
+Bladeテンプレートを次のレベルに引き上げ、ダイナミックなインターフェイスを簡単に構築したくありませんか？[Laravel Livewire](https://livewire.laravel.com)をチェックしてください。Livewireは、ReactやVueのようなフロントエンドフレームワークにのみ可能な動的機能で拡張したBladeコンポーネントを書けるようになります。多くのJavaScriptフレームワークの複雑さ、クライアントサイドレンダリング、構築ステップなしで、モダンなリアクティブフロントエンドを構築する素晴らしいアプローチです。
 
 <a name="displaying-data"></a>
 ## データの表示

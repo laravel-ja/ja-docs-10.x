@@ -80,7 +80,7 @@ Laravelは、通常`Auth`もしくは`Session`ファサードを介してアク�
 
 *Laravel Fortify*は、Laravelのヘッドレス認証バックエンドであり、クッキーベースの認証や２要素認証、メールアドレス確認や他の機能など、このドキュメントにある多くの機能を実装しています。FortifyはLaravel Jetstreamの認証バックエンドを提供していますし、Laravelで認証する必要があるSPAの認証を提供するために、[Laravel Sanctum](/docs/{{version}}/sanctum)と組み合わせて独立して使用できます。
 
-*[Laravel Jetstream](https://jetstream.laravel.com)（[和文](/jetstream/1.0/ja/introduction.html)）*は、Laravel Fortifyの認証サービスを利用および公開し、美しくモダンなUIに[Tailwind CSS](https://tailwindcss.com)を使用している[Livewire](https://laravel-livewire.com)や[Inertia](https://inertiajs.com)を使っている、堅牢なアプリケーションのスターターキットです。Laravel Jetstreamにはオプションサポートとして、２要素認証、チームサポート、ブラウザセッション管理、プロファイル管理、およびAPIトークン認証を提供する[Laravel Sanctum](/docs/{{version}}/sanctum)との組み込み統合が含まれています。LaravelのAPI認証手法について以降で説明します。
+*[Laravel Jetstream](https://jetstream.laravel.com)（[和文](/jetstream/1.0/ja/introduction.html)）*は、Laravel Fortifyの認証サービスを利用および公開し、美しくモダンなUIに[Tailwind CSS](https://tailwindcss.com)を使用している[Livewire](https://livewire.laravel.com)や[Inertia](https://inertiajs.com)を使っている、堅牢なアプリケーションのスターターキットです。Laravel Jetstreamにはオプションサポートとして、２要素認証、チームサポート、ブラウザセッション管理、プロファイル管理、およびAPIトークン認証を提供する[Laravel Sanctum](/docs/{{version}}/sanctum)との組み込み統合が含まれています。LaravelのAPI認証手法について以降で説明します。
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel API認証サービス
@@ -125,7 +125,7 @@ Laravelをバックエンドで利用するシングルページアプリケー�
 
 Laravel Breezeは、ログイン、ユーザー登録、パスワードリセット、メールの確認、パスワードの確認など、Laravelのすべての認証機能の最小限でシンプルな実装です。Laravel Breezeのビューレイヤーは、[Tailwind CSS](https://tailwindcss.com)を用いスタイル設定されたシンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。さらにBreezeは、VueやReactを使った[Inertia](https://inertiajs.com)ベースのスカフォールドオプションも用意しています。
 
-[Laravel Jetstream](https://jetstream.laravel.com)は、[Livewire](https://jetstream.laravel.com)か[InertiaとVue]((https://inertiajs.com))を使用する、アプリケーションのスカフォールドのサポートを含む、より堅牢なアプリケーションスターターキットです。さらに、Jetstreamはオプションとして２要素認証、チーム、プロファイル管理、ブラウザセッション管理、[Laravel Sanctum](/docs/{{version}}/sanctum)を介するAPIサポート、アカウント削除などのサポートを備えています。
+[Laravel Jetstream](https://jetstream.laravel.com)は、[Livewire](https://livewire.laravel.com)か[InertiaとVue]((https://inertiajs.com))を使用する、アプリケーションのスカフォールドのサポートを含む、より堅牢なアプリケーションスターターキットです。さらに、Jetstreamはオプションとして２要素認証、チーム、プロファイル管理、ブラウザセッション管理、[Laravel Sanctum](/docs/{{version}}/sanctum)を介するAPIサポート、アカウント削除などのサポートを備えています。
 
 <a name="retrieving-the-authenticated-user"></a>
 ### 認証済みユーザー取得

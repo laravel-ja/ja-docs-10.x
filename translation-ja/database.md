@@ -19,9 +19,9 @@
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.3+ ([バージョンポリシー](https://mariadb.org/about/#maintenance-policy))
+- MariaDB 10.10+ ([バージョンポリシー](https://mariadb.org/about/#maintenance-policy))
 - MySQL 5.7+ ([バージョンポリシー](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 10.0+ ([バージョンポリシー](https://www.postgresql.org/support/versioning/))
+- PostgreSQL 11.0+ ([バージョンポリシー](https://www.postgresql.org/support/versioning/))
 - SQLite 3.8.8+
 - SQL Server 2017+ ([バージョンポリシー](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 

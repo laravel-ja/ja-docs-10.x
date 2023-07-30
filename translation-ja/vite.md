@@ -44,7 +44,7 @@ Laravelは、開発および実働用アセットをロードするため、公�
 
 Viteへ移行する前、新しいLaravelアプリケーションは、アセットをバンドルする際に[webpack](https://webpack.js.org/)で動作する[Mix](https://laravel-mix.com/)を使用していました。Viteは、リッチなJavaScriptアプリケーションを構築する際に、より速く、より生産的な体験を提供することに重点を置いています。[Inertia](https://inertiajs.com) のようなツールで開発したものを含め、シングルページアプリケーション（SPA）を開発している場合、Viteは完璧にフィットするでしょう。
 
-Viteは、[Livewire](https://laravel-livewire.com)を使用したものを含む、JavaScriptを「ふりかけ」程度に使った従来のサーバサイドレンダリングアプリケーションでもうまく機能します。しかし、Laravel Mixがサポートしている、JavaScriptアプリケーションで直接参照されていない任意のアセットをビルドにコピーする機能など、いくつかの機能が欠落しています。
+Viteは、[Livewire](https://livewire.laravel.com)を使用したものを含む、JavaScriptを「ふりかけ」程度に使った従来のサーバサイドレンダリングアプリケーションでもうまく機能します。しかし、Laravel Mixがサポートしている、JavaScriptアプリケーションで直接参照されていない任意のアセットをビルドにコピーする機能など、いくつかの機能が欠落しています。
 
 <a name="migrating-back-to-mix"></a>
 #### Mixへ戻す
@@ -683,7 +683,7 @@ class AddContentSecurityPolicyHeaders
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
         Vite::useCspNonce();
 

@@ -172,6 +172,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::words](#method-str-words)
+[Str::wrap](#method-str-wrap)
 [str](#method-str)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
@@ -2270,6 +2271,21 @@ Str::wordCount('Hello, world!'); // 2
     return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 
     // Perfectly balanced, as >>>
+
+<a name="method-str-wrap"></a>
+#### `Str::wrap()` {.collection-method}
+
+`Str::wrap`メソッドは、指定文字列を追加の文字列か文字列のペアでラップします。
+
+    use Illuminate\Support\Str;
+
+    Str::wrap('Laravel', '"');
+
+    // "Laravel"
+
+    Str::wrap('is', before: 'This ', after: ' Laravel!');
+
+    // This is Laravel!
 
 <a name="method-str"></a>
 #### `str()` {.collection-method}

@@ -52,7 +52,7 @@ LaravelはPHPエコシステムで最高のパッケージを組み合わせ、�
 <a name="your-first-laravel-project"></a>
 ## 最初のLaravelプロジェクト
 
-最初のLaravelプロジェクトを作成する前に、ローカルマシンにPHPと[Composer](https://getcomposer.org)をインストールしていることを確認してください。macOSで開発している場合、PHPとComposerは[Homebrew](https://brew.sh/)を使い、インストールできます。さらに、[NodeとNPMのインストール](https://nodejs.org)もおすすめします。
+最初のLaravelプロジェクトを作成する前に、ローカルマシンにPHPと[Composer](https://getcomposer.org)をインストールしていることを確認してください。macOSで開発している場合、PHPとComposerは[Laravel Herd](https://herd.laravel.com)で数分以内にインストールできます。さらに、[NodeとNPMのインストール](https://nodejs.org)もおすすめします。
 
 PHPとComposerをインストールしたら、Composerの`create-project`コマンドで、Laravelの新規プロジェクトを作成できます。
 
@@ -60,7 +60,7 @@ PHPとComposerをインストールしたら、Composerの`create-project`コマ
 composer create-project laravel/laravel example-app
 ```
 
-または、Composer経由でLaravelインストーラをグローバルインストールし、新しいLaravelプロジェクトを作成することもできます。
+または、Composer経由でLaravelインストーラをグローバルインストールし、新しいLaravelプロジェクトを作成することもできます。[Laravel Herd](https://herd.laravel.com)を使用している場合は、はじめからLaravelインストーラを利用できます。
 
 ```nothing
 composer global require laravel/installer
@@ -284,7 +284,7 @@ Laravelをどのように使用するかにより、旅の次の行き先も決�
 
 Laravelは、フルスタックフレームワークとして機能させることができます。「フルスタック」フレームワークとは、Laravelを使用して、アプリケーションへのリクエストをルーティングし、[Bladeテンプレート](/docs/{{version}}/blade)や[Inertia](https://inertiajs.com)などのシングルページアプリケーションハイブリッド技術でフロントエンドをレンダすることを意味します。これは、Laravelフレームワークの最も一般的な使用方法であり、私たちの意見では、Laravelを使用する最も生産的な方法です。
 
-もし、Laravelをどうしようしようかと考えているのであれば、[フロントエンド開発](/docs/{{version}}/frontend)、[ルーティング](/docs/{{version}}/routing)、[ビュー](/docs/{{version}}/views)、[Eloquent ORM](/docs/{{version}}/eloquent)についてのドキュメントをチェックすると良いかも知れません。さらに、[Livewire](https://laravel-livewire.com)や[Inertia](https://inertiajs.com)といったコミュニティパッケージについても学ぶことに興味があるかもしれません。これらのパッケージにより、Laravelをフルスタックフレームワークとして使用しながら、シングルページのJavaScriptアプリケーションが提供するUIの、利点をたくさん享受できます。
+もし、Laravelをどうしようしようかと考えているのであれば、[フロントエンド開発](/docs/{{version}}/frontend)、[ルーティング](/docs/{{version}}/routing)、[ビュー](/docs/{{version}}/views)、[Eloquent ORM](/docs/{{version}}/eloquent)についてのドキュメントをチェックすると良いかも知れません。さらに、[Livewire](https://livewire.laravel.com)や[Inertia](https://inertiajs.com)といったコミュニティパッケージについても学ぶことに興味があるかもしれません。これらのパッケージにより、Laravelをフルスタックフレームワークとして使用しながら、シングルページのJavaScriptアプリケーションが提供するUIの、利点をたくさん享受できます。
 
 Laravelをフルスタックフレームワークとして使用している場合、[Vite](/docs/{{version}}/vite)を使用してアプリケーションのCSSとJavaScriptをコンパイルする方法を学ぶのも強く推奨します。
 

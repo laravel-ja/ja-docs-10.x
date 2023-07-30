@@ -22,7 +22,7 @@
 
 Laravel Breezeのデフォルトのビュー層は、[Tailwind CSS](https://tailwindcss.com)でスタイルした、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。また、VueやReactと[Inertia](https://inertiajs.com)を使用したアプリケーションのスカフォールドを作ることも可能です。
 
-Breezeは、新しいLaravelアプリケーションを始めるための素晴らしい出発点となり、Bladeテンプレートを[Laravel Livewire](https://laravel-livewire.com)を使用し、レベルを上げる計画をしているプロジェクトにも最適な選択肢です。
+Breezeは、新しいLaravelアプリケーションを始めるための素晴らしい出発点となり、Bladeテンプレートを[Laravel Livewire](https://livewire.laravel.com)を使用し、レベルを上げる計画をしているプロジェクトにも最適な選択肢です。
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
 
@@ -134,6 +134,6 @@ php artisan migrate
 
 Laravel Breezeは、Laravelアプリケーションを構築するためのシンプルで最小限の開始点を提供しますが、Jetstreamはより堅牢な機能と、追加のフロントエンドテクノロジースタックで、その機能を強化します。**Laravelを初めて使用する場合は、Laravel Jetstreamへ進む前に、Laravel Breezeで勘所を掴むことをおすめします。**
 
-Jetstreamは、Laravelのために美しくデザインされたアプリケーションのスカフォールドを提供し、ログイン、登録、電子メール検証、二要素認証、セッション管理、Laravel Sanctum経由のAPIサポート、およびオプションのチーム管理を備えています。Jetstreamは、[Tailwind CSS](https://tailwindcss.com)を使用して設計しており、[Livewire](https://laravel-livewire.com)または[Inertia](https://inertiajs.com)駆動のフロントエンドスカフォールドから選択可能です。
+Jetstreamは、Laravelのために美しくデザインされたアプリケーションのスカフォールドを提供し、ログイン、登録、電子メール検証、二要素認証、セッション管理、Laravel Sanctum経由のAPIサポート、およびオプションのチーム管理を備えています。Jetstreamは、[Tailwind CSS](https://tailwindcss.com)を使用して設計しており、[Livewire](https://livewire.laravel.com)または[Inertia](https://inertiajs.com)駆動のフロントエンドスカフォールドから選択可能です。
 
 Laravel Jetstreamをインストールするための完全なドキュメントは、[公式Jetstreamドキュメント](https://jetstream.laravel.com/3.x/introduction.html)にあります。
