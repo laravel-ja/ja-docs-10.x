@@ -12,6 +12,7 @@
     - [オプション](#options)
     - [入力配列](#input-arrays)
     - [入力の説明](#input-descriptions)
+    - [入力不足のプロンプト](#prompting-for-missing-input)
 - [コマンドI／O](#command-io)
     - [入力の取得](#retrieving-input)
     - [入力のプロンプト](#prompting-for-input)
@@ -231,6 +232,21 @@ php artisan mail:send 1 --isolated
 php artisan mail:send 1 --isolated=12
 ```
 
+<a name="lock-id"></a>
+#### Lock ID
+
+デフォルトでLaravelは、コマンド名を使用し、アプリケーションのキャッシュでアトミック・ロックを取得するために使用する文字列キーを生成します。しかし、Artisanコマンドクラスへ`isolatableId`メソッドを定義すれば、このキーをカスタマイズでき、コマンドの引数やオプションをキーへ統合できます。
+
+```php
+/**
+ * コマンドの一意的なIDを取得
+ */
+public function isolatableId(): string
+{
+    return $this->argument('user');
+}
+```
+
 <a name="lock-expiration-time"></a>
 #### ロックの有効時間
 
@@ -371,6 +387,93 @@ php artisan mail:send --id=1 --id=2
                             {user : The ID of the user}
                             {--queue : Whether the job should be queued}';
 
+<a name="prompting-for-missing-input"></a>
+### 入力不足のプロンプト
+
+コマンドが必須の引数を持っている場合に、その引数が指定されないとエラーメッセージを表示します。もしくは、`PromptsForMissingInput`インターフェイスを実装し、必要な引数がない場合に自動でユーザーにプロンプトを表示するように、コマンドを設定してください。
+
+    <?php
+
+    namespace App\Console\Commands;
+
+    use Illuminate\Console\Command;
+    use Illuminate\Contracts\Console\PromptsForMissingInput;
+
+    class SendEmails extends Command implements PromptsForMissingInput
+    {
+        /**
+         * コンソールコマンドの名前と使用法
+         *
+         * @var string
+         */
+        protected $signature = 'mail:send {user}';
+
+        // ...
+    }
+
+Laravelが必要な引数をユーザーから収集する必要がある場合、引数名か説明のどちらかを使用し、インテリジェントに質問のフレーズを作り、自動的にユーザーへ尋ねます。必要な引数を収集するために使用する質問をカスタマイズしたい場合は、引数名をキーにした質問の配列を返す、`promptForMissingArgumentsUsing`メソッドを実装してください。
+
+    /**
+     * リターンする質問を使い、足りない入力引数をプロンプトする
+     *
+     * @return array
+     */
+    protected function promptForMissingArgumentsUsing()
+    {
+        return [
+            'user' => 'Which user ID should receive the mail?',
+        ];
+    }
+
+質問とプレースホルダを含むタプルを使用して、プレースホルダ・テキストを提供することもできます。
+
+    return [
+        'user' => ['Which user ID should receive the mail?', 'E.g. 123'],
+    ];
+
+プロンプトを完全にコントロールしたい場合は、ユーザーへプロンプトを表示し、その答えを返すクロージャを指定してください。
+
+    use App\Models\User;
+    use function Laravel\Prompts\search;
+
+    // ...
+
+    return [
+        'user' => fn () => search(
+            label: 'Search for a user:',
+            placeholder: 'E.g. Taylor Otwell',
+            options: fn ($value) => strlen($value) > 0
+                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+                : []
+        ),
+    ];
+
+> **Note**
+包括的な[Laravel Prompts](/docs/{{version}}/prompts)ドキュメントに、利用可能なプロンプトとその使用方法に関する追加情報を用意してあります。
+
+[オプション](#options)の選択や入力をユーザーに促したい場合は、コマンドの`handle`メソッドにプロンプトを含めてください。引数が足りない場合にのみプロンプトを出したい場合は、`afterPromptingForMissingArguments`メソッドを実装してください：
+
+    use Symfony\Component\Console\Input\InputInterface;
+    use Symfony\Component\Console\Output\OutputInterface;
+    use function Laravel\Prompts\confirm;
+
+    // ...
+
+    /**
+     * 足りない引数をユーザーへ促した後に実行するアクション
+     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @return void
+     */
+    protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
+    {
+        $input->setOption('queue', confirm(
+            label: 'Would you like to queue the mail?',
+            default: $this->option('queue')
+        ));
+    }
+
 <a name="command-io"></a>
 ## コマンドI／O
 
@@ -401,6 +504,9 @@ php artisan mail:send --id=1 --id=2
 
 <a name="prompting-for-input"></a>
 ### 入力のプロンプト
+
+> **Note**
+> [Laravel Prompts](/docs/{{version}}/prompts) は、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザライクな機能を備えています。
 
 出力の表示に加えて、コマンドの実行中にユーザーへ入力を提供するように依頼することもできます。`ask`メソッドはユーザーへ、指定した質問をプロンプ​​トとして表示し、入力を受け取り、ユーザー入力をコマンドに戻します。
 

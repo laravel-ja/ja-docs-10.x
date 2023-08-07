@@ -33,6 +33,12 @@ php artisan about
 php artisan about --only=environment
 ```
 
+特定の設定ファイルの値を詳しく調べるには、`config:show` Artisanコマンドを使います。
+
+```shell
+php artisan config:show database
+```
+
 <a name="environment-configuration"></a>
 ## 環境設定
 

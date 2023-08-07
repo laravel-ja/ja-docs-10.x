@@ -1809,6 +1809,14 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
 
 フィールドが有効なURLであることをバリデートします。
 
+有効と見なすURLプロトコルを指定したい場合は、バリデーションルールのパラメータとして、そのプロトコルを渡すことができます：
+
+```php
+'url' => 'url:http,https',
+
+'game' => 'url:minecraft,steam',
+```
+
 <a name="rule-ulid"></a>
 #### ulid
 
@@ -2042,6 +2050,17 @@ Laravelでは、アップロードされたファイルを検証するため、`
 
 > **Note**
 > 画像サイズのバリデーションに関するより詳しい情報は、[dimensionsルールのドキュメント](#rule-dimensions)に記載しています。
+
+<a name="validating-files-file-sizes"></a>
+#### ファイルサイズ
+
+使いやすいように、最小ファイルサイズと最大ファイルサイズは、ファイルサイズの単位を示すサフィックス付きの文字列として指定できます。`kb`、`mb`、`gb`、`tb`のサフィックスをサポートしています。
+
+```php
+File::image()
+    ->min('1kb')
+    ->max('10mb')
+```
 
 <a name="validating-files-file-types"></a>
 #### ファイルタイプ

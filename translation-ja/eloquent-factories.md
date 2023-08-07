@@ -140,7 +140,6 @@ Eloquentモデルが[ソフトデリート](/docs/{{version}}/eloquent#soft-dele
 
     use App\Models\User;
     use Illuminate\Database\Eloquent\Factories\Factory;
-    use Illuminate\Support\Str;
 
     class UserFactory extends Factory
     {
@@ -157,6 +156,27 @@ Eloquentモデルが[ソフトデリート](/docs/{{version}}/eloquent#soft-dele
         }
 
         // ...
+    }
+
+また、`state`メソッド内にファクトリ・コールバックを登録し、特定の状態に特化した追加タスクを実行することもできます。
+
+    use App\Models\User;
+    use Illuminate\Database\Eloquent\Factories\Factory;
+
+    /**
+     * このユーザーが資格停止中かを示す
+     */
+    public function suspended(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'account_status' => 'suspended',
+            ];
+        })->afterMaking(function (User $user) {
+            // ...
+        })->afterCreating(function (User $user) {
+            // ...
+        });
     }
 
 <a name="creating-models-using-factories"></a>

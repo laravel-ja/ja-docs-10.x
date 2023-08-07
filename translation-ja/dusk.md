@@ -30,6 +30,7 @@
     - [キーワードの使用](#using-the-keyboard)
     - [マウスの使用](#using-the-mouse)
     - [JavaScriptダイアログ](#javascript-dialogs)
+    - [Interacting With Inline Frames](#interacting-with-iframes)
     - [セレクタの範囲指定](#scoping-selectors)
     - [要素の待機](#waiting-for-elements)
     - [要素のビュー内へのスクロール](#scrolling-an-element-into-view)
@@ -756,6 +757,18 @@ JavaScriptダイアログにプロンプ​​トが含​​まれている場�
 [キャンセル]ボタンをクリックして開いているJavaScriptダイアログを閉じるには、`dismissDialog`メソッドを呼び出します。
 
     $browser->dismissDialog();
+
+<a name="interacting-with-iframes"></a>
+### Interacting With Inline Frames
+
+iframe内の要素をやり取りする必要がある場合は、`withinFrame`メソッドを使用する必要があります。`withinFrame`メソッドへ渡たすクロージャ内で行う全ての要素の操作は、指定したiframeのコンテキストにスコープされます。
+
+    $browser->withinFrame('#credit-card-details', function ($browser) {
+        $browser->type('input[name="cardnumber"]', '4242424242424242')
+            ->type('input[name="exp-date"]', '12/24')
+            ->type('input[name="cvc"]', '123');
+        })->press('Pay');
+    });
 
 <a name="scoping-selectors"></a>
 ### セレクタの範囲指定

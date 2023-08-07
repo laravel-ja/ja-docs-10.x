@@ -39,33 +39,32 @@ Laravelが初めての方は、気軽に[Laravel Bootcamp](https://bootcamp.lara
 composer require laravel/breeze --dev
 ```
 
-Breezeをインストールしたら、以下のドキュメントで説明するBreeze「スタック」のいずれかを使用し、アプリケーションのスカフォールドを生成できます。
-
-<a name="breeze-and-blade"></a>
-### BreezeとBlade
-
 ComposerでLaravel Breezeパッケージをインストールしたら、`breeze:install` Artisanコマンドを実行してください。このコマンドは、認証ビュー、ルート、コントローラ、およびその他のリソースをアプリケーションへリソース公開します。Laravel Breezeは、すべてのコードをアプリケーションへリソース公開するため、その機能と実装を完全に制御し、可視化することができます。
 
-デフォルトのBreeze「スタック」はBladeスタックで、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)を使用して、アプリケーションのフロントエンドをレンダします。Bladeスタックは、`breeze:install`コマンドを追加引数なしで実行することでインストールできます。Breezeの雛形をインストールしたら、アプリケーションのフロントエンドアセットをコンパイルする必要があります。
+`breeze:install`コマンドを実行すると、希望するフロントエンドスタックとテストフレームワークの入力を求められます：
 
 ```shell
-php artisan breeze:install blade
+php artisan breeze:install
 
 php artisan migrate
 npm install
 npm run dev
 ```
 
-続いて、Webブラウザでアプリケーションの`/login`または`/register`のURLにアクセスしてください。Breezeのすべてのルートは、`routes/auth.php'ファイル内に定義しています。
+<a name="breeze-and-blade"></a>
+### BreezeとBlade
 
-<a name="dark-mode"></a>
-#### ダークモード
-
-アプリケーションのフロントエンドをスカフォールドするとき、「ダークモード」のサポートをBreezeへさせたい場合は、`breeze:install`コマンドを実行時に、`--dark`ディレクティブを指定するだけです。
+Breezeのデフォルト「スタック」はBladeスタックで、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)を使用してアプリケーションのフロントエンドをレンダします。Bladeスタックをインストールするには、`breeze:install`コマンドを引数なしで実行し、Bladeフロントエンド・スタックを選択します。Breezeのスカフォールドがインストールされたら、アプリケーションのフロントエンドアセッツもコンパイルする必要があります。
 
 ```shell
-php artisan breeze:install --dark
+php artisan breeze:install
+
+php artisan migrate
+npm install
+npm run dev
 ```
+
+次に、ウェブブラウザでアプリケーションの`/login`か`/register` URLへアクセスしてください。Breezeのすべてのルートは、`routes/auth.php`ファイルに定義してあります。
 
 > **Note**
 > アプリケーションのCSSとJavaScriptのコンパイルについて詳しく知りたい方は、Laravelの[Viteドキュメント](/docs/{{version}}/vite#running-vite)を参照してください。
@@ -75,14 +74,12 @@ php artisan breeze:install --dark
 
 Laravel Breezeは、[Inertia](https://inertiajs.com)フロントエンド実装により、ReactとVueを使用するスカフォールドも提供しています。Inertiaは、従来のサーバサイドルーティングとコントローラを使用して、モダンなシングルページのReactとVueのアプリケーションを構築することができます。
 
-Inertiaは、ReactとVueが持つフロントエンドのパワーと、Laravelの驚異的なバックエンドの生産性、そして[Vite](https://vitejs.dev)の軽快なコンパイルを組み合わせた開発を楽しめます。Inertiaスタックを使用するには、`breeze:install` Artisanコマンドを実行する際に、使用するスタックとして`vue`または`react`を指定します。Breezeの雛形をインストールしたら、アプリケーションのフロントエンドアセットをコンパイルする必要があります。
+Inertiaはあなたへ、ReactやVueのフロントエンドのパワーと、Laravelの驚異的なバックエンドの生産性の組み合わせ、そして超早い[Vite](https://vitejs.dev)コンパイルを楽しませてくれます。Inertiaスタックを使用するには、`breeze:install` Artisanコマンドの実行時に、VueまたはReactフロントエンドスタックを選択します。
+
+VueまたはReactフロントエンド・スタックを選択したら、Breezeのインストーラは、[Inertia SSR](https://inertiajs.com/server-side-rendering)またはTypeScriptのサポートを希望するかどうかの確認も行います。Breezeのスカフォールドをインストールしたら、アプリケーションのフロントエンドアセットもコンパイルする必要があります：
 
 ```shell
-php artisan breeze:install vue
-
-# もしくは
-
-php artisan breeze:install react
+php artisan breeze:install
 
 php artisan migrate
 npm install
@@ -91,33 +88,13 @@ npm run dev
 
 続いて、Webブラウザでアプリケーションの`/login`または`/register`のURLにアクセスしてください。Breezeのすべてのルートは、`routes/auth.php'ファイル内に定義しています。
 
-<a name="server-side-rendering"></a>
-#### サーバサイドレンダリング
-
-Breezeの[Inertia SSR](https://inertiajs.com/server-side-rendering)のscaffoldサポートを使う場合は、`breeze:install`コマンドを実行時に、`ssr`オプションを指定してください。
-
-```shell
-php artisan breeze:install vue --ssr
-php artisan breeze:install react --ssr
-```
-
-<a name="typescript"></a>
-#### TypeScript
-
-VueやReactのスタックを使用する場合、`--typescript`オプションを指定することで、TypeScriptのサポートを含むスカフォールドを生成できます：
-
-```shell
-php artisan breeze:install vue --typescript
-php artisan breeze:install react --typescript
-```
-
 <a name="breeze-and-next"></a>
 ### BreezeとNext.js／API
 
-Laravel Breezeは、[Next](https://nextjs.org)や[Nuxt](https://nuxtjs.org)などのモダンなJavaScriptアプリケーションで認証するAPIもスカフォールドできます。これを使い始めるには、`breeze:install` Artisanコマンドを実行する時に、`api`を希望スタックとして指定します。
+Laravel Breezeは、[Next](https://nextjs.org)や[Nuxt](https://nuxtjs.org)などのモダンなJavaScriptアプリケーションで認証するAPIもスカフォールドできます。これを使い始めるには、`breeze:install` Artisanコマンドを実行する時に、希望スタックとしてAPIスタックを指定します。
 
 ```shell
-php artisan breeze:install api
+php artisan breeze:install
 
 php artisan migrate
 ```

@@ -120,6 +120,7 @@
 [duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
 [eachSpread](#method-eachspread)
+[ensure](#method-ensure)
 [every](#method-every)
 [except](#method-except)
 [filter](#method-filter)
@@ -758,6 +759,20 @@
     $collection->eachSpread(function (string $name, int $age) {
         return false;
     });
+
+<a name="method-ensure"></a>
+#### `ensure()` {.collection-method}
+
+`ensure`メソッドを使うと、コレクションのすべての要素が指定型であることを確認するために使います。不一致の場合は`UnexpectedValueException`を投げます。
+
+    return $collection->ensure(User::class);
+
+`string`、`int`、`float`、`bool`、`array`などのプリミティブ型も指定できます。
+
+    return $collection->ensure('int');
+
+> **Warning**
+> `ensure`メソッドは、後から異なる型の要素がコレクションへ追加されないことを保証しません。
 
 <a name="method-every"></a>
 #### `every()` {.collection-method}

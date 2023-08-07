@@ -244,6 +244,7 @@ $response = Http::withHeaders([
 
     use Exception;
     use Illuminate\Http\Client\PendingRequest;
+    use Illuminate\Http\Client\RequestException;
 
     $response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
         if (! $exception instanceof RequestException || $exception->response->status() !== 401) {

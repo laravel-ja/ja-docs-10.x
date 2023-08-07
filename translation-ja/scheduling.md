@@ -124,11 +124,11 @@ php artisan schedule:list
 `->everyThirtyMinutes();`  |  ３０分毎にタスク実行
 `->hourly();`  |  毎時タスク実行
 `->hourlyAt(17);`  |  １時間ごと、毎時１７分にタスク実行
-`->everyOddHour();`  |  奇数時間ごとにタスク実行
-`->everyTwoHours();`  |  ２時間毎にタスク実行
-`->everyThreeHours();`  |  ３時間毎にタスク実行
-`->everyFourHours();`  |  ４時間毎にタスク実行
-`->everySixHours();`  |  ６時間毎にタスク実行
+`->everyOddHour($minutes = 0);`  |  奇数時間ごとにタスク実行
+`->everyTwoHours($minutes = 0);`  |  ２時間毎にタスク実行
+`->everyThreeHours($minutes = 0);`  |  ３時間毎にタスク実行
+`->everyFourHours($minutes = 0);`  |  ４時間毎にタスク実行
+`->everySixHours($minutes = 0);`  |  ６時間毎にタスク実行
 `->daily();`  |  毎日深夜１２時に実行
 `->dailyAt('13:00');`  |  毎日13:00に実行
 `->twiceDaily(1, 13);`  |  毎日1:00と13:00に実行

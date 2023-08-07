@@ -286,7 +286,7 @@ php artisan make:job ProcessPodcast
         public $uniqueFor = 3600;
 
         /**
-         * ジョブの一意のID
+         * ジョブの一意IDの取得
          */
         public function uniqueId(): string
         {

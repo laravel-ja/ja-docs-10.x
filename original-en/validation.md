@@ -1809,6 +1809,14 @@ The field under validation must be uppercase.
 
 The field under validation must be a valid URL.
 
+If you would like to specify the URL protocols that should be considered valid, you may pass the protocols as validation rule parameters:
+
+```php
+'url' => 'url:http,https',
+
+'game' => 'url:minecraft,steam',
+```
+
 <a name="rule-ulid"></a>
 #### ulid
 
@@ -2042,6 +2050,17 @@ If your application accepts images uploaded by your users, you may use the `File
 
 > **Note**  
 > More information regarding validating image dimensions may be found in the [dimension rule documentation](#rule-dimensions).
+
+<a name="validating-files-file-sizes"></a>
+#### File Sizes
+
+For convenience, minimum and maximum file sizes may be specified as a string with a suffix indicating the file size units. The `kb`, `mb`, `gb`, and `tb` suffixes are supported:
+
+```php
+File::image()
+    ->min('1kb')
+    ->max('10mb')
+```
 
 <a name="validating-files-file-types"></a>
 #### File Types
