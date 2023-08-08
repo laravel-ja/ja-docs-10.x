@@ -1,46 +1,46 @@
 # Prompts
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Available Prompts](#available-prompts)
-    - [Text](#text)
-    - [Password](#password)
-    - [Confirm](#confirm)
-    - [Select](#select)
-    - [Multi-select](#multiselect)
-    - [Suggest](#suggest)
-    - [Search](#search)
-- [Terminal Considerations](#terminal-considerations)
-- [Unsupported Environments & Fallbacks](#fallbacks)
+- [イントロダクション](#introduction)
+- [インストール](#installation)
+  - [利用可能なプロンプト](#available-prompts)
+    - [テキスト](#text)
+    - [パスワード](#password)
+    - [確認](#confirm)
+    - [選択](#select)
+    - [複数選択](#multiselect)
+    - [候補](#suggest)
+    - [検索](#search)
+- [ターミナルの考察](#terminal-considerations)
+- [未サポートの環境とフォールバック](#fallbacks)
 
 <a name="introduction"></a>
-## Introduction
+## イントロダクション
 
-Laravel Prompts is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+Laravel Promptsは、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザにあるような機能を備えています。
 
-Laravel Prompts is perfect for accepting user input in your [Artisan console commands](/docs/{{version}}/artisan#writing-commands), but it may also be used in any command-line PHP project.
+Laravel Promptsは、[Artisanコンソールコマンド](/docs/{{version}}/artisan#writing-commands)でユーザー入力を受けるために最適ですが、コマンドラインのPHPプロジェクトでも使用できます。
 
-> **Note**  
-> Laravel Prompts supports macOS, Linux, and Windows with WSL. For more information, please see our documentation on [unsupported environments & fallbacks](#fallbacks).
+> **Note**
+> Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。詳しくは、[未サポートの環境とフォールバック](#fallbacks)のドキュメントをご覧ください。
 
-<a name="installation"></a>
-## Installation
+<a name="インストール"></a>
+## インストール
 
-Laravel Prompts is already included with the latest release of Laravel.
+Laravelの最新リリースには、はじめからLaravel Promptsを用意してあります。
 
-Laravel Prompts may also be installed in your other PHP projects by using the Composer package manager:
+Composerパッケージマネージャを使用して、他のPHPプロジェクトにLaravel Promptsをインストールすることもできます。
 
 ```shell
 composer require laravel/prompts
 ```
 
 <a name="available-prompts"></a>
-## Available Prompts
+## 利用可能なプロンプト
 
 <a name="text"></a>
-### Text
+### テキスト
 
-The `text` function will prompt the user with the given question, accept their input, and then return it:
+`text`関数は、指定した質問でユーザーに入力を促し、回答を受け、それを返します。
 
 ```php
 use function Laravel\Prompts\text;
@@ -48,7 +48,7 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
-You may also include placeholder text and a default value:
+プレースホルダ・テキストとデフォルト値も指定できます。
 
 ```php
 $name = text(
@@ -59,9 +59,9 @@ $name = text(
 ```
 
 <a name="text-required"></a>
-#### Required Values
+#### 必須値
 
-If you require a value to be entered, you may pass the `required` argument:
+入力値が必須の場合は、`required`引数を渡してください。
 
 ```php
 $name = text(
@@ -70,7 +70,7 @@ $name = text(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+バリデーション・メッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
 
 ```php
 $name = text(
@@ -80,9 +80,9 @@ $name = text(
 ```
 
 <a name="text-validation"></a>
-#### Additional Validation
+#### 追加のバリデーション
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
 
 ```php
 $name = text(
@@ -95,12 +95,12 @@ $name = text(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+クロージャは入力された値を受け取り、エラーメッセージを返すか、バリデーションに合格した場合は、`null`を返します。
 
 <a name="password"></a>
-### Password
+### パスワード
 
-The `password` function is similar to the `text` function, but the user's input will be masked as they type in the console. This is useful when asking for sensitive information such as passwords:
+`password`関数は`text`関数と似ていますが、コンソールで入力されるユーザー入力をマスクします。これはパスワードのような機密情報を要求するときに便利です：
 
 ```php
 use function Laravel\Prompts\password;
@@ -108,7 +108,7 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
-You may also include placeholder text:
+プレースホルダーのテキストを含めることもできます。
 
 ```php
 $password = password(
@@ -118,9 +118,9 @@ $password = password(
 ```
 
 <a name="password-required"></a>
-#### Required Values
+#### 必須値
 
-If you require a value to be entered, you may pass the `required` argument:
+入力値が必須の場合は、`required`引数を渡してください。
 
 ```php
 $name = password(
@@ -129,7 +129,7 @@ $name = password(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+バリデーション・メッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
 
 ```php
 $name = password(
@@ -139,9 +139,9 @@ $name = password(
 ```
 
 <a name="password-validation"></a>
-#### Additional Validation
+#### 追加のバリデーション
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
 
 ```php
 $name = password(
@@ -153,12 +153,12 @@ $name = password(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+クロージャは入力された値を受け取り、エラーメッセージを返すか、バリデーションに合格した場合は、`null`を返します。
 
 <a name="confirm"></a>
-### Confirm
+### 確認
 
-If you need to ask the user for a "yes or no" confirmation, you may use the `confirm` function. Users may use the arrow keys or press `y` or `n` to select their response. This function will return either `true` or `false`.
+ユーザーに "yes／no"の確認を求める必要がある場合は、`confirm`関数を使います。ユーザーは矢印キーを使うか、`y`または`n`を押して回答を選択します。この関数は`true`または`false`を返します。
 
 ```php
 use function Laravel\Prompts\confirm;
@@ -166,7 +166,7 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
-By default, the "Yes" answer will be pre-selected. However, you may configure the default to be "No" by passing `false` to the `default` argument:
+デフォルトで、"Yes"の答えがあらかじめ選択されています。しかし、`default`引数に`false`を渡せば、デフォルトを"No"に設定できます。
 
 ```php
 $confirmed = confirm(
@@ -175,7 +175,7 @@ $confirmed = confirm(
 );
 ```
 
-You may also customize the wording used for the "Yes" and "No" labels by passing the `yes` and `no` arguments:
+`yes`と`no`の引数を渡すば、"Yes"と "No"のラベルに使われる文言をカスタマイズすることもできます。
 
 ```php
 $confirmed = confirm(
@@ -186,9 +186,9 @@ $confirmed = confirm(
 ```
 
 <a name="confirm-required"></a>
-#### Requiring "Yes"
+#### 必須の"Yes"
 
-If necessary, you may require your users to select "Yes" by passing the `required` argument:
+必要であれば、`required`引数を渡し、ユーザーに"Yes"を選択させることもできます。
 
 ```php
 $confirmed = confirm(
@@ -197,7 +197,7 @@ $confirmed = confirm(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+バリデーション・メッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
 
 ```php
 $confirmed = confirm(
@@ -207,9 +207,9 @@ $confirmed = confirm(
 ```
 
 <a name="select"></a>
-### Select
+### 選択
 
-If you need the user to select from a predefined set of choices, you may use the `select` function:
+ユーザーにあらかじめ定義された選択肢から選ばせる必要がある場合は、`select`関数を使います。
 
 ```php
 use function Laravel\Prompts\select;
@@ -220,7 +220,7 @@ $role = select(
 );
 ```
 
-You may also specify the default choice by passing the `default` argument:
+`default`引数を渡せば、デフォルトの選択肢を指定することもできます。
 
 ```php
 $role = select(
@@ -230,7 +230,7 @@ $role = select(
 );
 ```
 
-You may also pass an associative array to the `options` argument to have the selected key returned instead of its value:
+`options`引数に連想配列を渡し、選択値の代わりにキーを返すこともできます。
 
 ```php
 $role = select(
@@ -244,7 +244,7 @@ $role = select(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+５選択肢を超えると、選択肢がリスト表示されます。`scroll`引数を渡し、カスタマイズ可能です。
 
 ```php
 $role = select(
@@ -255,9 +255,9 @@ $role = select(
 ```
 
 <a name="select-validation"></a>
-#### Validation
+#### バリデーション
 
-Unlike other prompt functions, the `select` function doesn't accept the `required` argument because it is not possible to select nothing. However, you may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
+他のプロンプト関数とは異なり、他に何も選択できなくなるため、`select`関数は`required`引数を受けません。しかし、選択肢を提示したいが、選択されないようにする必要がある場合は、`validate`引数にクロージャを渡してください。
 
 ```php
 $role = select(
@@ -275,12 +275,12 @@ $role = select(
 )
 ```
 
-If the `options` argument is an associative array, then the closure will receive the selected key, otherwise it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+`options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
 
 <a name="multiselect"></a>
-### Multi-select
+### 複数選択
 
-If you need to the user to be able to select multiple options, you may use the `multiselect` function:
+ユーザーが複数の選択肢を選択できるようにする必要がある場合は、`multiselect`関数を使用します。
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -291,7 +291,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also specify options that should be pre-selected by passing an array to the `default` argument:
+`default`引数に配列を渡すことで、あらかじめ選択済みの選択肢を指定することもできます。
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -303,7 +303,7 @@ $permissions = multiselect(
 );
 ```
 
-You may also pass an associative array to the `options` argument to return the selected options' keys instead of their values:
+`options`引数に連想配列を渡し、選択値の代わりにキーを返させることもできます。
 
 ```
 $permissions = multiselect(
@@ -318,7 +318,7 @@ $permissions = multiselect(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+５選択肢を超えると、選択肢がリスト表示されます。`scroll`引数を渡し、カスタマイズ可能です。
 
 ```php
 $role = multiselect(
@@ -329,9 +329,9 @@ $role = multiselect(
 ```
 
 <a name="multiselect-required"></a>
-#### Requiring a Value
+#### 必須値
 
-By default, the user may select zero or more options. You may pass the `required` argument to enforce one or more options instead:
+デフォルトで、ユーザーは０個以上の選択肢を選択できます。`required`引数を渡せば、代わりに１つ以上の選択肢を強制できます。
 
 ```php
 $role = multiselect(
@@ -342,9 +342,9 @@ $role = multiselect(
 ```
 
 <a name="multiselect-validation"></a>
-#### Validation
+#### バリデーション
 
-You may pass a closure to the `validate` argument if you need to present an option but prevent it from being selected:
+選択肢を提示するが、その選択肢が選択されないようにする必要がある場合は、`validate`引数にクロージャを渡してください。
 
 ```
 $permissions = select(
@@ -361,12 +361,12 @@ $permissions = select(
 );
 ```
 
-If the `options` argument is an associative array then the closure will receive the selected keys, otherwise it will receive the selected values. The closure may return an error message, or `null` if the validation passes.
+`options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
 
 <a name="suggest"></a>
-### Suggest
+### 候補
 
-The `suggest` function can be used to provide auto-completion for possible choices. The user can still provide any answer, regardless of the auto-completion hints:
+`suggest`関数を使用すると、可能性のある選択肢を自動補完できます。ユーザーは自動補完のヒントに関係なく、任意の答えを入力することもできます。
 
 ```php
 use function Laravel\Prompts\suggest;
@@ -374,7 +374,7 @@ use function Laravel\Prompts\suggest;
 $name = suggest('What is your name?', ['Taylor', 'Dayle']);
 ```
 
-Alternatively, you may pass a closure as the second argument to the `suggest` function. The closure will be called each time the user types an input character. The closure should accept a string parameter containing the user's input so far and return an array of options for auto-completion:
+あるいは、`suggest`関数の第２引数にクロージャを渡すこともできます。クロージャはユーザーが入力文字をタイプするたびに呼び出されます。クロージャは文字列パラメータにこれまでのユーザー入力を受け取り、オートコンプリート用の選択肢配列を返す必要があります。
 
 ```php
 $name = suggest(
@@ -384,7 +384,7 @@ $name = suggest(
 )
 ```
 
-You may also include placeholder text and a default value:
+プレースホルダ・テキストとデフォルト値も指定できます。
 
 ```php
 $name = suggest(
@@ -396,9 +396,9 @@ $name = suggest(
 ```
 
 <a name="suggest-required"></a>
-#### Required Values
+#### 必須値
 
-If you require a value to be entered, you may pass the `required` argument:
+入力値が必須の場合は、`required`引数を渡してください。
 
 ```php
 $name = suggest(
@@ -408,7 +408,7 @@ $name = suggest(
 );
 ```
 
-If you would like to customize the validation message, you may also pass a string:
+バリデーション・メッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
 
 ```php
 $name = suggest(
@@ -419,9 +419,9 @@ $name = suggest(
 ```
 
 <a name="suggest-validation"></a>
-#### Additional Validation
+#### 追加のバリデーション
 
-Finally, if you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
 
 ```php
 $name = suggest(
@@ -435,12 +435,12 @@ $name = suggest(
 );
 ```
 
-The closure will receive the value that has been entered and may return an error message, or `null` if the validation passes.
+クロージャは入力された値を受け取り、エラーメッセージを返すか、バリデーションに合格した場合は、`null`を返します。
 
 <a name="search"></a>
-### Search
+### 検索
 
-If you have a lot of options for the user to select from, the `search` function allows the user to type a search query to filter the results before using the arrow keys to select an option:
+ユーザーが選択できる選択肢がたくさんある場合、`search`機能を使えば、矢印キーを使って選択肢を選択する前に、検索クエリを入力して結果を絞り込むことができます。
 
 ```php
 use function Laravel\Prompts\search;
@@ -453,9 +453,9 @@ $id = search(
 );
 ```
 
-The closure will receive the text that has been typed by the user so far and must return an array of options. If you return an associative array then the selected option's key will be returned, otherwise its value will be returned instead.
+クロージャは、ユーザーがこれまでに入力したテキストを受け取り、 選択肢の配列を返さなければなりません。連想配列を返す場合は選択された選択肢のキーが返され、 そうでない場合はその値が代わりに返されます。
 
-You may also include placeholder text:
+プレースホルダーのテキストを含めることもできます。
 
 ```php
 $id = search(
@@ -467,7 +467,7 @@ $id = search(
 );
 ```
 
-Up to five options will be displayed before the list begins to scroll. You may customize this by passing the `scroll` argument:
+５選択肢を超えると、選択肢がリスト表示されます。`scroll`引数を渡し、カスタマイズ可能です。
 
 ```php
 $id = search(
@@ -480,9 +480,9 @@ $id = search(
 ```
 
 <a name="search-validation"></a>
-#### Validation
+#### バリデーション
 
-If you would like to perform additional validation logic, you may pass a closure to the `validate` argument:
+追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
 
 ```php
 $id = search(
@@ -500,35 +500,35 @@ $id = search(
 );
 ```
 
-If the `options` closure returns an associative array, then the closure will receive the selected key, otherwise, it will receive the selected value. The closure may return an error message, or `null` if the validation passes.
+`options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
 
 <a name="terminal-considerations"></a>
-### Terminal Considerations
+### ターミナルの考察
 
 <a name="terminal-width"></a>
-#### Terminal Width
+#### ターミナルの横幅
 
-If the length of any label, option, or validation message exceeds the number of "columns" in the user's terminal, it will be automatically truncated to fit. Consider minimizing the length of these strings if your users may be using narrower terminals. A typically safe maximum length is 74 characters to support an 80-character terminal.
+ラベルやオプション、バリデーションメッセージの長さが、ユーザーの端末の「列」の文字数を超える場合、自動的に切り捨てます。ユーザーが狭い端末を使う可能性がある場合は、これらの文字列の長さを最小限にする検討をしてください。一般的に安全な最大長は、８０文字の端末をサポートする場合、７４文字です。
 
 <a name="terminal-height"></a>
-#### Terminal Height
+#### ターミナルの高さ
 
-For any prompts that accept the `scroll` argument, the configured value will automatically be reduced to fit the height of the user's terminal, including space for a validation message.
+`scroll`引数を受け入れるプロンプトの場合、設定済み値は、検証メッセージ用のスペースを含めて、ユーザーの端末の高さに合わせて自動的に縮小されます。
 
 <a name="fallbacks"></a>
-### Unsupported Environments & Fallbacks
+### 未サポートの環境とフォールバック
 
-Laravel Prompts supports macOS, Linux, and Windows with WSL. Due to limitations in the Windows version of PHP, it is not currently possible to use Laravel Prompts on Windows outside of WSL.
+Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。Windows版のPHPの制限により、現在のところWSL以外のWindowsでは、Laravel Promptsを使用できません。
 
-For this reason, Laravel Prompts supports falling back to an alternative implementation such as the [Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html).
+このため、Laravel Promptsは[Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html)のような代替実装へのフォールバックをサポートしています。
 
-> **Note**  
-> When using Laravel Prompts with the Laravel framework, fallbacks for each prompt have been configured for you and will be automatically enabled in unsupported environments.
+> **Note**
+> LaravelフレームワークでLaravel Promptsを使用する場合、各プロンプトのフォールバックが設定済みで、未サポートの環境では自動的に有効になります。
 
 <a name="fallback-conditions"></a>
-#### Fallback Conditions
+#### フォールバックの条件
 
-If you are not using Laravel or need to customize when the fallback behavior is used, you may pass a boolean to the `fallbackWhen` static method on the `Prompt` class:
+Laravelを使用していない場合や、フォールバック動作をカスタマイズする必要がある場合は、`Prompt`クラスの`fallbackWhen`へブール値を渡してください。
 
 ```php
 use Laravel\Prompts\Prompt;
@@ -539,9 +539,9 @@ Prompt::fallbackWhen(
 ```
 
 <a name="fallback-behavior"></a>
-#### Fallback Behavior
+#### フォールバックの振る舞い
 
-If you are not using Laravel or need to customize the fallback behavior, you may pass a closure to the `fallbackUsing` static method on each prompt class:
+Laravelを使用していない場合や、フォールバックの動作をカスタマイズする必要がある場合は、各プロンプトクラスの`fallbackUsing`静的メソッドへクロージャを渡してください。
 
 ```php
 use Laravel\Prompts\TextPrompt;
@@ -571,4 +571,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
-Fallbacks must be configured individually for each prompt class. The closure will receive an instance of the prompt class and must return an appropriate type for the prompt.
+フォールバックは、プロンプトクラスごとに個別に設定する必要があります。クロージャはプロンプトクラスのインスタンスを受け取り、 プロンプトの適切な型を返す必要があります。
