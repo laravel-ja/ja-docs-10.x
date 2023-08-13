@@ -7,6 +7,7 @@
     - [Reactの使用](#using-react)
     - [ReactとInertiaの使用](#using-react-and-inertia)
     - [AlpineとBladeの使用](#using-alpine)
+    - [Axiosの設定](#configuring-axios)
 - [バリデーションルールのカスタマイズ](#customizing-validation-rules)
 - [ファイルアップロードの処理](#handling-file-uploads)
 - [副作用の管理](#managing-side-effects)
@@ -515,6 +516,32 @@ form.setValidationTimeout(3000);
     @submit.prevent="submit"
 >
 ```
+
+<a name="configuring-axios"></a>
+### Axiosの設定
+
+Precognitionのバリデーションライブラリは、[Axios](https://github.com/axios/axios) HTTPクライアントを使用して、アプリケーションのバックエンドにリクエストを送信します。使いやすいように、アプリケーションで必要であれば、Axiosインスタンスをカスタマイズできます。例えば、`laravel-precognition-vue`ライブラリを使用する場合、アプリケーションの`resources/js/app.js`ファイル内の各送信リクエストへ、リクエストヘッダを追加できます。
+
+```js
+import { client } from 'laravel-precognition-vue';
+
+client.axios().defaults.headers.common['Authorization'] = authToken;
+```
+
+もしくは、すでにアプリケーション用に設定したAxiosインスタンスがある場合は、代わりにそのインスタンスを使用するようにPrecognitionへ指示することもできます。
+
+```js
+import Axios from 'axios';
+import { client } from 'laravel-precognition-vue';
+
+window.axios = Axios.create()
+window.axios.defaults.headers.common['Authorization'] = authToken;
+
+client.use(window.axios)
+```
+
+> **Warning**
+> Inertia的なPrecognitionライブラリでは、設定したAxiosインスタンスのみをバリデーションリクエストに使用します。フォーム送信は常にInertiaが送信します。
 
 <a name="customizing-validation-rules"></a>
 ## バリデーションルールのカスタマイズ

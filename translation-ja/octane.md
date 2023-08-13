@@ -473,8 +473,8 @@ public function index(Request $request): array
 Swooleを使用している場合，軽量のバックグラウンドタスクを介して，複数操作を同時に実行できます。これには，Octaneの`concurrently`メソッドを使用します。このメソッドとPHP配列のデストラクションを組み合わせて，各操作の結果を取得できます。
 
 ```php
-use App\User;
-use App\Server;
+use App\Models\User;
+use App\Models\Server;
 use Laravel\Octane\Facades\Octane;
 
 [$users, $servers] = Octane::concurrently([

@@ -16,10 +16,11 @@
     - [デフォルトスコープ](#default-scope)
     - [NULL許可のスコープ](#nullable-scope)
     - [スコープの識別子](#identifying-scope)
+    - [スコープのシリアライズ](#serializing-scope)
 - [機能のリッチな値](#rich-feature-values)
 - [複数の機能の取得](#retrieving-multiple-features)
 - [Eagerロード](#eager-loading)
-- [Updating Values](#updating-values)
+- [値の更新](#updating-values)
     - [バルク更新](#bulk-updates)
     - [機能の削除](#purging-features)
 - [テスト](#testing)
@@ -533,6 +534,25 @@ class User extends Model implements FeatureScopeable
         };
     }
 }
+```
+
+<a name="serializing-scope"></a>
+### スコープのシリアライズ
+
+PennantはEloquentモデルに関連付けた機能を格納するとき、デフォルトで完全修飾クラス名を使います。[Eloquentモーフィックマップ](/docs/{{version}}/eloquent-relationships#custom-polymorphic-types)を使っている場合は、Pennantでもモーフィックマップを使い、保存した機能をアプリケーションの構造から切り離せます。
+
+これを行なうには、サービスプロバイダでEloquentモーフマップを定義した後に、`Feature`ファサードの`useMorphMap`メソッドを呼び出します。
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Laravel\Pennant\Feature;
+
+Relation::enforceMorphMap([
+    'post' => 'App\Models\Post',
+    'video' => 'App\Models\Video',
+]);
+
+Feature::useMorphMap();
 ```
 
 <a name="rich-feature-values"></a>

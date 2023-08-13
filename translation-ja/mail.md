@@ -1224,22 +1224,22 @@ Laravelは様々なメールトランスポートを用意していますが、L
 <a name="additional-symfony-transports"></a>
 ### Symfonyトランスポートの追加
 
-Laravelは、MailgunやPostmarkのように、Symfonyがメンテナンスしている既存のメールトランスポートをサポートしています。しかし、Laravelを拡張して、Symfonyが保守する追加のトランスポートを追加サポートしたい場合があるでしょう。Composerを使い、必要なSymfonyメーラーをインストールし、Laravelでそのトランスポートを登録することで、これが実現できます。例として、"Sendinblue" Symfonyメーラーをインストールし、登録してみましょう。
+Laravelは、MailgunやPostmarkのように、Symfonyがメンテナンスしている既存のメールトランスポートをサポートしています。しかし、Laravelを拡張して、Symfonyが保守する追加のトランスポートを追加サポートしたい場合があるでしょう。Composerを使い、必要なSymfonyメーラーをインストールし、Laravelでそのトランスポートを登録することで、これが実現できます。例として、"Brevo"（以前の"Sendinblue"） Symfonyメーラーをインストールし、登録してみましょう。
 
 ```none
-composer require symfony/sendinblue-mailer symfony/http-client
+composer require symfony/brevo-mailer symfony/http-client
 ```
 
-Sendinblueメーラーパッケージをインストールしたら、アプリケーションの`services`設定ファイルへ、Sendinblue API認証情報のエントリを追加します。
+Sendinblueメーラーパッケージをインストールしたら、アプリケーションの`Brevo`設定ファイルへ、Brevo API認証情報のエントリを追加します。
 
-    'sendinblue' => [
+    'brevo' => [
         'key' => 'your-api-key',
     ],
 
 次に、`Mail`ファサードの`extend`メソッドを使用して、Laravelへこのトランスポートを登録します。一般的に、これはサービスプロバイダの`boot`メソッド内で行う必要があります。
 
     use Illuminate\Support\Facades\Mail;
-    use Symfony\Component\Mailer\Bridge\Sendinblue\Transport\SendinblueTransportFactory;
+    use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
     use Symfony\Component\Mailer\Transport\Dsn;
 
     /**
@@ -1247,12 +1247,12 @@ Sendinblueメーラーパッケージをインストールしたら、アプリ�
      */
     public function boot(): void
     {
-        Mail::extend('sendinblue', function () {
-            return (new SendinblueTransportFactory)->create(
+        Mail::extend('brevo', function () {
+            return (new BrevoTransportFactory)->create(
                 new Dsn(
-                    'sendinblue+api',
+                    'brevo+api',
                     'default',
-                    config('services.sendinblue.key')
+                    config('services.brevo.key')
                 )
             );
         });
@@ -1260,7 +1260,7 @@ Sendinblueメーラーパッケージをインストールしたら、アプリ�
 
 トランスポートを登録したら、アプリケーションの`config/mail.php`設定ファイル内に、その新しいトランスポートを利用するメーラー定義を作成します。
 
-    'sendinblue' => [
-        'transport' => 'sendinblue',
+    'brevo' => [
+        'transport' => 'brevo',
         // ...
     ],

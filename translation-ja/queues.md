@@ -265,7 +265,7 @@ php artisan make:job ProcessPodcast
 
     <?php
 
-    use App\Product;
+    use App\Models\Product;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Contracts\Queue\ShouldBeUnique;
 
@@ -306,7 +306,7 @@ php artisan make:job ProcessPodcast
 
     <?php
 
-    use App\Product;
+    use App\Models\Product;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 
