@@ -273,7 +273,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 これだけです！これで、このリスナによって処理されるイベントがディスパッチされると、リスナはLaravelの[キューシステム](/docs/{{version}}/queues)を使用してイベントディスパッチャによって自動的にキューへ投入されます。リスナがキューによって実行されたときに例外が投げられない場合、キュー投入済みジョブは、処理が終了した後で自動的に削除されます。
 
 <a name="customizing-the-queue-connection-queue-name"></a>
-#### キュー接続とキュー名のカスタマイズ
+#### キュー接続と名前、遅延のカスタマイズ
 
 イベントリスナのキュー接続、キュー名、またはキュー遅延時間をカスタマイズする場合は、リスナクラスで`$connection`、`$queue`、`$delay`プロパティを定義できます。
 
@@ -308,7 +308,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
         public $delay = 60;
     }
 
-実行時にリスナのキュー接続またはキュー名を定義したい場合は、リスナに`viaConnection`または`viaQueue`メソッドを定義します。
+実行時にリスナのキュー接続、キュー名、遅延時間を定義したい場合は、リスナに`viaConnection`、`viaQueue`、`withDelay`メソッドを定義します。
 
     /**
      * リスナのキュー接続の名前の取得
@@ -324,6 +324,14 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
     public function viaQueue(): string
     {
         return 'listeners';
+    }
+
+    /**
+     * ジョブを開始するまでの秒数を取得
+     */
+    public function withDelay(SendShipmentNotification $event): int
+    {
+        return $event->highPriority ? 0 : 60;
     }
 
 <a name="conditionally-queueing-listeners"></a>

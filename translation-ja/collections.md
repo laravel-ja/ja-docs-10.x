@@ -164,6 +164,7 @@
 [only](#method-only)
 [pad](#method-pad)
 [partition](#method-partition)
+[percentage](#method-percentage)
 [pipe](#method-pipe)
 [pipeInto](#method-pipeinto)
 [pipeThrough](#method-pipethrough)
@@ -1684,6 +1685,27 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
     $equalOrAboveThree->all();
 
     // [3, 4, 5, 6]
+
+<a name="method-percentage"></a>
+#### `percentage()` {.collection-method}
+
+`percentage`メソッドは、コレクション内のアイテムのうち、指定する論理テストにパスするアイテムのパーセントをてっとり早く算出するために使用します。
+
+```php
+$collection = collect([1, 1, 2, 2, 2, 3]);
+
+$percentage = $collection->percentage(fn ($value) => $value === 1);
+
+// 33.33
+```
+
+パーセンテージはデフォルトで、小数点以下２桁に丸めます。しかし、メソッドに第２引数を与えれば、この動作をカスタマイズできます。
+
+```php
+$percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3);
+
+// 33.333
+```
 
 <a name="method-pipe"></a>
 #### `pipe()` {.collection-method}

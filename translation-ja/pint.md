@@ -93,7 +93,7 @@ pint --preset psr12
 }
 ```
 
-Pintが現在サポートしているプリセットは、`laravel`、`psr12`、`symfony` です。
+Pintが現在サポートしているプリセットは、`laravel`、`per`、`psr12`、`symfony` です。
 
 <a name="rules"></a>
 ### ルール

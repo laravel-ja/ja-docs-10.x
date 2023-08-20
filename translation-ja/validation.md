@@ -1338,12 +1338,12 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-gt"></a>
 #### gt:_field_
 
-フィールドが指定した*フィールド*より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*か*値*より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-gte"></a>
 #### gte:_field_
 
-フィールドが指定した*フィールド*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*か*値*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-image"></a>
 #### image
@@ -2014,6 +2014,10 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
     ]);
 
 上記の例で、バリデーションは失敗し、*"Please describe photo #2"*がユーザーに表示されます。
+
+必要であれば、`second-index`、`second-position`、`third-index`、`third-position`などを使って、さらに深くネストしたインデックスやポジションを参照できます。
+
+    'photos.*.attributes.*.string' => 'Invalid attribute for photo #:second-position.',
 
 <a name="validating-files"></a>
 ## ファイルのバリデーション

@@ -10,13 +10,17 @@
     - [複数選択](#multiselect)
     - [候補](#suggest)
     - [検索](#search)
+- [情報メッセージ](#informational-messages)
+- [ヒントテキスト](#hint-text)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
 
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravel Promptsは、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザにあるような機能を備えています。
+[Laravel Prompts](https://github.com/laravel/prompts)は、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザにあるような機能を備えています。
+
+<img src="https://laravel.com/img/docs/prompts-example.png">
 
 Laravel Promptsは、[Artisanコンソールコマンド](/docs/{{version}}/artisan#writing-commands)でユーザー入力を受けるために最適ですが、コマンドラインのPHPプロジェクトでも使用できます。
 
@@ -123,7 +127,7 @@ $password = password(
 入力値が必須の場合は、`required`引数を渡してください。
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: true
 );
@@ -132,7 +136,7 @@ $name = password(
 バリデーション・メッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     required: 'The password is required.'
 );
@@ -144,7 +148,7 @@ $name = password(
 最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
 
 ```php
-$name = password(
+$password = password(
     label: 'What is your password?',
     validate: fn (string $value) => match (true) {
         strlen($value) < 8 => 'The password must be at least 8 characters.',
@@ -272,7 +276,7 @@ $role = select(
             ? 'An owner already exists.'
             : null
     }
-)
+);
 ```
 
 `options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
@@ -501,6 +505,29 @@ $id = search(
 ```
 
 `options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
+
+<a name="informational-messages"></a>
+### 情報メッセージ
+
+`note`、`info`、`warning`、`error`、`alert`関数は、情報メッセージを表示するために使用します。
+
+```php
+use function Laravel\Prompts\info;
+
+info('Package installed successfully.');
+```
+
+<a name="hint-text"></a>
+### ヒントテキスト
+
+すべてのプロンプト関数は「ヒントテキスト」もサポートしています。このテキストはプロンプトに関する情報や指示をユーザーに与えるために、プロンプトの下に表示されます。
+
+```php
+$email = text(
+    label: 'What is your email address?',
+    hint: 'We will never share your email address with anyone.',
+);
+```
 
 <a name="terminal-considerations"></a>
 ### ターミナルの考察
