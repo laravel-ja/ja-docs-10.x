@@ -36,7 +36,6 @@
 - [Publicパスの結合](#public-path-binding)
 - [クエリ例外のコンストラクタ](#query-exception-constructor)
 - [レート制限の戻り値](#rate-limiter-return-values)
-- [リレーションの`getBaseQuery`メソッド](#relation-getbasequery-method)
 - [`Redirect::home`メソッド](#redirect-home)
 - [`Bus::dispatchNow`メソッド](#dispatch-now)
 - [`registerPolicies`メソッド](#register-policies)
@@ -190,13 +189,6 @@ protected $casts = [
     'deployed_at' => 'datetime',
 ];
 ```
-
-<a name="relation-getbasequery-method"></a>
-#### リレーションの`getBaseQuery`メソッド
-
-**影響の可能性： かなり低い**
-
-`Illuminate\Database\Eloquent\Relations\Relation`クラスの`getBaseQuery`メソッドを`toBase`へ名称変更しました。
 
 ### 多言語化
 

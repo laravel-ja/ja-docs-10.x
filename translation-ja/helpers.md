@@ -171,6 +171,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Str::ulid](#method-str-ulid)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
+[Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
 [Str::wrap](#method-str-wrap)
 [str](#method-str)
@@ -2261,6 +2262,23 @@ use Illuminate\Support\Str;
 Str::wordCount('Hello, world!'); // 2
 ```
 
+<a name="method-str-word-wrap"></a>
+#### `Str::wordWrap()` {.collection-method}
+
+`Str::wordWrap`メソッドは、文字列を指定文字数で折り返します。
+
+    use Illuminate\Support\Str;
+
+    $text = "The quick brown fox jumped over the lazy dog."
+
+    Str::wordWrap($text, characters: 20, break: "<br />\n");
+
+    /*
+    The quick brown fox<br />
+    jumped over the lazy<br />
+    dog.
+    */
+
 <a name="method-str-words"></a>
 #### `Str::words()` {.collection-method}
 
@@ -4123,6 +4141,14 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
         return $this->failure();
     });
 
+例外を`report`関数でレポートするかを決定するために、`rescue`関数に`report`引数を指定できます。
+
+    return rescue(function () {
+        return $this->method();
+    }, report: function (Throwable $throwable) {
+        return $throwable instanceof InvalidArgumentException;
+    });
+
 <a name="method-resolve"></a>
 #### `resolve()` {.collection-method}
 
@@ -4357,6 +4383,10 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
 コールバックを複数回呼び出すには、メソッドの第２引数でコールバックを呼び出す反復回数を指定してください。コールバックを複数回実行する場合、`Benchmark`クラスはコールバックの実行にかかった平均ミリ秒を返します。
 
     Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
+
+コールバックが返す値を取得しながら、コールバックの実行をベンチマークしたい場合もあるでしょう。`value`メソッドはコールバックが返した値と、コールバックの実行にかかったミリ秒数を含むタプルを返します：
+
+    [$count, $duration] = Benchmark::value(fn () => User::count());
 
 <a name="dates"></a>
 ### 日付

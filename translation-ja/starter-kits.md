@@ -91,7 +91,7 @@ npm run dev
 <a name="breeze-and-next"></a>
 ### BreezeとNext.js／API
 
-Laravel Breezeは、[Next](https://nextjs.org)や[Nuxt](https://nuxtjs.org)などのモダンなJavaScriptアプリケーションで認証するAPIもスカフォールドできます。これを使い始めるには、`breeze:install` Artisanコマンドを実行する時に、希望スタックとしてAPIスタックを指定します。
+Laravel Breezeは、[Next](https://nextjs.org)や[Nuxt](https://nuxt.com)などのモダンなJavaScriptアプリケーションで認証するAPIもスカフォールドできます。これを使い始めるには、`breeze:install` Artisanコマンドを実行する時に、希望スタックとしてAPIスタックを指定します。
 
 ```shell
 php artisan breeze:install
