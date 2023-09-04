@@ -83,7 +83,9 @@ const submit = () => form.submit();
             {{ form.errors.email }}
         </div>
 
-        <button>Create User</button>
+        <button :disabled="form.processing">
+            Create User
+        </button>
     </form>
 </template>
 ```
@@ -159,6 +161,14 @@ const submit = () => form.submit()
     .catch(error => {
         alert('An error occurred.');
     });
+```
+
+フォームの`processing`プロパティを調べれば、フォーム送信リクエストが処理中か判断できます。
+
+```html
+<button :disabled="form.processing">
+    Submit
+</button>
 ```
 
 <a name="using-vue-and-inertia"></a>
@@ -254,7 +264,9 @@ export default function Form() {
             />
             {form.invalid('email') && <div>{form.errors.email}</div>}
 
-            <button>Create User</button>
+            <button disabled={form.processing}>
+                Create User
+            </button>
         </form>
     );
 };
@@ -325,6 +337,14 @@ const submit = (e) => {
             alert('An error occurred.');
         });
 };
+```
+
+フォームの`processing`プロパティを調べれば、フォーム送信リクエストが処理中か判断できます。
+
+```html
+<button disabled={form.processing}>
+    Submit
+</button>
 ```
 
 <a name="using-react-and-inertia"></a>
@@ -429,7 +449,9 @@ Laravel Precognitionパッケージをインストール、登録した状態で
         <div x-text="form.errors.email"></div>
     </template>
 
-    <button>Create User</button>
+    <button :disabled="form.processing">
+        Create User
+    </button>
 </form>
 ```
 
@@ -477,6 +499,14 @@ form.setValidationTimeout(3000);
 
 > **Warning**
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
+
+フォームの`processing`プロパティを調べれば、フォーム送信リクエストが処理中か判断できます。
+
+```html
+<button :disabled="form.processing">
+    Submit
+</button>
+```
 
 <a name="repopulating-old-form-data"></a>
 #### 直前のフォームデータの再取得

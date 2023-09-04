@@ -61,6 +61,7 @@ composer require symfony/mailgun-mailer symfony/http-client
 次に、アプリケーションの`config/mail.php`設定ファイルにある、`default`オプションを`mailgun`に設定します。アプリケーションのデフォルトメーラーを設定したら、`config/services.php`設定ファイルへ以下のオプションがあることを確認してください。
 
     'mailgun' => [
+        'transport' => 'mailgun',
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
     ],

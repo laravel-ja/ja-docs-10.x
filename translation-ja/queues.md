@@ -107,6 +107,9 @@ php artisan migrate
 
 `redis`キュードライバを使用するには、`config/database.php`設定ファイルでRedisデータベース接続を設定する必要があります。
 
+> **Warning**
+> `redis`キュードライバでは、`serializer`と`compression` Redisオプションをサポートしていません。
+
 **Redisクラスタ**
 
 Redisキュー接続でRedisクラスタを使用する場合、キュー名に[キーハッシュタグ](https://redis.io/docs/reference/cluster-spec/#hash-tags)を含める必要があります。これは、特定のキューのすべてのRedisキーが同じハッシュスロットに配置されるようにするために必要です。

@@ -8,11 +8,11 @@
     - [ネストしたルート](#nested-routes)
     - [ルートインデックス](#index-routes)
 - [ルートパラメータ](#route-parameters)
-- [名前付きルート](#named-routes)
 - [ルートモデル結合](#route-model-binding)
     - [モデルのソフトデリート](#soft-deleted-models)
+- [レンダーフック](#render-hooks)
+- [名前付きルート](#named-routes)
 - [ミドルウェア](#middleware)
-- [PHPブロック](#php-blocks)
 - [ルートのキャッシュ](#route-caching)
 
 <a name="introduction"></a>
@@ -164,33 +164,6 @@ php artisan make:folio "users/[...ids]"
 </ul>
 ```
 
-<a name="named-routes"></a>
-## 名前付きルート
-
-`name`関数を使って、指定したページのルートの名前を指定することができます。
-
-```php
-<?php
-
-use function Laravel\Folio\name;
-
-name('users.index');
-```
-
-Laravelの名前付きルートと同様、`route`関数を使用して、名前を割り当てたFolioページへのURLを生成できます。
-
-```php
-<a href="{{ route('users.index') }}">
-    All Users
-</a>
-```
-
-ページにパラメータがある場合は、その値を`route`関数に渡すだけです。
-
-```php
-route('users.show', ['user' => $user]);
-```
-
 <a name="route-model-binding"></a>
 ## ルートモデル結合
 
@@ -241,6 +214,66 @@ withTrashed();
 <div>
     User {{ $user->id }}
 </div>
+```
+
+<a name="render-hooks"></a>
+## レンダーフック
+
+Folioは受信リクエストに対するレスポンスとして、ページのBladeテンプレートのコンテンツをデフォルトで返します。しかし、ページのテンプレート内で`render`関数を呼び出せば、レスポンスをカスタマイズできます。
+
+`render`関数は、Folioがレンダーする`View`インスタンスを受け取るクロージャを引数に取ります。`View`インスタンスの受け取りに加え、追加のルートパラメータやモデルバインディングも、`render`クロージャへ渡します。
+
+```php
+<?php
+
+use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+
+use function Laravel\Folio\render;
+
+render(function (View $view, Post $post) {
+    if (! Auth::user()->can('view', $post)) {
+        return response('Unauthorized', 403);
+    }
+
+    return $view->with('photos', $post->author->photos);
+}); ?>
+
+<div>
+    {{ $post->content }}
+</div>
+
+<div>
+    This author has also taken {{ count($photos) }} photos.
+</div>
+```
+
+<a name="named-routes"></a>
+## 名前付きルート
+
+`name`関数を使って、指定したページのルートの名前を指定することができます。
+
+```php
+<?php
+
+use function Laravel\Folio\name;
+
+name('users.index');
+```
+
+Laravelの名前付きルートと同様、`route`関数を使用して、名前を割り当てたFolioページへのURLを生成できます。
+
+```php
+<a href="{{ route('users.index') }}">
+    All Users
+</a>
+```
+
+ページにパラメータがある場合は、その値を`route`関数に渡すだけです。
+
+```php
+route('users.show', ['user' => $user]);
 ```
 
 <a name="middleware"></a>
@@ -298,29 +331,6 @@ Folio::path(resource_path('views/pages'))->middleware([
         },
     ],
 ]);
-```
-
-<a name="php-blocks"></a>
-## PHPブロック
-
-Folioを使用する場合、`<?php`タグと`?>`タグは、`middleware`や`withTrashed`などのFolioページ定義関数のために予約済みです。
-
-したがって、Bladeテンプレート内で実行するPHPコードを記述する必要がある場合は、`@php` Bladeディレクティブを使用する必要があります。
-
-```php
-@php
-    if (! Auth::user()->can('view-posts', $user)) {
-        abort(403);
-    }
-
-    $posts = $user->posts;
-@endphp
-
-@foreach ($posts as $post)
-    <div>
-        {{ $post->title }}
-    </div>
-@endforeach
 ```
 
 <a name="route-caching"></a>
