@@ -676,6 +676,66 @@ Duskはフォームと入力要素を操作する、さまざまなメソッド�
 > **Note**
 > `{command}`など、すべての修飾キーは`{}`文字でラップし、[GitHubで見つかる](https://github.com/php-webdriver/php-webdriver/blob/master/lib/WebDriverKeys.php)`Facebook\WebDriver\WebDriverKeys`クラスで定義された定数です。
 
+<a name="fluent-keyboard-interactions"></a>
+#### 読み書きしやすいキーボード操作
+
+Duskは`withKeyboard`メソッドも提供しており、`Laravel\Dusk\Keyboard`クラスを使用して複雑なキーボード操作を読み書きしやすく、実行できます。`Keyboard`クラスは`press`、`release`、`type`、`pause`メソッドを提供しています。
+
+    use Laravel\Dusk\Keyboard;
+
+    $browser->withKeyboard(function (Keyboard $keyboard) {
+        $keyboard->press('c')
+            ->pause(1000)
+            ->release('c')
+            ->type(['c', 'e', 'o']);
+    });
+
+<a name="keyboard-macros"></a>
+#### キーボードマクロ
+
+テストスイート全体で簡単に再利用できるカスタムキーボード操作を定義したい場合は、`Keyboard`クラスが提供する`macro`メソッドが使えます。通常、このメソッドは、[サービスプロバイダ](/docs/{{version}}/providers)の`boot`メソッドから呼び出します。
+
+    <?php
+
+    namespace App\Providers;
+
+    use Facebook\WebDriver\WebDriverKeys;
+    use Illuminate\Support\ServiceProvider;
+    use Laravel\Dusk\Keyboard;
+    use Laravel\Dusk\OperatingSystem;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Duskのブラウザマクロの登録
+         */
+        public function boot(): void
+        {
+            Keyboard::macro('copy', function (string $element = null) {
+                $this->type([
+                    OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'c',
+                ]);
+
+                return $this;
+            });
+
+            Keyboard::macro('paste', function (string $element = null) {
+                $this->type([
+                    OperatingSystem::onMac() ? WebDriverKeys::META : WebDriverKeys::CONTROL, 'v',
+                ]);
+
+                return $this;
+            });
+        }
+    }
+
+`macro`関数は最初の引数に名前、２番目の引数にクロージャを引数に取ります。マクロのクロージャは、`Keyboard`インスタンスのメソッドとしてマクロを呼び出すときに実行します。
+
+    $browser->click('@textarea')
+        ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->copy())
+        ->click('@another-textarea')
+        ->withKeyboard(fn (Keyboard $keyboard) => $keyboard->paste());
+
 <a name="using-the-mouse"></a>
 ### マウスの使用
 
@@ -709,6 +769,10 @@ Duskはフォームと入力要素を操作する、さまざまなメソッド�
     $browser->clickAndHold()
             ->pause(1000)
             ->releaseMouse();
+
+`controlClick`メソッドは、ブラウザの`ctrl+click`イベントをシミュレートするために使います。
+
+    $browser->controlClick();
 
 <a name="mouseover"></a>
 #### マウスオーバ

@@ -1697,7 +1697,7 @@ sudo supervisorctl reread
 
 sudo supervisorctl update
 
-sudo supervisorctl start laravel-worker:*
+sudo supervisorctl start "laravel-worker:*"
 ```
 
 Supervisorの詳細は、[Supervisorのドキュメント](http://supervisord.org/index.html)を参照してください。
@@ -1746,7 +1746,7 @@ php artisan queue:work redis --tries=3 --backoff=3
         return 3;
     }
 
-`backoff`メソッドからバックオフ値の配列を返すことで、「指数バックオフ」を簡単に設定できます。この例では、再試行の遅​​延は、最初の再試行で１秒、２回目の再試行で５秒、３回目の再試行で１０秒になります。
+`backoff`メソッドからバックオフ値の配列を返すことで、「指数」バックオフを簡単に設定できます。この例では、再試行の遅延は最初の最初の再試行で1秒、２回目の再試行で5秒、３回目の再試行で10秒、それ以降も再試行が残っている場合は毎回10秒となります：
 
     /**
     * ジョブを再試行する前に待機する秒数を計算

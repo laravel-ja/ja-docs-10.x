@@ -1697,7 +1697,7 @@ sudo supervisorctl reread
 
 sudo supervisorctl update
 
-sudo supervisorctl start laravel-worker:*
+sudo supervisorctl start "laravel-worker:*"
 ```
 
 For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
@@ -1746,7 +1746,7 @@ If you require more complex logic for determining the job's backoff time, you ma
         return 3;
     }
 
-You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, and 10 seconds for the third retry:
+You may easily configure "exponential" backoffs by returning an array of backoff values from the `backoff` method. In this example, the retry delay will be 1 second for the first retry, 5 seconds for the second retry, 10 seconds for the third retry, and 10 seconds for every subsequent retry if there are more attempts remaining:
 
     /**
     * Calculate the number of seconds to wait before retrying the job.

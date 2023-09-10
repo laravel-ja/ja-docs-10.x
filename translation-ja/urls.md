@@ -97,6 +97,10 @@ Laravelでは名前付きルートに対し、簡単に「署名付きURL」を�
 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
 
+`signedRoute`メソッドで`absolute`引数を指定すれば、署名付きURLハッシュからドメインを除外できます。
+
+    return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);
+
 指定する時間が経過すると期限切れになる一時的な署名付きルートURLを生成する場合は、`temporarySignedRoute`メソッドを使用します。Laravelが一時的な署名付きルートURLを検証するとき、署名付きURLにエンコードされている有効期限のタイムスタンプが経過していないことを確認します。
 
     use Illuminate\Support\Facades\URL;
@@ -144,6 +148,12 @@ Laravelでは名前付きルートに対し、簡単に「署名付きURL」を�
     Route::post('/unsubscribe/{user}', function (Request $request) {
         // ...
     })->name('unsubscribe')->middleware('signed');
+
+署名付きURLがURLハッシュにドメインを含んでいない場合、ミドルウェアで`relative`引数を与える必要があります。
+
+    Route::post('/unsubscribe/{user}', function (Request $request) {
+        // ...
+    })->name('unsubscribe')->middleware('signed:relative');
 
 <a name="responding-to-invalid-signed-routes"></a>
 #### 無効な署名付きルートのレスポンス

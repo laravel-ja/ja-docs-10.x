@@ -344,23 +344,15 @@ Blade内でも機能をシームレスにチェックするため、Pennantは`@
 <a name="middleware"></a>
 ### ミドルウェア
 
-Pennantは、[ミドルウェア](/docs/{{version}}/middleware)も用意しており、あるルートを呼び出す前に、現在認証しているユーザーが、その機能にアクセスできることをチェックするために使用できます。これを使い始めるには、アプリケーションの`app/Http/Kernel.php`ファイルへ`EnsureFeaturesAreActive`ミドルウェアのエイリアスを追加する必要があります。
+Pennantは、[ミドルウェア](/docs/{{version}}/middleware)も用意しています。このミドルウェアは、ルートが呼び出される前に、現在認証されているユーザーがその機能にアクセスできることを確認するために使います。ミドルウェアをルートに割り当て、ルートにアクセスするために必要な機能を指定ができます。指定した機能のどれかが、現在認証されているユーザーにとって無効である場合、ルートは`400 Bad Request` HTTPレスポンスを返します。静的メソッド`using`には複数の機能を渡せます。
 
 ```php
+use Illuminate\Support\Facades\Route;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 
-protected $middlewareAliases = [
-    // ...
-    'features' => EnsureFeaturesAreActive::class,
-];
-```
-
-次に、ミドルウェアをルートに割り当て、そのルートにアクセスするために必要な機能を指定します。指定した機能のいずれかが、現在認証しているユーザーに対して無効である場合、ルートは`400 Bad Request` HTTPレスポンスを返します。カンマ区切りのリストで複数の機能を指定することもできます。
-
-```php
 Route::get('/api/servers', function () {
     // ...
-})->middleware(['features:new-api,servers-api']);
+})->middleware(EnsureFeaturesAreActive::using('new-api', 'servers-api'));
 ```
 
 <a name="customizing-the-response"></a>

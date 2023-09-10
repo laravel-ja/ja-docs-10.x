@@ -11,6 +11,7 @@
 - [バリデーションルールのカスタマイズ](#customizing-validation-rules)
 - [ファイルアップロードの処理](#handling-file-uploads)
 - [副作用の管理](#managing-side-effects)
+- [テスト](#testing)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -672,5 +673,25 @@ class InteractionMiddleware
 
         return $next($request);
     }
+}
+```
+
+<a name="testing"></a>
+## テスト
+
+もしテスト内で事前認識型リクエストを行いたい場合、Laravelの`TestCase`の`Precognition`リクエストヘッダを追加する`withPrecognition`ヘルパがあります。
+
+さらに、事前認識型リクエストが成功したこと、例えばバリデーションエラーを返さないことを宣言したい場合は、レスポンスの`assertSuccessfulPrecognition`メソッドを使用します。
+
+```php
+public function test_it_validates_registration_form_with_precognition()
+{
+    $response = $this->withPrecognition()
+        ->post('/register', [
+            'name' => 'Taylor Otwell',
+        ]);
+
+    $response->assertSuccessfulPrecognition();
+    $this->assertSame(0, User::count());
 }
 ```

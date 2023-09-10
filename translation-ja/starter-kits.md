@@ -113,4 +113,4 @@ Laravel Breezeは、Laravelアプリケーションを構築するためのシ�
 
 Jetstreamは、Laravelのために美しくデザインされたアプリケーションのスカフォールドを提供し、ログイン、登録、電子メール検証、二要素認証、セッション管理、Laravel Sanctum経由のAPIサポート、およびオプションのチーム管理を備えています。Jetstreamは、[Tailwind CSS](https://tailwindcss.com)を使用して設計しており、[Livewire](https://livewire.laravel.com)または[Inertia](https://inertiajs.com)駆動のフロントエンドスカフォールドから選択可能です。
 
-Laravel Jetstreamをインストールするための完全なドキュメントは、[公式Jetstreamドキュメント](https://jetstream.laravel.com/3.x/introduction.html)にあります。
+Laravel Jetstreamをインストールするための完全なドキュメントは、[公式Jetstreamドキュメント](https://jetstream.laravel.com)にあります。

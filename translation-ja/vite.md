@@ -231,6 +231,29 @@ JavaScriptでCSSをインポートする場合は、JavaScriptのエントリー
 </head>
 ```
 
+<a name="inline-assets"></a>
+#### インラインのアセット
+
+時には、アセットでバージョン管理したURLへリンクするのではなく、アセットの素のコンテンツを含める必要があるかもしれません。例えば、HTMLコンテンツをPDFジェネレータに渡すときに、アセットコンテンツを直接ページに含める必要があるかもしれません。`Vite`ファサードが提供する`content`メソッドを使用して、Viteアセットのコンテンツを出力できます。
+
+```blade
+@php
+use Illuminate\Support\Facades\Vite;
+@endphp
+
+<!doctype html>
+<head>
+    {{-- ... --}}
+
+    <style>
+        {!! Vite::content('resources/css/app.css') !!}"
+    </style>
+    <script>
+        {!! Vite::content('resources/js/app.js') !!}
+    </script>
+</head>
+```
+
 <a name="running-vite"></a>
 ## Viteの実行
 

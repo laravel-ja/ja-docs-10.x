@@ -12,6 +12,7 @@
     - [環境ベースの設定](#environment-based-configuration)
     - [データベースとマイグレーション](#databases-and-migrations)
     - [ディレクトリ設定](#directory-configuration)
+- [IDEサポート](#ide-support)
 - [次のステップ](#next-steps)
     - [Laravelフルスタックフレームワーク](#laravel-the-fullstack-framework)
     - [Laravel APIバックエンド](#laravel-the-api-backend)
@@ -257,6 +258,13 @@ php artisan migrate
 ### ディレクトリ設定
 
 Laravelは常に、Webサーバに設定した「Webディレクトリ」のルートから提供する必要があります。Laravelアプリケーションを「Webディレクトリ」のサブディレクトリから提供してはいけません。そうしてしまうと、アプリケーション内の機密ファイルを公開してしまう可能性が発生します。
+
+<a name="ide-support"></a>
+## IDEサポート
+
+Laravelアプリケーションを開発するときに、どのようなコードエディタを使用するかは自由ですが、[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/)は、[Laravel Pint](https://www.jetbrains.com/help/phpstorm/using-laravel-pint.html)を含むLaravelとそのエコシステムを幅広くサポートしています。
+
+さらに、コミュニティがメンテナンスしている[Laravel Idea](https://laravel-idea.com/) PhpStormプラグインは、コード生成、Eloquent構文補完、バリデーションルール補完など、IDEに役立つ様々な拡張機能を提供しています。
 
 <a name="next-steps"></a>
 ## 次のステップ

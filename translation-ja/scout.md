@@ -572,10 +572,16 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
 
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 
-`whereIn`メソッドを使用すると、指定された値の集合に対して結果を制約できます。
+さらに、`whereIn`メソッドを使うと、指定カラムの値が指定した配列内に含まれていることを確認できます。
 
     $orders = Order::search('Star Trek')->whereIn(
-        'status', ['paid', 'open']
+        'status', ['open', 'paid']
+    )->get();
+
+`whereNotIn`メソッドは、指定カラムの値が指定した配列に含まれないことを確認します。
+
+    $orders = Order::search('Star Trek')->whereNotIn(
+        'status', ['closed']
     )->get();
 
 検索インデックスはリレーショナルデータベースではないため、より高度な"where"節は現在サポートしていません。
