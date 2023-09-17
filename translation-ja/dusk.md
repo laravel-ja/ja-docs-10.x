@@ -222,6 +222,24 @@ composer require --dev doctrine/dbal
      */
     protected $connectionsToTruncate = ['mysql'];
 
+データベースの切り捨ての前後にコードを実行したい場合は、テストクラスに`beforeTruncatingDatabase`、`afterTruncatingDatabase`メソッドを定義してください。
+
+    /**
+     * データベースの切り捨てを始める前に実行する作業
+     */
+    protected function beforeTruncatingDatabase(): void
+    {
+        //
+    }
+
+    /**
+     * データベースの切り捨てを完了後に実行する作業
+     */
+    protected function afterTruncatingDatabase(): void
+    {
+        //
+    }
+
 <a name="running-tests"></a>
 ### テストの実行
 

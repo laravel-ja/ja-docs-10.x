@@ -48,7 +48,13 @@ BreezeとJetstreamの[スターターキット](/docs/{{version}}/starter-kits)�
 <a name="creating-and-rendering-views"></a>
 ## ビューの作成とレンダ
 
-アプリケーションの`resources/views`ディレクトリに`.blade.php`拡張子の付いたファイルを配置することで、ビューを作成できます。`.blade.php`拡張子は、ファイルに[Bladeテンプレート](/docs/{{version}}/blade)が含まれていることをフレームワークに通知します。BladeテンプレートはHTML、値を簡単にエコーしたり、"if"文を作成したり、データを反復処理したりできるBladeディレクティブを含みます。
+アプリケーションの`resources/views`ディレクトリに`.blade.php`拡張子のファイルを置くか、`make:view` Artisan コマンドを使用してビューを作成できます。
+
+```shell
+php artisan make:view greeting
+```
+
+`.blade.php`拡張子は、そのファイルが[Blade テンプレート](/docs/{{version}}/blade)を含んでいることをフレームワークに知らせます。BladeテンプレートにはHTMLとBladeディレクティブが含まれており、簡単に値をエコーしたり、"if"ステートメントを作成したり、データを反復処理したりできます。
 
 ビューを作成したら、グローバルな`view`ヘルパを使用して、アプリケーションのルートまたはコントローラからビューを返すことができます。
 

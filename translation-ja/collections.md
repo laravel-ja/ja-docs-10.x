@@ -112,6 +112,7 @@
 [dd](#method-dd)
 [diff](#method-diff)
 [diffAssoc](#method-diffassoc)
+[diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
 [dot](#method-dot)
@@ -601,6 +602,29 @@
     $diff->all();
 
     // ['color' => 'orange', 'remain' => 6]
+
+<a name="method-diffassocusing"></a>
+#### `diffAssocUsing()` {.collection-method}
+
+`diffAssoc`とは異なり、`diffAssocUsing`はインデックスを比較するためにユーザーが指定するコールバック関数を受け取ります。
+
+    $collection = collect([
+        'color' => 'orange',
+        'type' => 'fruit',
+        'remain' => 6,
+    ]);
+
+    $diff = $collection->diffAssocUsing([
+        'Color' => 'yellow',
+        'Type' => 'fruit',
+        'Remain' => 3,
+    ], 'strnatcasecmp');
+
+    $diff->all();
+
+    // ['color' => 'orange', 'remain' => 6]
+
+コールバックは０より小さい、等しい、大きい整数を返す比較関数でなければなりません。詳細は、PHPドキュメントの[`array_diff_uassoc`](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters)を参照してください。このPHP関数を`diffAssocUsing`メソッドは内部で使用しています。
 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {.collection-method}

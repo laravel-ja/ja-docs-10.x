@@ -9,11 +9,6 @@
     - [キャッシュへのアイテム保存](#storing-items-in-the-cache)
     - [キャッシュからのアイテム削除](#removing-items-from-the-cache)
     - [キャッシュヘルパ](#the-cache-helper)
-- [キャッシュタグ](#cache-tags)
-    - [タグ付きキャッシュアイテムの保存](#storing-tagged-cache-items)
-    - [タグ付きキャッシュアイテムへのアクセス](#accessing-tagged-cache-items)
-    - [タグ付きキャッシュアイテムの削除](#removing-tagged-cache-items)
-    - [Pruning Stale Cache Tags](#pruning-stale-cache-tags)
 - [アトミックロック](#atomic-locks)
     - [ドライバ要件](#lock-driver-prerequisites)
     - [ロック管理](#managing-locks)
@@ -266,51 +261,6 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
 
 > **Note**
 > グローバルな`cache`関数の呼び出しをテストするときは、[ファサードをテストする](/docs/{{version}}/mocking#mocking-facades)のように`Cache::shouldReceive`メソッドを使用できます。
-
-<a name="cache-tags"></a>
-## キャッシュタグ
-
-> **Warning**
-> `file`、`dynamodb`、`database`キャッシュドライバを使用する場合、キャッシュタグはサポート外です。また、「永久に」保存するキャッシュで複数のタグを使用する場合、古いレコードを自動的に削除する`memcached`などのドライバを使用するとパフォーマンスが最高になります。
-
-<a name="storing-tagged-cache-items"></a>
-### タグ付きキャッシュアイテムの保存
-
-キャッシュタグを使用すると、キャッシュ内の関連アイテムにタグを付けてから、特定のタグが割り当てられているすべてのキャッシュ値を削除できます。タグ名の配列（順番を尊重）を渡すことにより、タグ付きキャッシュにアクセスできます。タグ付きキャッシュにアクセスして、値をキャッシュに「入れ」る一例です。
-
-    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
-
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
-
-<a name="accessing-tagged-cache-items"></a>
-### タグ付きキャッシュアイテムへのアクセス
-
-タグを使用して保存したアイテムは、保存時に使用したタグを指定しなければ、アクセスできません。タグ付きキャッシュアイテムを取得するには、保存時と同じ順序でタグのリストを`tags`メソッドに渡し、取得するキーを使用して`get`メソッドを呼び出します。
-
-    $john = Cache::tags(['people', 'artists'])->get('John');
-
-    $anne = Cache::tags(['people', 'authors'])->get('Anne');
-
-<a name="removing-tagged-cache-items"></a>
-### タグ付きキャッシュアイテムの削除
-
-タグまたはタグのリストが割り当てられているすべてのアイテムをフラッシュできます。たとえば、以下のステートメントは、`people`、`authors`、またはその両方でタグ付けされたすべてのキャッシュを削除します。したがって、`Anne`と`John`の両方がキャッシュから削除されます。
-
-    Cache::tags(['people', 'authors'])->flush();
-
-対照的に、以下のステートメントは`authors`でタグ付けされたキャッシュ値のみを削除するため、`Anne`は削除されますが、`John`は削除されません。
-
-    Cache::tags('authors')->flush();
-
-<a name="pruning-stale-cache-tags"></a>
-### 古くなったキャッシュタグの整理
-
-> **Warning**
-> アプリケーションのキャッシュドライバとしてRedisを使用する場合のみ、古いキャッシュタグの整理が必要です。
-
-Redisキャッシュドライバを使用しているときに、古いキャッシュタグエントリを適切に整理するため、Laravelの`cache:prune-stale-tags` Artisanコマンドをアプリケーションの`App\Console\Kernel`クラスの[scheduled](/docs/{{version}}/scheduling)に設定する必要があります。
-
-    $schedule->command('cache:prune-stale-tags')->hourly();
 
 <a name="atomic-locks"></a>
 ## アトミックロック

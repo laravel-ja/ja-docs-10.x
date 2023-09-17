@@ -88,7 +88,7 @@ The current UNIX timestamp is {{ time() }}.
 <a name="html-entity-encoding"></a>
 ### HTMLエンティティエンコーディング
 
-デフォルトのBlade(およびLaravel`e`ヘルパ)はHTMLエンティティをダブルエンコードします。ダブルエンコーディングを無効にする場合は、`AppServiceProvider`の`boot`メソッドから`Blade::withoutDoubleEncoding`メソッドを呼び出します。
+デフォルトのBlade(およびLaravel`e`関数)はHTMLエンティティをダブルエンコードします。ダブルエンコーディングを無効にする場合は、`AppServiceProvider`の`boot`メソッドから`Blade::withoutDoubleEncoding`メソッドを呼び出します。
 
     <?php
 

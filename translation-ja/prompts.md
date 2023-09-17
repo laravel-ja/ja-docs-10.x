@@ -11,7 +11,6 @@
     - [候補](#suggest)
     - [検索](#search)
 - [情報メッセージ](#informational-messages)
-- [ヒントテキスト](#hint-text)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
 
@@ -52,13 +51,14 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
-プレースホルダ・テキストとデフォルト値も指定できます。
+プレースホルダ・テキストとデフォルト値、ヒントの情報も指定できます。
 
 ```php
 $name = text(
     label: 'What is your name?',
     placeholder: 'E.g. Taylor Otwell',
-    default: $user?->name
+    default: $user?->name,
+    hint: 'This will be displayed on your profile.'
 );
 ```
 
@@ -112,12 +112,13 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
-プレースホルダーのテキストを含めることもできます。
+プレースホルダーのテキストと情報のヒントも含められます。
 
 ```php
 $password = password(
     label: 'What is your password?',
-    placeholder: 'Minimum 8 characters...'
+    placeholder: 'password',
+    hint: 'Minimum 8 characters.'
 );
 ```
 
@@ -170,22 +171,15 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
-デフォルトで、"Yes"の答えがあらかじめ選択されています。しかし、`default`引数に`false`を渡せば、デフォルトを"No"に設定できます。
+また、デフォルト値、「はい」／「いいえ」ラベルをカスタマイズする文言、情報ヒントも含められます。
 
 ```php
 $confirmed = confirm(
     label: 'Do you accept the terms?',
     default: false,
-);
-```
-
-`yes`と`no`の引数を渡すば、"Yes"と "No"のラベルに使われる文言をカスタマイズすることもできます。
-
-```php
-$confirmed = confirm(
-    label: 'Do you accept the terms?',
     yes: 'I accept',
-    no: 'I decline'
+    no: 'I decline',
+    hint: 'The terms must be accepted to continue.'
 );
 ```
 
@@ -224,13 +218,14 @@ $role = select(
 );
 ```
 
-`default`引数を渡せば、デフォルトの選択肢を指定することもできます。
+デフォルト選択肢と情報のヒントも指定できます。
 
 ```php
 $role = select(
     label: 'What role should the user have?',
     options: ['Member', 'Contributor', 'Owner'],
-    default: 'Owner'
+    default: 'Owner',
+    hint: 'The role may be changed at any time.'
 );
 ```
 
@@ -265,7 +260,7 @@ $role = select(
 
 ```php
 $role = select(
-    label: 'What role should the user have?'
+    label: 'What role should the user have?',
     options: [
         'member' => 'Member',
         'contributor' => 'Contributor',
@@ -275,7 +270,6 @@ $role = select(
         $value === 'owner' && User::where('role', 'owner')->exists()
             ? 'An owner already exists.'
             : null
-    }
 );
 ```
 
@@ -295,7 +289,7 @@ $permissions = multiselect(
 );
 ```
 
-`default`引数に配列を渡すことで、あらかじめ選択済みの選択肢を指定することもできます。
+デフォルト選択肢と情報のヒントも指定できます。
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -303,7 +297,8 @@ use function Laravel\Prompts\multiselect;
 $permissions = multiselect(
     label: 'What permissions should be assigned?',
     options: ['Read', 'Create', 'Update', 'Delete'],
-    default: ['Read', 'Create']
+    default: ['Read', 'Create'],
+    hint: 'Permissions may be updated at any time.'
 );
 ```
 
@@ -352,7 +347,7 @@ $role = multiselect(
 
 ```
 $permissions = select(
-    label: 'What permissions should the user have?'
+    label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',
         'create' => 'Create',
@@ -388,14 +383,15 @@ $name = suggest(
 )
 ```
 
-プレースホルダ・テキストとデフォルト値も指定できます。
+プレースホルダ・テキストとデフォルト値、情報のヒントも指定できます。
 
 ```php
 $name = suggest(
     label: 'What is your name?',
     options: ['Taylor', 'Dayle'],
     placeholder: 'E.g. Taylor',
-    default: $user?->name
+    default: $user?->name,
+    hint: 'This will be displayed on your profile.'
 );
 ```
 
@@ -459,7 +455,7 @@ $id = search(
 
 クロージャは、ユーザーがこれまでに入力したテキストを受け取り、 選択肢の配列を返さなければなりません。連想配列を返す場合は選択された選択肢のキーが返され、 そうでない場合はその値が代わりに返されます。
 
-プレースホルダーのテキストを含めることもできます。
+プレースホルダーのテキストと情報のヒントも含められます。
 
 ```php
 $id = search(
@@ -467,7 +463,8 @@ $id = search(
     placeholder: 'E.g. Taylor Otwell',
     options: fn (string $value) => strlen($value) > 0
         ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
-        : []
+        : [],
+    hint: 'The user will receive an email immediately.'
 );
 ```
 
@@ -515,18 +512,6 @@ $id = search(
 use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
-```
-
-<a name="hint-text"></a>
-### ヒントテキスト
-
-すべてのプロンプト関数は「ヒントテキスト」もサポートしています。このテキストはプロンプトに関する情報や指示をユーザーに与えるために、プロンプトの下に表示されます。
-
-```php
-$email = text(
-    label: 'What is your email address?',
-    hint: 'We will never share your email address with anyone.',
-);
 ```
 
 <a name="terminal-considerations"></a>

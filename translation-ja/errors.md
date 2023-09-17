@@ -117,6 +117,42 @@
         }
     }
 
+<a name="deduplicating-reported-exceptions"></a>
+#### Deduplicating Reported Exceptions
+
+アプリケーション全体で`report`関数を使用している場合、同じ例外を複数回報告することがあり、ログに重複したエントリが作成されることがあります。
+
+一例外のインスタンスを一度だけ報告したい場合は、例外ハンドラの`dontReportDuplicates`メソッドを呼び出します。通常、このメソッドはアプリケーションの`AppServiceProvider`の`boot`メソッドから呼び出します。
+
+```php
+use Illuminate\Contracts\Debug\ExceptionHandler;
+
+/**
+ * 全アプリケーションサービスの初期起動処理
+ */
+public function boot(ExceptionHandler $exceptionHandler): void
+{
+    $exceptionHandler->dontReportDuplicates();
+}
+```
+
+これで、同じ例外インスタンスで`report`ヘルパが呼び出された場合、最初に呼び出されたものだけが報告されるようになります。
+
+```php
+$original = new RuntimeException('Whoops!');
+
+report($original); // レポートされる
+
+try {
+    throw $original;
+} catch (Throwable $caught) {
+    report($caught); // 無視される
+}
+
+report($original); // 無視される
+report($caught); // 無視される
+```
+
 <a name="exception-log-levels"></a>
 ### 例外のログレベル
 

@@ -919,9 +919,6 @@ Mailableのテンプレートを設計するときは、通常のBladeテンプ�
         return new App\Mail\InvoicePaid($invoice);
     });
 
-> **Warning**
-> [インライン添付ファイル](#inline-attachments)は、Mailableファイルがブラウザでプレビューされたときにレンダリングされません。これらのメーラブルをプレビューするには、[Mailpit](https://github.com/axllent/mailpit)や[HELO](https://usehelo.com)などのメールテストアプリケーションに送信する必要があります。
-
 <a name="localizing-mailables"></a>
 ## Mailableの多言語化
 
