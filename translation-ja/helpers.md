@@ -100,8 +100,6 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
 </div>
 
-</div>
-
 <a name="urls-method-list"></a>
 ### URL
 
