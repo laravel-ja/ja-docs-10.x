@@ -11,6 +11,8 @@
     - [候補](#suggest)
     - [検索](#search)
 - [情報メッセージ](#informational-messages)
+- [テーブル](#tables)
+- [スピン](#spin)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
 
@@ -513,6 +515,37 @@ use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
 ```
+
+<a name="tables"></a>
+### テーブル
+
+`table`関数を使うと、複数の行や列のデータを簡単に表示できます。指定する必要があるのは、カラム名とテーブルのデータだけです。
+
+```php
+use function Laravel\Prompts\table;
+
+table(
+    ['Name', 'Email'],
+    User::all(['name', 'email'])
+);
+```
+
+<a name="spin"></a>
+### スピン
+
+`spin`関数は、指定したコールバックを実行している間、オプションのメッセージとともにスピナーを表示します。これは進行中の処理を示す役割を果たし、完了するとコールバックの結果を返します。
+
+```php
+use function Laravel\Prompts\spin;
+
+$response = spin(
+    fn () => Http::get('http://example.com'),
+    'Fetching response...'
+);
+```
+
+> **Warning**
+> `spin`関数でスピナーをアニメーションするために、`pcntl` PHP拡張モジュールが必要です。この拡張モジュールが利用できない場合は、代わりに静的なスピナーが表示されます。
 
 <a name="terminal-considerations"></a>
 ### ターミナルの考察

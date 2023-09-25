@@ -122,17 +122,23 @@
 
 アプリケーション全体で`report`関数を使用している場合、同じ例外を複数回報告することがあり、ログに重複したエントリが作成されることがあります。
 
-一例外のインスタンスを一度だけ報告したい場合は、例外ハンドラの`dontReportDuplicates`メソッドを呼び出します。通常、このメソッドはアプリケーションの`AppServiceProvider`の`boot`メソッドから呼び出します。
+一つの例外インスタンスが一度だけ報告されるようにしたい場合は、アプリケーションの`AppExceptions`クラスの中で`$withoutDuplicates`プロパティを`true`に設定してください。
 
 ```php
-use Illuminate\Contracts\Debug\ExceptionHandler;
+namespace App\Exceptions;
 
-/**
- * 全アプリケーションサービスの初期起動処理
- */
-public function boot(ExceptionHandler $exceptionHandler): void
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
+class Handler extends ExceptionHandler
 {
-    $exceptionHandler->dontReportDuplicates();
+    /**
+     * 例外インスタンスが一度だけ報告されるべきであることを示す
+     *
+     * @var bool
+     */
+    protected $withoutDuplicates = true;
+
+    // ...
 }
 ```
 

@@ -197,14 +197,28 @@ php artisan make:notification InvoicePaid
 <a name="customizing-the-notification-queue-connection"></a>
 #### 通知キュー接続のカスタマイズ
 
-キューへ投入した通知は、アプリケーションのデフォルトのキュー接続を使用してキュー投入します。特定の通知に別の接続を使用する必要がある場合は、通知クラスに`$connection`プロパティを定義します。
+キューへ投入した通知はデフォルトで、アプリケーションのデフォルトのキュー接続を使用してキュー投球します。特定の通知に別の接続を指定する必要がある場合は、通知のコンストラクタから、`onConnection`メソッドを呼び出します。
 
-    /**
-     * 通知をキューに入れるときに使用するキュー接続名
-     *
-     * @var string
-     */
-    public $connection = 'redis';
+    <?php
+
+    namespace App\Notifications;
+
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Contracts\Queue\ShouldQueue;
+    use Illuminate\Notifications\Notification;
+
+    class InvoicePaid extends Notification implements ShouldQueue
+    {
+        use Queueable;
+
+        /**
+         * 新規通知インスタンスの生成
+         */
+        public function __construct()
+        {
+            $this->onConnection('redis');
+        }
+    }
 
 もしくは、通知でサポートしている各通知チャンネルで使用する特定のキュー接続を指定したい場合は、自身の通知に`viaConnections`メソッドを定義してください。このメソッドは、チャンネル名とキュー接続名のペアの配列を返す必要があります。
 
@@ -1390,7 +1404,7 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
     /**
      * イベントの処理
      */
-    public function handle(NotificationSending $event): void
+    public function handle(NotificationSending $event): bool
     {
         return false;
     }

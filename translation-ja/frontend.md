@@ -149,7 +149,7 @@ Inertiaページは、VueまたはReactコンポーネントに対応し、通�
 ```vue
 <script setup>
 import Layout from '@/Layouts/Authenticated.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/vue3';
 
 const props = defineProps(['user']);
 </script>

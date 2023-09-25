@@ -11,6 +11,8 @@
     - [Suggest](#suggest)
     - [Search](#search)
 - [Informational Messages](#informational-messages)
+- [Tables](#tables)
+- [Spin](#spin)
 - [Terminal Considerations](#terminal-considerations)
 - [Unsupported Environments & Fallbacks](#fallbacks)
 
@@ -513,6 +515,37 @@ use function Laravel\Prompts\info;
 
 info('Package installed successfully.');
 ```
+
+<a name="tables"></a>
+### Tables
+
+The `table` function makes it easy to display multiple rows and columns of data. All you need to do is provide the column names and the data for the table:
+
+```php
+use function Laravel\Prompts\table;
+
+table(
+    ['Name', 'Email'],
+    User::all(['name', 'email'])
+);
+```
+
+<a name="spin"></a>
+### Spin
+
+The `spin` function displays a spinner along with an optional message while executing a specified callback. It serves to indicate ongoing processes and returns the callback's results upon completion:
+
+```php
+use function Laravel\Prompts\spin;
+
+$response = spin(
+    fn () => Http::get('http://example.com'),
+    'Fetching response...'
+);
+```
+
+> **Warning**  
+> The `spin` function requires the `pcntl` PHP extension to animate the spinner. When this extension is not available, a static version of the spinner will appear instead.
 
 <a name="terminal-considerations"></a>
 ### Terminal Considerations

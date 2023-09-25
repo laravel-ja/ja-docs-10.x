@@ -542,6 +542,12 @@ Duskセレクタを使用すると、CSSセレクタを覚えるよりも、効�
 
     $browser->click('@login-button');
 
+必要であれば、`selectorHtmlAttribute`メソッドを使用し、Duskセレクタで使用するHTML属性をカスタマイズできます。通常、このメソッドは、アプリケーションの`AppServiceProvider`の`boot`メソッドから呼び出します。
+
+    use Laravel\Dusk\Dusk;
+
+    Dusk::selectorHtmlAttribute('data-dusk');
+
 <a name="text-values-and-attributes"></a>
 ### テキスト、値、属性
 

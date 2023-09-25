@@ -553,7 +553,7 @@ php artisan migrate:fresh --seed
 <a name="column-method-foreignIdFor"></a>
 #### `foreignIdFor()` {.collection-method}
 
-`foreignIdFor`メソッドは、指定モデルクラスへ`{column}_id UNSIGNED BIGINT`を追加します。
+`foreignIdFor` メソッドは、指定したモデルクラスに `{column}_id` に相当するカラムを追加します。カラムの型はモデルのキーの型に依存し、`UNSIGNED BIGINT`、`CHAR(36)`、`CHAR(26)`のいずれかです。
 
     $table->foreignIdFor(User::class);
 
@@ -674,7 +674,7 @@ Postgresを使用している場合は、`INET`カラムを作成します。
 <a name="column-method-morphs"></a>
 #### `morphs()` {.collection-method}
 
-`morphs`メソッドは、`{column}_id` `UNSIGNED BIGINT`カラムと、`{column}_type` `VARCHAR`カラムを追加する便利なメソッドです。
+`morphs`メソッドは、`{column}_id`、`{column}_type`、`VARCHAR`型のカラムを追加する便利なメソッドです。`{column}_id`のカラム型は、モデルキーの型に応じて`UNSIGNED BIGINT`、`CHAR(36)`、`CHAR(26)`のいずれかになります。
 
 このメソッドは、ポリモーフィック[Eloquentリレーション](/docs/{{version}}/eloquent-relationships)に必要なカラムを定義するときに使用することを目的としています。次の例では、`taggable_id`カラムと`taggable_type`カラムが作成されます。
 
