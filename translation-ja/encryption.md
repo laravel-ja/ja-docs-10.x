@@ -12,7 +12,7 @@ Laravelの暗号化サービスは、AES-256およびAES-128暗号化を使用�
 <a name="configuration"></a>
 ## 設定
 
-Laravelの暗号化を使用する前に、`config/app.php`設定ファイルで`key`設定オプションを設定する必要があります。この設定値は、`APP_KEY`環境変数が反映されます。`php artisan key:generate`コマンドを使用してこの変数の値を生成する必要があります。これは、`key:generate`コマンドがPHPの安全なランダムバイトジェネレーターを使用して、アプリケーションの暗号的に安全なキーを構築するためです。通常、`APP_KEY`環境変数の値は、[Laravelのインストール](/docs/{{version}}/インストール)中に生成されます。
+Laravelの暗号化を使用する前に、`config/app.php`設定ファイルで`key`設定オプションを設定する必要があります。この設定値は、`APP_KEY`環境変数が反映されます。`php artisan key:generate`コマンドを使用してこの変数の値を生成する必要があります。これは、`key:generate`コマンドがPHPの安全なランダムバイトジェネレーターを使用して、アプリケーションの暗号的に安全なキーを構築するためです。通常、`APP_KEY`環境変数の値は、[Laravelのインストール](/docs/{{version}}/installation)中に生成されます。
 
 <a name="using-the-encrypter"></a>
 ## エンクリプタの使用
