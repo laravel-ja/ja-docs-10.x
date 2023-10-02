@@ -610,12 +610,6 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @endphp
 ```
 
-PHP文を１つ書くだけなら、`@php`ディレクティブ内に含められます。
-
-```blade
-@php($counter = 1)
-```
-
 <a name="comments"></a>
 ### コメント
 

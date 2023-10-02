@@ -10,9 +10,11 @@
     - [複数選択](#multiselect)
     - [候補](#suggest)
     - [検索](#search)
+    - [マルチ検索](#multisearch)
 - [情報メッセージ](#informational-messages)
 - [テーブル](#tables)
 - [スピン](#spin)
+- [プログレスバー](#progress)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
 
@@ -53,7 +55,7 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
-プレースホルダ・テキストとデフォルト値、ヒントの情報も指定できます。
+プレースホルダテキストとデフォルト値、ヒントの情報も指定できます。
 
 ```php
 $name = text(
@@ -114,7 +116,7 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
-プレースホルダーのテキストと情報のヒントも含められます。
+プレースホルダテキストと情報のヒントも含められます。
 
 ```php
 $password = password(
@@ -322,7 +324,7 @@ $permissions = multiselect(
 ５選択肢を超えると、選択肢がリスト表示されます。`scroll`引数を渡し、カスタマイズ可能です。
 
 ```php
-$role = multiselect(
+$categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     scroll: 10
@@ -335,10 +337,20 @@ $role = multiselect(
 デフォルトで、ユーザーは０個以上の選択肢を選択できます。`required`引数を渡せば、代わりに１つ以上の選択肢を強制できます。
 
 ```php
-$role = multiselect(
+$categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     required: true,
+);
+```
+
+バリデーションメッセージをカスタマイズしたい場合は、`required`引数に文字列を指定します。
+
+```php
+$categories = multiselect(
+    label: 'What categories should be assigned?',
+    options: Category::pluck('name', 'id'),
+    required: 'You must select at least one category',
 );
 ```
 
@@ -385,7 +397,7 @@ $name = suggest(
 )
 ```
 
-プレースホルダ・テキストとデフォルト値、情報のヒントも指定できます。
+プレースホルダテキストとデフォルト値、情報のヒントも指定できます。
 
 ```php
 $name = suggest(
@@ -457,7 +469,7 @@ $id = search(
 
 クロージャは、ユーザーがこれまでに入力したテキストを受け取り、 選択肢の配列を返さなければなりません。連想配列を返す場合は選択された選択肢のキーが返され、 そうでない場合はその値が代わりに返されます。
 
-プレースホルダーのテキストと情報のヒントも含められます。
+プレースホルダテキストと情報のヒントも含められます。
 
 ```php
 $id = search(
@@ -492,7 +504,7 @@ $id = search(
     label: 'Search for the user that should receive the mail',
     options: fn (string $value) => strlen($value) > 0
         ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
-        : []
+        : [],
     validate: function (int|string $value) {
         $user = User::findOrFail($value);
 
@@ -504,6 +516,99 @@ $id = search(
 ```
 
 `options`引数が連想配列の場合、クロージャは選択されたキーを受け取ります。連想配列でない場合は選択された値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに成功した場合は`null`を返してください。
+
+<a name="multisearch"></a>
+### マルチ検索
+
+検索可能なオプションがたくさんあり、ユーザーが複数のアイテムを選択できるようにする必要がある場合、`multisearch`関数で、ユーザーが矢印キーとスペースバーを使ってオプションを選択する前に、検索クエリを入力してもらい、結果を絞り込めます。
+
+```php
+use function Laravel\Prompts\multisearch;
+
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : []
+);
+```
+
+クロージャは、ユーザーがそれまでにタイプしたテキストを受け取り、オプションの配列を返さなければなりません。クロージャから連想配列を返す場合は、選択済みオプションのキーを返します。それ以外の場合は、代わりに値を返します。
+
+また、プレースホルダテキストと情報ヒントも含められます。
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    placeholder: 'E.g. Taylor Otwell',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    hint: 'The user will receive an email immediately.'
+);
+```
+
+リストをスクロールし始める前に、最大５選択肢表示します。`scroll`引数を指定し、カスタマイズできます。
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    scroll: 10
+);
+```
+
+<a name="multisearch-required"></a>
+#### 値の要求
+
+デフォルトで、ユーザーは０個以上のオプションを選択できます。`required`引数を渡せば、１つ以上のオプションを強制できます。
+
+```php
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    required: true,
+);
+```
+
+バリデーションメッセージをカスタマイズする場合は、`required`引数へ文字列を指定してください。
+
+```php
+$ids = multisearch(
+    'Search for the users that should receive the mail',
+    fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    required: 'You must select at least one user.'
+);
+```
+
+<a name="multisearch-validation"></a>
+#### バリデーション
+
+バリデーションロジックを追加実行したい場合は、`validate`引数にクロージャを渡します。
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    validate: function (array $values) {
+        $optedOut = User::where('name', 'like', '%a%')->findMany($values);
+
+        if ($optedOut->isNotEmpty()) {
+            return $optedOut->pluck('name')->join(', ', ', and ').' have opted out.';
+        }
+    }
+);
+```
+
+`options`クロージャが連想配列を返す場合、クロージャは選択済みのキーを受け取ります。そうでない場合は、選択済みの値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに合格した場合は`null`を返します。
 
 <a name="informational-messages"></a>
 ### 情報メッセージ
@@ -546,6 +651,58 @@ $response = spin(
 
 > **Warning**
 > `spin`関数でスピナーをアニメーションするために、`pcntl` PHP拡張モジュールが必要です。この拡張モジュールが利用できない場合は、代わりに静的なスピナーが表示されます。
+
+<a name="progress"></a>
+## プログレスバー
+
+実行に長時間かかるタスクの場合、タスクの完了度をユーザーに知らせるプログレスバーを表示すると便利です。`progress`関数を使用すると、Laravelはプログレスバーを表示し、指定する反復可能な値を繰り返し処理するごとに進捗を進めます。
+
+```php
+use function Laravel\Prompts\progress;
+
+$users = progress(
+    label: 'Updating users',
+    steps: User::all(),
+    callback: fn ($user) => $this->performTask($user),
+);
+```
+
+`progress`関数はマップ関数のように動作し、コールバックの各繰り返しの戻り値を含む配列を返します。
+
+このコールバックは、`\Laravel\Prompts\Progress`インスタンスも受け取り可能で、繰り返しごとにラベルとヒントを修正できます。
+
+```php
+$users = progress(
+    label: 'Updating users',
+    steps: User::all(),
+    callback: function ($user, $progress) {
+        $progress
+            ->label("Updating {$user->name}")
+            ->hint("Created on {$user->created_at}");
+
+        return $this->performTask($user);
+    },
+    hint: 'This may take some time.',
+);
+```
+
+プログレス・バーの進め方を手作業でコントロールする必要がある場合があります。まず、プロセスが反復処理するステップの総数を定義します。そして、各アイテムを処理した後に`advance`メソッドでプログレスバーを進めます。
+
+```php
+$progress = progress(label: 'Updating users', steps: 10);
+
+$users = User::all();
+
+$progress->start();
+
+foreach ($users as $user) {
+    $this->performTask($user);
+
+    $progress->advance();
+}
+
+$progress->finish();
+```
 
 <a name="terminal-considerations"></a>
 ### ターミナルの考察

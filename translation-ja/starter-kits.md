@@ -4,6 +4,7 @@
 - [Laravel Breeze](#laravel-breeze)
     - [インストール](#laravel-breeze-installation)
     - [BreezeとBlade](#breeze-and-blade)
+    - [BreezeとLivewire](#breeze-and-livewire)
     - [BreezeとReact／Vue](#breeze-and-inertia)
     - [BreezeとNext.js／API](#breeze-and-next)
 - [Laravel Jetstream](#laravel-jetstream)
@@ -20,9 +21,7 @@
 
 [Laravel Breeze](https://github.com/laravel/breeze)は、ログイン、ユーザー登録、パスワードリセット、メール確認、パスワード確認など、すべての[認証機能](/docs/{{version}}/authentication)を最小かつシンプルにLaravelへ実装したものです。さらに、Breezeには、ユーザーが名前、電子メールアドレス、パスワードを更新できるシンプルな「プロファイル」ページが含まれています。
 
-Laravel Breezeのデフォルトのビュー層は、[Tailwind CSS](https://tailwindcss.com)でスタイルした、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。また、VueやReactと[Inertia](https://inertiajs.com)を使用したアプリケーションのスカフォールドを作ることも可能です。
-
-Breezeは、新しいLaravelアプリケーションを始めるための素晴らしい出発点となり、Bladeテンプレートを[Laravel Livewire](https://livewire.laravel.com)を使用し、レベルを上げる計画をしているプロジェクトにも最適な選択肢です。
+Laravel Breezeのデフォルトのビュー層は、[Tailwind CSS](https://tailwindcss.com)でスタイリングした、シンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。さらに、Breezeには[Livewire](https://livewire.laravel.com)、または[Inertia](https://inertiajs.com)に基づいたスカフォールドオプションがあり、InertiaベースのスカフォールドにはVueまたはReactを使用できます。
 
 <img src="https://laravel.com/img/docs/breeze-register.png">
 
@@ -68,6 +67,21 @@ npm run dev
 
 > **Note**
 > アプリケーションのCSSとJavaScriptのコンパイルについて詳しく知りたい方は、Laravelの[Viteドキュメント](/docs/{{version}}/vite#running-vite)を参照してください。
+
+<a name="breeze-and-livewire"></a>
+### BreezeとLivewire
+
+Laravel Breezeは、[Livewire](https://livewire.laravel.com)のスカフォールドも提供しています。Livewireは、PHPだけでダイナミックでリアクティブなフロントエンドUIを構築する強力な方法です。
+
+Livewireは、主にBladeテンプレートを使用し、VueやReactのようなJavaScript駆動のSPAフレームワークのシンプルな代替を探しているチームに最適です。
+
+Livewireスタックを使用するには、`breeze:install` Artisanコマンドを実行する際に、Livewireフロントエンドスタックを選択します。Breezeのスカフォールドをインストールし終えたら、データベースのマイグレーションを実行します：
+
+```shell
+php artisan breeze:install
+
+php artisan migrate
+```
 
 <a name="breeze-and-inertia"></a>
 ### BreezeとReact／Vue

@@ -89,6 +89,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::substrCount](#method-str-substrcount)
 [Str::substrReplace](#method-str-substrreplace)
 [Str::swap](#method-str-swap)
+[Str::take](#method-take)
 [Str::title](#method-title-case)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
@@ -180,6 +181,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [substr](#method-fluent-str-substr)
 [substrReplace](#method-fluent-str-substrreplace)
 [swap](#method-fluent-str-swap)
+[take](#method-fluent-str-take)
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
@@ -1048,6 +1050,17 @@ $repeat = Str::repeat($string, 5);
     ], 'Tacos are great!');
 
     // Burritos are fantastic!
+
+<a name="method-take"></a>
+#### `Str::take()` {.collection-method}
+
+`Str::take`メソッドは、文字列の先頭から指定した文字数を返します。
+
+    use Illuminate\Support\Str;
+
+    $taken = Str::take('Build something amazing!', 5);
+
+    // Build
 
 <a name="method-title-case"></a>
 #### `Str::title()` {.collection-method}
@@ -2214,6 +2227,17 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
         ]);
 
     // Burritos are fantastic!
+
+<a name="method-fluent-str-take"></a>
+#### `take` {.collection-method}
+
+`take`メソッドは、文字列の先頭から指定した文字数を返します。
+
+    use Illuminate\Support\Str;
+
+    $taken = Str::of('Build something amazing!')->take(5);
+
+    // Build
 
 <a name="method-fluent-str-tap"></a>
 #### `tap` {.collection-method}

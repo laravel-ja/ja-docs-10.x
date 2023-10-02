@@ -123,7 +123,7 @@ Laravelをバックエンドで利用するシングルページアプリケー�
 
 まず、[Laravelアプリケーションスターターキットをインストールする](/docs/{{version}}/starter-kits)必要があります。現在のスターターキットであるLaravel BreezeとLaravel Jetstreamは、認証を新しいLaravelアプリケーションへ組み込むために美しく設計された開始点を提供します。
 
-Laravel Breezeは、ログイン、ユーザー登録、パスワードリセット、メールの確認、パスワードの確認など、Laravelのすべての認証機能の最小限でシンプルな実装です。Laravel Breezeのビューレイヤーは、[Tailwind CSS](https://tailwindcss.com)を用いスタイル設定されたシンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。さらにBreezeは、VueやReactを使った[Inertia](https://inertiajs.com)ベースのスカフォールドオプションも用意しています。
+Laravel Breezeは、ログイン、ユーザー登録、パスワードリセット、メールの確認、パスワードの確認など、Laravelのすべての認証機能の最小限でシンプルな実装です。Laravel Breezeのビューレイヤーは、[Tailwind CSS](https://tailwindcss.com)を用いスタイル設定されたシンプルな[Bladeテンプレート](/docs/{{version}}/blade)で構成しています。さらに、Breezeは[Livewire](https://livewire.laravel.com)または[Inertia](https://inertiajs.com)に基づくスカフォールドオプションがあり、InertiaベースのスカフォールドにはVueまたはReactを使用できます。
 
 [Laravel Jetstream](https://jetstream.laravel.com)は、[Livewire](https://livewire.laravel.com)か[InertiaとVue]((https://inertiajs.com))を使用する、アプリケーションのスカフォールドのサポートを含む、より堅牢なアプリケーションスターターキットです。さらに、Jetstreamはオプションとして２要素認証、チーム、プロファイル管理、ブラウザセッション管理、[Laravel Sanctum](/docs/{{version}}/sanctum)を介するAPIサポート、アカウント削除などのサポートを備えています。
 
@@ -608,7 +608,7 @@ Laravelは、現在のデバイスのセッションを無効にすることな�
 
     Route::middleware('auth:api')->group(function () {
         // ...
-    }
+    });
 
 <a name="adding-custom-user-providers"></a>
 ## カスタムユーザープロバイダの追加

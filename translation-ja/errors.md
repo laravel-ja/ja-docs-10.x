@@ -8,6 +8,7 @@
     - [タイプによる例外の無視](#ignoring-exceptions-by-type)
     - [例外のレンダ](#rendering-exceptions)
     - [Reportable／Renderable例外](#renderable-exceptions)
+- [Throttling Reported Exceptions](#throttling-reported-exceptions)
 - [HTTP例外](#http-exceptions)
     - [カスタムHTTPエラーページ](#custom-http-error-pages)
 
@@ -315,6 +316,100 @@ LaravelやSymfonyの組み込み済み例外など、既存のレンダリング
 
 > **Note**
 > `report`メソッドで必要な依存関係をタイプヒントすると、Laravelの[サービスコンテナ](/docs/{{version}}/container)がメソッドへ自動的に依存を注入します。
+
+<a name="throttling-reported-exceptions"></a>
+### Throttling Reported Exceptions
+
+アプリケーションが非常に多くの例外を報告する場合、実際にログに記録されたり、アプリケーションの外部エラー追跡サービスに送信されたりする例外の数を絞り込みたくなるでしょう。
+
+ランダムな例外のサンプルレートを取るには、例外ハンドラの`throttle`メソッドから、`Lottery`インスタンスを返してください。`App\Exceptions\Handler`クラスにこのメソッドがない場合は、単純にこのメソッドを追加してください。
+
+```php
+use Illuminate\Support\Lottery;
+use Throwable;
+
+/**
+ * 渡された例外の絞り込み
+ */
+protected function throttle(Throwable $e): Lottery
+{
+    return Lottery::odds(1, 1000);
+}
+```
+
+また、例外の種類に基づいた条件付きでサンプリングすることも可能です。特定の例外クラスのインスタンスのみをサンプリングしたい場合は、そのクラスの`Lottery`インスタンスのみを返します
+
+```php
+use App\Exceptions\ApiMonitoringException;
+use Throwable;
+
+/**
+ * 渡された例外の絞り込み
+ */
+protected function throttle(Throwable $e): mixed
+{
+    if ($e instanceof ApiMonitoringException) {
+        return Lottery::odds(1, 1000);
+    }
+}
+```
+
+また、`Lottery`の代わりに`Limit`インスタンスを返せば、ログに記録する例外や外部のエラー追跡サービスに送信する例外を制限できます。これは、アプリケーションで使用しているサードパーティのサービスがダウンした場合などで、突然例外がログに殺到するのを防ぎたい場合に便利です。
+
+```php
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Cache\RateLimiting\Limit;
+use Throwable;
+
+/**
+ * 渡された例外の絞り込み
+ */
+protected function throttle(Throwable $e): mixed
+{
+    if ($e instanceof BroadcastException) {
+        return Limit::perMinute(300);
+    }
+}
+```
+
+リミットは例外のクラスをレートリミットキーに、デフォルトで使用します。これをカスタマイズするには、`Limit`の`by`メソッドを使用して独自キーを指定します。
+
+```php
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Cache\RateLimiting\Limit;
+use Throwable;
+
+/**
+ * 渡された例外の絞り込み
+ */
+protected function throttle(Throwable $e): mixed
+{
+    if ($e instanceof BroadcastException) {
+        return Limit::perMinute(300)->by($e->getMessage());
+    }
+}
+```
+
+もちろん、異なる例外に対して`Lottery`と`Limit`のインスタンスを混ぜて返すこともできます。
+
+```php
+use App\Exceptions\ApiMonitoringException;
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Cache\RateLimiting\Limit;
+use Throwable;
+
+/**
+ * 渡された例外の絞り込み
+ */
+protected function throttle(Throwable $e): mixed
+{
+    return match (true) {
+        $e instanceof BroadcastException => Limit::perMinute(300),
+        $e instanceof ApiMonitoringException => Lottery::odds(1, 1000),
+        default => Limit::none(),
+    };
+}
+```
 
 <a name="http-exceptions"></a>
 ## HTTP例外
