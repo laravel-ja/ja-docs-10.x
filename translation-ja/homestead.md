@@ -485,7 +485,7 @@ sites:
       type: "statamic"
 ```
 
-指定できるサイトタイプは`apache`、`apigility`、`expressive`、`laravel`（デフォルト）、`proxy`、`silverstripe`、`statamic`、`symfony2`、`symfony4`、`zf`です。
+指定できるサイトタイプは`apache`、`apache-proxy`、`apigility`、`expressive`、`laravel`（デフォルト）、`proxy（nginx用）`、`silverstripe`、`statamic`、`symfony2`、`symfony4`、`zf`です。
 
 <a name="site-parameters"></a>
 #### サイトパラメータ
@@ -715,6 +715,8 @@ share homestead.test
 ```shell
 share homestead.test -region=eu -subdomain=laravel
 ```
+
+HTTPではなくHTTPSでコンテンツを共有する必要がある場合は、`share`の代わりに`sshare`コマンドを使用すれば可能です。
 
 > **Warning**
 > Vagrantは本質的に安全ではなく、`share`コマンドを実行するときに仮想マシンをインターネットに公開していることを忘れないでください。

@@ -68,6 +68,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::password](#method-str-password)
 [Str::plural](#method-str-plural)
 [Str::pluralStudly](#method-str-plural-studly)
+[Str::position](#method-str-position)
 [Str::random](#method-str-random)
 [Str::remove](#method-str-remove)
 [Str::repeat](#method-str-repeat)
@@ -158,6 +159,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [padRight](#method-fluent-str-padright)
 [pipe](#method-fluent-str-pipe)
 [plural](#method-fluent-str-plural)
+[position](#method-fluent-str-position)
 [prepend](#method-fluent-str-prepend)
 [remove](#method-fluent-str-remove)
 [repeat](#method-fluent-str-repeat)
@@ -773,6 +775,21 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
     $singular = Str::pluralStudly('VerifiedHuman', 1);
 
     // VerifiedHuman
+
+<a name="method-str-position"></a>
+#### `Str::position()` {.collection-method}
+
+`Str::position`メソッドは、文字列内で部分文字列が最初に出現する位置を返します。部分文字列が指定した文字列内に存在しない場合は、`false`を返します。
+
+    use Illuminate\Support\Str;
+
+    $position = Str::position('Hello, World!', 'Hello');
+
+    // 0
+
+    $position = Str::position('Hello, World!', 'W');
+
+    // 7
 
 <a name="method-str-random"></a>
 #### `Str::random()` {.collection-method}
@@ -1920,6 +1937,21 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
     $plural = Str::of('child')->plural(1);
 
     // child
+
+<a name="method-fluent-str-position"></a>
+#### `position` {.collection-method}
+
+`position`メソッドは、文字列内で部分文字列が最初に出現する位置を返します。部分文字列が指定した文字列内に存在しない場合は、`false`を返します。
+
+    use Illuminate\Support\Str;
+
+    $position = Str::of('Hello, World!')->position('Hello');
+
+    // 0
+
+    $position = Str::of('Hello, World!')->position('W');
+
+    // 7
 
 <a name="method-fluent-str-prepend"></a>
 #### `prepend` {.collection-method}

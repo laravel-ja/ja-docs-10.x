@@ -123,6 +123,7 @@ php artisan make:factory PostFactory
         });
     }
 
+<a name="trashed-state"></a>
 #### 「ゴミ箱入り」状態
 
 Eloquentモデルが[ソフトデリート](/docs/{{version}}/eloquent#soft-deleting)可能であれば、組み込み済みの「ゴミ箱入り(`trashed`)」状態メソッドを呼び出し、作成したモデルが既に「ソフトデリート済み」と示せます。すべてのファクトリで自動的に利用可能で、`trashed`状態を手作業で定義する必要はありません。

@@ -331,7 +331,7 @@ use Throwable;
 /**
  * 渡された例外の絞り込み
  */
-protected function throttle(Throwable $e): Lottery
+protected function throttle(Throwable $e): mixed
 {
     return Lottery::odds(1, 1000);
 }
@@ -341,6 +341,7 @@ protected function throttle(Throwable $e): Lottery
 
 ```php
 use App\Exceptions\ApiMonitoringException;
+use Illuminate\Support\Lottery;
 use Throwable;
 
 /**
@@ -396,6 +397,7 @@ protected function throttle(Throwable $e): mixed
 use App\Exceptions\ApiMonitoringException;
 use Illuminate\Broadcasting\BroadcastException;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Lottery;
 use Throwable;
 
 /**

@@ -90,7 +90,6 @@ Laravelでセッションデータを操作する主な方法は、グローバ�
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
     use Illuminate\Http\Request;
     use Illuminate\View\View;
 

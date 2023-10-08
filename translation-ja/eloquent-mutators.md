@@ -267,7 +267,7 @@ protected function address(): Attribute
 <a name="stringable-casting"></a>
 #### Stringableのキャスト
 
-モデルの属性を[fluentの`Illuminate\Support\Stringable`オブジェクト](/docs/{{version}}/helpers#fluent-strings-method-list)へキャストするには、`Illuminate\Database\Eloquent\Casts\AsStringable`キャストクラスが使用できます。
+モデルの属性を[fluentの`Illuminate\Support\Stringable`オブジェクト](/docs/{{version}}/strings#fluent-strings-method-list)へキャストするには、`Illuminate\Database\Eloquent\Casts\AsStringable`キャストクラスが使用できます。
 
     <?php
 
