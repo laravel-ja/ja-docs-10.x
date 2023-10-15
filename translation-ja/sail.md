@@ -369,9 +369,12 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHPバージョン
 
-Sailは現在、PHP8.2、PHP8.1、PHP8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.2です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
+Sailは現在、PHP8.3、PHP8.2、PHP8.1、PHP8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.2です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
 
 ```yaml
+# PHP 8.3
+context: ./vendor/laravel/sail/runtimes/8.3
+
 # PHP 8.2
 context: ./vendor/laravel/sail/runtimes/8.2
 

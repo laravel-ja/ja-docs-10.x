@@ -941,6 +941,7 @@ The credit card number field is required when payment type is credit card.
 [正規表現](#rule-regex)
 [必須](#rule-required)
 [指定フィールド値一致時必須](#rule-required-if)
+[Required If Accepted](#rule-required-if-accepted)
 [指定フィールド値非一致時必須](#rule-required-unless)
 [指定フィールド存在時必須](#rule-required-with)
 [全指定フィールド存在時必須](#rule-required-with-all)
@@ -1663,6 +1664,11 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
     Validator::make($request->all(), [
         'role_id' => Rule::requiredIf(fn () => $request->user()->is_admin),
     ]);
+
+<a name="rule-required-if-accepted"></a>
+#### required_if_accepted:_他のフィールド_,...
+
+*他のフィールド*が`yes`、`on`、`1`、`"1"`、`true`、`"true"`と等しい場合、検証対象のフィールドが存在し、かつ空でないことをバリデートします。
 
 <a name="rule-required-unless"></a>
 #### required\_unless:_他のフィールド_,_値_,...
