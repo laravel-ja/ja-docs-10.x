@@ -55,7 +55,7 @@ php artisan make:controller UserController
         }
     }
 
-コントローラクラスとメソッドを書が書けたら、コントローラメソッドへのルートを以下のように定義できます。
+コントローラクラスとメソッドが書けたら、コントローラメソッドへのルートを以下のように定義できます。
 
     use App\Http\Controllers\UserController;
 
