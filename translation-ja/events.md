@@ -553,12 +553,12 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
         /**
          * ユーザーログインイベントの処理
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * ユーザーログアウトイベントの処理
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * サブスクライバのリスナを登録
@@ -592,12 +592,12 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
         /**
          * ユーザーログインイベントの処理
          */
-        public function handleUserLogin(string $event): void {}
+        public function handleUserLogin(Login $event): void {}
 
         /**
          * ユーザーログアウトイベントの処理
          */
-        public function handleUserLogout(string $event): void {}
+        public function handleUserLogout(Logout $event): void {}
 
         /**
          * サブスクライバのリスナを登録

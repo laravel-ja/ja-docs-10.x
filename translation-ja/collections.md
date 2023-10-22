@@ -366,7 +366,7 @@
 
     $collection = $lazyCollection->collect();
 
-    get_class($collection);
+    $collection::class;
 
     // 'Illuminate\Support\Collection'
 
@@ -1367,7 +1367,7 @@
 
     $lazyCollection = collect([1, 2, 3, 4])->lazy();
 
-    get_class($lazyCollection);
+    $lazyCollection::class;
 
     // Illuminate\Support\LazyCollection
 

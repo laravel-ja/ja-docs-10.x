@@ -1856,7 +1856,7 @@ public function boot(): void
 
 ```php
 Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
-    $class = get_class($model);
+    $class = $model::class;
 
     info("Attempted to lazy load [{$relation}] on model [{$class}].");
 });

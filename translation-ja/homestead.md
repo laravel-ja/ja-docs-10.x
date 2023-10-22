@@ -217,7 +217,7 @@ folders:
 > **Warning**
 > Homesteadを使用する場合、`.`（カレントディレクトリ）をマウントしないでください。そうすると、Vagrantはカレントフォルダを`/vagrant`へマップしない状況が起き、オプションの機能が壊れ、プロビジョン中に予期せぬ結果が起きます。
 
-[NFS](https://www.vagrantup.com/v2/synced-folders/nfs.html)を有効にするには、フォルダのマッピングで`type`オプションを付けます。
+[NFS](https://developer.hashicorp.com/vagrant/docs/synced-folders/nfs)を有効にするには、フォルダのマッピングで`type`オプションを付けます。
 
 ```yaml
 folders:
@@ -229,7 +229,7 @@ folders:
 > **Warning**
 > Windows上でNFSを使用する場合は、[vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd)プラグインのインストールを考慮すべきでしょう。このプラグインは、Homestead仮想マシン下のファイルとディレクトリのユーザー／グループパーミッションを正しく維持します。
 
-さらに、Vagrantの[同期フォルダ](https://www.vagrantup.com/docs/synced-folders/basic_usage.html)でサポートされている任意のオプションを、`options`キーの下に列挙して渡すことができます。
+さらに、Vagrantの[同期フォルダ](https://developer.hashicorp.com/vagrant/docs/synced-folders/basic_usage)でサポートされている任意のオプションを、`options`キーの下に列挙して渡すことができます。
 
 ```yaml
 folders:
@@ -784,7 +784,7 @@ networks:
       ip: "192.168.10.20"
 ```
 
-[bridged](https://www.vagrantup.com/docs/networking/public_network.html)インターフェイスを有効にするには、ネットワークの`bridge`設定を構成し、ネットワークタイプを`public_network`へ変更します。
+[bridged](https://developer.hashicorp.com/vagrant/docs/networking/public_network)インターフェイスを有効にするには、ネットワークの`bridge`設定を構成し、ネットワークタイプを`public_network`へ変更します。
 
 ```yaml
 networks:
@@ -793,12 +793,22 @@ networks:
       bridge: "en1: Wi-Fi (AirPort)"
 ```
 
-[DHCP](https://www.vagrantup.com/docs/networking/public_network.html)を有効にするには、設定から`ip`オプションを削除するだけです。
+[DHCP](https://developer.hashicorp.com/vagrant/docs/networking/public_network#dhcp)を有効にするには、設定から`ip`オプションを削除するだけです。
 
 ```yaml
 networks:
     - type: "public_network"
       bridge: "en1: Wi-Fi (AirPort)"
+```
+
+ネットワークで使用するデバイスを更新するには、ネットワークの設定へ`dev`オプションを追加します。デフォルトの`dev`値は`eth0`です。
+
+```yaml
+networks:
+    - type: "public_network"
+      ip: "192.168.10.20"
+      bridge: "en1: Wi-Fi (AirPort)"
+      dev: "enp2s0"
 ```
 
 <a name="extending-homestead"></a>
