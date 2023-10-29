@@ -76,6 +76,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::replaceArray](#method-str-replace-array)
 [Str::replaceFirst](#method-str-replace-first)
 [Str::replaceLast](#method-str-replace-last)
+[Str::replaceMatches](#method-str-replace-matches)
 [Str::replaceStart](#method-str-replace-start)
 [Str::replaceEnd](#method-str-replace-end)
 [Str::reverse](#method-str-reverse)
@@ -882,6 +883,30 @@ $repeat = Str::repeat($string, 5);
 
     // the quick brown fox jumps over a lazy dog
 
+<a name="method-str-replace-matches"></a>
+#### `Str::replaceMatches()` {.collection-method}
+
+`Str::replaceMatches`メソッドは、パターンと一致する全ての文字列を指定置換文字列に置き換えます。
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceMatches(
+        pattern: '/[^A-Za-z0-9]++/',
+        replace: '',
+        subject: '(+1) 501-555-1000'
+    )
+
+    // '15015551000'
+
+`replaceMatches`メソッドは、指定パターンと一致する文字列の各部分で呼び出すクロージャも引数に取ります。クロージャ内で置換ロジックを実行し、置換済みの値を返してください。
+
+    use Illuminate\Support\Str;
+
+    $replaced = Str::replaceMatches('/\d/', function (array $matches) {
+        return '['.$matches[0].']';
+    }, '123');
+
+    // '[1][2][3]'
 
 <a name="method-str-replace-start"></a>
 #### `Str::replaceStart()` {.collection-method}

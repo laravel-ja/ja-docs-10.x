@@ -402,13 +402,13 @@ sail up
 <a name="sail-node-versions"></a>
 ## Nodeバージョン
 
-SailはデフォルトでNode16をインストールします。イメージをビルドする際にインストールするNodeバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル中の、`laravel.test`サービスの`build.args`定義を変更してください。
+SailはデフォルトでNode20をインストールします。イメージをビルドする際にインストールするNodeバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル中の、`laravel.test`サービスの`build.args`定義を変更してください。
 
 ```yaml
 build:
     args:
         WWWGROUP: '${WWWGROUP}'
-        NODE_VERSION: '14'
+        NODE_VERSION: '18'
 ```
 
 アプリケーションの`docker-compose.yml`ファイルを更新した後、コンテナイメージを再構築する必要があります。

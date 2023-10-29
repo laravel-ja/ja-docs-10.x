@@ -54,7 +54,6 @@ Laravelはメッセージをログに記録するときに、デフォルトで`
 `daily` | 日毎にファイルを切り替える`RotatingFileHandler`ベースのMonologドライバ
 `errorlog` | `ErrorLogHandler`ベースのMonologドライバ
 `monolog` | Monologがサポートしているハンドラを使用するMonologファクトリドライバ
-`null` | すべてのログメッセージを破棄するドライバ
 `papertrail` | `SyslogUdpHandler`ベースのMonologドライバ
 `single` | 単一のファイルまたはパスベースのロガーチャンネル(`StreamHandler`)
 `slack` | `SlackWebhookHandler`ベースのMonologドライバ
@@ -244,7 +243,11 @@ PHPやLaravelなどのライブラリは、その機能の一部が非推奨と�
                 'request-id' => $requestId
             ]);
 
-            return $next($request)->header('Request-Id', $requestId);
+            $response = $next($request);
+
+            $response->headers->set('Request-Id', $requestId);
+
+            return $response;
         }
     }
 

@@ -188,7 +188,7 @@ init.bat
     provider: virtualbox
 
 > **Warning**
-> Apple Siliconを使用している場合は、`Homestead.yaml`ファイルに`box: laravel/homestead-arm`を追加する必要があります。Apple SiliconにはParallelsプロバイダが必要です。
+> Apple Siliconを使用する場合は、Parallelsプロバイダが必要です。
 
 <a name="configuring-shared-folders"></a>
 #### 共有フォルダの設定

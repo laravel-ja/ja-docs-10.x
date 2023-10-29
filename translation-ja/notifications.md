@@ -135,7 +135,7 @@ php artisan make:notification InvoicePaid
 ### 通知のキューイング
 
 > **Warning**
-> 通知をキューへ投入する前に、キューを設定して[ワーカを起動](/docs/{{version}}/queues)する必要があります。
+> 通知をキューへ投入する前に、キューを設定して[ワーカを起動](/docs/{{version}}/queues#running-the-queue-worker)する必要があります。
 
 通知の送信には時間がかかる場合があります。特に、チャンネルが通知を配信するために外部API呼び出しを行う必要がある場合に当てはまります。アプリケーションのレスポンス時間を短縮するには、クラスに`ShouldQueue`インターフェイスと`Queueable`トレイトを追加して、通知をキューに入れてください。インターフェイスとトレイトは、`make:notification`コマンドを使用して生成されたすべての通知であらかじめインポートされているため、すぐに通知クラスに追加できます。
 
@@ -743,10 +743,10 @@ This is the panel content.
 
 ```blade
 <x-mail::table>
-| Laravel       | テーブル         | 例  |
-| ------------- |:-------------:| --------:|
-| Col 2 is      | Centered      | $10      |
-| Col 3 is      | Right-Aligned | $20      |
+| Laravel  |   テーブル    |   例 |
+| -------- | :-----------: | ---: |
+| Col 2 is |   Centered    |  $10 |
+| Col 3 is | Right-Aligned |  $20 |
 </x-mail::table>
 ```
 
