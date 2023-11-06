@@ -2115,7 +2115,7 @@ public function boot(): void
 <a name="testing-job-batches"></a>
 ### ジョブバッチのテスト
 
-`Bus`ファサードの`assertBatched`メソッドは、[ジョブのバッチ](/docs/{{version}}/queues#job-batching)がディスパッチされたことをアサートするために使用します。`assertBatched`メソッドへ渡すクロージャは、`Illuminate\Bus\PendingBatch`のインスタンスを引数に取り、バッチ内のジョブを検査するために使用できます。
+`Bus`ファサードの`assertBatched`メソッドは、[ジョブのバッチ](/docs/{{version}}/queues#job-batching)を投入したことをアサートするために使用します。`assertBatched`メソッドへ渡すクロージャは、`Illuminate\Bus\PendingBatch`のインスタンスを引数に取り、バッチ内のジョブを検査するために使用できます。
 
     use Illuminate\Bus\PendingBatch;
     use Illuminate\Support\Facades\Bus;
@@ -2128,6 +2128,14 @@ public function boot(): void
         return $batch->name == 'import-csv' &&
                $batch->jobs->count() === 10;
     });
+
+`assertBatchCount`メソッドを使い、指定数のバッチを投入したことをアサートできます。
+
+    Bus::assertBatchCount(3);
+
+`assertNothingBatched`を使用し、バッチを投入していないことをアサートできます。
+
+    Bus::assertNothingBatched();
 
 <a name="testing-job-batch-interaction"></a>
 #### ジョブ／バッチの相互操作のテスト

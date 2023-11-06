@@ -70,16 +70,16 @@ Laravelのデフォルトの`.env`ファイルには、アプリケーション�
 
 通常、`.env`ファイル内のすべての変数は文字列として解析されるため、`env()`関数からより広範囲の型を返せるように、いくつかの予約値が作成されています。
 
-| `.env`値     | `env()`値      |
-|--------------|---------------|
-| true         | (bool) true   |
-| (true)       | (bool) true   |
-| false        | (bool) false  |
-| (false)      | (bool) false  |
-| empty        | (string) ''   |
-| (empty)      | (string) ''   |
-| null         | (null) null   |
-| (null)       | (null) null   |
+| `.env`値 | `env()`値    |
+| -------- | ------------ |
+| true     | (bool) true  |
+| (true)   | (bool) true  |
+| false    | (bool) false |
+| (false)  | (bool) false |
+| empty    | (string) ''  |
+| (empty)  | (string) ''  |
+| null     | (null) null  |
+| (null)   | (null) null  |
 
 スペースを含む値で環境変数を定義する必要がある場合は、値をダブルクォーテーションで囲むことによって定義できます。
 
@@ -221,7 +221,8 @@ php artisan config:clear
 
 `config/app.php`設定ファイルの`debug`オプションは、エラーに関する情報が実際にユーザーに表示される量を決定します。デフォルトでは、このオプションは、`.env`ファイルに保存されている`APP_DEBUG`環境変数の値を尊重するように設定されています。
 
-ローカル開発の場合は、`APP_DEBUG`環境変数を`true`に設定する必要があります。**実稼働環境では、この値は常に`false`である必要があります。本番環境で変数が`true`に設定されていると、機密性の高い設定値がアプリケーションのエンドユーザーに公開されるリスクがあります。**
+> **Warning**
+> ローカル開発の場合は、`APP_DEBUG`環境変数を`true`に設定する必要があります。**実稼働環境では、この値は常に`false`である必要があります。本番環境で変数が`true`に設定されていると、機密性の高い設定値がアプリケーションのエンドユーザーに公開されるリスクがあります。**
 
 <a name="maintenance-mode"></a>
 ## メンテナンスモード

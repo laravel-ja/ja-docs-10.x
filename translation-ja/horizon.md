@@ -373,11 +373,12 @@ Queueableオブジェクトの１つにタグを手作業で定義する場合�
 <a name="configuring-notification-wait-time-thresholds"></a>
 #### 待機通知の時間のしきい値の設定
 
-アプリケーションの`config/horizo​​n.php`設定ファイル内で「長時間待機」と見なす秒数を設定できます。このファイル内の`waits`設定オプションを使用すると、各接続/キューの組み合わせの長時間待機しきい値を制御できます。
+アプリケーションの`config/horizo​​n.php`設定ファイル内で「長時間待機」と見なす秒数を設定できます。このファイル内の`waits`設定オプションを使用すると、各接続/キューの組み合わせの長時間待機しきい値を制御できます。未定義の接続／キューの組み合わせの、長時間待機時間のしきい値はデフォルトで６０秒です。
 
     'waits' => [
+        'redis:critical' => 30,
         'redis:default' => 60,
-        'redis:critical,high' => 90,
+        'redis:batch' => 120,
     ],
 
 <a name="metrics"></a>

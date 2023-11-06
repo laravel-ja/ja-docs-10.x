@@ -203,11 +203,13 @@ Laravelアプリケーションのファサードは、コンテナからのオ�
         /**
          * ポッドキャストを公開
          */
-        public function publish(): void
+        public function publish(Publisher $publisher): void // [tl! remove]
+        public function publish(): void // [tl! add]
         {
             $this->update(['publishing' => now()]);
 
-            Publisher::publish($this);
+            $publisher->publish($this); // [tl! remove]
+            Publisher::publish($this); // [tl! add]
         }
     }
 

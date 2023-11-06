@@ -1234,10 +1234,10 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 `Enum`ルールはクラスベースのルールで、対象のフィールドに有効なenumの値が含まれているかどうかをバリデートします。`Enum`ルールは、コンストラクタの引数に唯一、enumの名前を取ります。
 
     use App\Enums\ServerStatus;
-    use Illuminate\Validation\Rules\Enum;
+    use Illuminate\Validation\Rule;
 
     $request->validate([
-        'status' => [new Enum(ServerStatus::class)],
+        'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
 <a name="rule-exclude"></a>

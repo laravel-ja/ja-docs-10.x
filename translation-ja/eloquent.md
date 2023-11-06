@@ -1549,23 +1549,17 @@ php artisan make:observer UserObserver --model=User
 <a name="observers-and-database-transactions"></a>
 #### オブザーバとデータベーストランザクション
 
-データベーストランザクション内でモデルを作成している場合、データベーストランザクションがコミットされた後にのみイベントハンドラを実行するようにオブザーバへ指示したい場合があるでしょう。これを実現するには、オブザーバで`$afterCommit`プロパティを定義します。データベーストランザクションが進行中でなければ、イベントハンドラは直ちに実行されます。
+データベーストランザクション内でモデルを作成している場合、データベーストランザクションがコミットされた後にのみイベントハンドラを実行するようにオブザーバへ指示したい場合があるでしょう。これを実現するには、オブザーバで`ShouldHandleEventsAfterCommit`インターフェイスを実装します。データベーストランザクションが進行中でなければ、イベントハンドラは直ちに実行されます。
 
     <?php
 
     namespace App\Observers;
 
     use App\Models\User;
+    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 
-    class UserObserver
+    class UserObserver implements ShouldHandleEventsAfterCommit
     {
-        /**
-         * すべてのトランザクションがコミットされた後にイベントを処理
-         *
-         * @var bool
-         */
-        public $afterCommit = true;
-
         /**
          * ユーザーの"created"イベントの処理
          */

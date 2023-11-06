@@ -110,6 +110,7 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 - CrystalとLuckyフレームワーク
 - Elasticsearch
 - EventStoreDB
+- Flyway
 - Gearman
 - Go
 - Grafana
@@ -127,6 +128,7 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 - Python
 - R
 - RabbitMQ
+- Rust
 - RVM（Rubyバージョンマネージャ）
 - Solr
 - TimescaleDB
@@ -337,10 +339,13 @@ features:
         version: 7.9.0
     - eventstore: true
         version: 21.2.0
+    - flyway: true
     - gearman: true
     - golang: true
     - grafana: true
     - influxdb: true
+    - logstash: true
+    - mailpit: true
     - mariadb: true
     - meilisearch: true
     - minio: true
@@ -353,6 +358,7 @@ features:
     - python: true
     - r-base: true
     - rabbitmq: true
+    - rustc: true
     - rvm: true
     - solr: true
     - timescaledb: true

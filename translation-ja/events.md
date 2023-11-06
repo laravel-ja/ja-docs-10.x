@@ -12,6 +12,7 @@
     - [キュー投入するイベントリスナとデータベーストランザクション](#queued-event-listeners-and-database-transactions)
     - [失敗したジョブの処理](#handling-failed-jobs)
 - [イベント発行](#dispatching-events)
+    - [データベーストランザクション後のイベント発行](#dispatching-events-after-database-transactions)
 - [イベントサブスクライバ](#event-subscribers)
     - [イベントサブスクライバの記述](#writing-event-subscribers)
     - [イベントサブスクライバの登録](#registering-event-subscribers)
@@ -329,7 +330,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
     /**
      * ジョブを開始するまでの秒数を取得
      */
-    public function withDelay(SendShipmentNotification $event): int
+    public function withDelay(OrderShipped $event): int
     {
         return $event->highPriority ? 0 : 60;
     }
@@ -398,20 +399,19 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 
 キュー投入したリスナがデータベーストランザクション内でディスパッチされると、データベーストランザクションがコミットされる前にキューによって処理される場合があります。これが発生した場合、データベーストランザクション中にモデルまたはデータベースレコードに加えた更新は、データベースにまだ反映されていない可能性があります。さらに、トランザクション内で作成されたモデルまたはデータベースレコードは、データベースに存在しない可能性があります。リスナがこれらのモデルに依存している場合、キューに入れられたリスナをディスパッチするジョブの処理時に予期しないエラーが発生する可能性があります。
 
-キュー接続の`after_commit`設定オプションが`false`に設定されている場合でも、リスナクラスで`$afterCommit`プロパティを定義することにより、開いているすべてのデータベーストランザクションがコミットされた後に、特定のキューに入れられたリスナをディスパッチする必要があることを示すことができます。
+キュー接続の`after_commit`設定オプションが`false`に設定されている場合でも、リスナクラスで`ShouldHandleEventsAfterCommit`インターフェイスを実装することにより、開いているすべてのデータベーストランザクションがコミットされた後に、特定のキューに入れられたリスナをディスパッチする必要があることを示すことができます。
 
     <?php
 
     namespace App\Listeners;
 
+    use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
     use Illuminate\Contracts\Queue\ShouldQueue;
     use Illuminate\Queue\InteractsWithQueue;
 
-    class SendShipmentNotification implements ShouldQueue
+    class SendShipmentNotification implements ShouldQueue, ShouldHandleEventsAfterCommit
     {
         use InteractsWithQueue;
-
-        public $afterCommit = true;
     }
 
 > **Note**
@@ -531,6 +531,35 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 
 > **Note**
 > テストの際、あるイベントが実際にリスナを起動することなくディスパッチされたことをアサートできると役立ちます。Laravelに[組み込み済みのテストヘルパ](#testing)は、これを簡単に実現します。
+
+<a name="dispatching-events-after-database-transactions"></a>
+### データベーストランザクション後のイベント発行
+
+アクティブなデータベーストランザクションをコミットした後にのみ、イベントを発行するようにLaravelへ指示したい場合があると思います。そのためには、イベントクラスで`ShouldDispatchAfterCommit`インターフェイスを実装します。
+
+このインターフェイスは、現在のデータベーストランザクションがコミットされるまで、イベントを発行しないようにLaravelへ指示するものです。トランザクションが失敗した場合は、イベントを破棄します。イベントを発行した時にデータベーストランザクションが進行中でなければ、イベントを直ちに発行します。
+
+    <?php
+
+    namespace App\Events;
+
+    use App\Models\Order;
+    use Illuminate\Broadcasting\InteractsWithSockets;
+    use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
+    use Illuminate\Foundation\Events\Dispatchable;
+    use Illuminate\Queue\SerializesModels;
+
+    class OrderShipped implements ShouldDispatchAfterCommit
+    {
+        use Dispatchable, InteractsWithSockets, SerializesModels;
+
+        /**
+         * Create a new event instance.
+         */
+        public function __construct(
+            public Order $order,
+        ) {}
+    }
 
 <a name="event-subscribers"></a>
 ## イベントサブスクライバ
