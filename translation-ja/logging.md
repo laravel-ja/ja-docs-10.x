@@ -13,6 +13,10 @@
     - [チャンネル向けMonologカスタマイズ](#customizing-monolog-for-channels)
     - [Monolog処理チャンネルの作成](#creating-monolog-handler-channels)
     - [ファクトリによるカスタムチャンネルの生成](#creating-custom-channels-via-factories)
+- [Failを使用したログの限定出力](#tailing-log-messages-using-pail)
+    - [インストール](#pail-installation)
+    - [使用法](#pail-usage)
+    - [ログのフィルタリング](#pail-filtering-logs)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -48,17 +52,17 @@ Laravelはメッセージをログに記録するときに、デフォルトで`
 
 <div class="overflow-auto">
 
-名前 | 説明
-------------- | -------------
-`custom` | 指定ファクトリを呼び出してチャンネルを作成するドライバ
-`daily` | 日毎にファイルを切り替える`RotatingFileHandler`ベースのMonologドライバ
-`errorlog` | `ErrorLogHandler`ベースのMonologドライバ
-`monolog` | Monologがサポートしているハンドラを使用するMonologファクトリドライバ
-`papertrail` | `SyslogUdpHandler`ベースのMonologドライバ
-`single` | 単一のファイルまたはパスベースのロガーチャンネル(`StreamHandler`)
-`slack` | `SlackWebhookHandler`ベースのMonologドライバ
-`stack` | 「マルチチャンネル」チャンネルの作成を容易にするラッパー
-`syslog` | `SyslogHandler`ベースのMonologドライバ
+| 名前         | 説明                                                                   |
+| ------------ | ---------------------------------------------------------------------- |
+| `custom`     | 指定ファクトリを呼び出してチャンネルを作成するドライバ                 |
+| `daily`      | 日毎にファイルを切り替える`RotatingFileHandler`ベースのMonologドライバ |
+| `errorlog`   | `ErrorLogHandler`ベースのMonologドライバ                               |
+| `monolog`    | Monologがサポートしているハンドラを使用するMonologファクトリドライバ   |
+| `papertrail` | `SyslogUdpHandler`ベースのMonologドライバ                              |
+| `single`     | 単一のファイルまたはパスベースのロガーチャンネル(`StreamHandler`)      |
+| `slack`      | `SlackWebhookHandler`ベースのMonologドライバ                           |
+| `stack`      | 「マルチチャンネル」チャンネルの作成を容易にするラッパー               |
+| `syslog`     | `SyslogHandler`ベースのMonologドライバ                                 |
 
 </div>
 
@@ -75,11 +79,11 @@ Laravelはメッセージをログに記録するときに、デフォルトで`
 
 <div class="overflow-auto">
 
-名前 | 説明 | デフォルト
-------------- | ------------- | -------------
-`bubble` | メッセージが処理された後、他のチャンネルにバブルアップする必要があるかを示す | `true`
-`locking` | ログファイルに書き込む前に、ログファイルのロックを試みるかを示す | `false`
-`permission` | ログファイルのパーミッション | `0644`
+| 名前         | 説明                                                                         | デフォルト |
+| ------------ | ---------------------------------------------------------------------------- | ---------- |
+| `bubble`     | メッセージが処理された後、他のチャンネルにバブルアップする必要があるかを示す | `true`     |
+| `locking`    | ログファイルに書き込む前に、ログファイルのロックを試みるかを示す             | `false`    |
+| `permission` | ログファイルのパーミッション                                                 | `0644`     |
 
 </div>
 
@@ -87,9 +91,9 @@ Laravelはメッセージをログに記録するときに、デフォルトで`
 
 <div class="overflow-auto">
 
-名前 | 説明 | デフォルト
-------------- | ------------- | -------------
-`days` | デイリーログファイルを保持する日数 | `7`
+| 名前   | 説明                               | デフォルト |
+| ------ | ---------------------------------- | ---------- |
+| `days` | デイリーログファイルを保持する日数 | `7`        |
 
 </div>
 
@@ -444,3 +448,86 @@ Monologのインスタンス化と設定を完全に制御する、完全なカ�
             return new Logger(/* ... */);
         }
     }
+
+<a name="tailing-log-messages-using-pail"></a>
+## Failを使用したログの限定出力
+
+多くの場合リアルタイムで、アプリケーションのログを限定し出力する必要が起きるでしょう。例えば、問題をデバッグするときや、特定の種類のエラーについてアプリケーションのログを監視するときなどです。
+
+Laravel Pailは、Laravelアプリケーションのログファイルにコマンドラインから直接簡単にアクセスできるパッケージです。標準の`tail`コマンドとは異なり、PailはSentryやFlareを含むあらゆるログドライバで動作するように設計されています。さらにPailは、探しているログをすぐに見つけのに役立つ、便利なフィルタのセットを用意しています。
+
+<img src="https://laravel.com/img/docs/pail-example.png">
+
+<a name="pail-installation"></a>
+### インストール
+
+> **Warning**
+> Laravel Pailには、[PHP8.2以上](https://php.net/releases/)と[PCNTL](https://www.php.net/manual/en/book.pcntl.php)拡張機能が必要です。
+
+使用開始するには、Composerパッケージマネージャを使い、プロジェクトにPailをインストールしてください。
+
+```bash
+composer require laravel/pail
+```
+
+<a name="pail-usage"></a>
+### 使用法
+
+ログを限定出力するには、`pail`コマンドを実行します。
+
+```bash
+php artisan pail
+```
+
+出力の冗長性を許し、切り捨て（...）を回避するには、`-v`オプションを使用します。
+
+```bash
+php artisan pail -v
+```
+
+冗長を最大限許し、例外スタックトレースを表示するには、`-vv` オプションを使用してください。
+
+```bash
+php artisan pail -vv
+```
+
+ログの出力を停止するには、`Ctrl+C`を押してください。
+
+<a name="pail-filtering-logs"></a>
+### ログのフィルタリング
+
+<a name="pail-filtering-logs-filter-option"></a>
+#### `--filter`
+
+`--filter`オプションを使うと、ログのタイプ、ファイル、メッセージ、スタックトレースの内容でログをフィルタリングできます。
+
+```bash
+php artisan pail --filter="QueryException"
+```
+
+<a name="pail-filtering-logs-message-option"></a>
+#### `--message`
+
+ログのメッセージのみをフィルタリングするには、`--message` オプションを使います。
+
+```bash
+php artisan pail --message="User created"
+```
+
+<a name="pail-filtering-logs-level-option"></a>
+#### `--level`
+
+[logレベルl](#log-levels)により、ログをフィルタリングするには、`--level`オプションを使います。
+
+```bash
+php artisan pail --level=error
+```
+
+<a name="pail-filtering-logs-user-option"></a>
+#### `--user`
+
+指定するユーザーが認証されている間に書き込まれたログだけを表示するには、`--user`オプションへそのユーザーのIDを指定します。
+
+```bash
+php artisan pail --user=1
+```

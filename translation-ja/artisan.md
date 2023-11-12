@@ -443,7 +443,7 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
             label: 'Search for a user:',
             placeholder: 'E.g. Taylor Otwell',
             options: fn ($value) => strlen($value) > 0
-                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')
+                ? User::where('name', 'like', "%{$value}%")->pluck('name', 'id')->all()
                 : []
         ),
     ];

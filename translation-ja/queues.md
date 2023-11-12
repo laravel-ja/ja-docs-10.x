@@ -23,6 +23,7 @@
 - [ジョブバッチ](#job-batching)
     - [Batchableジョブの定義](#defining-batchable-jobs)
     - [パッチのディスパッチ](#dispatching-batches)
+    - [チェーンとバッチ](#chains-and-batches)
     - [バッチへのジョブ追加](#adding-jobs-to-batches)
     - [バッチの検査](#inspecting-batches)
     - [バッチのキャンセル](#cancelling-batches)
@@ -1288,8 +1289,8 @@ LaravelHorizo​​nやLaravelTelescopeなどの一部のツールは、バッ�
         // すべてのジョブが正常に完了
     })->onConnection('redis')->onQueue('imports')->dispatch();
 
-<a name="chains-within-batches"></a>
-#### バッチ内のチェーン
+<a name="chains-and-batches"></a>
+### チェーンとバッチ
 
 配列内に配置することにより、バッチ内で一連の[ジョブチェーン](#job-chaining)を定義できます。たとえば、２つのジョブチェーンを並行して実行し、両方のジョブチェーンの処理が終了したときにコールバックを実行するとしましょう。
 
@@ -1310,6 +1311,25 @@ LaravelHorizo​​nやLaravelTelescopeなどの一部のツールは、バッ�
     ])->then(function (Batch $batch) {
         // ...
     })->dispatch();
+
+逆に、[チェーン](#job-chaining)内でバッチを定義すれば、チェーン内でジョブのバッチを実行できます。例えば、最初に複数のポッドキャストをリリースするジョブのバッチを実行し、次にリリース通知を送信するジョブのバッチを実行することができます：
+
+    use App\Jobs\FlushPodcastCache;
+    use App\Jobs\ReleasePodcast;
+    use App\Jobs\SendPodcastReleaseNotification;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::chain([
+        new FlushPodcastCache,
+        Bus::batch([
+            new ReleasePodcast(1),
+            new ReleasePodcast(2),
+        ]),
+        Bus::batch([
+            new SendPodcastReleaseNotification(1),
+            new SendPodcastReleaseNotification(2),
+        ]),
+    ])->dispatch();
 
 <a name="adding-jobs-to-batches"></a>
 ### バッチへのジョブ追加

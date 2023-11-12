@@ -221,7 +221,7 @@ Eloquentモデルの主キーへ、自動増分整数を使用する代わりに
 
     $article->id; // "8f8e8478-9035-4d23-b9a7-62f4d2612ce5"
 
-`HasUuids`トレイトはデフォルトで、モデルに対し[順序付き(ordered)UUID](/docs/{{version}}/helpers#method-str-ordered-uuid)を生成します。これらのUUIDは辞書式にソートすることができるため、インデックス付きデータベースの保存が効率的です。
+`HasUuids`トレイトはデフォルトで、モデルに対し[順序付き(ordered)UUID](/docs/{{version}}/strings#method-str-ordered-uuid)を生成します。これらのUUIDは辞書式にソートすることができるため、インデックス付きデータベースの保存が効率的です。
 
 モデルへ`newUniqueId`メソッドを定義すれば、指定モデルのUUID生成処理をオーバーライドできます。さらに、モデルに`uniqueIds`メソッドを定義すれば、UUIDをどのカラムで受け取るのかを指定できます。
 

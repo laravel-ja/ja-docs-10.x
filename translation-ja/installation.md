@@ -230,13 +230,7 @@ Laravelの設定オプションの値の多くは、アプリケーションが�
 
 Laravelアプリケーションを作成したら、データをデータベースへ保存したいと思うことでしょう。アプリケーションの`.env`設定ファイルはデフォルトで、MySQLデータベースを操作するように指定し、`127.0.0.1`のデータベースへアクセスするようになっています。macOSで開発しており、MySQL、Postgres、Redisをローカルにインストールする必要がある場合、[DBngin](https://dbngin.com/)を利用すると便利です。
 
-ローカルマシンにMySQLやPostgresをインストールしたくない場合は、いつでも[SQLite](https://www.sqlite.org/index.html)データベースを使用できます。SQLiteは小さく、高速で、自己完結型のデータベースエンジンです。使用し始めるには、空のSQLiteファイルを作成することにより、SQLiteデータベースを作成します。通常、このファイルはLaravelアプリケーションの`database`ディレクトリの中に設置します。
-
-```shell
-touch database/database.sqlite
-```
-
-次に、Laravelが`sqlite`データベースドライバを使用するよう、`.env`設定ファイルを変更します。他のデータベース設定オプションは削除してかまいません。
+ローカルマシンにMySQLやPostgresをインストールしたくない場合は、いつでも[SQLite](https://www.sqlite.org/index.html)データベースを使うことができます。SQLiteは小さく、高速で、自己完結型のデータベースエンジンです。使い始めるには、Laravelの`sqlite`データベースドライバを使用するように、`.env`設定ファイルを更新してください。他のデータベース設定オプションは削除してもかまいません：
 
 ```ini
 DB_CONNECTION=sqlite # [tl! add]
@@ -253,6 +247,8 @@ SQLiteデータベースの設定が終わったら、[データベースマイ�
 ```shell
 php artisan migrate
 ```
+
+アプリケーションにSQLiteデータベースが存在しない場合、Laravelはデータベースを作成するかを尋ねます。通常、SQLiteデータベースファイルは、`database/database.sqlite`へ作成します。
 
 <a name="directory-configuration"></a>
 ### ディレクトリ設定

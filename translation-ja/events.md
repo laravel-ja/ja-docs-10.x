@@ -82,7 +82,7 @@ php artisan make:listener SendPodcastNotification --event=PodcastProcessed
     {
         Event::listen(
             PodcastProcessed::class,
-            [SendPodcastNotification::class, 'handle']
+            SendPodcastNotification::class,
         );
 
         Event::listen(function (PodcastProcessed $event) {
