@@ -13,7 +13,7 @@
     - [チャンネル向けMonologカスタマイズ](#customizing-monolog-for-channels)
     - [Monolog処理チャンネルの作成](#creating-monolog-handler-channels)
     - [ファクトリによるカスタムチャンネルの生成](#creating-custom-channels-via-factories)
-- [Failを使用したログの限定出力](#tailing-log-messages-using-pail)
+- [Pailを使用したログの限定出力](#tailing-log-messages-using-pail)
     - [インストール](#pail-installation)
     - [使用法](#pail-usage)
     - [ログのフィルタリング](#pail-filtering-logs)
@@ -450,11 +450,11 @@ Monologのインスタンス化と設定を完全に制御する、完全なカ�
     }
 
 <a name="tailing-log-messages-using-pail"></a>
-## Failを使用したログの限定出力
+## Pailを使用したログの限定出力
 
 多くの場合リアルタイムで、アプリケーションのログを限定し出力する必要が起きるでしょう。例えば、問題をデバッグするときや、特定の種類のエラーについてアプリケーションのログを監視するときなどです。
 
-Laravel Pailは、Laravelアプリケーションのログファイルにコマンドラインから直接簡単にアクセスできるパッケージです。標準の`tail`コマンドとは異なり、PailはSentryやFlareを含むあらゆるログドライバで動作するように設計されています。さらにPailは、探しているログをすぐに見つけのに役立つ、便利なフィルタのセットを用意しています。
+Laravel Pail（ペール：バケツ、手杓）は、Laravelアプリケーションのログファイルにコマンドラインから直接簡単にアクセスできるパッケージです。標準の`tail`コマンドとは異なり、PailはSentryやFlareを含むあらゆるログドライバで動作するように設計されています。さらにPailは、探しているログをすぐに見つけのに役立つ、便利なフィルタのセットを用意しています。
 
 <img src="https://laravel.com/img/docs/pail-example.png">
 
