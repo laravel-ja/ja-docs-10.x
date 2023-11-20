@@ -41,6 +41,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::between](#method-str-between)
 [Str::betweenFirst](#method-str-between-first)
 [Str::camel](#method-camel-case)
+[Str::charAt](#method-char-at)
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
@@ -124,6 +125,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [between](#method-fluent-str-between)
 [betweenFirst](#method-fluent-str-between-first)
 [camel](#method-fluent-str-camel)
+[charAt](#method-fluent-str-char-at)
 [classBasename](#method-fluent-str-class-basename)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
@@ -340,7 +342,19 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 
     $converted = Str::camel('foo_bar');
 
-    // fooBar
+    // 'fooBar'
+
+<a name="method-char-at"></a>
+
+#### `Str::charAt()` {.collection-method}
+
+`Str::charAt`メソッドは、指定インデックスの文字を返します。インデックスが範囲外の場合は`false`を返します。
+
+    use Illuminate\Support\Str;
+
+    $character = Str::charAt('This is my name.', 6);
+
+    // 's'
 
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
@@ -1394,7 +1408,18 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 
     $converted = Str::of('foo_bar')->camel();
 
-    // fooBar
+    // 'fooBar'
+
+<a name="method-fluent-str-char-at"></a>
+#### `charAt` {.collection-method}
+
+`charAt`メソッドは指定インデックスの文字を返します。インデックスが範囲外の場合は`false`を返します。
+
+    use Illuminate\Support\Str;
+
+    $character = Str::of('This is my name.')->charAt(6);
+
+    // 's'
 
 <a name="method-fluent-str-class-basename"></a>
 #### `classBasename` {.collection-method}
@@ -1405,7 +1430,7 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
 
     $class = Str::of('Foo\Bar\Baz')->classBasename();
 
-    // Baz
+    // 'Baz'
 
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}

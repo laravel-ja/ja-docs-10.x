@@ -2,16 +2,16 @@
 
 - [Laravelとの出会い](#meet-laravel)
     - [なぜLaravelなのか？](#why-laravel)
-- [最初のLaravelプロジェクト](#your-first-laravel-project)
-- [LaravelとDocker](#laravel-and-docker)
-    - [macOSで始める](#getting-started-on-macos)
-    - [Windowsで始める](#getting-started-on-windows)
-    - [Linuxで始める](#getting-started-on-linux)
-    - [Sailサービスの選択](#choosing-your-sail-services)
+- [Laravelプロジェクトの作成](#creating-a-laravel-project)
 - [初期設定](#initial-configuration)
     - [環境ベースの設定](#environment-based-configuration)
     - [データベースとマイグレーション](#databases-and-migrations)
     - [ディレクトリ設定](#directory-configuration)
+- [Sailで使用するDockerのインストール](#docker-installation-using-sail)
+    - [macOSでのSail](#sail-on-macos)
+    - [WindowsでのSail](#sail-on-windows)
+    - [LinuxでのSail](#sail-on-linux)
+    - [Sailサービスの選択](#choosing-your-sail-services)
 - [IDEサポート](#ide-support)
 - [次のステップ](#next-steps)
     - [Laravelフルスタックフレームワーク](#laravel-the-fullstack-framework)
@@ -50,26 +50,18 @@ Laravelは素晴らしくスケーラブルです。PHPのスケーリングに�
 
 LaravelはPHPエコシステムで最高のパッケージを組み合わせ、もっとも堅牢で開発者に優しいフレームワークとして使用できるように提供しています。さらに、世界中の何千人もの才能ある開発者が[フレームワークに貢献](https://github.com/laravel/framework)しています。多分あなたもLaravelの貢献者になるかもしれませんね。
 
-<a name="your-first-laravel-project"></a>
-## 最初のLaravelプロジェクト
+<a name="creating-a-laravel-project"></a>
+## Laravelプロジェクトの作成
 
-最初のLaravelプロジェクトを作成する前に、ローカルマシンにPHPと[Composer](https://getcomposer.org)をインストールしていることを確認してください。macOSで開発している場合、PHPとComposerは[Laravel Herd](https://herd.laravel.com)で数分以内にインストールできます。さらに、[NodeとNPMのインストール](https://nodejs.org)もおすすめします。
+最初のLaravelプロジェクトを作成する前に、ローカルマシンにPHPと[Composer](https://getcomposer.org)を確実にインストールしてください。macOSで開発している場合、PHPとComposerは[Laravel Herd](https://herd.laravel.com)を介して数分でインストールできます。さらに、[NodeとNPMのインストール](https://nodejs.org)も推奨します。
 
-PHPとComposerをインストールしたら、Composerの`create-project`コマンドで、Laravelの新規プロジェクトを作成できます。
+PHPとComposerをインストールしたら、Composerの`create-project`コマンドで新しいLaravelプロジェクトを作成してください。
 
 ```nothing
 composer create-project laravel/laravel example-app
 ```
 
-または、Composer経由でLaravelインストーラをグローバルインストールし、新しいLaravelプロジェクトを作成することもできます。[Laravel Herd](https://herd.laravel.com)を使用している場合は、はじめからLaravelインストーラを利用できます。
-
-```nothing
-composer global require laravel/installer
-
-laravel new example-app
-```
-
-プロジェクト作成後、LaravelのArtisan `serve` CLIコマンドを使用して、Laravelローカル開発サーバを起動します。
+プロジェクトを作成したら、Laravel Artisanの`serve`コマンドを使い、Laravelのローカル開発サーバを起動してください。
 
 ```nothing
 cd example-app
@@ -77,13 +69,63 @@ cd example-app
 php artisan serve
 ```
 
-Artisan開発サーバを起動すると、Webブラウザで`http://localhost:8000`からアプリケーションへアクセスできるようになります。次に、[Laravelエコシステムへの次のステップを開始](#next-steps)する準備が整いました。もちろん、[データベースの設定](#databases-and-migrations)も必要になります。
+Artisan開発サーバを起動したら、Webブラウザの[http://localhost:8000](http://localhost:8000)を通して、アプリケーションへアクセスできます。次に、[Laravelエコシステムへの次のステップを開始する](#next-steps)準備が整いました。もちろん、[データベースの設定](#databases-and-migrations)も行えます。
 
 > **Note**
 > Laravelアプリケーションを開発する際に、有利なスタートダッシュを切りたければ、[スターターキット](/docs/{{version}}/starter-kits)の１つを使用することを検討してください。Laravelのスターターキットは、新しいLaravelアプリケーションのために、バックエンドとフロントエンド側の認証のスカフォールドを提供します。
 
-<a name="laravel-and-docker"></a>
-## LaravelとDocker
+<a name="initial-configuration"></a>
+## 初期設定
+
+Laravelフレームワークのすべての設定ファイルは、`config`ディレクトリへ格納しています。各オプションはコメントによりドキュメント化されていますので、自由にファイルに目を通して、利用可能なオプションに慣れてください。
+
+Laravelは初期設定で動き、追加の設定はほぼ必要ありません。すぐに開発を始めることができます！しかし、`config/app.php`ファイルとそのコメントの確認をお勧めします。このファイルは`timezone`や`locale`など、アプリケーションに応じて変更したいであろうオプションを含んでいます。。
+
+<a name="environment-based-configuration"></a>
+### 環境ベースの設定
+
+アプリケーションをローカルマシンで実行するか、本番のWebサーバで実行するかにより、Laravelの設定オプション値の多くは異なる可能性があるため、多くの重要な設定値は、アプリケーションのルートに存在する`.env`ファイルを使用して定義します。
+
+`.env`ファイルはアプリケーションのソース管理に含めるべきではありません。なぜなら、アプリケーションを使用する開発者やサーバごとに、異なる環境設定が必要になる可能性があるからです。さらに、これは侵入者がソース管理リポジトリにアクセスした場合のセキュリティリスクとなります。
+
+> **Note**
+> `.env`ファイルと環境ベースによる設定の詳細は、完全な[設定のドキュメント](/docs/{{version}}/configuration#environment-configuration)をチェックしてください。
+
+<a name="databases-and-migrations"></a>
+### データベースとマイグレーション
+
+Laravelアプリケーションを作成したので、次はおそらくデータベースにデータを保存したいと考えるでしょう。アプリケーションのデフォルト`.env`設定ファイルでは、LaravelがMySQLデータベースを操作し、`127.0.0.1`のデータベースへアクセスする指定をしています。
+
+> **Note**
+> macOSで開発しており、MySQL、Postgres、Redisをローカルへインストールする必要がある場合は、[DBngin](https://dbngin.com/)の使用を検討してください。
+
+ローカルマシンにMySQLやPostgresをインストールしたくない場合は、いつでも[SQLite](https://www.sqlite.org/index.html)データベースを使用できます。SQLiteは小さく、高速で、自己完結型のデータベースエンジンです。使い始めるには、Laravelの`sqlite`データベースドライバを使用するように、`.env`設定ファイルを更新してください。他のデータベース設定オプションは削除してかまいません。
+
+```ini
+DB_CONNECTION=sqlite # [tl! add]
+DB_CONNECTION=mysql # [tl! remove]
+DB_HOST=127.0.0.1 # [tl! remove]
+DB_PORT=3306 # [tl! remove]
+DB_DATABASE=laravel # [tl! remove]
+DB_USERNAME=root # [tl! remove]
+DB_PASSWORD= # [tl! remove]
+```
+
+SQLiteデータベースを設定したら、アプリケーションの[データベースマイグレーション](/docs/{{version}}/migrations)を実行し、アプリケーションのデータベーステーブルを作成します。
+
+```shell
+php artisan migrate
+```
+
+アプリケーションにSQLiteデータベースが存在しない場合、Laravelはデータベースを作成するかどうかを尋ねます。通常、SQLiteデータベースファイルは`database/database.sqlite`へ作成します。
+
+<a name="directory-configuration"></a>
+### ディレクトリ設定
+
+Laravelは常に、Webサーバで設定した「Webディレクトリ」のルートから提供されるべきです。「Webディレクトリ」のサブディレクトリからLaravelアプリケーションを提供しようとしないでください。そうすると、アプリケーション内に存在する機密ファイルが公開されてしまう可能性があります。
+
+<a name="docker-installation-using-sail"></a>
+## Sailで使用するDockerのインストール
 
 皆さんの好みのオペレーティングシステムが何であれ、できるだけ簡単にLaravelを始められるようにしたいと考えています。そのため、ローカルマシンでLaravelプロジェクトを開発・実行するための様々なオプションが用意されています。これらのオプションは後ほど検討していただけますが、Laravelでは[Sail](/docs/{{version}}/sail)という、[Docker](https://www.docker.com)を使用してLaravelプロジェクトを実行する組み込みソリューションを提供しています。
 
@@ -94,8 +136,8 @@ Laravel Sailは、LaravelのデフォルトのDocker構成と、操作するた�
 > **Note**
 > すでにDockerのエキスパートですか？ご心配なく！Laravelが提供する`docker-compose.yml`ファイルを使用して、Sailに関するすべてをカスタマイズできます。
 
-<a name="getting-started-on-macos"></a>
-### macOSで始める
+<a name="sail-on-macos"></a>
+### macOSでのSail
 
 Macで開発していて、[Docker Desktop](https://www.docker.com/products/docker-desktop)がすでにインストールされているならば、簡単なターミナルコマンドを使用して新しいLaravelプロジェクトを作成できます。たとえば、「example-app」という名前のディレクトリに新しいLaravelアプリケーションを作成するには、ターミナルで以下のコマンドを実行します。
 
@@ -120,8 +162,8 @@ cd example-app
 > **Note**
 > Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
 
-<a name="getting-started-on-windows"></a>
-### Windowsで始める
+<a name="sail-on-windows"></a>
+### WindowsでのSail
 
 Windowsマシンに新しいLaravelアプリケーションを作成する前に、必ず[Docker Desktop](https://www.docker.com/products/docker-desktop)をインストールしてください。次に、Windows Subsystem for Linux 2（WSL2）がインストールされ、有効になっていることを確認する必要があります。 WSLを使用すると、Linuxバイナリ実行可能ファイルをWindows 10でネイティブに実行できます。WSL2をインストールして有効にする方法については、Microsoftの[開発者環境ドキュメント](https://docs.microsoft.com/en-us/windows/wsl/install-win10)を参照してください。
 
@@ -157,8 +199,8 @@ cd example-app
 
 これらのツールをインストールしたら、Windowsターミナルを使用してアプリケーションのルートディレクトリから `code .`コマンドを実行することで、任意のLaravelプロジェクトを開けます。
 
-<a name="getting-started-on-linux"></a>
-### Linuxで始める
+<a name="sail-on-linux"></a>
+### LinuxでのSail
 
 Linuxで開発しており、[Docker Compose](https://docs.docker.com/compose/install/)を既にインストールしている場合は、簡単なターミナルコマンドで新しいLaravelプロジェクトを作成できます。
 
@@ -207,53 +249,6 @@ URLへ`devcontainer`パラメータを追加し、デフォルトの[Devcontaine
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
 ```
-
-<a name="initial-configuration"></a>
-## 初期設定
-
-Laravelフレームワークのすべての設定ファイルは、`config`ディレクトリに格納されています。各オプションにコメントが記述していますので、気兼ねなくファイルに目を通し、利用可能なオプションに馴染んでください。
-
-Laravelでは、初期の追加設定はほとんど必要ありません。すぐに開発を始められます。しかし、`config/app.php`ファイルとそのコメントを確認することをお勧めします。このファイルには、`timezone`や`locale` など、アプリケーションに応じて更新しておきたいオプションが含まれています。
-
-<a name="environment-based-configuration"></a>
-### 環境ベースの設置
-
-Laravelの設定オプションの値の多くは、アプリケーションがローカルマシンで動作しているか、実働Webサーバで動作しているかにより異なるため、多くの重要な設定値はアプリケーションルートに存在する、`.env`ファイルを用いて定義します。
-
-`.env`ファイルは、アプリケーションのソース管理へコミットしてはいけません。なぜなら、アプリケーションを使用する開発者やサーバごとに、異なる環境設定が必要になる可能性があるからです。さらに、侵入者がソースコントロールリポジトリへアクセスした場合、機密情報が漏洩してしまうため、セキュリティリスクにもなります。
-
-> **Note**
-> `.env`ファイルと環境ベースの設定の詳細は、完全な[設定ドキュメント](/docs/{{version}}/configuration#environment-configuration)をチェックしてください。
-
-<a name="databases-and-migrations"></a>
-### データベースとマイグレーション
-
-Laravelアプリケーションを作成したら、データをデータベースへ保存したいと思うことでしょう。アプリケーションの`.env`設定ファイルはデフォルトで、MySQLデータベースを操作するように指定し、`127.0.0.1`のデータベースへアクセスするようになっています。macOSで開発しており、MySQL、Postgres、Redisをローカルにインストールする必要がある場合、[DBngin](https://dbngin.com/)を利用すると便利です。
-
-ローカルマシンにMySQLやPostgresをインストールしたくない場合は、いつでも[SQLite](https://www.sqlite.org/index.html)データベースを使うことができます。SQLiteは小さく、高速で、自己完結型のデータベースエンジンです。使い始めるには、Laravelの`sqlite`データベースドライバを使用するように、`.env`設定ファイルを更新してください。他のデータベース設定オプションは削除してもかまいません：
-
-```ini
-DB_CONNECTION=sqlite # [tl! add]
-DB_CONNECTION=mysql # [tl! remove]
-DB_HOST=127.0.0.1 # [tl! remove]
-DB_PORT=3306 # [tl! remove]
-DB_DATABASE=laravel # [tl! remove]
-DB_USERNAME=root # [tl! remove]
-DB_PASSWORD= # [tl! remove]
-```
-
-SQLiteデータベースの設定が終わったら、[データベースマイグレーション](/docs/{{version}}/migrations)を実行し、アプリケーションのデータベーステーブルを作成します。
-
-```shell
-php artisan migrate
-```
-
-アプリケーションにSQLiteデータベースが存在しない場合、Laravelはデータベースを作成するかを尋ねます。通常、SQLiteデータベースファイルは、`database/database.sqlite`へ作成します。
-
-<a name="directory-configuration"></a>
-### ディレクトリ設定
-
-Laravelは常に、Webサーバに設定した「Webディレクトリ」のルートから提供する必要があります。Laravelアプリケーションを「Webディレクトリ」のサブディレクトリから提供してはいけません。そうしてしまうと、アプリケーション内の機密ファイルを公開してしまう可能性が発生します。
 
 <a name="ide-support"></a>
 ## IDEサポート

@@ -721,7 +721,7 @@ php artisan make:cast Hash --inbound
 
 アプリケーションの値オブジェクトが独自のカスタムキャストクラスを定義できるようにすることができます。カスタムキャストクラスをモデルにアタッチする代わりに、`Illuminate\Contracts\Database\Eloquent\Castable`インターフェイスを実装する値オブジェクトクラスをアタッチすることもできます。
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class,
@@ -731,7 +731,7 @@ php artisan make:cast Hash --inbound
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use App\Casts\Address as AddressCast;
@@ -751,7 +751,7 @@ php artisan make:cast Hash --inbound
 
 `Castable`クラスを使用する場合でも、`$casts`定義に引数を指定できます。引数は`castUsing`メソッドに渡されます。
 
-    use App\Models\Address;
+    use App\ValueObjects\Address;
 
     protected $casts = [
         'address' => Address::class.':argument',
