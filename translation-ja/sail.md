@@ -50,7 +50,7 @@ Laravel Sailはいつも、新しいLaravelアプリケーションとともに�
 composer require laravel/sail --dev
 ```
 
-After Sail has been installed, you may run the `sail:install` Artisan command. This command will publish Sail's `docker-compose.yml` file to the root of your application and modify your `.env` file with the required environment variables in order to connect to the Docker services:
+Sailをインストールしたら、`sail:install` Artisanコマンドを実行します。このコマンドはSailの`docker-compose.yml`ファイルをアプリケーションのルートに発行し、`.env`ファイル中でDockerサービスに接続するために必要な環境変数を変更します：
 
 ```shell
 php artisan sail:install
