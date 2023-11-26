@@ -906,6 +906,7 @@ The credit card number field is required when payment type is credit card.
 [充満](#rule-filled)
 [より大きい](#rule-gt)
 [以上](#rule-gte)
+[Hex Color](#rule-hex-color)
 [画像（ファイル)](#rule-image)
 [内包](#rule-in)
 [配列内](#rule-in-array)
@@ -1343,6 +1344,11 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 #### gte:_field_
 
 フィールドが指定した*フィールド*か*値*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+
+<a name="rule-hex-color"></a>
+#### hex_color
+
+フィールドが、[16進数](https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color)形式の有効な色値を含んでいることをバリデートします。
 
 <a name="rule-image"></a>
 #### image

@@ -1312,6 +1312,12 @@ Cashierは、顧客が非課税であるかどうかを判断するために、`
         now()->addDays(10)
     );
 
+最後に、関連するユーザーモデルを削除する前に、必ずユーザーのサブスクリプションをキャンセルしてください：
+
+    $user->subscription('default')->cancelNow();
+
+    $user->delete();
+
 <a name="resuming-subscriptions"></a>
 ### サブスクリプションの再開
 

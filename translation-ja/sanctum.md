@@ -283,10 +283,11 @@ Sanctumは、Laravelを利用したAPIと通信する必要があるシングル
 
 アプリケーションのCORS設定が、値が`True`の`Access-Control-Allow-Credentials`ヘッダを返しているか確認する必要があります。これは、アプリケーションの`config/cors.php`設定ファイル内の`supports_credentials`オプションを`true`に設定することで実現できます。
 
-さらに、アプリケーションのグローバルな`axios`インスタンスで`withCredentials`オプションを有効にする必要があります。通常、これは`resources/js/bootstrap.js`ファイルで実行する必要があります。フロントエンドからHTTPリクエストを行うためにAxiosを使用していない場合は、独自のHTTPクライアントで同等の構成を実行する必要があります。
+さらに、アプリケーションのグローバルな`axios`インスタンスで`withCredentials`と`withXSRFToken`オプションを有効にする必要があります。通常、これは`resources/js/bootstrap.js`ファイルで実行する必要があります。フロントエンドからHTTPリクエストを行うためにAxiosを使用していない場合は、独自のHTTPクライアントで同等の構成を実行する必要があります。
 
 ```js
 axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 ```
 
 最後に、アプリケーションのセッションクッキードメイン設定で、ルートドメインのサブドメインを確実にサポートしてください。これを実現するには、アプリケーションの`config/session.php`設定ファイル内でドメインの先頭に`.`を付けます。

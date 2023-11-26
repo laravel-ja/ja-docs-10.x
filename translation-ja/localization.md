@@ -10,6 +10,7 @@
 - [翻訳文字列の取得](#retrieving-translation-strings)
     - [翻訳文字列中のパラメータの置換](#replacing-parameters-in-translation-strings)
     - [複数形](#pluralization)
+    - [翻訳失敗文字列の処理](#handling-missing-translation-strings)
 - [パッケージ言語ファイルのオーバーライド](#overriding-package-language-files)
 
 <a name="introduction"></a>
@@ -232,6 +233,27 @@ Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレーム�
 `trans_choice`関数に渡した整数値を表示したい場合は、組み込みの`:count`プレースホルダーを使用できます。
 
     'apples' => '{0} There are none|{1} There is one|[2,*] There are :count',
+
+<a name="handling-missing-translation-strings"></a>
+### 翻訳失敗文字列の処理
+
+通常、言語ファイルに対応するキーがない文字列を翻訳しようとすると、Laravelは翻訳文字列キーを返します。
+
+`handleMissingKeysUsing`メソッドを使うことで、この動作をカスタマイズしたり、インターセプトしたりできます。通常、このメソッドはアプリケーションの`AppServiceProvider`の`boot`メソッドで呼び出します。
+
+    use Illuminate\Support\Facades\Lang;
+
+    /**
+     * 全アプリケーションサービスの初期起動処理
+     */
+    public function boot(): void
+    {
+        Lang::handleMissingKeysUsing(function (string $key, array $replacements, string $locale) {
+            info("Missing translation key [$key] detected.");
+
+            return $key;
+        });
+    }
 
 <a name="overriding-package-language-files"></a>
 ## パッケージ言語ファイルのオーバーライド

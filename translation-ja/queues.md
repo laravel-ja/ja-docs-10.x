@@ -2132,6 +2132,24 @@ public function boot(): void
 
     Bus::assertDispatchedWithoutChain(ShipOrder::class);
 
+<a name="testing-chained-batches"></a>
+#### チェーンしたバッチのテスト
+
+ジョブチェーンが[ジョブのバッチを含んでいる](#chains-and-batches)場合、チェーンのアサート内に `Bus::chainedBatch`定義を挿入することにより、チェーンしたバッチが期待値にマッチしていることをアサートできます。
+
+    use App\Jobs\ShipOrder;
+    use App\Jobs\UpdateInventory;
+    use Illuminate\Bus\PendingBatch;
+    use Illuminate\Support\Facades\Bus;
+
+    Bus::assertChained([
+        new ShipOrder,
+        Bus::chainedBatch(function (PendingBatch $batch) {
+            return $batch->jobs->count() === 3;
+        }),
+        new UpdateInventory,
+    ]);
+
 <a name="testing-job-batches"></a>
 ### ジョブバッチのテスト
 

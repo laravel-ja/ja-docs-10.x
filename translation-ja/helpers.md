@@ -83,6 +83,20 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [last](#method-last)
 </div>
 
+<a name="numbers-method-list"></a>
+### 数値
+
+<div class="collection-method-list" markdown="1">
+
+[Number::format](#method-number-format)
+[Number::percentage](#method-number-percentage)
+[Number::currency](#method-number-currency)
+[Number::fileSize](#method-number-file-size)
+[Number::forHumans](#method-number-for-humans)
+
+</div>
+
+
 <a name="paths-method-list"></a>
 ### パス
 
@@ -1079,6 +1093,112 @@ $classes = Arr::toCssStyles($array);
     $last = last($array);
 
     // 300
+
+<a name="numbers"></a>
+## 数値
+
+<a name="method-number-format"></a>
+#### `Number::format()` {.collection-method}
+
+`Number::format`メソッドは、指定値をロケール固有の文字列に整形します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::format(100000);
+
+    // 100,000
+
+    $number = Number::format(100000, precision: 2);
+
+    // 100,000.00
+
+    $number = Number::format(100000.123, maxPrecision: 2);
+
+    // 100,000.12
+
+    $number = Number::format(100000, locale: 'de');
+
+    // 100.000
+
+<a name="method-number-percentage"></a>
+#### `Number::percentage()` {.collection-method}
+
+`Number::percentage`メソッドは、指定値のパーセンテージ表現を文字列として返します。
+
+    use Illuminate\Support\Number;
+
+    $percentage = Number::percentage(10);
+
+    // 10%
+
+    $percentage = Number::percentage(10, precision: 2);
+
+    // 10.00%
+
+    $percentage = Number::percentage(10.123, maxPrecision: 2);
+
+    // 10.12%
+
+    $percentage = Number::percentage(10, precision: 2, locale: 'de');
+
+    // 10,00%
+
+<a name="method-number-currency"></a>
+#### `Number::currency()` {.collection-method}
+
+`Number::currency`メソッドは、指定値の通貨表現を文字列として返します。
+
+    use Illuminate\Support\Number;
+
+    $currency = Number::currency(1000);
+
+    // $1,000
+
+    $currency = Number::currency(1000, in: 'EUR');
+
+    // €1,000
+
+    $currency = Number::currency(1000, in: 'EUR', locale: 'de');
+
+    // 1.000 €
+
+<a name="method-number-file-size"></a>
+#### `Number::fileSize()` {.collection-method}
+
+`Number::fileSize`メソッドは、指定バイト値をファイルサイズ表現の文字列として返します。
+
+    use Illuminate\Support\Number;
+
+    $size = Number::fileSize(1024);
+
+    // 1 KB
+
+    $size = Number::fileSize(1024 * 1024);
+
+    // 1 MB
+
+    $size = Number::fileSize(1024, precision: 2);
+
+    // 1.00 KB
+
+<a name="method-number-for-humans"></a>
+#### `Number::forHumans()` {.collection-method}
+
+Number::forHumans()`メソッドは、渡した数値を人間が読める形態で返します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::forHumans(1000);
+
+    // 1 thousand
+
+    $number = Number::forHumans(489939);
+
+    // 490 thousand
+
+    $number = Number::forHumans(1230000, precision: 2);
+
+    // 1.23 million
 
 <a name="paths"></a>
 ## パス
