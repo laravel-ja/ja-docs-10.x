@@ -182,7 +182,7 @@ window.Echo = new Echo({
 アンコメントし、必要に応じEcho設定を調整したら、アプリケーションのアセットをコンパイルします。
 
 ```shell
-npm run dev
+npm run build
 ```
 
 > **Note**

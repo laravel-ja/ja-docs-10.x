@@ -127,7 +127,7 @@ Laravelのデフォルトのキューシステムとは異なり、Horizo​​n
 <a name="dashboard-authorization"></a>
 ### ダッシュボードの認可
 
-Horizo​​nは、`/horizo​​n`のURIでダッシュボードを公開します。デフォルトでは、このダッシュボードにアクセスできるのは`local`環境のみです。ただし、`app/Providers/Horizo​​nServiceProvider.php`ファイル内には、[認可ゲート](/docs/{{version}}/authentication#gates)の定義があります。この認証ゲートは、**非ローカル**環境でのHorizo​​nへのアクセスを制御します。必要に応じてこのゲートを自由に変更して、Horizo​​nインストールへのアクセスを制限できます。
+Horizonダッシュボードは、`/horizon`ルートでアクセスできます。このダッシュボードはデフォルトで、`local`環境でのみアクセスできます。ですが、`app/Providers/HorizonServiceProvider.php`ファイル内には、[認可ゲート](/docs/{{version}}/authorization#gates)の定義があります。この認可ゲートは、**非ローカル**環境におけるHorizonへのアクセスを制御します。Horizonインストールへのアクセスを制限するため、このゲートを必要に応じて自由に変更してください。
 
     /**
      * Horizonゲートの登録

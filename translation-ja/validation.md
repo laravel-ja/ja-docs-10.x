@@ -902,6 +902,7 @@ The credit card number field is required when payment type is credit card.
 [存在時フィールド除外](#rule-exclude-with)
 [不在時フィールド除外](#rule-exclude-without)
 [存在（データベース）](#rule-exists)
+[拡張子](#rule-extensions)
 [ファイル](#rule-file)
 [充満](#rule-filled)
 [より大きい](#rule-gt)
@@ -1325,6 +1326,16 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
     'state' => Rule::exists('states', 'abbreviation'),
 
+<a name="rule-extensions"></a>
+#### extensions:_foo_,_bar_,...
+
+ファイルはリストする拡張子のいずれかに一致することをバリデートします。
+
+    'photo' => ['required', 'extensions:jpg,png'],
+
+> **Warning**
+> ユーザーが割り当てた拡張子だけでファイルをバリデートしてはいけません。このルールは通常、[`mimes`](#rule-mimes)または[`mimetypes`](#rule-mimetypes)ルールと組み合わせて使用する必要があります。
+
 <a name="rule-file"></a>
 #### file
 
@@ -1453,7 +1464,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-mimetypes"></a>
 #### mimetypes:*text/plain*,...
 
-フィールドが指定されたMIMEタイプのどれかであることをバリデートします。
+フィールドが指定するMIMEタイプのどれかであることをバリデートします。
 
     'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
 
@@ -1462,16 +1473,18 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-mimes"></a>
 #### mimes:_foo_,_bar_,...
 
-フィールドで指定されたファイルが拡張子のリストの中のMIMEタイプのどれかと一致することをバリデートします。
-
-<a name="basic-usage-of-mime-rule"></a>
-#### MIMEルールの基本的な使用法
+ファイルは、リストする拡張子のいずれかに対応するMIMEタイプを持っていることをバリデートします。
 
     'photo' => 'mimes:jpg,bmp,png'
 
 拡張子を指定するだけでもよいのですが、このルールは実際には、ファイルの内容を読み取ってそのMIMEタイプを推測することにより、ファイルのMIMEタイプをバリデーションします。MIMEタイプとそれに対応する拡張子の完全なリストは、次の場所にあります。
 
 [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
+
+<a name="mime-types-and-extensions"></a>
+#### MIMEタイプと拡張子
+
+このバリデーションルールは、MIMEタイプとユーザーがファイルに割り当てた拡張子との一致をバリデートするものではありません。例えば、`mimes:png`バリデーションルールは、ファイル名が`photo.txt`であっても、有効なPNGコンテンツを含むファイルを有効なPNG画像とみなします。ユーザーがファイルへ割り当てた拡張子をバリデートしたい場合は、[`extensions`](#rule-extensions)ルールを使用してください。
 
 <a name="rule-min"></a>
 #### min:_値_

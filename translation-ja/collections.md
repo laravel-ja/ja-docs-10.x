@@ -788,9 +788,11 @@
 <a name="method-ensure"></a>
 #### `ensure()` {.collection-method}
 
-`ensure`メソッドを使うと、コレクションのすべての要素が指定型であることを確認するために使います。不一致の場合は`UnexpectedValueException`を投げます。
+`ensure`メソッドは、コレクションもしくは、コレクションのリストのすべての要素が指定型であることを確認するために使います。不一致の場合は`UnexpectedValueException`を投げます。
 
     return $collection->ensure(User::class);
+
+    return $collection->ensure([User::class, Customer::class]);
 
 `string`、`int`、`float`、`bool`、`array`などのプリミティブ型も指定できます。
 

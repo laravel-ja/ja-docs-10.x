@@ -286,7 +286,7 @@ php artisan passport:client
 
 **リダイレクトURL**
 
-クライアントに複数のリダイレクトURLを許可する場合は、`passport:client`コマンドでURLの入力を求められたときに、カンマ区切りのリストを使用して指定してください。カンマを含むURLは、URLエンコードする必要があります。
+クライアントに複数のリダイレクトURLを許可する場合は、`passport:client`コマンドでURLの入力を求められたときに、コンマ区切りのリストを使用して指定してください。コンマを含むURLは、URLエンコードする必要があります。
 
 ```shell
 http://example.com/callback,http://examplefoo.com/callback

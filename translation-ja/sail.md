@@ -39,7 +39,7 @@ Laravel Sailは、macOS、Linux、Windows（[WSL2](https://docs.microsoft.com/en
 <a name="installation"></a>
 ## インストールと準備
 
-Laravel Sailはいつも、新しいLaravelアプリケーションとともに自動的にインストールされるため、すぐ使用を開始できます。新しいLaravelアプリケーションを作成する方法については、使用しているオペレーティングシステム用のLaravel[インストールドキュメント](/docs/{{version}}/installation#laravel-and-docker)を参照してください。インストール時には、アプリケーションで操作するSailサポートサービスを選択するよう求められます。
+Laravel Sailはいつも、新しいLaravelアプリケーションとともに自動的にインストールされるため、すぐ使用を開始できます。新しいLaravelアプリケーションを作成する方法については、使用しているオペレーティングシステム用のLaravel[インストールドキュメント](/docs/{{version}}/installation#docker-installation-using-sail)を参照してください。インストール時には、アプリケーションで操作するSailサポートサービスを選択するよう求められます。
 
 <a name="installing-sail-into-existing-applications"></a>
 ### 既存アプリケーションへのSailインストール
