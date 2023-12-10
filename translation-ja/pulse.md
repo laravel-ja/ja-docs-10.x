@@ -9,6 +9,7 @@
     - [カード](#dashboard-cards)
 - [エンティティのキャプチャ](#capturing-entries)
     - [レコード](#recorders)
+    - [フィルタリング](#filtering)
 - [パフォーマンス](#performance)
     - [他のデータベースの使用](#using-a-different-database)
     - [Redis統合](#ingest)
@@ -27,7 +28,7 @@
 ## インストール
 
 > **Warning**
-> Pulseのファーストパーティストレージの実装は、現在MySQLデータベースを使っています。PostgreSQLなど、別のデータベースエンジンを使用している場合は別に、Pulseデータ用のMySQLデータベースが必要になります。
+> Pulseのファーストパーティストレージの実装は、現在MySQLかPostgreSQLデータベースを使っています。別のデータベースエンジンを使用している場合は別に、Pulseデータ用のMySQL／PostgreSQLデータベースが必要になります。
 
 Pulseは現在ベータ版なため、ベータリリース版のパッケージをインストールできるように、アプリケーションの`composer.json`ファイルを調整する必要があるでしょう。
 
@@ -42,9 +43,15 @@ Pulseは現在ベータ版なため、ベータリリース版のパッケージ
 composer require laravel/pulse
 ```
 
-Pulseをインストールしたら、`migrate`コマンドを実行して、Pulseデータを格納するために必要なテーブルを作成します。
+次に、`vendor:publish` Artisanコマンドを使用し、Pulse設定ファイルとマイグレーションファイルをリソース公開します。
 
-```sh
+```shell
+php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
+```
+
+最後に、Pulseのデータを格納するテーブルを作成するため、`migrate`コマンドを実行します。
+
+```shell
 php artisan migrate
 ```
 
@@ -328,9 +335,32 @@ Pulse設定ファイルでは、監視するディレクトリをカスタマイ
 #### ユーザーリクエスト
 
 `UserRequests`レコーダは、あなたのアプリケーションにリクエストをしているユーザーに関する情報を取得し、[アプリケーションの使用状況](#application-usage-card)カードに表示します。
-[アプリケーションの使用状況](#application-usage-card)カード
 
 オプションで[サンプルレート](#sampling)と無視するジョブパターンを調整できます。
+
+<a name="filtering"></a>
+### フィルタリング
+
+これまで見てきたように、多くの[レコーダ](#recorder)は設定により、リクエストURLのような値に基づき、受信エントリを「無視」する機能を提供しています。しかし、時には他の要素、例えば現在認証済みのユーザーに基づいてレコードをフィルタリングすることが役立つこともあるでしょう。そのようにレコードをフィルタリングするには、Pulseの`filter`メソッドへクロージャを渡します。通常、`filter`メソッドはアプリケーションの`AppServiceProvider`の`boot`メソッド内で呼び出す必要があります。
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Pulse\Entry;
+use Laravel\Pulse\Facades\Pulse;
+use Laravel\Pulse\Value;
+
+/**
+ * 全アプリケーションサービスの初期起動処理
+ */
+public function boot(): void
+{
+    Pulse::filter(function (Entry|Value $entry) {
+        return Auth::user()->isNotAdmin();
+    });
+
+    // ...
+}
+```
 
 <a name="performance"></a>
 ## パフォーマンス
@@ -350,6 +380,9 @@ PULSE_DB_CONNECTION=pulse
 
 <a name="ingest"></a>
 ### Redis統合
+
+> **Warning**
+> Redisを使用するには、Redis6.2以上と、アプリケーションの設定済みRedisクライアントドライバに、`phpredis`または`predis`が必要です。
 
 Pulseはデフォルトで、HTTPレスポンスがクライアントに送信した後、またはジョブを処理した後に、[設定されたデータベース接続](#using-a-different-database)に直接エントリを保存します。しかし、PulseのRedisインジェストドライバを代わりに使用し、Redisストリームへエントリを送信することもできます。これは`PULSE_INGEST_DRIVER`環境変数を設定すると有効になります。
 
@@ -394,8 +427,8 @@ Pulseはデフォルトで、アプリケーションで発生するすべての
 例外の処理方法をカスタマイズしたい場合は、`handleExceptionsUsing`メソッドにクロージャを指定してください。
 
 ```php
-use \Laravel\Pulse\Facades\Pulse;
-use \Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Support\Facades\Log;
 
 Pulse::handleExceptionsUsing(function ($e) {
     Log::debug('An exception happened in Pulse', [

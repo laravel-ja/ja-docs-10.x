@@ -1906,7 +1906,7 @@ php artisan queue:prune-failed --hours=48
 <a name="storing-failed-jobs-in-dynamodb"></a>
 ### 失敗したジョブのDynamoDBへの保存
 
-Laravelでは、失敗したジョブレコードをリレーショナルデータベースのテーブルではなく、[DynamoDB](https://aws.amazon.com/dynamodb)へ保存するサポートも提供しています。ただし、失敗したジョブの記録をすべて保存するための、DynamoDBテーブルを作成しておく必要があります。通常、このテーブルは`failed_jobs`という名前になりますが、アプリケーションの`queue`設定ファイル内の`queue.failed.table`設定値に基づいて、テーブル名を付ける必要があります。
+Laravelでは、失敗したジョブレコードをリレーショナルデータベースのテーブルではなく、[DynamoDB](https://aws.amazon.com/dynamodb)へ保存するサポートも提供しています。ただし、失敗したジョブの記録をすべて保存するための、DynamoDBテーブルを手作業で作成しておく必要があります。通常、このテーブルは`failed_jobs`という名前になりますが、アプリケーションの`queue`設定ファイル内の`queue.failed.table`設定値に基づいて、テーブル名を付ける必要があります。
 
 `failed_jobs`テーブルは、`application`という名前で文字列のプライマリパーティションキーと、`uuid`という名前の文字列のプライマリソートキーを持つ必要があります。キーの`application`部分には、アプリケーションの`app`設定ファイル内の`name`設定値で定義したアプリケーション名が含まれます。アプリケーション名はDynamoDBテーブルのキーの一部なので、同じテーブルを使って複数のLaravelアプリケーションの失敗したジョブを保存できます。
 

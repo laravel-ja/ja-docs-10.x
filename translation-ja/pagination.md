@@ -126,7 +126,7 @@ http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 カーソルページネータインスタンスを取得したら、`paginate`や`simplePaginate`メソッドを使うときと同様に、[ペジネーションの結果を表示](#displaying-pagination-results)します。カーソルペジネータが提供するインスタンスメソッドの詳細は、[カーソルペジネータインスタンスのドキュメント](#cursor-paginator-instance-methods)を参照してください。
 
 > **Warning**
-> カーソルのペジネーションを利用するには、クエリに "order by"句を含める必要があります。
+> カーソルのペジネーションを利用するには、クエリへ"order by"句を含める必要があります。さらに、クエリの順序を指定するカラムは、ペジネーションを行うテーブルに属している必要もあります。
 
 <a name="cursor-vs-offset-pagination"></a>
 #### カーソル vs. オフセットペジネーション
@@ -332,48 +332,48 @@ Laravelは、[Bootstrap CSS](https://getbootstrap.com/)を使用し構築した�
 
 各ペジネーションインスタンスは、以下のメソッドで追加のペジネーション情報を提供します。
 
-メソッド  |  説明
--------  |  -----------
-`$paginator->count()`  |  現在のページのアイテム数を取得
-`$paginator->currentPage()`  |  現在のページ番号を取得
-`$paginator->firstItem()`  |  結果の最初の項目の結果番号を取得
-`$paginator->getOptions()`  |  ペジネータオプションを取得
-`$paginator->getUrlRange($start, $end)`  |  ペジネーションURLを範囲内で生成
-`$paginator->hasPages()`  |  複数のページに分割するのに十分なアイテムがあるかどうかを判定
-`$paginator->hasMorePages()`  |  データストアにさらにアイテムがあるかどうかを判定
-`$paginator->items()`  |  現在のページのアイテムを取得
-`$paginator->lastItem()`  |  結果の最後のアイテムの結果番号を取得
-`$paginator->lastPage()`  |  最後に利用可能なページのページ番号を取得（`simplePaginate`使用時は使用不可能）
-`$paginator->nextPageUrl()`  |  次のページのURLを取得
-`$paginator->onFirstPage()`  |  ペジネータが最初のページにあるかを判定
-`$paginator->perPage()`  |  １ページ中に表示するアイテムの数
-`$paginator->previousPageUrl()`  |  前のページのURLを取得
-`$paginator->total()`  |  データストア内の一致するアイテムの総数を判定（`simplePaginate`使用時は使用不可能）
-`$paginator->url($page)`  |  指定するページ番号のURLを取得
-`$paginator->getPageName()`  |  ページの保存に使用するクエリ文字列変数を取得
-`$paginator->setPageName($name)`  |  ページの保存に使用するクエリ文字列変数を設定
-`$paginator->through($callback)`  |  コールバックを使い、各アイテムを変換
+| メソッド                                | 説明                                                                               |
+| --------------------------------------- | ---------------------------------------------------------------------------------- |
+| `$paginator->count()`                   | 現在のページのアイテム数を取得                                                     |
+| `$paginator->currentPage()`             | 現在のページ番号を取得                                                             |
+| `$paginator->firstItem()`               | 結果の最初の項目の結果番号を取得                                                   |
+| `$paginator->getOptions()`              | ペジネータオプションを取得                                                         |
+| `$paginator->getUrlRange($start, $end)` | ペジネーションURLを範囲内で生成                                                    |
+| `$paginator->hasPages()`                | 複数のページに分割するのに十分なアイテムがあるかどうかを判定                       |
+| `$paginator->hasMorePages()`            | データストアにさらにアイテムがあるかどうかを判定                                   |
+| `$paginator->items()`                   | 現在のページのアイテムを取得                                                       |
+| `$paginator->lastItem()`                | 結果の最後のアイテムの結果番号を取得                                               |
+| `$paginator->lastPage()`                | 最後に利用可能なページのページ番号を取得（`simplePaginate`使用時は使用不可能）     |
+| `$paginator->nextPageUrl()`             | 次のページのURLを取得                                                              |
+| `$paginator->onFirstPage()`             | ペジネータが最初のページにあるかを判定                                             |
+| `$paginator->perPage()`                 | １ページ中に表示するアイテムの数                                                   |
+| `$paginator->previousPageUrl()`         | 前のページのURLを取得                                                              |
+| `$paginator->total()`                   | データストア内の一致するアイテムの総数を判定（`simplePaginate`使用時は使用不可能） |
+| `$paginator->url($page)`                | 指定するページ番号のURLを取得                                                      |
+| `$paginator->getPageName()`             | ページの保存に使用するクエリ文字列変数を取得                                       |
+| `$paginator->setPageName($name)`        | ページの保存に使用するクエリ文字列変数を設定                                       |
+| `$paginator->through($callback)`        | コールバックを使い、各アイテムを変換                                               |
 
 <a name="cursor-paginator-instance-methods"></a>
 ## カーソルPaginatorインスタンスのメソッド
 
 各カーソルペジネータインスタンスは、以降のメソッドで追加のペジネーション情報を提供します。
 
-メソッド  |  説明
--------  |  -----------
-`$paginator->count()`  |  現在のページのアイテム数を取得
-`$paginator->cursor()`  |  現在のカーソルインスタンスを取得
-`$paginator->getOptions()`  |  ペジネータオプションを取得
-`$paginator->hasPages()`  |  複数のページに分割するのに十分なアイテムがあるかどうかを判定
-`$paginator->hasMorePages()`  |  データストアにさらにアイテムがあるかどうかを判定
-`$paginator->getCursorName()`  |  カーソルの保存で使用するクエリ文字列変数を取得
-`$paginator->items()`  |  現在のページのアイテムを取得
-`$paginator->nextCursor()`  |  次のアイテムセットのカーソルインスタンスを取得
-`$paginator->nextPageUrl()`  |  次のページのURLを取得
-`$paginator->onFirstPage()`  |  ペジネータが最初のページにあるかを判定
-`$paginator->onLastPage()`  |  ペジネータが最後のページにあるかを判定
-`$paginator->perPage()`  |  １ページ中に表示するアイテムの数
-`$paginator->previousCursor()`  |  前のアイテムセットのカーソルインスタンスを取得
-`$paginator->previousPageUrl()`  |  前のページのURLを取得
-`$paginator->setCursorName()`  |  カーソルの保存に使用するクエリ文字列変数を設定
-`$paginator->url($cursor)`  |  指定するカーソルインスタンスのURLを取得
+| メソッド                        | 説明                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| `$paginator->count()`           | 現在のページのアイテム数を取得                               |
+| `$paginator->cursor()`          | 現在のカーソルインスタンスを取得                             |
+| `$paginator->getOptions()`      | ペジネータオプションを取得                                   |
+| `$paginator->hasPages()`        | 複数のページに分割するのに十分なアイテムがあるかどうかを判定 |
+| `$paginator->hasMorePages()`    | データストアにさらにアイテムがあるかどうかを判定             |
+| `$paginator->getCursorName()`   | カーソルの保存で使用するクエリ文字列変数を取得               |
+| `$paginator->items()`           | 現在のページのアイテムを取得                                 |
+| `$paginator->nextCursor()`      | 次のアイテムセットのカーソルインスタンスを取得               |
+| `$paginator->nextPageUrl()`     | 次のページのURLを取得                                        |
+| `$paginator->onFirstPage()`     | ペジネータが最初のページにあるかを判定                       |
+| `$paginator->onLastPage()`      | ペジネータが最後のページにあるかを判定                       |
+| `$paginator->perPage()`         | １ページ中に表示するアイテムの数                             |
+| `$paginator->previousCursor()`  | 前のアイテムセットのカーソルインスタンスを取得               |
+| `$paginator->previousPageUrl()` | 前のページのURLを取得                                        |
+| `$paginator->setCursorName()`   | カーソルの保存に使用するクエリ文字列変数を設定               |
+| `$paginator->url($cursor)`      | 指定するカーソルインスタンスのURLを取得                      |

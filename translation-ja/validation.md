@@ -1233,7 +1233,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-enum"></a>
 #### enum
 
-`Enum`ルールはクラスベースのルールで、対象のフィールドに有効なenumの値が含まれているかどうかをバリデートします。`Enum`ルールは、コンストラクタの引数に唯一、enumの名前を取ります。
+`Enum`ルールはクラスベースのルールで、対象のフィールドに有効なenumの値が含まれているかどうかをバリデートします。`Enum`ルールは、コンストラクタの引数に唯一、enumの名前を取ります。プリミティブ値のバリデーションを行う際は、`Enum`ルールに値に依存した（backed）Enumを指定しなければなりません。
 
     use App\Enums\ServerStatus;
     use Illuminate\Validation\Rule;

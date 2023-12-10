@@ -9,6 +9,7 @@
     - [Cards](#dashboard-cards)
 - [Capturing Entries](#capturing-entries)
     - [Recorders](#recorders)
+    - [Filtering](#filtering)
 - [Performance](#performance)
     - [Using a Different Database](#using-a-different-database)
     - [Redis Ingest](#ingest)
@@ -27,7 +28,7 @@ For in-depth debugging of individual events, check out [Laravel Telescope](/docs
 ## Installation
 
 > **Warning**  
-> Pulse's first-party storage implementation currently requires a MySQL database. If you are using a different database engine, such as PostgreSQL, you will need a separate MySQL database for your Pulse data.
+> Pulse's first-party storage implementation currently requires a MySQL or PostgreSQL database. If you are using a different database engine, you will need a separate MySQL or PostgreSQL database for your Pulse data.
 
 Since Pulse is currently in beta, you may need to adjust your application's `composer.json` file to allow beta package releases to be installed:
 
@@ -42,9 +43,15 @@ Then, you may use the Composer package manager to install Pulse into your Larave
 composer require laravel/pulse
 ```
 
-After installing Pulse, you should run the `migrate` command in order to create the tables needed to store Pulse's data:
+Next, you should publish the Pulse configuration and migration files using the `vendor:publish` Artisan command:
 
-```sh
+```shell
+php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
+```
+
+Finally, you should run the `migrate` command in order to create the tables needed to store Pulse's data:
+
+```shell
 php artisan migrate
 ```
 
@@ -328,9 +335,32 @@ You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
 #### User Requests
 
 The `UserRequests` recorder captures information about the users making requests to your application for display on the [Application Usage](#application-usage-card) card.
-[Application Usage](#application-usage-card) card
 
 You may optionally adjust the [sample rate](#sampling) and ignored job patterns.
+
+<a name="filtering"></a>
+### Filtering
+
+As we have seen, many [recorders](#recorders) offer the ability to, via configuration, "ignore" incoming entries based on their value, such as a request's URL. But, sometimes it may be useful to filter out records based on other factors, such as the currently authenticated user. To filter out these records, you may pass a closure to Pulse's `filter` method. Typically, the `filter` method should be invoked within the `boot` method of your application's `AppServiceProvider`:
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Laravel\Pulse\Entry;
+use Laravel\Pulse\Facades\Pulse;
+use Laravel\Pulse\Value;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Pulse::filter(function (Entry|Value $entry) {
+        return Auth::user()->isNotAdmin();
+    });
+
+    // ...
+}
+```
 
 <a name="performance"></a>
 ## Performance
@@ -350,6 +380,9 @@ PULSE_DB_CONNECTION=pulse
 
 <a name="ingest"></a>
 ### Redis Ingest
+
+> **Warning**  
+> The Redis Ingest requires Redis 6.2 or greater and `phpredis` or `predis` as the application's configured Redis client driver.
 
 By default, Pulse will store entries directly to the [configured database connection](#using-a-different-database) after the HTTP response has been sent to the client or a job has been processed; however, you may use Pulse's Redis ingest driver to send entries to a Redis stream instead. This can be enabled by configuring the `PULSE_INGEST_DRIVER` environment variable:
 
@@ -394,8 +427,8 @@ If an exception occurs while capturing Pulse data, such as being unable to conne
 If you wish to customize how these exceptions are handled, you may provide a closure to the `handleExceptionsUsing` method:
 
 ```php
-use \Laravel\Pulse\Facades\Pulse;
-use \Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
+use Illuminate\Support\Facades\Log;
 
 Pulse::handleExceptionsUsing(function ($e) {
     Log::debug('An exception happened in Pulse', [

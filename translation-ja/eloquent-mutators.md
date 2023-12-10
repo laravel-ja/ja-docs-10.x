@@ -325,7 +325,7 @@ protected function address(): Attribute
 
     $user->save();
 
-JSON属性の単一のフィールドをより簡潔な構文で更新するには、`update`メソッドを呼び出すときに`->`演算子を使用します。
+より簡潔な構文でJSON属性の単一フィールドを更新するには、[その属性を複数代入可能にし](/docs/{{version}}/eloquent#mass-assignment-json-columns)、`update`メソッドを呼び出すときに、`->`演算子を使用してください。
 
     $user = User::find(1);
 

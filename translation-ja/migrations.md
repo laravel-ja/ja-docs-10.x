@@ -1237,11 +1237,12 @@ Laravelは、データベースレベルで参照整合性を強制するため�
 
 これらのアクションには、表現力の高い別構文も用意しています。
 
-| メソッド                      | 説明                                   |
+| メソッド                      | 解説                                   |
 | ----------------------------- | -------------------------------------- |
-| `$table->cascadeOnUpdate();`  | 更新をカスケードします。               |
-| `$table->restrictOnUpdate();` | 更新を制限します。                     |
-| `$table->cascadeOnDelete();`  | 削除をカスケードします。               |
+| `$table->cascadeOnUpdate();`  | 更新をカスケードします                 |
+| `$table->restrictOnUpdate();` | 更新を制限します                       |
+| `$table->noActionOnUpdate();` | 更新では何もしません                   |
+| `$table->cascadeOnDelete();`  | 削除をカスケードします                 |
 | `$table->restrictOnDelete();` | 削除を制限します。                     |
 | `$table->nullOnDelete();`     | 削除時に外部キーへNULLをセットします。 |
 

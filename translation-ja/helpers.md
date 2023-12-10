@@ -88,6 +88,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
 <div class="collection-method-list" markdown="1">
 
+[Number::abbreviate](#method-number-abbreviate)
 [Number::format](#method-number-format)
 [Number::percentage](#method-number-percentage)
 [Number::currency](#method-number-currency)
@@ -1097,6 +1098,25 @@ $classes = Arr::toCssStyles($array);
 <a name="numbers"></a>
 ## 数値
 
+<a name="method-number-abbreviate"></a>
+#### `Number::abbreviate()` {.collection-method}
+
+`Number::abbreviate`メソッドは、指定値を人間が読みやすい形式に、単位の週略系をつけて返します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::abbreviate(1000);
+
+    // 1K
+
+    $number = Number::forHumans(489939);
+
+    // 490K
+
+    $number = Number::forHumans(1230000, precision: 2);
+
+    // 1.23M
+
 <a name="method-number-format"></a>
 #### `Number::format()` {.collection-method}
 
@@ -1184,7 +1204,7 @@ $classes = Arr::toCssStyles($array);
 <a name="method-number-for-humans"></a>
 #### `Number::forHumans()` {.collection-method}
 
-Number::forHumans()`メソッドは、渡した数値を人間が読める形態で返します。
+`Number::forHumans`メソッドは、指定値を人間が読める形式で返します。
 
     use Illuminate\Support\Number;
 
