@@ -29,6 +29,7 @@
     - [バッチのキャンセル](#cancelling-batches)
     - [バッチの失敗](#batch-failures)
     - [バッチの整理](#pruning-batches)
+    - [DynamoDBへのバッチ保存](#storing-batches-in-dynamodb)
 - [クロージャのキュー投入](#queueing-closures)
 - [キューワーカの実行](#running-the-queue-worker)
     - [`queue:work`コマンド](#the-queue-work-command)
@@ -1489,6 +1490,60 @@ php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
 `jobs_batches`テーブルと同様に、キャンセルされたバッチレコードが蓄積されるかもしれません。`queue:prune-batches`コマンドの`cancelled`オプションを使って、これらのキャンセルされたバッチレコードを整理ように指示してください。
 
     $schedule->command('queue:prune-batches --hours=48 --cancelled=72')->daily();
+
+<a name="storing-batches-in-dynamodb"></a>
+### DynamoDBへのバッチ保存
+
+Laravelでは、バッチのメタ情報をリレーショナルデータベースではなく、[DynamoDB](https://aws.amazon.com/dynamodb)へ格納する方法もサポートしています。ただし、バッチレコードをすべて格納する、DynamoDBテーブルを手作業で作成する必要があります。
+
+通常、このテーブルは`job_batches`という名前にしますが、アプリケーションの`queue`設定ファイル内の`queue.batching.table`設定値に基づいて名前を付ける必要があります。
+
+<a name="dynamodb-batch-table-configuration"></a>
+#### DynamoDBバッチテーブル設定
+
+`job_batches`テーブルには、`application`という文字列のプライマリパーティションキーと`id`という文字列のプライマリソートキーを設定してください。キーの`application`の部分には、アプリケーションの`app`設定ファイル内の`name`設定値で定義したアプリケーション名が格納されます。アプリケーション名はDynamoDBテーブルのキーの一部なので、同じテーブルを使って複数のLaravelアプリケーションのジョブバッチを格納できます。
+
+さらに、[自動バッチ整理](#pruning-batches-in-dynamodb)を利用したい場合は、テーブルに`ttl`属性を定義することもできます。
+
+<a name="dynamodb-configuration"></a>
+#### DynamoDB設定
+
+次に、LaravelアプリケーションがAmazon DynamoDBと通信できるように、AWS SDKをインストールします。
+
+```shell
+composer require aws/aws-sdk-php
+```
+
+次に、`queue.batching.driver`設定オプションの値を`dynamodb`に設定します。さらに、`batching`設定配列内で、`key`、`secret`、`region`設定オプションを定義してください。これらのオプションはAWSとの認証に使用します。`dynamodb`ドライバを使用する場合、`queue.batching.database`設定オプションは不要です。
+
+```php
+'batching' => [
+    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'table' => 'job_batches',
+],
+```
+
+<a name="pruning-batches-in-dynamodb"></a>
+#### DynamoDBでのバッチの整理
+
+[DynamoDB](https://aws.amazon.com/dynamodb)を使用してジョブバッチ情報を保存する場合、リレーショナルデータベースへ保存したバッチを削除する、一般的なコマンドは機能しません。代わりに、[DynamoDBのネイティブTTL機能](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)を利用して、古いバッチのレコードを自動的に削除できます。
+
+DynamoDBのテーブルに`ttl`属性を定義した場合、Laravelにバッチレコードの整理方法を指示する設定パラメータを定義できます。`queue.batching.ttl_attribute`設定値はTTLを保持する属性名を定義し、`queue.batching.ttl`設定値は、最後に更新されてからバッチレコードがDynamoDBテーブルから削除されるまでの秒数を定義します。
+
+```php
+'batching' => [
+    'driver' => env('QUEUE_FAILED_DRIVER', 'dynamodb'),
+    'key' => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    'table' => 'job_batches',
+    'ttl_attribute' => 'ttl',
+    'ttl' => 60 * 60 * 24 * 7, // ７日
+],
+```
 
 <a name="queueing-closures"></a>
 ## クロージャのキュー投入

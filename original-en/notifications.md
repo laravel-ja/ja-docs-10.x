@@ -798,7 +798,7 @@ php artisan migrate
 ```
 
 > **Note**  
-> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
+> If your notifiable models are using [UUID or ULID primary keys](/docs/{{version}}/eloquent#uuid-and-ulid-keys), you should replace the `morphs` method with [`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs) or [`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs) in the notification table migration.
 
 <a name="formatting-database-notifications"></a>
 ### Formatting Database Notifications
@@ -816,6 +816,18 @@ If a notification supports being stored in a database table, you should define a
             'invoice_id' => $this->invoice->id,
             'amount' => $this->invoice->amount,
         ];
+    }
+
+When the notification is stored in your application's database, the `type` column will be populated with the notification's class name. However, you may customize this behavior by defining a `databaseType` method on your notification class:
+
+    /**
+     * Get the notification's database type.
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'invoice-paid';
     }
 
 <a name="todatabase-vs-toarray"></a>

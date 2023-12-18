@@ -798,7 +798,7 @@ php artisan migrate
 ```
 
 > **Note**
-> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
+> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
 
 <a name="formatting-database-notifications"></a>
 ### データベース通知のフォーマット
@@ -816,6 +816,18 @@ php artisan migrate
             'invoice_id' => $this->invoice->id,
             'amount' => $this->invoice->amount,
         ];
+    }
+
+通知をアプリケーションのデータベースへ格納するとき、`type`カラムには通知クラス名を入力します。しかし、通知クラスに`databaseType`メソッドを定義し、この動作をカスタマイズできます。
+
+    /**
+     * 通知のデータベースタイプを取得
+     *
+     * @return string
+     */
+    public function databaseType(object $notifiable): string
+    {
+        return 'invoice-paid';
     }
 
 <a name="todatabase-vs-toarray"></a>

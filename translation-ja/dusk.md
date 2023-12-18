@@ -1165,6 +1165,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertValueIsNot](#assert-value-is-not)
 [assertAttribute](#assert-attribute)
 [assertAttributeContains](#assert-attribute-contains)
+[assertAttributeDoesntContain](#assert-attribute-doesnt-contain)
 [assertAriaAttribute](#assert-aria-attribute)
 [assertDataAttribute](#assert-data-attribute)
 [assertVisible](#assert-visible)
@@ -1186,7 +1187,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertVue](#assert-vue)
 [assertVueIsNot](#assert-vue-is-not)
 [assertVueContains](#assert-vue-contains)
-[assertVueDoesNotContain](#assert-vue-does-not-contain)
+[assertVueDoesntContain](#assert-vue-doesnt-contain)
 
 </div>
 
@@ -1559,6 +1560,13 @@ URLの現在のハッシュフラグメントが指定するフラグメント�
 
     $browser->assertAttributeContains($selector, $attribute, $value);
 
+<a name="assert-attribute-doesnt-contain"></a>
+#### assertAttributeDoesntContain
+
+指定したセレクタに一致する要素が、指定属性に指定値を含まないことを宣言します。
+
+    $browser->assertAttributeDoesntContain($selector, $attribute, $value);
+
 <a name="assert-aria-attribute"></a>
 #### assertAriaAttribute
 
@@ -1743,12 +1751,12 @@ Duskでは、[Vueコンポーネント](https://vuejs.org)データの状態に�
 
     $browser->assertVueContains($property, $value, $componentSelector = null);
 
-<a name="assert-vue-does-not-contain"></a>
-#### assertVueDoesNotContain
+<a name="assert-vue-doesnt-contain"></a>
+#### assertVueDoesntContain
 
 指定したVueコンポーネントのデータプロパティが配列で、指定値を含まないことを宣言します。
 
-    $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
+    $browser->assertVueDoesntContain($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
 ## ページ

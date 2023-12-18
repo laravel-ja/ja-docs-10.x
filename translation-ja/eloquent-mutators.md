@@ -764,11 +764,10 @@ php artisan make:cast Hash --inbound
 
     <?php
 
-    namespace App\Models;
+    namespace App\ValueObjects;
 
     use Illuminate\Contracts\Database\Eloquent\Castable;
     use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-    use Illuminate\Database\Eloquent\Model;
 
     class Address implements Castable
     {

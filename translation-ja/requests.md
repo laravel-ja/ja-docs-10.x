@@ -187,6 +187,12 @@ $request->fullUrlWithoutQuery(['type']);
 
     $ipAddress = $request->ip();
 
+プロキシによって転送されるすべてのクライアントIPアドレスを含むIPアドレスの配列を取得したい場合は、`ips`メソッドを使用してください。「元の」クライアントIPアドレスは配列の最後になります。
+
+    $ipAddresses = $request->ips();
+
+一般的に、IPアドレスは信頼できないユーザーが制御できる入力と見なし、情報提供のみを目的として使用するべきでしょう。
+
 <a name="content-negotiation"></a>
 ### コンテントネゴシエーション
 

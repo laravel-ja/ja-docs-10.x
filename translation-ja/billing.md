@@ -11,6 +11,9 @@
     - [税設定](#tax-configuration)
     - [ログ](#logging)
     - [カスタムモデルの使用](#using-custom-models)
+- [クイックスタート](#quickstart)
+    - [プロダクトの販売](#quickstart-selling-products)
+    - [サブスクリプションの販売](#quickstart-selling-subscriptions)
 - [顧客](#customers)
     - [顧客の取得](#retrieving-customers)
     - [顧客の作成](#creating-customers)
@@ -245,6 +248,194 @@ StripeへのAPI呼び出しで発生した例外は、アプリケーション�
         Cashier::useSubscriptionModel(Subscription::class);
         Cashier::useSubscriptionItemModel(SubscriptionItem::class);
     }
+
+<a name="quickstart"></a>
+## クイックスタート
+
+<a name="quickstart-selling-products"></a>
+### プロダクトの販売
+
+> **Note**
+> Stripeチェックアウトを利用する前に、Stripeダッシュボードにより、固定価格で商品を定義してください。さらに、[CashierのWebフック処理を設定](#handling-stripe-webhooks)する必要もあります。
+
+アプリケーションで商品や定期購入の課金を提供するのは、敷居が高いかもしれません。しかし、Cashierと[Stripe Checkout](https://stripe.com/payments/checkout)のおかげで、モダンで堅牢な決済統合を簡単に構築できます。
+
+定期的でない、１回限りの課金を行う商品を顧客に提供するには、Cashierを利用して顧客をStripe Checkoutへ誘導します。そこで顧客は、支払いの詳細を入力し、購入を確認します。Checkoutで支払いが完了すると、顧客をアプリケーション内の選択した成功URLへリダイレクトします。
+
+    use Illuminate\Http\Request;
+
+    Route::get('/checkout', function (Request $request) {
+        $stripePriceId = 'price_deluxe_album';
+
+        $quantity = 1;
+
+        return $request->user()->checkout([$stripePriceId => $quantity], [
+            'success_url' => route('checkout-success'),
+            'cancel_url' => route('checkout-cancel'),
+        ]);
+    })->name('checkout');
+
+    Route::view('checkout.success')->name('checkout-success');
+    Route::view('checkout.cancel')->name('checkout-cancel');
+
+上の例でわかるように、Cashierが提供する`checkout`メソッドを利用して、指定した「価格識別子」で顧客をStripe Checkoutへリダイレクトします。Stripeを使用する場合、「価格」は[特定の商品に対して定義した価格](https://stripe.com/docs/products-prices/how-products-and-prices-work)を意味します。
+
+必要に応じて、`checkout`メソッドは自動的にStripeに顧客を作成し、Stripeの顧客レコードをアプリケーションのデータベースの対応するユーザーと接続します。チェックアウトセッションの完了後、顧客を成功またはキャンセル専用のページへリダイレクトし、そこで顧客に情報メッセージを表示できます。
+
+<a name="providing-meta-data-to-stripe-checkout"></a>
+#### Stripe Checkoutへのメタデータ提供
+
+商品を販売する場合、自分のアプリケーションで定義した`Cart`と`Order`モデルを使用して、完了した注文と購入した商品を追跡するのが一般的です。顧客が購入を完了するためStripe Checkoutへリダイレクトする場合、顧客がアプリケーションへリダイレクトされ戻ったときに、完了した購入と対応する注文を関連付けできるように、既存の注文識別子を提供する必要が起きるでしょう。
+
+これを行うには、`metadata`の配列を`checkout`メソッドへ渡してください。ユーザーがチェックアウト処理を開始したときに、保留中の`Order`をアプリケーション内に作成するとしましょう。この例の`Cart`と`Order`モデルは一例であり、Cashierが提供するものではないことを忘れないでください。こうしたコンセプトはあなたのアプリケーションのニーズに基づいて自由に実装してもらえます。
+
+    use App\Models\Cart;
+    use App\Models\Order;
+    use Illuminate\Http\Request;
+
+    Route::get('/cart/{cart}/checkout', function (Request $request, Cart $cart) {
+        $order = Order::create([
+            'cart_id' => $cart->id,
+            'price_ids' => $cart->price_ids,
+            'status' => 'incomplete',
+        ]);
+
+        return $request->user()->checkout($order->price_ids, [
+            'success_url' => route('checkout-success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout-cancel'),
+            'metadata' => ['order_id' => $order->id],
+        ]);
+    })->name('checkout');
+
+上例でわかるように、ユーザーがチェックアウト処理を開始するときに、カート／注文に関連するStripeの価格識別子をすべて`checkout`メソッドへ提供しています。もちろん、顧客がアイテムを追加した際にこうしたアイテムを「ショッピングカート」や注文と関連付けるのはアプリケーションの役割です。さらに、注文のIDを`metadata`配列経由で、Stripe Checkoutセッションへ提供しています。最後に、チェックアウト成功ルートへ、`CHECKOUT_SESSION_ID`テンプレート変数を追加しました。Stripeが顧客をアプリケーションにリダイレクトするとき、このテンプレート変数へcheckoutセッションIDが自動的に入力されます。
+
+次に、チェックアウト成功ルートを作成しましょう。これは、Stripe Checkout経由で購入が完了した後に、ユーザーをリダイレクトするルートです。このルート内で、Stripe CheckoutのセッションIDと関連するStripe Checkoutインスタンスを取得し、提供しておいたメタデータへアクセスし、それに応じた顧客の注文を更新します：
+
+    use App\Models\Order;
+    use Illuminate\Http\Request;
+    use Laravel\Cashier\Cashier;
+
+    Route::get('/checkout/success', function (Request $request) {
+        $sessionId = $request->get('session_id');
+
+        $orderId = Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
+
+        $order = Order::findOrFail($orderId);
+
+        $order->update(['status' => 'completed']);
+
+        return view('checkout-success', ['order' => $order]);
+    })->name('checkout-success');
+
+[Checkoutオブジェクトに含まれるデータ](https://stripe.com/docs/api/checkout/sessions/object)の詳細については、Stripeのドキュメントを参照してください。
+
+<a name="quickstart-selling-subscriptions"></a>
+### サブスクリプションの販売
+
+> **Note**
+> Stripe Checkoutを利用する前に、Stripeダッシュボードで固定価格の商品を定義してください。さらに、[CashierのWebフック処理を設定](#handling-stripe-webhooks)する必要もあります。
+
+アプリケーションで商品やサブスクリプションの課金を提供するのは、敷居が高いかもしれません。しかし、Cashierと[Stripe Checkout](https://stripe.com/payments/checkout)のおかげで、モダンで堅牢な決済統合を簡単に構築できます。
+
+CashierとStripe Checkoutを使ったサブスクリプションの販売方法を学ぶために、基本的な月額プラン（`price_basic_monthly`）と年間プラン（`price_basic_yearly`）を持つ定期購入サービスの簡単なシナリオを考えてみましょう。これら２つの価格は、Stripeダッシュボードの「ベーシック」商品（`pro_basic`）にグループ化できます。さらに、エキスパート（Expert）プラン（`pro_expert`）として提供しているサブスクリプションサービスも、提供しましょう。
+
+まず、顧客がどのように私たちのサービスを購読できるようにするか見つけましょう。もちろん、顧客がアプリケーションの価格ページで、ベーシックプランの「購入する」ボタンをクリックすることは想像できます。このボタンまたはリンクは、選んだプランのStripe Checkoutセッションを作成するLaravelルートへ、ユーザーを誘導する必要があります。
+
+    use Illuminate\Http\Request;
+
+    Route::get('/subscription-checkout', function (Request $request) {
+        return $request->user()
+            ->newSubscription('default', 'price_basic_monthly')
+            ->trialDays(5)
+            ->allowPromotionCodes()
+            ->checkout([
+                'success_url' => route('your-success-route'),
+                'cancel_url' => route('your-cancel-route'),
+            ]);
+    });
+
+上例でわかるように、顧客をStripe Checkoutセッションへリダイレクトし、ベーシックプランに加入できるようにしています。チェックアウトまたはキャンセルが成功すると、顧客は`checkout`にリダイレクトされます。（支払い方法によっては処理に数秒かかるものもあるため）実際にサブスクリプションが購読開始されたことを知るには、[CashierのWebフック処理を設定](#handling-stripe-webhooks)する必要があります。
+
+顧客が購読を開始できるようにしたので、購読済みのユーザーだけがアクセスできるように、アプリケーションの特定の部分を制限する必要があります。もちろん、Cashierの`Billable`トレイトが提供する`subscribed`メソッドにより、いつでもユーザーの現在の購読ステータスを判定できます。
+
+```blade
+@if ($user->subscribed())
+    <p>You are subscribed.</p
+endif
+```
+
+ユーザーが特定の商品や価格を購読しているかどうかも簡単に判断できます。
+
+```blade
+@if ($user->subscribedToProduct('pro_basic'))
+    <p>You are subscribed to our Basic product.</p>
+@endif
+
+@if ($user->subscribedToPrice('price_basic_monthly'))
+    <p>You are subscribed to our monthly Basic plan.</p>
+@endif
+```
+
+<a name="quickstart-building-a-subscribed-middleware"></a>
+#### サブスクリプション後続済みミドルウェアの構築
+
+[ミドルウェア](/docs/{{version}}/middleware)を作成して、受信リクエストが購読済みユーザーからのものであることを判断できると便利です。このミドルウェアを定義すると、購読していないユーザーがあるルートにアクセスできないように、簡単にルートへ割り当てできます
+
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
+
+    class Subscribed
+    {
+        /**
+         * 受信リクエストの処理
+         */
+        public function handle(Request $request, Closure $next): Response
+        {
+            if (! $request->user()?->subscribed()) {
+                // ユーザーを支払いページへリダイレクトし、サブスクリプションを購入するか尋ねる
+                return redirect('/billing');
+            }
+
+            return $next($request);
+        }
+    }
+
+ミドルウェアを定義したら、それをルートに割り当てます。
+
+    use App\Http\Middleware\Subscribed;
+
+    Route::get('/dashboard', function () {
+        // ...
+    })->middleware([Subscribed::class]);
+
+<a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
+#### 顧客に支払いプランを管理させる
+
+もちろん、顧客がサブスクリプションプランを別の製品や「試用期間サービス」に変更したい場合もあり得ます。これを可能にする最も簡単な方法は、お客様をStripeの[顧客支払いポータル](https://stripe.com/docs/no-code/customer-portal)へ誘導する方法です。このポータルは、ユーザーインターフェイスを提供し、顧客が請求書をダウンロードしたり、支払い方法を更新したり、サブスクリプションプランを変更したりできるようにします。
+
+まず、アプリケーションでユーザーを支払いポータルセッションへ導くためのLaravelルートへ誘導するリンクまたはボタンを定義します：
+
+```blade
+<a href="{{ route('billing') }}">
+    Billing
+</a>
+```
+
+次に、Stripe顧客支払いポータルセッションを開始し、ユーザーをこのポータルへリダイレクトするルートを定義します。`redirectToBillingPortal`メソッドは、ポータルを終了したときに、ユーザーが戻るべきURLを引数に取ります。
+
+    use Illuminate\Http\Request;
+
+    Route::get('/billing', function (Request $request) {
+        return $request->user()->redirectToBillingPortal(route('dashboard'));
+    })->middleware(['auth'])->name('billing');
+
+> **Note**
+> CashierのWebフック処理を設定している限り、CashierはStripeから受信するWebフックを調べ、アプリケーションのCashier関連データベーステーブルを自動的に同期します。例えば、ユーザーがStripeの顧客支払いポータル経由で定期購入をキャンセルすると、Cashierは対応するWebフックを受信し、アプリケーションのデータベースで定期購入を「キャンセル」としてマークします。
 
 <a name="customers"></a>
 ## 顧客
