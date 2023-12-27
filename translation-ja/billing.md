@@ -3,7 +3,6 @@
 - [イントロダクション](#introduction)
 - [Cashierのアップデート](#upgrading-cashier)
 - [インストール](#installation)
-    - [データベースマイグレーション](#database-migrations)
 - [設定](#configuration)
     - [Billableモデル](#billable-model)
     - [APIキー](#api-keys)
@@ -83,7 +82,7 @@
 キャッシャーの新しいバージョンにアップグレードするときは、[アップグレードガイド](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md)を注意深く確認することが重要です。
 
 > **Warning**
-> 重大な変更を防ぐために、Cashierは固定のStripe APIバージョンを使用します。Cashier14はStripe APIバージョン`2022-11-15`を利用しています。Stripe APIバージョンは、新しいStripe機能と改善点を利用するために、マイナーリリースで更新されます。
+> 重大な変更を防ぐために、Cashierは固定のStripe APIバージョンを使用します。Cashier15はStripe APIバージョン`2023-10-16`を利用しています。Stripe APIバージョンは、新しいStripe機能と改善点を利用するために、マイナーリリースで更新されます。
 
 <a name="installation"></a>
 ## インストール
@@ -94,35 +93,21 @@
 composer require laravel/cashier
 ```
 
-> **Warning**
-> CashierにすべてのStripeイベントを適切に処理させるには、[キャッシャーのWebhook処理](#handling-stripe-webhooks)を忘れずに設定してください。
-
-<a name="database-migrations"></a>
-### データベースマイグレーション
-
-Cashierのサービスプロバイダは独自のデータベースマイグレーションディレクトリを登録しているため、パッケージのインストール後にベータベースをマイグレーションするのを忘れないでください。Cashierのマイグレーションは、`users`テーブルへいくつかのカラムを追加します。また、新しく`subscriptions`テーブルが作成され、顧客のすべてのサブスクリプションを保持し、複数の価格を持つマイグレーションのために、`subscription_items`テーブルを作成します。
-
-```shell
-php artisan migrate
-```
-
-Cashierに同梱されているマイグレーションを上書きする必要がある場合は、`vendor:publish` Artisanコマンドを使用してそれらをリソース公開できます。
+パッケージをインストールしたら、`vendor:publish` Artisanコマンドを使用してCashierのマイグレーションをリソース公開します。
 
 ```shell
 php artisan vendor:publish --tag="cashier-migrations"
 ```
 
-Cashierのマイグレーションを完全に実行しないようにする場合は、Cashierが提供する`ignoreMigrations`メソッドを使用してください。通常、このメソッドは、`AppServiceProvider`の`register`メソッドで呼び出す必要があります。
+Then, migrate your database:
 
-    use Laravel\Cashier\Cashier;
+```shell
+php artisan migrate
+```
 
-    /**
-     * 全アプリケーションサービスの登録
-     */
-    public function register(): void
-    {
-        Cashier::ignoreMigrations();
-    }
+Cashierのマイグレーションは、`users`テーブルにいくつかのカラムを追加します。また、新たに`subscriptions`テーブルも作成し、顧客のすべてのサブスクリプションを保持し、複数の価格を持つサブスクリプションのために`subscription_items`テーブルを作成します。
+
+最後に、CashierがすべてのStripeイベントを適切に処理できるように、[Cashierのウェブフック処理を設定](#handling-stripe-webhooks)するのを忘れないでください。
 
 > **Warning**
 > Stripeは、Stripe識別子の格納に使用するカラムでは、大文字と小文字を区別することを推奨しています。したがって、MySQLを使用する場合は、`stripe_id`列の列照合順序を確実に`utf8_bin`へ設定する必要があります。これに関する詳細は、[Stripeドキュメント](https://stripe.com/docs/upgrades#what-c​​hanges-does-stripe-consider-to-be-backwards-compatible)にあります。
@@ -318,7 +303,7 @@ StripeへのAPI呼び出しで発生した例外は、アプリケーション�
     Route::get('/checkout/success', function (Request $request) {
         $sessionId = $request->get('session_id');
 
-        $orderId = Cashier::stripe()->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
+        $orderId = Cashier::stripe()->checkout->sessions->retrieve($sessionId)['metadata']['order_id'] ?? null;
 
         $order = Order::findOrFail($orderId);
 
@@ -719,7 +704,7 @@ Billableなモデルインスタンスの`paymentMethods`メソッドは、`Lara
 
     $paymentMethods = $user->paymentMethods();
 
-このメソッドはデフォルトで、`card`タイプの支払い方法を返します。別のタイプの支払い方法を取得するには、メソッドの引数に`type`を渡します。
+このメソッドはデフォルトで、すべてのタイプの支払い方法を返します。特定のタイプの支払い方法を取得するには、`type`をメソッドの引数に渡してください。
 
     $paymentMethods = $user->paymentMethods('sepa_debit');
 
@@ -746,7 +731,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
         // ...
     }
 
-このメソッドは、Billableモデルが`card`タイプの支払い方法を持っているかどうかを判断します。そのモデルに別のタイプの支払い方法が存在するかを判断するには、メソッドの引数に`type`を渡してください。
+このメソッドはBillableモデルになにかの支払い方法があるかを判定します。モデルに特定のタイプの支払い方法が存在するかを判定するために、`type`をメソッドの引数として渡すこともできます。
 
     if ($user->hasPaymentMethod('sepa_debit')) {
         // ...
@@ -791,7 +776,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
 
     $user->deletePaymentMethods();
 
-このメソッドはデフォルトで、`card`タイプの支払い方法を削除します。別のタイプの支払い方法を削除するには、メソッドの引数に`type`を渡します。
+このメソッドはデフォルトで、すべてのタイプの支払い方法を削除します。特定のタイプの支払い方法を削除するには、メソッドの引数に`type`を渡してください。
 
     $user->deletePaymentMethods('sepa_debit');
 
@@ -818,7 +803,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
         // ...
     });
 
-`newSubscription`メソッドへ渡す最初の引数は、サブスクリプションの内部名称です。アプリケーションが単一サブスクリプションのみ提供している場合は、これを`default`や`primary`と名付けることが多いでしょう。このサブスクリプション名は、アプリケーション内部でのみ使用するものであり、ユーザーに表示するものではありません。また、スペースを含んではならず、サブスクリプションを作成した後は決して変更してはいけません。２番目の引数は、ユーザーが購読している価格の指定です。この値は、Stripeにおける価格の識別子に対応していなければなりません。
+`newSubscription`メソッドへ渡す最初の引数は、サブスクリプションの内部タイプです。アプリケーションが単一サブスクリプションのみ提供している場合は、これを`default`や`primary`と名付けることが多いでしょう。このサブスクリプションタイプは、アプリケーション内部でのみ使用するものであり、ユーザーに表示するものではありません。また、スペースを含んではならず、サブスクリプションを作成した後は決して変更してはいけません。２番目の引数は、ユーザーが購読している価格の指定です。この値は、Stripeにおける価格の識別子に対応していなければなりません。
 
 [Stripe支払い方法識別子](#storing-payment-methods)またはStripe`PaymentMethod`オブジェクトを引数に取る`create`メソッドは、サブスクリプションを開始するのと同時に、BillableなモデルのStripe顧客IDおよびその他の関連する課金情報でデータベースを更新します。
 
@@ -929,16 +914,16 @@ Stripeがサポートしている[顧客](https://stripe.com/docs/api/customers/
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Stripeダッシュボードからのサブスクリプション作成
 
-Stripeダッシュボード自体からも、サブスクリプションを作成できます。その際、Cashierは新しく追加したサブスクリプションを同期し、それらに`default`の名前を割り当てます。ダッシュボードから作成するサブスクリプションに割り当てるサブスクリプション名をカスタマイズするには、[`WebhookController`を拡張](#defining-webhook-event-handlers)し、`newSubscriptionName`メソッドを上書きします。
+Stripeダッシュボード自体からも、サブスクリプションを作成できます。その際、Cashierは新しく追加したサブスクリプションを同期し、それらに`default`のタイプを割り当てます。ダッシュボードから作成するサブスクリプションに割り当てるサブスクリプション名をカスタマイズするには、[`WebhookController`を拡張](#defining-webhook-event-handlers)し、`newSubscriptionType`メソッドを上書きします。
 
-また、Stripeダッシュボードから作成できるサブスクリプションのタイプは１つだけです。アプリケーションが異なる名前を使用する複数のサブスクリプションを提供している場合でも、Stripeダッシュボードから追加できるサブスクリプションのタイプは１つのみです。
+また、Stripeダッシュボードから作成できるサブスクリプションのタイプは１つだけです。アプリケーションが異なるタイプを使用する複数のサブスクリプションを提供している場合でも、Stripeダッシュボードから追加できるサブスクリプションのタイプは１つのみです。
 
 最後に、アプリケーションが提供するサブスクリプションのタイプごとに、アクティブなサブスクリプションを１つだけ追加するようにしてください。顧客が２つの`default`サブスクリプションを持っている場合、たとえ両方がアプリケーションのデータベースと同期されていても、最後に追加したサブスクリプションのみ、Cashierは使用します。
 
 <a name="checking-subscription-status"></a>
 ### サブスクリプション状態のチェック
 
-顧客がアプリケーションでサブスクリプションを購入すると、さまざまな便利なメソッドを使用して、サブスクリプションの状態を簡単に確認できます。まず、`subscribed`メソッドは、そのサブスクリプションが現在無料トライアル期間内であっても、顧客がアクティブなサブスクリプションを持っている場合は、`true`を返します。`subscribed`メソッドは、最初の引数としてサブスクリプションの名前を受け入れます。
+顧客がアプリケーションでサブスクリプションを購入すると、さまざまな便利なメソッドを使用して、サブスクリプションの状態を簡単に確認できます。まず、`subscribed`メソッドは、そのサブスクリプションが現在無料トライアル期間内であっても、顧客がアクティブなサブスクリプションを持っている場合は、`true`を返します。`subscribed`メソッドは、最初の引数としてサブスクリプションのタイプを引数に取ります。
 
     if ($user->subscribed('default')) {
         // ...
@@ -1003,7 +988,7 @@ Stripeダッシュボード自体からも、サブスクリプションを作�
     }
 
 > **Warning**
-> ユーザーが同じ名前のサブスクリプションを２つ持っている場合、`subscription`メソッドは最新のサブスクリプションを常に返します。たとえば、ユーザーが`default`という名前のサブスクリプションレコードを２つ持っているとします。この場合、サブスクリプションの１つは古い期限切れのサブスクリプションであり、もう１つは現在のアクティブなサブスクリプションである可能性があります。最新のサブスクリプションを常に返しますが、古いサブスクリプションは履歴レビューのためにデータベースに保持されます。
+> ユーザーが同じタイプのサブスクリプションを２つ持っている場合、`subscription`メソッドは最新のサブスクリプションを常に返します。たとえば、ユーザーが`default`というタイプのサブスクリプションレコードを２つ持っているとします。この場合、サブスクリプションの１つは古い期限切れのサブスクリプションであり、もう１つは現在のアクティブなサブスクリプションである可能性があります。最新のサブスクリプションを常に返しますが、古いサブスクリプションは履歴レビューのためにデータベースに保持されます。
 
 <a name="cancelled-subscription-status"></a>
 #### サブスクリプションの取り消し
@@ -1252,7 +1237,7 @@ Stripeは複数商品を持つサブスクリプションに価格を追加ま�
 <a name="swapping-quantities"></a>
 #### サブスクリプション数量
 
-個々のサブスクリプション価格の個数を変更する場合は、[既存の個数メソッド](#subscription-quantity)を使用して、価格の名前をメソッドの追加引数として渡すことで更新できます。
+個々のサブスクリプション価格の個数を変更する場合は、[既存の個数メソッド](#subscription-quantity)を使用して、価格のIDをメソッドの追加引数として渡すことで更新できます。
 
     $user = User::find(1);
 
@@ -1291,7 +1276,7 @@ Stripeは複数商品を持つサブスクリプションに価格を追加ま�
 
 Stripeの顧客は, サブスクリプションを同時に複数利用可能です。例えば、水泳とウェイトリフティング両方のサブスクリプションを提供するスポーツジムを経営している場合、各サブスクリプションは異なる価格設定になっているでしょう。もちろん、顧客はどちらか、もしくは両方のプランを申し込むことができるでしょう。
 
-アプリケーションでサブスクリプションを作成するときに、`newSubscription`メソッドへサブスクリプションの名前を指定してください。この名前は、ユーザーが開始するサブスクリプションのタイプを表す任意の文字列にできます。
+アプリケーションでサブスクリプションを作成するときに、`newSubscription`メソッドへサブスクリプションのタイプを指定してください。このタイプは、ユーザーが開始するサブスクリプションのタイプを表す任意の文字列にできます。
 
     use Illuminate\Http\Request;
 
@@ -1605,7 +1590,7 @@ Cashierはこのタイプの無料トライアル期間を「一般的な無料�
 
     $user->newSubscription('default', 'price_monthly')->create($paymentMethod);
 
-ユーザーの無料トライアル終了日を取得するには、`trialEndsAt`メソッドを使用します。このメソッドは、ユーザーがトライアル中の場合はCarbon日付インスタンスを返し、そうでない場合は`null`を返します。デフォルト以外の特定のサブスクリプションの試用終了日を取得する場合は、オプションのサブスクリプション名パラメーターを渡すこともできます。
+ユーザーの無料トライアル終了日を取得するには、`trialEndsAt`メソッドを使用します。このメソッドは、ユーザーがトライアル中の場合はCarbon日付インスタンスを返し、そうでない場合は`null`を返します。デフォルト以外の特定のサブスクリプションの試用終了日を取得する場合は、オプションのサブスクリプションタイプパラメーターを渡すこともできます。
 
     if ($user->onTrial()) {
         $trialEndsAt = $user->trialEndsAt('main');

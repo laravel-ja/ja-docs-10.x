@@ -96,7 +96,7 @@ php artisan make:view greeting
 
     use Illuminate\Support\Facades\View;
 
-    if (View::exists('emails.customer')) {
+    if (View::exists('admin.profile')) {
         // ...
     }
 

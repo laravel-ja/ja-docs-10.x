@@ -6,6 +6,7 @@
 - [Dashboard](#dashboard)
     - [Authorization](#dashboard-authorization)
     - [Customization](#dashboard-customization)
+    - [Resolving Users](#dashboard-resolving-users)
     - [Cards](#dashboard-cards)
 - [Capturing Entries](#capturing-entries)
     - [Recorders](#recorders)
@@ -16,6 +17,10 @@
     - [Sampling](#sampling)
     - [Trimming](#trimming)
     - [Handling Pulse Exceptions](#pulse-exceptions)
+- [Custom Cards](#custom-cards)
+    - [Card Components](#custom-card-components)
+    - [Styling](#custom-card-styling)
+    - [Data Capture & Aggregation](#custom-card-data)
 
 <a name="introduction"></a>
 ## Introduction
@@ -133,6 +138,37 @@ Most cards also accept an `expand` prop to show the full card instead of scrolli
 <livewire:pulse.slow-queries expand />
 ```
 
+<a name="dashboard-resolving-users"></a>
+### Resolving Users
+
+For cards that display information about your users, such as the Application Usage card, Pulse will only record the user's ID.
+
+When rendering the dashboard, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within your application's `App\Providers\AppServiceProvider` class.
+
+The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing an `id`, `name`, `extra`, and `avatar` for each user ID:
+
+```php
+use App\Models\User;
+use Laravel\Pulse\Facades\Pulse;
+
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    Pulse::users(function ($ids) {
+        return User::findMany($ids)->map(fn ($user) => [
+            'id' => $user->id,
+            'name' => $user->name,
+            'extra' => $user->email,
+            'avatar' => $user->avatar_url,
+        ]);
+    });
+
+    // ...
+}
+```
+
 <a name="dashboard-cards"></a>
 ### Cards
 
@@ -154,22 +190,7 @@ If you wish to view all usage metrics on screen at the same time, you may includ
 <livewire:pulse.usage type="jobs" />
 ```
 
-By default, Pulse will resolve the `name` and `email` fields from the `User` model and display avatars using the Gravatar web service. However, you may customize the user resolution and display by invoking the `Pulse::users` method within application's `App\Providers\AppServiceProvider` class.
-
-The `users` method accepts a closure which will receive the user IDs to be displayed and should return an array or collection containing the `id`, `name`, `extra`, and `avatar` for each user ID:
-
-```php
-use Laravel\Pulse\Facades\Pulse;
-
-Pulse::users(function ($ids) {
-    return User::findMany($ids)->map(fn ($user) => [
-        'id' => $user->id,
-        'name' => $user->name,
-        'extra' => $user->email,
-        'avatar' => $user->avatar_url,
-    ]);
-});
-```
+To learn how to customize how Pulse retrieves and displays user information, consult our documentation on [resolving users](#dashboard-resolving-users).
 
 > **Note**
 > If your application receives a lot of requests or dispatches a lot of jobs, you may wish to enable [sampling](#sampling). See the [user requests recorder](#user-requests-recorder), [user jobs recorder](#user-jobs-recorder), and [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
@@ -436,4 +457,265 @@ Pulse::handleExceptionsUsing(function ($e) {
         'stack' => $e->getTraceAsString(),
     ]);
 });
+```
+
+<a name="custom-cards"></a>
+## Custom Cards
+
+Pulse allows you to build custom cards to display data relevant to your application's specific needs. Pulse uses [Livewire](https://livewire.laravel.com), so you may want to [review its documentation](https://livewire.laravel.com/docs) before building your first custom card.
+
+<a name="custom-card-components"></a>
+### Card Components
+
+Creating a custom card in Laravel Pulse starts with extending the base `Card` Livewire component and defining a corresponding view:
+
+```php
+namespace App\Livewire\Pulse;
+
+use Laravel\Pulse\Livewire\Card;
+use Livewire\Attributes\Lazy;
+
+#[Lazy]
+class TopSellers extends Card
+{
+    public function render()
+    {
+        return view('livewire.pulse.top-sellers');
+    }
+}
+```
+
+When using Livewire's [lazy loading](https://livewire.laravel.com/docs/lazy) feature, The `Card` component will automatically provide a placeholder that respects the `cols` and `rows` attributes passed to your component.
+
+When writing your Pulse card's corresponding view, you may leverage Pulse's Blade components for a consistent look and feel:
+
+```blade
+<x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
+    <x-pulse::card-header name="Top Sellers">
+        <x-slot:icon>
+            ...
+        </x-slot:icon>
+    </x-pulse::card-header>
+
+    <x-pulse::scroll :expand="$expand">
+        ...
+    </x-pulse::scroll>
+</x-pulse::card>
+```
+
+The `$cols`, `$rows`, `$class`, and `$expand` variables should be passed to their respective Blade components so the card layout may be customized from the dashboard view. You may also wish to include the `wire:poll.5s=""` attribute in your view to have the card automatically update.
+
+Once you have defined your Livewire component and template, the card may be included in your [dashboard view](#dashboard-customization):
+
+```blade
+<x-pulse>
+    ...
+
+    <livewire:pulse.top-sellers cols="4" />
+</x-pulse>
+```
+
+> **Note**  
+> If your card is included in a package, you will need to register the component with Livewire using the `Livewire::component` method.
+
+<a name="custom-card-styling"></a>
+### Styling
+
+If your card requires additional styling beyond the classes and components included with Pulse, there are a few options for including custom CSS for your cards.
+
+<a name="custom-card-styling-vite"></a>
+#### Laravel Vite Integration
+
+If your custom card lives within your application's code base and you are using Laravel's [Vite integration](/docs/{{version}}/vite), you may update your `vite.config.js` file to include a dedicated CSS entry point for your card:
+
+```js
+laravel({
+    input: [
+        'resources/css/pulse/top-sellers.css',
+        // ...
+    ],
+}),
+```
+
+You may then use the `@vite` Blade directive in your [dashboard view](#dashboard-customization), specifying the CSS entrypoint for your card:
+
+```blade
+<x-pulse>
+    @vite('resources/css/pulse/top-sellers.css')
+
+    ...
+</x-pulse>
+```
+
+<a name="custom-card-styling-css"></a>
+#### CSS Files
+
+For other use cases, including Pulse cards contained within a package, you may instruct Pulse to load additional stylesheets by defining a `css` method on your Livewire component that returns the file path to your CSS file:
+
+```php
+class TopSellers extends Card
+{
+    // ...
+
+    protected function css()
+    {
+        return __DIR__.'/../../dist/top-sellers.css';
+    }
+}
+```
+
+When this card is included on the dashboard, Pulse will automatically include the contents of this file within a `<style>` tag so it does not need to be published to the `public` directory.
+
+<a name="custom-card-styling-tailwind"></a>
+#### Tailwind CSS
+
+When using Tailwind CSS, you should create a dedicated Tailwind configuration file to avoid loading unnecessary CSS or conflicting with Pulse's Tailwind classes:
+
+```js
+export default {
+    darkMode: 'class',
+    important: '#top-sellers',
+    content: [
+        './resources/views/livewire/pulse/top-sellers.blade.php',
+    ],
+    corePlugins: {
+        preflight: false,
+    },
+};
+```
+
+You may then specify the configuration file in your CSS entrypoint:
+
+```css
+@config "../../tailwind.top-sellers.config.js";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+You will also need to include an `id` or `class` attribute in your card's view that matches the selector passed to Tailwind's [`important` selector strategy](https://tailwindcss.com/docs/configuration#selector-strategy):
+
+```blade
+<x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
+    ...
+</x-pulse::card>
+```
+
+<a name="custom-card-data"></a>
+### Data Capture & Aggregation
+
+Custom cards may fetch and display data from anywhere; however, you may wish to leverage Pulse's powerful and efficient data recording and aggregation system.
+
+<a name="custom-card-data-capture"></a>
+#### Capturing Entries
+
+Pulse allows you to record "entries" using the `Pulse::record` method:
+
+```php
+use Laravel\Pulse\Facades\Pulse;
+
+Pulse::record('user_sale', $user->id, $sale->amount)
+    ->sum()
+    ->count();
+```
+
+The first argument provided to the `record` method is the `type` for the entry you are recording, while the second argument is the `key` that determines how the aggregated data should be grouped. For most aggregation methods you will also need to specify a `value` to be aggregated. In the example above, the value being aggregated is `$sale->amount`. You may then invoke one or more aggregation methods (such as `sum`) so that Pulse may capture pre-aggregated values into "buckets" for efficient retrieval later.
+
+The available aggregation methods are:
+
+* `avg`
+* `count`
+* `max`
+* `min`
+* `sum`
+
+<a name="custom-card-data-retrieval"></a>
+#### Retrieving Aggregate Data
+
+When extending Pulse's `Card` Livewire component, you may use the `aggregate` method to retrieve aggregated data for the period being viewed in the dashboard:
+
+```php
+class TopSellers extends Card
+{
+    public function render()
+    {
+        return view('livewire.pulse.top-sellers', [
+            'topSellers' => $this->aggregate('user_sale', ['sum', 'count']);
+        ]);
+    }
+}
+```
+
+The `aggregate` method returns return a collection of PHP `stdClass` objects. Each object will contain the `key` property captured earlier, along with keys for each of the requested aggregates:
+
+```
+@foreach ($topSellers as $seller)
+    {{ $seller->key }}
+    {{ $seller->sum }}
+    {{ $seller->count }}
+@endforeach
+```
+
+Pulse will primarily retrieve data from the pre-aggregated buckets; therefore, the specified aggregates must have been captured up-front using the `Pulse::record` method. The oldest bucket will typically fall partially outside the period, so Pulse will aggregate the oldest entries to fill the gap and give an accurate value for the entire period, without needing to aggregate the entire period on each poll request.
+
+You may also retrieve a total value for a given type by using the `aggregateTotal` method. For example, the following method would retrieve the total of all user sales instead of grouping them by user.
+
+```php
+$total = $this->aggregateTotal('user_sale', 'sum');
+```
+
+<a name="custom-recorders"></a>
+#### Custom Recorders
+
+Package authors may wish to provide recorder classes to allow users to configure the capturing of data.
+
+Recorders are registered in the `recorders` section of the application's `config/pulse.php` configuration file:
+
+```php
+[
+    // ...
+    'recorders' => [
+        Acme\Recorders\Deployments::class => [
+            // ...
+        ],
+
+        // ...
+    ],
+]
+```
+
+Recorders may listen to events by specifying a `$listen` property. Pulse will automatically register the listeners and call the recorders `record` method:
+
+```php
+<?php
+
+namespace Acme\Recorders;
+
+use Acme\Events\Deployment;
+use Illuminate\Support\Facades\Config;
+use Laravel\Pulse\Facades\Pulse;
+
+class Deployments
+{
+    /**
+     * The events to listen for.
+     *
+     * @var list<class-string>
+     */
+    public array $listen = [
+        Deployment::class,
+    ];
+
+    /**
+     * Record the deployment.
+     */
+    public function record(Deployment $event): void
+    {
+        $config = Config::get('pulse.recorders.'.static::class);
+
+        Pulse::record(
+            // ...
+        );
+    }
+}
 ```

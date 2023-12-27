@@ -387,7 +387,7 @@ php artisan make:notification InvoicePaid
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
-            'emails.name', ['invoice' => $this->invoice]
+            'mail.invoice.paid', ['invoice' => $this->invoice]
         );
     }
 
@@ -399,8 +399,20 @@ php artisan make:notification InvoicePaid
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
-            ['emails.name.html', 'emails.name.plain'],
+            ['mail.invoice.paid', 'mail.invoice.paid-text'],
             ['invoice' => $this->invoice]
+        );
+    }
+
+また、メッセージにプレーンテキストのビューしかない場合は、`text`メソッドを使うこともできます。
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)->text(
+            'mail.invoice.paid-text', ['invoice' => $this->invoice]
         );
     }
 

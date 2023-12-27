@@ -936,14 +936,18 @@ The credit card number field is required when payment type is credit card.
 [数値](#rule-numeric)
 [パスワード](#rule-password)
 [存在](#rule-present)
+[条件一致時存在](#rule-present-if)
+[条件非一致時存在](#rule-present-unless)
+[存在時存在](#rule-present-with)
+[全存在時存在](#rule-present-with-all)
 [禁止](#rule-prohibited)
-[禁止If](#rule-prohibited-if)
-[禁止Unless](#rule-prohibited-unless)
+[条件一致時禁止](#rule-prohibited-if)
+[条件不一致時禁止](#rule-prohibited-unless)
 [他フィールド禁止](#rule-prohibits)
 [正規表現](#rule-regex)
 [必須](#rule-required)
 [指定フィールド値一致時必須](#rule-required-if)
-[Required If Accepted](#rule-required-if-accepted)
+[受け入れ時必須](#rule-required-if-accepted)
 [指定フィールド値非一致時必須](#rule-required-unless)
 [指定フィールド存在時必須](#rule-required-with)
 [全指定フィールド存在時必須](#rule-required-with-all)
@@ -1572,6 +1576,26 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 #### present
 
 フィールドが入力データに存在していることをバリデートします。
+
+<a name="rule-present-if"></a>
+#### present_if:_他フィールド_,_値_,…
+
+**他フィールド**が**値**のどれかに等しい場合、フィールドが存在することをバリデートします。
+
+<a name="rule-present-unless"></a>
+#### present_unless:_他フィールド_,_値_
+
+**他フィールド**が**value**のいずれにも等しくない場合、フィールドが存在することをバリデートします。
+
+<a name="rule-present-with"></a>
+#### present_with:_foo_,_bar_,...
+
+指定する他のフィールドのいずれかが存在する**場合のみ**、フィールドが存在することをバリデートします。
+
+<a name="rule-present-with-all"></a>
+#### present_with_all:_foo_,_bar_,...
+
+指定する他のフィールドすべてがが存在する**場合のみ**、フィールドが存在することをバリデートします。
 
 <a name="rule-prohibited"></a>
 #### prohibited

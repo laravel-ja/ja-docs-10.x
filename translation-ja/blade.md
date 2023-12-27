@@ -301,6 +301,19 @@ JavaScript変数を初期化するために、配列をJSONとしてレンダリ
 @endif
 ```
 
+<a name="session-directives"></a>
+#### セッションディレクティブ
+
+`@session`ディレクティブは、[セッション](/docs/{{version}}/session)の値が存在するかを判定するために使用します。セッションの値が存在すする場合、`@session`ディレクティブと`@endsession`ディレクティブ内のテンプレートの内容が評価されます。`@session`ディレクティブの内容の中で、セッションの値を表示するために、`$value`変数をechoできます。
+
+```blade
+@session('status')
+    <div class="p-4 bg-green-100">
+        {{ $value }}
+    </div>
+@endsession
+```
+
 <a name="switch-statements"></a>
 ### Switch文
 

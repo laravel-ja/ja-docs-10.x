@@ -3,6 +3,7 @@
 - [イントロダクション](#introduction)
 - [インストール](#installation)
 - [サーバ要件](#server-prerequisites)
+    - [FrankenPHP](#frankenphp)
     - [RoadRunner](#roadrunner)
     - [Swoole](#swoole)
 - [アプリケーションの提供](#serving-your-application)
@@ -26,7 +27,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Laravel Octane](https://github.com/laravel/octane)（オクタン）は、[Open Swoole](https://openswoole.com/)や[Swoole](https://github.com/swoole/swoole-src)、[RoadRunner](https://roadrunner.dev)などの高性能なアプリケーションサーバを使用し、アプリケーションを提供することで、アプリケーションのパフォーマンスを向上させます。Octaneはアプリケーションを一度起動したら、メモリ内に保持し、そして超音速でリクエストを送り返します。
+[Laravel Octane](https://github.com/laravel/octane)（オクタン）は、[FrankenPHP](https://frankenphp.dev/)、[Open Swoole](https://openswoole.com/)、[Swoole](https://github.com/swoole/swoole-src)、[RoadRunner](https://roadrunner.dev)などの高性能なアプリケーションサーバを使用し、アプリケーションを提供することで、アプリケーションのパフォーマンスを向上させます。Octaneはアプリケーションを一度起動したら、メモリ内に保持し、そして超音速でリクエストを送り返します。
 
 <a name="installation"></a>
 ## インストール
@@ -48,6 +49,14 @@ php artisan octane:install
 
 > **Warning**
 > Laravel Octane requires [PHP 8.1+](https://php.net/releases/).
+
+<a name="frankenphp"></a>
+### FrankenPHP
+
+> **Warning**
+> FrankenPHPのOctane統合はベータ版であり、本番環境での使用には注意が必要です。
+
+[FrankenPHP](https://frankenphp.dev)は、Goで書かれたPHPアプリケーションサーバで、アーリーヒントやZstandard圧縮といった最新のウェブ機能をサポートしています。Octaneをインストールし、FrankenPHP をサーバとして選択すると、Octaneが自動でFrankenPHPのバイナリをダウンロードしてインストールします。
 
 <a name="roadrunner"></a>
 ### RoadRunner

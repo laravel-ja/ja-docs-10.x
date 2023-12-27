@@ -134,7 +134,9 @@ import '../css/app.css'; // [tl! add]
 
 ローカル開発用Webサーバが、HTTPSでアプリケーションを提供している場合、Vite開発用サーバの接続に問題が発生することがあります。
 
-[Laravel Herd](https://herd.laravel.com)を使用していて、サイトをセキュアにしている場合、または[Laravel Valet](/docs/{{version}}/valet)を使用して、アプリケーションで[secureコマンド](/docs/{{version}}/valet#securing-sites)を実行している場合、生成したTLS証明書を自動的に使用するようにVite開発サーバを設定できます：
+[Laravel Herd](https://herd.laravel.com)を使用していて、サイトをセキュアにしている場合、または[Laravel Valet](/docs/{{version}}/valet)を使用していて、アプリケーションに対して[secureコマンド](/docs/{{version}}/valet#securing-sites)を実行している場合、Laravel Viteプラグインが自動的に検出し、生成したTLS証明書を使用します。
+
+アプリケーションのディレクトリ名と一致しないホストを使用してサイトをセキュアにしている場合、アプリケーションの`vite.config.js`ファイルにより、ホストを手作業で指定してください。
 
 ```js
 import { defineConfig } from 'vite';

@@ -360,7 +360,7 @@ $categories = multiselect(
 選択肢を提示するが、その選択肢が選択されないようにする必要がある場合は、`validate`引数にクロージャを渡してください。
 
 ```
-$permissions = select(
+$permissions = multiselect(
     label: 'What permissions should the user have?',
     options: [
         'read' => 'Read',

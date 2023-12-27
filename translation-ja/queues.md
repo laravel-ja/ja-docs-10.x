@@ -1253,7 +1253,9 @@ php artisan migrate
         new ImportCsv(201, 300),
         new ImportCsv(301, 400),
         new ImportCsv(401, 500),
-    ])->then(function (Batch $batch) {
+    ])->progress(function (Batch $batch) {
+        // A single job has completed successfully...
+    })->then(function (Batch $batch) {
         // すべてのジョブが正常に完了
     })->catch(function (Batch $batch, Throwable $e) {
         // バッチジョブの失敗をはじめて検出

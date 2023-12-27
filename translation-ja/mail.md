@@ -256,7 +256,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
     public function content(): Content
     {
         return new Content(
-            view: 'emails.orders.shipped',
+            view: 'mail.orders.shipped',
         );
     }
 
@@ -274,16 +274,16 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
     public function content(): Content
     {
         return new Content(
-            view: 'emails.orders.shipped',
-            text: 'emails.orders.shipped-text'
+            view: 'mail.orders.shipped',
+            text: 'mail.orders.shipped-text'
         );
     }
 
 明確にするために、`html`パラメータを`view`パラメータの別名として使用できます。
 
     return new Content(
-        html: 'emails.orders.shipped',
-        text: 'emails.orders.shipped-text'
+        html: 'mail.orders.shipped',
+        text: 'mail.orders.shipped-text'
     );
 
 <a name="view-data"></a>
@@ -321,7 +321,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
         public function content(): Content
         {
             return new Content(
-                view: 'emails.orders.shipped',
+                view: 'mail.orders.shipped',
             );
         }
     }
@@ -364,7 +364,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
         public function content(): Content
         {
             return new Content(
-                view: 'emails.orders.shipped',
+                view: 'mail.orders.shipped',
                 with: [
                     'orderName' => $this->order->name,
                     'orderPrice' => $this->order->price,
@@ -650,7 +650,7 @@ Markdown Mailableメッセージを使用すると、Mailableで[メール通知
 対応するMarkdownテンプレートを使用してMailableファイルを生成するには、`make:mail` Artisanコマンドの`--markdown`オプションを使用します。
 
 ```shell
-php artisan make:mail OrderShipped --markdown=emails.orders.shipped
+php artisan make:mail OrderShipped --markdown=mail.orders.shipped
 ```
 
 次に、Mailableの`Content`定義をその`content`メソッド内で設定するときに、`view`パラメータの代わりに、`markdown`パラメータを使用します。
@@ -663,7 +663,7 @@ php artisan make:mail OrderShipped --markdown=emails.orders.shipped
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.orders.shipped',
+            markdown: 'mail.orders.shipped',
             with: [
                 'url' => $this->orderUrl,
             ],
