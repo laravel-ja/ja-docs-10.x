@@ -272,7 +272,7 @@ class PodcastController
     );
 
 <a name="the-has-features-trait"></a>
-### `HasFetres`トレイト
+### `HasFeatures`トレイト
 
 Pennantの`HasFeatures`トレイトは、アプリケーションの`User`モデル(あるいは、機能を持つ他のモデル)に追加し、モデルから直接機能をスムーズにチェックする、便利な手法を提供しています。
 
