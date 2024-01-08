@@ -86,6 +86,20 @@ Horizo​​nのデフォルトの設定ファイルでわかるように。各�
 
 特定の環境で実行する必要があるワーカプロセスの新しいグループを定義する場合は、指定環境にスーパーバイザを追加します。アプリケーションが使用する特定のキューへ他のバランス戦略やワーカープロセス数を指定することもできます。
 
+<a name="maintenance-mode"></a>
+#### メンテナンスモード
+
+アプリケーションが、[メンテナンスモード](/docs/{{version}}/configuration#maintenance-mode)にあるとき、Horizon設定ファイル内のスーパーバイザの`force`オプションを`true`で定義していない限り、キューに投入するジョブをHorizonは処理しません。
+
+    'environments' => [
+        'production' => [
+            'supervisor-1' => [
+                // ...
+                'force' => true,
+            ],
+        ],
+    ],
+
 <a name="default-values"></a>
 #### デフォルト値
 
@@ -349,6 +363,25 @@ Queueableオブジェクトの１つにタグを手作業で定義する場合�
             return ['render', 'video:'.$this->video->id];
         }
     }
+
+<a name="manually-tagging-event-listeners"></a>
+#### 手作業によるイベントリスナのタグ付け
+
+キュー投入したイベントリスナのタグを取得する場合、イベントのデータをタグへ追加できるように、Horizonは自動的にそのイベントインスタンスを`tags`メソッドへ渡します。
+
+    class SendRenderNotifications implements ShouldQueue
+    {
+        /**
+         * リスナへ割り付けるタグの取得
+         *
+         * @return array<int, string>
+         */
+        public function tags(VideoRendered $event): array
+        {
+            return ['video:'.$event->video->id];
+        }
+    }
+
 
 <a name="notifications"></a>
 ## 通知

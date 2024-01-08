@@ -1025,11 +1025,21 @@ php artisan queue:work --tries=3
     class ProcessPodcast implements ShouldQueue
     {
         /**
-         * ジョブを試行する回数。
+         * ジョブを試行する回数を決定
          *
          * @var int
          */
         public $tries = 5;
+    }
+
+特定ジョブの最大試行回数を動的に制御する必要がある場合は、そのジョブに`tries`メソッドを定義します。
+
+    /**
+     * ジョブを試行する回数を決定
+     */
+    public function tries(): int
+    {
+        return 5;
     }
 
 <a name="time-based-attempts"></a>

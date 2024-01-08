@@ -4,6 +4,7 @@
     - [設定](#configuration)
     - [ドライバ事前設定](#driver-prerequisites)
     - [フェイルオーバー設定](#failover-configuration)
+    - [Round Robin Configuration](#round-robin-configuration)
 - [Mailableの生成](#generating-mailables)
 - [Mailableの記述](#writing-mailables)
     - [Senderの設定](#configuring-the-sender)
@@ -164,7 +165,7 @@ MAILERSEND_API_KEY=your-api-key
 
 アプリケーションのメールを送信するように設定した外部サービスがダウンすることがあります。このような場合には、プライマリ配信ドライバがダウンした場合に使用する、1つ以上のバックアップメール配信設定を定義できると便利です。
 
-これを実現するには、アプリケーションの`mail`設定ファイルで、`failover`トランスポートを使用するメーラーを定義する必要があります。アプリケーションの`failover`メーラー設定配列に、配送に使うメールドライバを選択する順序を規定する`mailers`の配列を含める必要があります。
+これを実現するには、アプリケーションの`mail`設定ファイルで、`failover`トランスポートを使用するメーラーを定義する必要があります。アプリケーションの`failover`メーラー設定配列に、配送に使う設定済みのメーラーを選択する順序を指定する、`mailers`配列を含める必要があります。
 
     'mailers' => [
         'failover' => [
@@ -182,6 +183,29 @@ MAILERSEND_API_KEY=your-api-key
 フェイルオーバーメーラーを定義したら、アプリケーションの`mail`設定ファイル内の`default`設定キーの値に、その名前を指定して、このメーラーをアプリケーションが使用するデフォルトメーラーとして設定する必要があります。
 
     'default' => env('MAIL_MAILER', 'failover'),
+
+<a name="round-robin-configuration"></a>
+### ラウンドロビン設定
+
+`roundrobin`トランスポートで、メール送信の作業負荷を複数のメーラーへ分散できます。まず、アプリケーションの`mail`設定ファイル内で、`roundrobin`トランスポートを使用するメーラーを定義します。アプリケーションの`roundrobin`メーラーの設定配列では、どの設定済みメーラーを送信に使用するかを指定する`mailers`配列を含める必要があります。
+
+    'mailers' => [
+        'roundrobin' => [
+            'transport' => 'roundrobin',
+            'mailers' => [
+                'ses',
+                'postmark',
+            ],
+        ],
+
+        // ...
+    ],
+
+ラウンドロビンメーラーを定義したら、アプリケーションの`mail`設定ファイル内の`default`設定キーの値に、その名前を指定し、このメーラーをアプリケーションで使用するデフォルトメーラーとして設定する必要があります。
+
+    'default' => env('MAIL_MAILER', 'roundrobin'),
+
+ラウンドロビントランスポートは、設定済みのメーラーのリストの中からランダムにメーラーを選択し、その後のメールに対し、次に利用可能なメーラーに切り替えます。*[高可用性](https://en.wikipedia.org/wiki/High_availability)*を達成するのに役立つ、`failover`トランスポートとは対照的に、`roundrobin`トランスポートは、*[負荷分散](https://en.wikipedia.org/wiki/Load_balancing_(computing))*を提供します。
 
 <a name="generating-mailables"></a>
 ## Mailableの生成
@@ -722,10 +746,10 @@ Thanks,<br>
 
 ```blade
 <x-mail::table>
-| Laravel       | テーブル         | 例  |
-| ------------- |:-------------:| --------:|
-| Col 2 is      | Centered      | $10      |
-| Col 3 is      | Right-Aligned | $20      |
+| Laravel  |   テーブル    |   例 |
+| -------- | :-----------: | ---: |
+| Col 2 is |   Centered    |  $10 |
+| Col 3 is | Right-Aligned |  $20 |
 </x-mail::table>
 ```
 

@@ -58,6 +58,35 @@ php artisan octane:install
 
 [FrankenPHP](https://frankenphp.dev)は、Goで書かれたPHPアプリケーションサーバで、アーリーヒントやZstandard圧縮といった最新のウェブ機能をサポートしています。Octaneをインストールし、FrankenPHP をサーバとして選択すると、Octaneが自動でFrankenPHPのバイナリをダウンロードしてインストールします。
 
+<a name="frankenphp-via-laravel-sail"></a>
+#### Laravel SailでのFrankenPHPの利用
+
+[Laravel Sail](/docs/{{version}}/sail)を使用し、アプリケーションを開発する場合は、以下のコマンドを実行し、OctaneとFrankenPHPをインストールしてください：
+
+```shell
+./vendor/bin/sail up
+
+./vendor/bin/sail composer require laravel/octane
+```
+
+次に、`octane:install` Artisanコマンドを使い、FrankenPHPバイナリをインストールします。
+
+```shell
+./vendor/bin/sail artisan octane:install --server=frankenphp
+```
+
+次に、Sailがアプリケーションの実行を持続するために使用する、`supervisor.conf`ファイルを設定する必要があります。まず、`sail:publish` Artisanコマンドを実行てください。
+
+```shell
+./vendor/bin/sail artisan sail:publish
+```
+
+最後に、アプリケーションの`docker/supervisord.conf`ファイルの`command`ディレクティブを更新し、SailがPHP開発サーバの代わりに、Octaneを利用しアプリケーションを実行するように指定します。
+
+```ini
+command=/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80
+```
+
 <a name="roadrunner"></a>
 ### RoadRunner
 

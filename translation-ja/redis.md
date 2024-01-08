@@ -4,7 +4,7 @@
 - [設定](#configuration)
     - [クラスタ](#clusters)
     - [Predis](#predis)
-    - [phpredis](#phpredis)
+    - [PhpRedis](#phpredis)
 - [Redisの操作](#interacting-with-redis)
     - [トランザクション](#transactions)
     - [パイプラインコマンド](#pipelining-commands)
@@ -15,9 +15,9 @@
 
 [Redis](https://redis.io)は、オープンソースの高度なキー／値保存域です。[文字列](https://redis.io/topics/data-types#strings), [ハッシュ](https://redis.io/topics/data-types#hashes), [リスト](https://redis.io/topics/data-types#lists), [セット](https://redis.io/topics/data-types#sets), and [ソート済みセット](https://redis.io/topics/data-types#sorted-sets).を含めることができるため、データ構造サーバと呼ばれることがあります。
 
-LaravelでRedisを使い始める前に、PECLにより[phpredis](https://github.com/phpredis/phpredis)PHP拡張機能をインストールして使用することを推奨します。この拡張機能は、「ユーザーフレンドリー」なPHPパッケージに比べてインストールは複雑ですが、Redisを多用するアプリケーションのパフォーマンスが向上する可能性があります。[Laravel Sail](/docs/{{version}}/sale)を使用している場合、この拡張機能はアプリケーションのDockerコンテナにはじめからインストールしてあります。
+LaravelでRedisを使い始める前に、PECLにより[PhpRedis](https://github.com/phpredis/phpredis)PHP拡張機能をインストールして使用することを推奨します。この拡張機能は、「ユーザーフレンドリー」なPHPパッケージに比べてインストールは複雑ですが、Redisを多用するアプリケーションのパフォーマンスが向上する可能性があります。[Laravel Sail](/docs/{{version}}/sale)を使用している場合、この拡張機能はアプリケーションのDockerコンテナにはじめからインストールしてあります。
 
-phpredis拡張機能をインストールできない場合は、Composerを介して`predis/predis`パッケージをインストールしてください。PredisはすべてPHPで記述されたRedisクライアントであり、追加の拡張機能は必要ありません。
+PhpRedis拡張機能をインストールできない場合は、Composerを介して`predis/predis`パッケージをインストールしてください。PredisはすべてPHPで記述されたRedisクライアントであり、追加の拡張機能は必要ありません。
 
 ```shell
 composer require predis/predis
@@ -148,16 +148,16 @@ RedisクライアントはRedisサーバへ接続するとき、デフォルト�
 <a name="the-redis-facade-alias"></a>
 #### Redisファサードのエイリアス
 
-Laravelの`config/app.php`設定ファイルには`aliases`配列があり、フレームワークが登録するすべてのクラスエイリアスを定義しています。デフォルトで、`Redis`のエイリアスは含まれていません。なぜなら、phpredis拡張モジュールが提供する`Redis`クラス名と衝突してしまうからです。Predisクライアントを使用していて、`Redis`のエイリアスを追加したい場合は、アプリケーションの`config/app.php`設定ファイル内の`aliases`配列へ追加してください。
+Laravelの`config/app.php`設定ファイルには`aliases`配列があり、フレームワークが登録するすべてのクラスエイリアスを定義しています。デフォルトで、`Redis`のエイリアスは含まれていません。なぜなら、PhpRedis拡張モジュールが提供する`Redis`クラス名と衝突してしまうからです。Predisクライアントを使用していて、`Redis`のエイリアスを追加したい場合は、アプリケーションの`config/app.php`設定ファイル内の`aliases`配列へ追加してください。
 
     'aliases' => Facade::defaultAliases()->merge([
         'Redis' => Illuminate\Support\Facades\Redis::class,
     ])->toArray(),
 
 <a name="phpredis"></a>
-### phpredis
+### PhpRedis
 
-デフォルトでは、Laravelはphpredis拡張機能を使用してRedisと通信します。LaravelがRedisとの通信に使用するクライアントは、`redis.client`設定オプションの値で決まります。これは通常、`REDIS_CLIENT`環境変数の値を反映します。
+デフォルトでは、LaravelはPhpRedis拡張機能を使用してRedisと通信します。LaravelがRedisとの通信に使用するクライアントは、`redis.client`設定オプションの値で決まります。これは通常、`REDIS_CLIENT`環境変数の値を反映します。
 
     'redis' => [
 
@@ -166,7 +166,7 @@ Laravelの`config/app.php`設定ファイルには`aliases`配列があり、フ
         // 残りのRedis設定…
     ],
 
-デフォルトの`scheme`、`host`、`port`、`database`、`password`サーバ設定オプションに加えて、phpredisは次の追加の接続パラメータをサポートしています。`name`、`persistent`、`persistent_id`、`prefix`、`read_timeout`、`try_interval`、`timeout`、`context`です。`config/database.php`設定ファイルのRedisサーバ設定へ、こうしたオプションを追加指定できます。
+デフォルトの`scheme`、`host`、`port`、`database`、`password`サーバ設定オプションに加えて、PhpRedisは次の追加の接続パラメータをサポートしています。`name`、`persistent`、`persistent_id`、`prefix`、`read_timeout`、`try_interval`、`timeout`、`context`です。`config/database.php`設定ファイルのRedisサーバ設定へ、こうしたオプションを追加指定できます。
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -181,9 +181,9 @@ Laravelの`config/app.php`設定ファイルには`aliases`配列があり、フ
     ],
 
 <a name="phpredis-serialization"></a>
-#### phpredisのシリアライズと圧縮
+#### PhpRedisのシリアライズと圧縮
 
-phpredis拡張モジュールは、様々なシリアライズや圧縮アルゴリズムも設定できます。これらのアルゴリズムは、Redis設定の`options`配列で指定します。
+PhpRedis拡張モジュールは、様々なシリアライズや圧縮アルゴリズムも設定できます。これらのアルゴリズムは、Redis設定の`options`配列で指定します。
 
     'redis' => [
 
@@ -197,7 +197,7 @@ phpredis拡張モジュールは、様々なシリアライズや圧縮アルゴ
         // 残りのRedis設定…
     ],
 
-現在サポートしているシリアライズアルゴリズムは、`Redis::SERIALIZER_NONE`（デフォルト）、`Redis::SERIALIZER_PHP`、`Redis::SERIALIZER_JSON`、`Redis::SERIALIZER_IGBINARY`、`Redis::SERIALIZER_MSGPACK`です。
+現在サポートしているシリアライザは、`Redis::SERIALIZER_NONE`（デフォルト）、`Redis::SERIALIZER_PHP`、`Redis::SERIALIZER_JSON`、`Redis::SERIALIZER_IGBINARY`、`Redis::SERIALIZER_MSGPACK`です。
 
 サポートする圧縮アルゴリズムは、`Redis::COMPRESSION_NONE`（デフォルト）、`Redis::COMPRESSION_LZF`、`Redis::COMPRESSION_ZSTD`、`Redis::COMPRESSION_LZ4`です。
 

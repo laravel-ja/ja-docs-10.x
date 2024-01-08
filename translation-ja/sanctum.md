@@ -237,6 +237,14 @@ return $request->user()->id === $server->user_id &&
 'expiration' => 525600,
 ```
 
+各トークンの有効期限を個別に指定したい場合は、`createToken`メソッドの第３引数へ有効期限を指定してください。
+
+```php
+return $user->createToken(
+    'token-name', ['*'], now()->addWeek()
+)->plainTextToken;
+```
+
 アプリケーションのトークン有効期限を設定した場合、有効期限が切れたトークンを削除する[タスクをスケジュール](/docs/{{version}}/scheduling)もしたくなるでしょう。さいわいSanctumは、`sanctum:prune-expired` Artisanコマンドが用意されており、これが利用可能です。例として、２４時間以上有効期限が切れているトークンデータベースのレコードをすべて削除するようにスケジュールタスクを設定してみましょう。
 
 ```php

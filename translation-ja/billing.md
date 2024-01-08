@@ -107,6 +107,12 @@ php artisan migrate
 
 Cashierのマイグレーションは、`users`テーブルにいくつかのカラムを追加します。また、新たに`subscriptions`テーブルも作成し、顧客のすべてのサブスクリプションを保持し、複数の価格を持つサブスクリプションのために`subscription_items`テーブルを作成します。
 
+お望みであれば、`vendor:publish` Artisanコマンドを使って、Cashierの設定ファイルをリソース公開することもできます。
+
+```shell
+php artisan vendor:publish --tag="cashier-config"
+```
+
 最後に、CashierがすべてのStripeイベントを適切に処理できるように、[Cashierのウェブフック処理を設定](#handling-stripe-webhooks)するのを忘れないでください。
 
 > **Warning**

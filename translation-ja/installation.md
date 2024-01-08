@@ -61,6 +61,14 @@ PHPとComposerをインストールしたら、Composerの`create-project`コマ
 composer create-project laravel/laravel example-app
 ```
 
+もしくは、Composerを使い、[Laravelインストーラ](https://github.com/laravel/installer)をグローバルにインストールして、新しいLaravelプロジェクトを作成することもできます。
+
+```nothing
+composer global require laravel/installer
+
+laravel new example-app
+```
+
 プロジェクトを作成したら、Laravel Artisanの`serve`コマンドを使い、Laravelのローカル開発サーバを起動してください。
 
 ```nothing

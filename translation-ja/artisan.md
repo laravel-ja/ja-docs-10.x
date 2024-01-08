@@ -63,7 +63,7 @@ composer require laravel/tinker
 ```
 
 > **Note**
->  Laravelアプリケーションを操作するグラフィカルＵＩをお探しですか？[Tinkerwell](https://tinkerwell.app)をチェックしてください！
+> Laravelアプリケーションを操作するときに、ホットリロード、複数行のコード編集、自動補完をお求めですか？[Tinkerwell](https://tinkerwell.app)をチェックしてみてください！
 
 <a name="usage"></a>
 #### 使用法

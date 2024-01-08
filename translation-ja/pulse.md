@@ -141,14 +141,13 @@ php artisan vendor:publish --tag=pulse-dashboard
 <a name="dashboard-resolving-users"></a>
 ### ユーザーの解決
 
-アプリケーション使用状況カードなど、ユーザーに関する情報を表示するカードの場合、PulseはユーザーのIDのみ記録します。
+アプリケーション使用状況カードなど、ユーザーに関する情報を表示するカードの場合、PulseはユーザーのIDのみ記録します。ダッシュボードをレンダする際、Pulseはデフォルトの`Authenticatable`モデルから、`name`フィールドと`email`フィールドを解決し、Gravatarウェブサービスを使用してアバターを表示します。
 
-ダッシュボードをレンダする際、Pulseは`User`モデルから`name`と`email`フィールドを解決し、Gravatar Webサービスを使用してアバターを表示します。ただし、アプリケーションの`AppProviders`クラス内で、`Pulse::users`メソッドを呼び出し、ユーザーの解決と表示をカスタマイズできます。
+アプリケーションの`App\Providers\AppServiceProvider`クラス内の、`Pulse::user`メソッドを呼び出せば、フィールドとアバターをカスタマイズできます。
 
-`users`メソッドはクロージャを引数に取ります。このクロージャは、表示しようとしているユーザーIDを受け、各ユーザーIDに対する`id`、`name`、`extra`、`avatar`を含む配列またはコレクションを返してください。
+`user`メソッドはクロージャを引数に取ります。そのクロージャは表示する`Authenticatable`モデルを引数に受け、ユーザーの`name`、`extra`、`avatar`情報を含む配列を返す必要があります。
 
 ```php
-use App\Models\User;
 use Laravel\Pulse\Facades\Pulse;
 
 /**
@@ -156,18 +155,18 @@ use Laravel\Pulse\Facades\Pulse;
  */
 public function boot(): void
 {
-    Pulse::users(function ($ids) {
-        return User::findMany($ids)->map(fn ($user) => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'extra' => $user->email,
-            'avatar' => $user->avatar_url,
-        ]);
-    });
+    Pulse::user(fn ($user) => [
+        'name' => $user->name,
+        'extra' => $user->email,
+        'avatar' => $user->avatar_url,
+    ]);
 
     // ...
 }
 ```
+
+> **Note**
+> `Laravel\Pulse\Contracts\ResolvesUsers`契約を実装し、Laravelの[サービスコンテナ](/docs/{{ version }}/container#binding-a-singleton)でバインドすることで、認証されたユーザーを取得する方法を完全にカスタマイズできます。
 
 <a name="dashboard-cards"></a>
 ### カード
@@ -629,6 +628,9 @@ Pulse::record('user_sale', $user->id, $sale->amount)
 * `min`
 * `sum`
 
+> **Note**
+> 現在認証済みのユーザーIDをキャプチャするカードパッケージを構築するときは、`Pulse::resolveAuthenticatedUserId()` メソッドを使うべきでしょう。これは、アプリケーションに対して行う、[ユーザーリゾルバのカスタマイズ](#dashboard-resolving-users)を尊重します。
+
 <a name="custom-card-data-retrieval"></a>
 #### 集積データの取得
 
@@ -662,6 +664,31 @@ Pulseは事前に集約したバケットからデータを主に取得します
 
 ```php
 $total = $this->aggregateTotal('user_sale', 'sum');
+```
+
+<a name="custom-card-displaying-users"></a>
+#### ユーザーの表示
+
+キーとしてユーザーIDを記録する集約を扱う場合、`Pulse::resolveUsers`メソッドを使用し、キーをユーザーレコードにして解決できます。
+
+```php
+$aggregates = $this->aggregate('user_sale', ['sum', 'count']);
+
+$users = Pulse::resolveUsers($aggregates->pluck('key'));
+
+return view('livewire.pulse.top-sellers', [
+    'sellers' => $aggregates->map(fn ($aggregate) => (object) [
+        'user' => $users->find($aggregate->key),
+        'sum' => $aggregate->sum,
+        'count' => $aggregate->count,
+    ])
+]);
+```
+
+`find`メソッドは`name`、`extra`、`avatar` のキーを含むオブジェクトを返します。このオブジェクトはオプションとして、`<x-pulse::user-card>` Bladeコンポーネントへ直接渡せます。
+
+```blade
+<x-pulse::user-card :user="{{ $seller->user }}" :stats="{{ $seller->sum }}" />
 ```
 
 <a name="custom-recorders"></a>
