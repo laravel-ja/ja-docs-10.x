@@ -8,7 +8,7 @@
     - [タイプによる例外の無視](#ignoring-exceptions-by-type)
     - [例外のレンダ](#rendering-exceptions)
     - [Reportable／Renderable例外](#renderable-exceptions)
-- [Throttling Reported Exceptions](#throttling-reported-exceptions)
+- [例外レポートの限定](#throttling-reported-exceptions)
 - [HTTP例外](#http-exceptions)
     - [カスタムHTTPエラーページ](#custom-http-error-pages)
 
@@ -318,7 +318,7 @@ LaravelやSymfonyの組み込み済み例外など、既存のレンダリング
 > `report`メソッドで必要な依存関係をタイプヒントすると、Laravelの[サービスコンテナ](/docs/{{version}}/container)がメソッドへ自動的に依存を注入します。
 
 <a name="throttling-reported-exceptions"></a>
-### Throttling Reported Exceptions
+### 例外レポートの限定
 
 アプリケーションが非常に多くの例外を報告する場合、実際にログに記録されたり、アプリケーションの外部エラー追跡サービスに送信されたりする例外の数を絞り込みたくなるでしょう。
 
