@@ -191,5 +191,5 @@ Laravelは、デフォルトで[Vite](https://vitejs.dev)を利用してアセ�
 
 LaravelとViteを使い始める最も早い方法は、[Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze)を使ってアプリケーションの開発を始めることです。これは、フロントエンドとバックエンドで認証に必要なスカフォールドを生成してくれます。アプリケーション開発をロケットスタートする、最もシンプルなスターターキットです。
 
-> **Note**
+> [!NOTE]
 > LaravelでViteを活用するための詳細なドキュメントは、[アセットバンドルとコンパイルに関する専用のドキュメント](/docs/{{version}}/vite)を参照してください。

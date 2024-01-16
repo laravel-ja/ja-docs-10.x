@@ -62,7 +62,7 @@ Laravel Tinkerは、[PsySH](https://github.com/bobthecow/psysh)パッケージ�
 composer require laravel/tinker
 ```
 
-> **Note**
+> [!NOTE]
 > Laravelアプリケーションを操作するときに、ホットリロード、複数行のコード編集、自動補完をお求めですか？[Tinkerwell](https://tinkerwell.app)をチェックしてみてください！
 
 <a name="usage"></a>
@@ -80,7 +80,7 @@ php artisan tinker
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-> **Warning**
+> [!WARNING]
 > `dispatch`ヘルパ関数と`Dispatchable`クラスの`dispatch`メソッドは、ジョブをキューに投入するのにガベージコレクションへ依存しています。したがって、Tinkerを使う場合は、`Bus::dispatch`または`Queue::push`を使用してジョブをディスパッチする必要があります。
 
 <a name="command-allow-list"></a>
@@ -155,7 +155,7 @@ php artisan make:command SendEmails
         }
     }
 
-> **Note**
+> [!NOTE]
 > コードの再利用性を上げるには、コンソールコマンドを軽くし、アプリケーションサービスに任せてタスクを実行することをお勧めします。上記の例では、電子メールを送信する「手間のかかる作業」を行うためにサービスクラスを挿入していることに注意してください。
 
 <a name="closure-commands"></a>
@@ -203,7 +203,7 @@ php artisan make:command SendEmails
 <a name="isolatable-commands"></a>
 ### 単一インスタンスコマンド
 
-> **Warning**
+> [!WARNING]
 > この機能を利用するには、アプリケーションで`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバをアプリケーションのデフォルトキャッシュドライバとして使用する必要があります。さらに、すべてのサーバから同一のセントルキャッシュサーバと通信する必要があります。
 
 同時に実行できるコマンドのインスタンスが１つだけであることを保証したい場合があります。これを実現するには、コマンドクラスで`Illuminate\Contracts\Console\Isolatable`インターフェイスを実装します。
@@ -448,7 +448,7 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
         ),
     ];
 
-> **Note**
+> [!NOTE]
 包括的な[Laravel Prompts](/docs/{{version}}/prompts)ドキュメントに、利用可能なプロンプトとその使用方法に関する追加情報を用意してあります。
 
 [オプション](#options)の選択や入力をユーザーに促したい場合は、コマンドの`handle`メソッドにプロンプトを含めてください。引数が足りない場合にのみプロンプトを出したい場合は、`afterPromptingForMissingArguments`メソッドを実装してください：
@@ -503,9 +503,9 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
     $options = $this->options();
 
 <a name="prompting-for-input"></a>
-### 入力のプロンプト
+### Prompting for Input
 
-> **Note**
+> [!NOTE]
 > [Laravel Prompts](/docs/{{version}}/prompts) は、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザライクな機能を備えています。
 
 出力の表示に加えて、コマンドの実行中にユーザーへ入力を提供するように依頼することもできます。`ask`メソッドはユーザーへ、指定した質問をプロンプ​​トとして表示し、入力を受け取り、ユーザー入力をコマンドに戻します。
@@ -648,7 +648,7 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
 
     $bar->finish();
 
-> **Note**
+> [!NOTE]
 > より高度なオプションは、[Symfonyプログレスバーコンポーネントのドキュメント](https://symfony.com/doc/current/components/console/helpers/progressbar.html)で確認してください。
 
 <a name="registering-commands"></a>

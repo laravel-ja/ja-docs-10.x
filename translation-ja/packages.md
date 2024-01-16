@@ -51,7 +51,7 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 ディスカバリー用にパッケージを設定したら、Laravelはサービスプロバイダとファサードをインストール時に自動的に登録します。皆さんのパッケージユーザーに、便利なインストール体験をもたらします。
 
 <a name="opting-out-of-package-discovery"></a>
-### パッケージディスカバリーの不使用
+#### パッケージディスカバリーの不使用
 
 パッケージを利用する場合に、パッケージディスカバリーを使用したくない場合は、アプリケーションの`composer.json`ファイルの`extra`セクションに、使用しないパッケージをリストしてください。
 
@@ -106,7 +106,7 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 
     $value = config('courier.option');
 
-> **Warning**
+> [!WARNING]
 > 設定ファイルでクロージャを定義しないでください。ユーザーが`config:cache` Artisanコマンドを実行すると、正しくシリアル化できません。
 
 <a name="default-package-configuration"></a>
@@ -126,7 +126,7 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
         );
     }
 
-> **Warning**
+> [!WARNING]
 > このメソッドは設定配列の一次レベルのみマージします。パッケージのユーザーが部分的に多次元の設定配列を定義すると、マージされずに欠落するオプションが発生します。
 
 <a name="routes"></a>

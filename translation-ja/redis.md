@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Redis](https://redis.io)は、オープンソースの高度なキー／値保存域です。[文字列](https://redis.io/topics/data-types#strings), [ハッシュ](https://redis.io/topics/data-types#hashes), [リスト](https://redis.io/topics/data-types#lists), [セット](https://redis.io/topics/data-types#sets), and [ソート済みセット](https://redis.io/topics/data-types#sorted-sets).を含めることができるため、データ構造サーバと呼ばれることがあります。
+[Redis](https://redis.io)はオープンソースの高度なキー／値保存域です。キーには[文字列](https://redis.io/docs/data-types/strings/)、[ハッシュ](https://redis.io/docs/data-types/hashes/)、[リスト](https://redis.io/docs/data-types/lists/)、[セット](https://redis.io/docs/data-types/sets/)、[ソート済みセット](https://redis.io/docs/data-types/sorted-sets/)を含むことができるため、データ構造サーバと呼ばれることが多いです。
 
 LaravelでRedisを使い始める前に、PECLにより[PhpRedis](https://github.com/phpredis/phpredis)PHP拡張機能をインストールして使用することを推奨します。この拡張機能は、「ユーザーフレンドリー」なPHPパッケージに比べてインストールは複雑ですが、Redisを多用するアプリケーションのパフォーマンスが向上する可能性があります。[Laravel Sail](/docs/{{version}}/sale)を使用している場合、この拡張機能はアプリケーションのDockerコンテナにはじめからインストールしてあります。
 
@@ -263,7 +263,7 @@ PhpRedis拡張モジュールは、様々なシリアライズや圧縮アルゴ
         $redis->incr('total_visits', 1);
     });
 
-> **Warning**
+> [!WARNING]
 > Redisトランザクションを定義する場合、Redis接続から値を取得できません。トランザクションは単一のアトミック操作として実行し、クロージャ全体がコマンドの実行を完了するまで、操作は実行されないことに注意してください。
 
 #### Luaスクリプト
@@ -284,7 +284,7 @@ PhpRedis拡張モジュールは、様々なシリアライズや圧縮アルゴ
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> **Warning**
+> [!WARNING]
 > Redisスクリプトの詳細には、[Redisドキュメント](https://redis.io/commands/eval)を参照してください。
 
 <a name="pipelining-commands"></a>

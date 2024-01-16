@@ -72,7 +72,7 @@ Argon2アルゴリズムを使用している場合、`make`メソッドを使�
         'threads' => 2,
     ]);
 
-> **Note**
+> [!NOTE]
 > これらのオプションの詳細には、[Argonハッシュに関するPHP公式ドキュメント](https://secure.php.net/manual/en/function.password-hash.php)を参照してください。
 
 <a name="verifying-that-a-password-matches-a-hash"></a>

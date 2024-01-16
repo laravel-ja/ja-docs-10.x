@@ -48,13 +48,13 @@ Laravel Sanctumは、ユーザーAPIトークンを単一のデータベース�
 
 Sanctumは、受信リクエストが自身のSPAフロントエンドから発信された場合にのみクッキーを使用して認証を試みます。Sanctumが受信HTTPリクエストを調べるとき、最初に認証クッキーをチェックし、存在しない場合は、Sanctumは有効なAPIトークンの`Authorization`ヘッダを調べます。
 
-> **Note**
+> [!NOTE]
 > SanctumをAPIトークン認証のみ、またはSPA認証のみに使用することはまったく問題ありません。Sanctumを使用しているからといって、Sanctumが提供する両方の機能を使用する必要があるわけではありません。
 
 <a name="installation"></a>
 ## インストール
 
-> **Note**
+> [!NOTE]
 > Laravelの最新バージョンは、あらかじめLaravel Sanctumを含んでいます。ただし、アプリケーションの`composer.json`ファイルが`laravel/sanctum`を含んでいない場合は、以下のインストール手順に従ってください。
 
 Laravel Sanctumは、Composerパッケージマネージャを介してインストールできます。
@@ -119,7 +119,7 @@ Sanctumのデフォルトマイグレーションを使用しない場合は、`
 <a name="api-token-authentication"></a>
 ## APIトークン認証
 
-> **Note**
+> [!NOTE]
 > 独自のファーストパーティSPAを認証するためにAPIトークンを使用しないでください。代わりに、Sanctumの組み込みの[SPA認証機能](#spa-authentication)を使用してください。
 
 <a name="issuing-api-tokens"></a>
@@ -258,7 +258,7 @@ Sanctumは、Laravelを利用したAPIと通信する必要があるシングル
 
 この機能のために、Sanctumはいかなる種類のトークンも使用しません。代わりに、SanctumはLaravelの組み込みクッキーベースのセッション認証サービスを使用します。この認証へのアプローチは、CSRF保護、セッション認証の利点を提供するだけでなく、XSSを介した認証資格情報の漏洩から保護します。
 
-> **Warning**
+> [!WARNING]
 > 認証を行うには、SPAとAPIが同じトップレベルドメインを共有している必要があります。ただし、異なるサブドメインに配置しても構いません。さらに、必ずリクエストへ`Accept: application/json`ヘッダと、`Referer`か`Origin`ヘッダのどちらかを付け、送信してください。
 
 
@@ -270,7 +270,7 @@ Sanctumは、Laravelを利用したAPIと通信する必要があるシングル
 
 まず、SPAがリクエストを行うドメインを設定する必要があります。これらのドメインは、`sanctum`設定ファイルの`stateful`設定オプションを使用して構成します。この設定は、APIにリクエストを行うときにLaravelセッションクッキーを使用して「ステートフル」な認証を維持するドメインを決定します。
 
-> **Warning**
+> [!WARNING]
 > ポートを含むURL（例：`127.0.0.1:8000`）を介してアプリケーションにアクセスしている場合は、ドメインにポート番号を含める必要があります。
 
 <a name="sanctum-middleware"></a>
@@ -327,7 +327,7 @@ CSRF保護を初期化したら、Laravelアプリケーションの`/login`ル�
 
 もちろん、アクティビティがないためにユーザーのセッションが期限切れになった場合、Laravelアプリケーションへの後続のリクエストは401か419HTTPエラー応答を受け取る可能性があります。この場合、ユーザーをSPAのログインページにリダイレクトする必要があります。
 
-> **Warning**
+> [!WARNING]
 > 独自の`/login`エンドポイントを自由に作成できます。ただし、標準の[Laravelが提供するセッションベースの認証サービス](/docs/{{version}}/authentication#authenticating-users)を使用してユーザーを認証していることを確認する必要があります。通常、これは`web`認証ガードを使用することを意味します。
 
 <a name="protecting-spa-routes"></a>
@@ -412,7 +412,7 @@ Sanctumトークンを使用して、APIに対するモバイルアプリケー�
 
 モバイルアプリケーションがトークンを使用してアプリケーションにAPIリクエストを行う場合、`Authorization`ヘッダのトークンを`Bearer`トークンとして渡す必要があります。
 
-> **Note**
+> [!NOTE]
 > モバイルアプリケーションのトークンを発行するときに、[トークンのアビリティ](#token-abilities)を自由に指定することもできます。
 
 <a name="protecting-mobile-api-routes"></a>

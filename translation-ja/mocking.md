@@ -110,7 +110,7 @@ Laravelの[サービスコンテナ](/docs/{{version}}/container)を介してア
         }
     }
 
-> **Warning**
+> [!WARNING]  
 > `Request`ファサードをモックしないでください。代わりに、テストの実行時に、`get`や`post`などの[HTTPテストメソッド](/docs/{{version}}/http-tests)に必要な入力を渡します。同様に、`Config`ファサードをモックする代わりに、テストでは`Config::set`メソッドを呼び出してください。
 
 <a name="facade-spies"></a>

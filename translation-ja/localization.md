@@ -16,7 +16,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-> **Note**
+> [!NOTE]
 > デフォルトでは、Laravelアプリケーションのスケルトンは、`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 Laravelの多言語機能は、さまざまな言語の文字列を取得する便利な方法を提供し、アプリケーション内で複数の言語を簡単にサポートできるようにしています。
@@ -99,7 +99,7 @@ Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレーム�
         // ...
     }
 
-> **Warning**
+> [!WARNING]
 > 言語の複数形化をカスタマイズする場合、Eloquentモデルの[テーブル名](/docs/{{version}}/eloquent#table-names)は、明示的に定義する必要があります。
 
 <a name="defining-translation-strings"></a>
@@ -126,7 +126,7 @@ Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレーム�
         'welcome' => 'Welcome to our application!',
     ];
 
-> **Warning**
+> [!WARNING]
 > 地域によって異なる言語の場合、ISO15897に従って言語ディレクトリに名前を付ける必要があります。たとえば、「en-gb」ではなく「en_GB」をイギリス英語に使用する必要があります。
 
 <a name="using-translation-strings-as-keys"></a>

@@ -27,7 +27,7 @@
 
 Laravel Promptsは、[Artisanコンソールコマンド](/docs/{{version}}/artisan#writing-commands)でユーザー入力を受けるために最適ですが、コマンドラインのPHPプロジェクトでも使用できます。
 
-> **Note**
+> [!NOTE]
 > Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。詳しくは、[未サポートの環境とフォールバック](#fallbacks)のドキュメントをご覧ください。
 
 <a name="インストール"></a>
@@ -649,7 +649,7 @@ $response = spin(
 );
 ```
 
-> **Warning**
+> [!WARNING]
 > `spin`関数でスピナーをアニメーションするために、`pcntl` PHP拡張モジュールが必要です。この拡張モジュールが利用できない場合は、代わりに静的なスピナーが表示されます。
 
 <a name="progress"></a>
@@ -724,7 +724,7 @@ Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。
 
 このため、Laravel Promptsは[Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html)のような代替実装へのフォールバックをサポートしています。
 
-> **Note**
+> [!NOTE]
 > LaravelフレームワークでLaravel Promptsを使用する場合、各プロンプトのフォールバックが設定済みで、未サポートの環境では自動的に有効になります。
 
 <a name="fallback-conditions"></a>

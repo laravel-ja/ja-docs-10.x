@@ -46,7 +46,7 @@
         $table->integer('expiration');
     });
 
-> **Note**
+> [!NOTE]
 > `php artisan cache:table` Artisanコマンドを使用して、適切なスキーマのマイグレーションを生成することもできます。
 
 <a name="memcached"></a>
@@ -182,7 +182,7 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
     });
 
 <a name="retrieve-delete"></a>
-#### 取得後に削除
+#### Retrieve and Delete
 
 キャッシュからアイテムを取得してからアイテムを削除する必要がある場合は、`pull`メソッドを使用できます。`get`メソッドと同様に、アイテムがキャッシュに存在しない場合は`null`が返されます。
 
@@ -217,7 +217,7 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
 
     Cache::forever('key', 'value');
 
-> **Note**
+> [!NOTE]
 > Memcachedドライバを使用している場合、「永久に」保存されているアイテムは、キャッシュがサイズ制限に達すると削除される可能性があります。
 
 <a name="removing-items-from-the-cache"></a>
@@ -237,7 +237,7 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
 
     Cache::flush();
 
-> **Warning**
+> [!WARNING]
 > キャッシュのフラッシュは、設定したキャッシュの「プレフィックス」を尊重せず、キャッシュからすべてのエントリを削除します。他のアプリケーションと共有するキャッシュをクリアするときは、これを慎重に検討してください。
 
 <a name="the-cache-helper"></a>
@@ -259,13 +259,13 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
         return DB::table('users')->get();
     });
 
-> **Note**
+> [!NOTE]
 > グローバルな`cache`関数の呼び出しをテストするときは、[ファサードをテストする](/docs/{{version}}/mocking#mocking-facades)のように`Cache::shouldReceive`メソッドを使用できます。
 
 <a name="atomic-locks"></a>
 ## アトミックロック
 
-> **Warning**
+> [!WARNING]
 > この機能を利用するには、アプリケーションのデフォルトのキャッシュドライバとして、`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバを使用する必要があります。さらに、すべてのサーバが同じ中央キャッシュサーバと通信している必要があります。
 
 <a name="lock-driver-prerequisites"></a>
@@ -282,7 +282,7 @@ Redisの設定の詳細については、[Laravelドキュメントページ](/d
         $table->integer('expiration');
     });
 
-> **Note**
+> [!NOTE]
 > `cache:table` Artisanコマンドを使用し、データベースドライバのキャッシュテーブルを作成した場合、作成したマイグレーションには、あらかじめ`cache_locks`テーブルの定義が含まれています。
 
 <a name="managing-locks"></a>
@@ -385,11 +385,11 @@ MongoDB接続を使用してこれらの各メソッドを実装する必要が�
         return Cache::repository(new MongoStore);
     });
 
-> **Note**
+> [!NOTE]
 > カスタムキャッシュドライバコードをどこに置くか迷っている場合は、`app`ディレクトリ内に`Extensions`名前空間を作成できます。ただし、Laravelには厳密なアプリケーション構造がなく、好みに応じてアプリケーションを自由にオーガナイズできることに注意してください。
 
 <a name="registering-the-driver"></a>
-### ドライバの登録
+### Registering the Driver
 
 カスタムキャッシュドライバをLaravelに登録するには、`Cache`ファサードで`extend`メソッドを使用します。他のサービスプロバイダは`boot`メソッド内でキャッシュされた値を読み取ろうとする可能性があるため、`booting`コールバック内にカスタムドライバを登録します。`booting`コールバックを使用することで、アプリケーションのサービスプロバイダで`boot`メソッドが呼び出される直前で、すべてのサービスプロバイダで`register`メソッドが呼び出された後にカスタムドライバが登録されるようにすることができます。アプリケーションの`App\Providers\AppServiceProvider`クラスの`register`メソッド内に`booting`コールバックを登録します。
 

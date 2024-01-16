@@ -56,7 +56,7 @@
         return false;
     });
 
-> **Note**
+> [!NOTE]
 > 特定の例外のレポートをカスタマイズするには、[レポート可能な例外](/docs/{{version}}/errors#renderable-exceptions)を利用することもできます。
 
 <a name="global-log-context"></a>
@@ -314,7 +314,7 @@ LaravelやSymfonyの組み込み済み例外など、既存のレンダリング
         return false;
     }
 
-> **Note**
+> [!NOTE]
 > `report`メソッドで必要な依存関係をタイプヒントすると、Laravelの[サービスコンテナ](/docs/{{version}}/container)がメソッドへ自動的に依存を注入します。
 
 <a name="throttling-reported-exceptions"></a>

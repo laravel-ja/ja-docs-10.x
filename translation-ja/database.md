@@ -224,7 +224,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 
-> **Warning**
+> [!WARNING]
 > プリペアドではない文はパラメーターをバインドしないため、SQLインジェクションに対して脆弱である可能性があります。プリペアドではない文内では、ユーザーによる値のコントロールを許可しないでください。
 
 <a name="implicit-commits-in-transactions"></a>
@@ -363,7 +363,7 @@ SELECTステートメントに１つのデータベース接続を使用し、IN
 
     DB::commit();
 
-> **Note**
+> [!NOTE]
 > `DB`ファサードのトランザクションメソッドは、[クエリビルダ](/docs/{{version}}/queries)と[Eloquent ORM](/docs/{{version}}/eloquent)の両方のトランザクションを制御します。
 
 <a name="connecting-to-the-database-cli"></a>

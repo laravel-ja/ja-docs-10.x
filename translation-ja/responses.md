@@ -34,7 +34,7 @@
         return [1, 2, 3];
     });
 
-> **Note**
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections)も返せることを知っていますか？　自動的にJSONへ変換されます。試してください！
 
 <a name="response-objects"></a>
@@ -287,7 +287,7 @@ JSONPレスポンスを生成したい場合は、`json`メソッドと`withCall
 
     return response()->download($pathToFile, $name, $headers);
 
-> **Warning**
+> [!WARNING]
 > ファイルダウンロードを管理しているSymfony HttpFoundationクラスは、ASCIIのダウンロードファイル名を指定するよう要求しています。
 
 <a name="streamed-downloads"></a>

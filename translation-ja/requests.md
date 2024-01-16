@@ -10,7 +10,7 @@
     - [PSR-7リクエスト](#psr7-requests)
 - [入力](#input)
     - [入力の取得](#retrieving-input)
-    - [入力の存在の判定](#determining-if-input-is-present)
+    - [入力の存在](#input-presence)
     - [追加入力のマージ](#merging-additional-input)
     - [直前の入力](#old-input)
     - [クッキー](#cookies)
@@ -234,7 +234,7 @@ composer require nyholm/psr7
         // ...
     });
 
-> **Note**
+> [!NOTE]
 > ルートまたはコントローラからPSR-7レスポンスインスタンスを返すと、自動的にLaravelレスポンスインスタンスに変換され、フレームワークによって表示されます。
 
 <a name="input"></a>
@@ -361,11 +361,11 @@ JSONリクエストをアプリケーションに送信する場合、リクエ�
 
     $input = $request->except('credit_card');
 
-> **Warning**
+> [!WARNING]
 > `only`メソッドは、指定したすべてのキー／値ペアを返します。ただし、リクエスト中に存在しないキー／値ペアは返しません。
 
-<a name="determining-if-input-is-present"></a>
-### 入力の存在の判定
+<a name="input-presence"></a>
+### 入力の存在
 
 `has`メソッドを使用して、リクエストに値が存在するかを判定できます。リクエストに値が存在する場合、`has`メソッドは`true`を返します。
 
@@ -591,7 +591,7 @@ public function boot(): void
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
-> **Note**
+> [!NOTE]
 > Laravelのファイルストレージの詳細は、完全な[ファイルストレージドキュメント](/docs/{{version}}/filesystem)を確認してください。
 
 <a name="configuring-trusted-proxies"></a>
@@ -628,7 +628,7 @@ TLS/SSL証明書を末端とするロードバランサーの背後でアプリ�
         protected $headers = Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO;
     }
 
-> **Note**
+> [!NOTE]
 > AWS Elasticロードバランシングを使用している場合、`$headers`の値は`Request::HEADER_X_FORWARDED_AWS_ELB`である必要があります。`$headers`プロパティで使用できる定数の詳細については、[信頼の置けるプロキシ](https://symfony.com/doc/current/deployment/proxies.html)に関するSymfonyのドキュメントを確認してください。
 
 <a name="trusting-all-proxies"></a>

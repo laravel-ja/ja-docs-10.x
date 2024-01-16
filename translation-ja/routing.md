@@ -74,7 +74,7 @@
         // ...
     });
 
-> **Note**
+> [!NOTE]
 > 同じURIの複数のルートを定義する場合、`get`、`post`、`put`、`patch`、`delete`、`options`の各メソッドを使ったルートは、`any`、`match`、`redirect`の各メソッドを使ったルートよりも先に定義する必要があります。これにより、受信リクエストが正しいルートにマッチします。
 
 <a name="dependency-injection"></a>
@@ -113,7 +113,7 @@
 
     Route::permanentRedirect('/here', '/there');
 
-> **Warning**
+> [!WARNING]
 > リダイレクトルートでルートパラメータを使用する場合、以降のパラメータはLaravelによって予約されており、使用できません。：`destination`、`status`
 
 <a name="view-routes"></a>
@@ -125,7 +125,7 @@
 
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 
-> **Warning**
+> [!WARNING]
 > ビュールートでルートパラメータを使用する場合、次のパラメータはLaravelによって予約されており、使用できません。：`view`、`data`、`status`、`headers`
 
 <a name="the-route-list"></a>
@@ -277,7 +277,7 @@ Laravelルーティングコンポーネントでは、`/`を除くすべての�
         return $search;
     })->where('search', '.*');
 
-> **Warning**
+> [!WARNING]
 > エンコードされたスラッシュは、最後のルートセグメント内でのみサポートされます。
 
 <a name="named-routes"></a>
@@ -296,7 +296,7 @@ Laravelルーティングコンポーネントでは、`/`を除くすべての�
         [UserProfileController::class, 'show']
     )->name('profile');
 
-> **Warning**
+> [!WARNING]
 > ルート名は常に一意である必要があります。
 
 <a name="generating-urls-to-named-routes"></a>
@@ -330,7 +330,7 @@ Laravelルーティングコンポーネントでは、`/`を除くすべての�
 
     // /user/1/profile?photos=yes
 
-> **Note**
+> [!NOTE]
 > 場合により現在のロケールなど、URLパラメータにリクエスト全体のデフォルト値を指定したいことがあります。これを実現するには、[`URL::defaults`メソッド](/docs/{{version}}/urls#default-values)を使用してください。
 
 <a name="inspecting-the-current-route"></a>
@@ -401,7 +401,7 @@ Laravelルーティングコンポーネントでは、`/`を除くすべての�
         });
     });
 
-> **Warning**
+> [!WARNING]
 > ルーティングがサブドメインルートに到達できるようにするには、サブドメインなしのドメインルートを登録する前にサブドメインルートを登録しておく必要があります。これにより、サブドメインなしのドメインルートが同じURIパスを持つサブドメインルートを上書きするのを防げます。
 
 <a name="route-group-prefixes"></a>
@@ -659,7 +659,7 @@ Route::get('/categories/{category}', function (Category $category) {
         // ...
     });
 
-> **Warning**
+> [!WARNING]
 > フォールバックルートは、常にアプリケーションのルート登録で最後に指定してください。
 
 <a name="rate-limiting"></a>
@@ -812,7 +812,7 @@ HTMLフォームは、`PUT`、`PATCH`、`DELETE`アクションをサポート�
 
 Laravelは、設定した値を使用してCORS　`OPTIONS`　HTTPリクエストへ自動的に応答できます。すべてのCORS設定は、アプリケーションの`config/cors.php`設定ファイルで指定します。`OPTIONS`リクエストは、グローバルミドルウェアスタックにデフォルトで含まれている`HandleCors`[ミドルウェア](/docs/{{version}}/middleware)によって自動的に処理されます。グローバルミドルウェアスタックは、アプリケーションのHTTPカーネル(`App\Http\Kernel`)にあります。
 
-> **Note**
+> [!NOTE]
 > CORSおよびCORSヘッダの詳細は、[CORSに関するMDN Webドキュメント](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers)を参照してください。
 
 <a name="route-caching"></a>

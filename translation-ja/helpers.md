@@ -1268,7 +1268,7 @@ $classes = Arr::toCssStyles($array);
 
     $path = lang_path('en/messages.php');
 
-> **Note**
+> [!NOTE]  
 > Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開することができます。
 
 <a name="method-mix"></a>
@@ -1614,7 +1614,7 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
 
     $env = env('APP_ENV', 'production');
 
-> **Warning**
+> [!WARNING]  
 > 開発手順の中で`config:cache`コマンドを実行する場合は、必ず設定ファイルの中からだけ、`env`関数を使用してください。設定ファイルがキャッシュされると、`.env`ファイルはロードされなくなり、`env`関数の呼び出しはすべて`null`を返します。
 
 <a name="method-event"></a>

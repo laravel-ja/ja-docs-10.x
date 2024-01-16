@@ -147,10 +147,10 @@ Http::withUrlParameters([
 <a name="multi-part-requests"></a>
 #### マルチパートリクエスト
 
-ファイルをマルチパートリクエストとして送信する場合は、リクエストを行う前に`attach`メソッドを呼び出す必要があります。このメソッドは、ファイルの名前とその内容を引数に取ります。必要に応じて、ファイルのファイル名と見なす３番目の引数を指定できます。
+ファイルをマルチパートリクエストとして送信する場合は、リクエストを行う前に`attach`メソッドを呼び出す必要があります。このメソッドは、ファイルの名前とその内容を引数に取ります。必要に応じて、ファイルの名前と見なす３番目の引数を指定できます。また、第４引数は、ファイルに関連するヘッダを指定するために使います。
 
     $response = Http::attach(
-        'attachment', file_get_contents('photo.jpg'), 'photo.jpg'
+        'attachment', file_get_contents('photo.jpg'), 'photo.jpg', ['Content-Type' => 'image/jpeg']
     )->post('http://example.com/attachments');
 
 ファイルの素の内容を渡す代わりに、ストリームリソースを渡すこともできます。
@@ -260,7 +260,7 @@ $response = Http::withHeaders([
 
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 
-> **Warning**
+> [!WARNING]
 > 接続の問題ですべてのリクエストが失敗した場合は、`throw`引数を`false`に設定していても`Illuminate\Http\Client\ConnectionException`が投げられます。
 
 <a name="error-handling"></a>

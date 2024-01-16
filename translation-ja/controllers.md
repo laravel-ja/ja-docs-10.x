@@ -63,7 +63,7 @@ php artisan make:controller UserController
 
 受信リクエストが指定したルートURIに一致すると、`App\Http\Controllers\UserController`クラスの`show`メソッドが呼び出され、ルートパラメータがメソッドに渡されます。
 
-> **Note**
+> [!NOTE]
 > コントローラは基本クラスを拡張する**必要**はありません。ただし、`middleware`や`authorize`メソッドなどの便利な機能にはアクセスできません。
 
 <a name="single-action-controllers"></a>
@@ -98,7 +98,7 @@ php artisan make:controller UserController
 php artisan make:controller ProvisionServer --invokable
 ```
 
-> **Note**
+> [!NOTE]
 > [stubのリソース公開](/docs/{{version}}/artisan#stub-customization)を使用し、コントローラのスタブをカスタマイズできます。
 
 <a name="controller-middleware"></a>
@@ -161,15 +161,15 @@ php artisan make:controller PhotoController --resource
 <a name="actions-handled-by-resource-controller"></a>
 #### リソースコントローラにより処理されるアクション
 
-動詞      | URI                    | アクション       | ルート名
-----------|------------------------|--------------|---------------------
-GET       | `/photos`              | index        | photos.index
-GET       | `/photos/create`       | create       | photos.create
-POST      | `/photos`              | store        | photos.store
-GET       | `/photos/{photo}`      | show         | photos.show
-GET       | `/photos/{photo}/edit` | edit         | photos.edit
-PUT/PATCH | `/photos/{photo}`      | update       | photos.update
-DELETE    | `/photos/{photo}`      | destroy      | photos.destroy
+| 動詞      | URI                    | アクション | ルート名       |
+| --------- | ---------------------- | ---------- | -------------- |
+| GET       | `/photos`              | index      | photos.index   |
+| GET       | `/photos/create`       | create     | photos.create  |
+| POST      | `/photos`              | store      | photos.store   |
+| GET       | `/photos/{photo}`      | show       | photos.show    |
+| GET       | `/photos/{photo}/edit` | edit       | photos.edit    |
+| PUT/PATCH | `/photos/{photo}`      | update     | photos.update  |
+| DELETE    | `/photos/{photo}`      | destroy    | photos.destroy |
 
 <a name="customizing-missing-model-behavior"></a>
 #### 見つからないモデルの動作のカスタマイズ
@@ -285,15 +285,15 @@ Laravelの[暗黙的なモデル結合](/docs/{{version}}/routing#implicit-model
 
 このルート定義は、以下のルートを定義します。
 
-動詞      | URI                               | アクション       | ルート名
-----------|-----------------------------------|--------------|---------------------
-GET       | `/photos/{photo}/comments`        | index        | photos.comments.index
-GET       | `/photos/{photo}/comments/create` | create       | photos.comments.create
-POST      | `/photos/{photo}/comments`        | store        | photos.comments.store
-GET       | `/comments/{comment}`             | show         | comments.show
-GET       | `/comments/{comment}/edit`        | edit         | comments.edit
-PUT/PATCH | `/comments/{comment}`             | update       | comments.update
-DELETE    | `/comments/{comment}`             | destroy      | comments.destroy
+| 動詞      | URI                               | アクション | ルート名               |
+| --------- | --------------------------------- | ---------- | ---------------------- |
+| GET       | `/photos/{photo}/comments`        | index      | photos.comments.index  |
+| GET       | `/photos/{photo}/comments/create` | create     | photos.comments.create |
+| POST      | `/photos/{photo}/comments`        | store      | photos.comments.store  |
+| GET       | `/comments/{comment}`             | show       | comments.show          |
+| GET       | `/comments/{comment}/edit`        | edit       | comments.edit          |
+| PUT/PATCH | `/comments/{comment}`             | update     | comments.update        |
+| DELETE    | `/comments/{comment}`             | destroy    | comments.destroy       |
 
 <a name="restful-naming-resource-routes"></a>
 ### リソースルートの命名
@@ -372,7 +372,7 @@ Laravelの複数形化機能は、[皆さんがニーズに基づいて設定し
     Route::get('/photos/popular', [PhotoController::class, 'popular']);
     Route::resource('photos', PhotoController::class);
 
-> **Note**
+> [!NOTE]
 > コントローラの責務を限定することを思い出してください。典型的なリソースアクションから外れたメソッドが繰り返して必要になっているようであれば、コントローラを２つに分け、小さなコントローラにすることを考えましょう。
 
 <a name="singleton-resource-controllers"></a>
@@ -389,11 +389,11 @@ Route::singleton('profile', ProfileController::class);
 
 上記のシングルトンリソース定義により、以下のルートを登録します。このように、シングルトンリソースでは「作成」ルートを登録しません。また、リソースのインスタンスが１つしか存在しないため、登録するルートは識別子を受け付けません。
 
-動詞      | URI                               | アクション       | ルート名
-----------|-----------------------------------|--------------|---------------------
-GET       | `/profile`                        | show         | profile.show
-GET       | `/profile/edit`                   | edit         | profile.edit
-PUT/PATCH | `/profile`                        | update       | profile.update
+| 動詞      | URI             | アクション | ルート名       |
+| --------- | --------------- | ---------- | -------------- |
+| GET       | `/profile`      | show       | profile.show   |
+| GET       | `/profile/edit` | edit       | profile.edit   |
+| PUT/PATCH | `/profile`      | update     | profile.update |
 
 シングルトン・リソースは、標準リソースの中に入れ子にすることもできます。
 
@@ -403,11 +403,11 @@ Route::singleton('photos.thumbnail', ThumbnailController::class);
 
 この例では、`photos`リソースはすべての[標準リソースルート](#actions-handled-by-resource-controller)を受け取ります。しかし、`thumbnail`リソースは、以下のルートを持つシングルトンリソースとなります。
 
-| 動詞      | URI                              | アクション | ルート名               |
-|-----------|----------------------------------|---------|--------------------------|
-| GET       | `/photos/{photo}/thumbnail`      | show    | photos.thumbnail.show    |
-| GET       | `/photos/{photo}/thumbnail/edit` | edit    | photos.thumbnail.edit    |
-| PUT/PATCH | `/photos/{photo}/thumbnail`      | update  | photos.thumbnail.update  |
+| 動詞      | URI                              | アクション | ルート名                |
+| --------- | -------------------------------- | ---------- | ----------------------- |
+| GET       | `/photos/{photo}/thumbnail`      | show       | photos.thumbnail.show   |
+| GET       | `/photos/{photo}/thumbnail/edit` | edit       | photos.thumbnail.edit   |
+| PUT/PATCH | `/photos/{photo}/thumbnail`      | update     | photos.thumbnail.update |
 
 <a name="creatable-singleton-resources"></a>
 #### シングルトンリソースの作成
@@ -420,14 +420,14 @@ Route::singleton('photos.thumbnail', ThumbnailController::class)->creatable();
 
 この例では、以下のルートを登録します。ご覧の通り、作成可能なシングルトンリソースには、`DELETE`ルートも登録します。
 
-| 動詞      | URI                                | アクション  | ルート名               |
-|-----------|------------------------------------|---------|--------------------------|
-| GET       | `/photos/{photo}/thumbnail/create` | create  | photos.thumbnail.create  |
-| POST      | `/photos/{photo}/thumbnail`        | store   | photos.thumbnail.store   |
-| GET       | `/photos/{photo}/thumbnail`        | show    | photos.thumbnail.show    |
-| GET       | `/photos/{photo}/thumbnail/edit`   | edit    | photos.thumbnail.edit    |
-| PUT/PATCH | `/photos/{photo}/thumbnail`        | update  | photos.thumbnail.update  |
-| DELETE    | `/photos/{photo}/thumbnail`        | destroy | photos.thumbnail.destroy |
+| 動詞      | URI                                | アクション | ルート名                 |
+| --------- | ---------------------------------- | ---------- | ------------------------ |
+| GET       | `/photos/{photo}/thumbnail/create` | create     | photos.thumbnail.create  |
+| POST      | `/photos/{photo}/thumbnail`        | store      | photos.thumbnail.store   |
+| GET       | `/photos/{photo}/thumbnail`        | show       | photos.thumbnail.show    |
+| GET       | `/photos/{photo}/thumbnail/edit`   | edit       | photos.thumbnail.edit    |
+| PUT/PATCH | `/photos/{photo}/thumbnail`        | update     | photos.thumbnail.update  |
+| DELETE    | `/photos/{photo}/thumbnail`        | destroy    | photos.thumbnail.destroy |
 
 Laravelにシングルトンリソースの`DELETE`ルートを登録し、作成／保存ルートは登録したくない場合は、`destroyable`メソッドを利用します。
 

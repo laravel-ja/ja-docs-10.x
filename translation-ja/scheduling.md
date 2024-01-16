@@ -104,46 +104,46 @@ php artisan schedule:list
 
 <div class="overflow-auto">
 
-メソッド  | 説明
-------------- | -------------
-`->cron('* * * * *');`  |  カスタムcronスケジュールでタスクを実行
-`->everySecond();`  |  毎秒タスク実行
-`->everyTwoSeconds();`  |  ２秒毎にタスク実行
-`->everyFiveSeconds();`  |  ５秒毎にタスク実行
-`->everyTenSeconds();`  |  １０秒ごとにタスク実行
-`->everyFifteenSeconds();`  |  １５秒毎にタスク実行
-`->everyTwentySeconds();`  |  ２０秒ごとにタスク実行
-`->everyThirtySeconds();`  |  ３０秒ごとにタスク実行
-`->everyMinute();`  |  毎分タスク実行
-`->everyTwoMinutes();`  |  ２分毎にタスク実行
-`->everyThreeMinutes();`  |  ３分毎にタスク実行
-`->everyFourMinutes();`  |  ４分毎にタスク実行
-`->everyFiveMinutes();`  |  ５分毎にタスク実行
-`->everyTenMinutes();`  |  １０分毎にタスク実行
-`->everyFifteenMinutes();`  |  １５分毎にタスク実行
-`->everyThirtyMinutes();`  |  ３０分毎にタスク実行
-`->hourly();`  |  毎時タスク実行
-`->hourlyAt(17);`  |  １時間ごと、毎時１７分にタスク実行
-`->everyOddHour($minutes = 0);`  |  奇数時間ごとにタスク実行
-`->everyTwoHours($minutes = 0);`  |  ２時間毎にタスク実行
-`->everyThreeHours($minutes = 0);`  |  ３時間毎にタスク実行
-`->everyFourHours($minutes = 0);`  |  ４時間毎にタスク実行
-`->everySixHours($minutes = 0);`  |  ６時間毎にタスク実行
-`->daily();`  |  毎日深夜１２時に実行
-`->dailyAt('13:00');`  |  毎日13:00に実行
-`->twiceDaily(1, 13);`  |  毎日1:00と13:00に実行
-`->twiceDailyAt(1, 13, 15);`  |  毎日1:15と13:15に実行
-`->weekly();`  |  毎週日曜日の00:00にタスク実行
-`->weeklyOn(1, '8:00');`  |  毎週月曜日の8:00に実行
-`->monthly();`  |  毎月１日の00:00にタスク実行
-`->monthlyOn(4, '15:00');`  |  毎月4日の15:00に実行
-`->twiceMonthly(1, 16, '13:00');`  |  毎月１日と１６日の13:00にタスク実行
-`->lastDayOfMonth('15:00');` |  毎月最終日の15:00に実行
-`->quarterly();` |  四半期の初日の00:00にタスク実行
-`->quarterlyOn(4, '14:00');` |  四半期の４日の14:00に実行
-`->yearly();`  |  毎年１月１日の00:00にタスク実行
-`->yearlyOn(6, 1, '17:00');`  |  毎年６月１日の17:00にタスク実行
-`->timezone('America/New_York');` | タスクのタイムゾーンを設定
+| メソッド                           | 説明                                   |
+| ---------------------------------- | -------------------------------------- |
+| `->cron('* * * * *');`             | カスタムcronスケジュールでタスクを実行 |
+| `->everySecond();`                 | 毎秒タスク実行                         |
+| `->everyTwoSeconds();`             | ２秒毎にタスク実行                     |
+| `->everyFiveSeconds();`            | ５秒毎にタスク実行                     |
+| `->everyTenSeconds();`             | １０秒ごとにタスク実行                 |
+| `->everyFifteenSeconds();`         | １５秒毎にタスク実行                   |
+| `->everyTwentySeconds();`          | ２０秒ごとにタスク実行                 |
+| `->everyThirtySeconds();`          | ３０秒ごとにタスク実行                 |
+| `->everyMinute();`                 | 毎分タスク実行                         |
+| `->everyTwoMinutes();`             | ２分毎にタスク実行                     |
+| `->everyThreeMinutes();`           | ３分毎にタスク実行                     |
+| `->everyFourMinutes();`            | ４分毎にタスク実行                     |
+| `->everyFiveMinutes();`            | ５分毎にタスク実行                     |
+| `->everyTenMinutes();`             | １０分毎にタスク実行                   |
+| `->everyFifteenMinutes();`         | １５分毎にタスク実行                   |
+| `->everyThirtyMinutes();`          | ３０分毎にタスク実行                   |
+| `->hourly();`                      | 毎時タスク実行                         |
+| `->hourlyAt(17);`                  | １時間ごと、毎時１７分にタスク実行     |
+| `->everyOddHour($minutes = 0);`    | 奇数時間ごとにタスク実行               |
+| `->everyTwoHours($minutes = 0);`   | ２時間毎にタスク実行                   |
+| `->everyThreeHours($minutes = 0);` | ３時間毎にタスク実行                   |
+| `->everyFourHours($minutes = 0);`  | ４時間毎にタスク実行                   |
+| `->everySixHours($minutes = 0);`   | ６時間毎にタスク実行                   |
+| `->daily();`                       | 毎日深夜１２時に実行                   |
+| `->dailyAt('13:00');`              | 毎日13:00に実行                        |
+| `->twiceDaily(1, 13);`             | 毎日1:00と13:00に実行                  |
+| `->twiceDailyAt(1, 13, 15);`       | 毎日1:15と13:15に実行                  |
+| `->weekly();`                      | 毎週日曜日の00:00にタスク実行          |
+| `->weeklyOn(1, '8:00');`           | 毎週月曜日の8:00に実行                 |
+| `->monthly();`                     | 毎月１日の00:00にタスク実行            |
+| `->monthlyOn(4, '15:00');`         | 毎月4日の15:00に実行                   |
+| `->twiceMonthly(1, 16, '13:00');`  | 毎月１日と１６日の13:00にタスク実行    |
+| `->lastDayOfMonth('15:00');`       | 毎月最終日の15:00に実行                |
+| `->quarterly();`                   | 四半期の初日の00:00にタスク実行        |
+| `->quarterlyOn(4, '14:00');`       | 四半期の４日の14:00に実行              |
+| `->yearly();`                      | 毎年１月１日の00:00にタスク実行        |
+| `->yearlyOn(6, 1, '17:00');`       | 毎年６月１日の17:00にタスク実行        |
+| `->timezone('America/New_York');`  | タスクのタイムゾーンを設定             |
 
 </div>
 
@@ -165,22 +165,22 @@ php artisan schedule:list
 
 <div class="overflow-auto">
 
-メソッド  | 説明
-------------- | -------------
-`->weekdays();`  |  ウィークデーのみに限定
-`->weekends();`  |  ウィークエンドのみに限定
-`->sundays();`  |  日曜だけに限定
-`->mondays();`  |  月曜だけに限定
-`->tuesdays();`  |  火曜だけに限定
-`->wednesdays();`  |  水曜だけに限定
-`->thursdays();`  |  木曜だけに限定
-`->fridays();`  |  金曜だけに限定
-`->saturdays();`  |  土曜だけに限定
-`->days(array\|mixed);`  |  特定の日付だけに限定
-`->between($startTime, $endTime);`  |  開始と終了時間間にタスク実行を制限
-`->unlessBetween($startTime, $endTime);`  |  開始と終了時間間にタスクを実行しないよう制限
-`->when(Closure);`  |  クロージャの戻り値が`true`の時のみに限定
-`->environments($env);`  |  指定の環境でのみタスク実行を限定
+| メソッド                                 | 説明                                         |
+| ---------------------------------------- | -------------------------------------------- |
+| `->weekdays();`                          | ウィークデーのみに限定                       |
+| `->weekends();`                          | ウィークエンドのみに限定                     |
+| `->sundays();`                           | 日曜だけに限定                               |
+| `->mondays();`                           | 月曜だけに限定                               |
+| `->tuesdays();`                          | 火曜だけに限定                               |
+| `->wednesdays();`                        | 水曜だけに限定                               |
+| `->thursdays();`                         | 木曜だけに限定                               |
+| `->fridays();`                           | 金曜だけに限定                               |
+| `->saturdays();`                         | 土曜だけに限定                               |
+| `->days(array\|mixed);`                  | 特定の日付だけに限定                         |
+| `->between($startTime, $endTime);`       | 開始と終了時間間にタスク実行を制限           |
+| `->unlessBetween($startTime, $endTime);` | 開始と終了時間間にタスクを実行しないよう制限 |
+| `->when(Closure);`                       | クロージャの戻り値が`true`の時のみに限定     |
+| `->environments($env);`                  | 指定の環境でのみタスク実行を限定             |
 
 </div>
 
@@ -263,7 +263,7 @@ php artisan schedule:list
         return 'America/Chicago';
     }
 
-> **Warning**
+> [!WARNING]
 > タイムゾーンの中には夏時間を取り入れているものがあることを忘れないでください。夏時間の切り替えにより、スケジュールしたタスクが２回実行されたり、まったくされないことがあります。そのため、可能であればタイムゾーンによるスケジュールは使用しないことを推奨します。
 
 <a name="preventing-task-overlaps"></a>
@@ -284,7 +284,7 @@ php artisan schedule:list
 <a name="running-tasks-on-one-server"></a>
 ### 単一サーバ上でのタスク実行
 
-> **Warning**
+> [!WARNING]
 > この機能を利用するには、アプリケーションのデフォルトのキャッシュドライバとして`database`、`memcached`、`dynamodb`、`redis`キャッシュドライバを使用している必要があります。さらに、すべてのサーバが同じ中央キャッシュサーバと通信している必要があります。
 
 アプリケーションのスケジューラを複数のサーバで実行する場合は、スケジュールしたジョブを単一のサーバでのみ実行するように制限できます。たとえば、毎週金曜日の夜に新しいレポートを生成するスケジュールされたタスクがあるとします。タスクスケジューラが３つのワーカーサーバで実行されている場合、スケジュールされたタスクは３つのサーバすべてで実行され、レポートを３回生成してしまいます。これは良くありません！
@@ -332,7 +332,7 @@ $schedule->call(fn () => User::resetApiRequestCount())
              ->daily()
              ->runInBackground();
 
-> **Warning**
+> [!WARNING]
 > `runInBackground`メソッドは`command`か`exec`メソッドにより、タスクをスケジュールするときにのみ使用してください。
 
 <a name="maintenance-mode"></a>
@@ -420,7 +420,7 @@ Laravelスケジューラはスケジュールしたタスクが生成する出�
              ->daily()
              ->emailOutputOnFailure('taylor@example.com');
 
-> **Warning**
+> [!WARNING]
 > `emailOutputTo`、 `emailOutputOnFailure`、`sendOutputTo`、`appendOutputTo`メソッドは、`command`と`exec`メソッドに対してのみ指定できます。
 
 <a name="task-hooks"></a>

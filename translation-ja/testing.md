@@ -58,7 +58,7 @@ php artisan make:test UserTest --pest
 php artisan make:test UserTest --unit --pest
 ```
 
-> **Note**
+> [!NOTE]
 > [stubのリソース公開](/docs/{{version}}/artisan#stub-customization) を使って、Testスタブをカスタマイズできます。
 
 テストを生成したら、[PHPUnit](https://phpunit.de)を使用する場合と同様にテストメソッドを定義します。テストを実行するには、ターミナルから`vendor/bin/phpunit`または`php artisan test`コマンドを実行します。
@@ -80,7 +80,7 @@ php artisan make:test UserTest --unit --pest
         }
     }
 
-> **Warning**
+> [!WARNING]
 > テストクラスに独自の`setUp`メソッドを定義する場合は、親のクラスの`parent::setUp()`／`parent::tearDown()`を確実に呼び出してください。
 
 <a name="running-tests"></a>
@@ -121,7 +121,7 @@ php artisan test --parallel
 php artisan test --parallel --processes=4
 ```
 
-> **Warning**
+> [!WARNING]
 > テストをパラレル実行すると、PHPUnitのオプション(`-do-not-cafy-result`など)が利用できない場合があります。
 
 <a name="parallel-testing-and-databases"></a>
@@ -182,7 +182,7 @@ php artisan test --parallel --recreate-databases
     }
 
 <a name="accessing-the-parallel-testing-token"></a>
-#### 並列テストトークンへのアクセス
+#### Accessing the Parallel Testing Token
 
 アプリケーションのテストコードの他の場所から、現在の並列プロセスの「トークン」にアクセスしたい場合は、`token`メソッドを使用します。このトークンは個々のテストプロセスのための一意な文字列の識別子であり、並列テストプロセス間でリソースを分割するために使用できます。たとえば、Laravelは各並行テストプロセスで作成するテストデータベースの末尾に、このトークンを自動的に付加します。
 
@@ -191,7 +191,7 @@ php artisan test --parallel --recreate-databases
 <a name="reporting-test-coverage"></a>
 ### テストカバレージのレポート
 
-> **Warning**
+> [!WARNING]
 > この機能を使用するには、[Xdebug](https://xdebug.org)、または[PCOV](https://pecl.php.net/package/pcov)が必要です。
 
 アプリケーションのテストを実行する際に、テストケースが実際にアプリケーションコードをどの程度カバーしているかどうか、また、テストを実行する際にどれだけのアプリケーションコードが使用されているかを確認したいと思うことでしょう。これを行うには、`test`コマンドを実行するときに、`--coverage`オプションを指定します。

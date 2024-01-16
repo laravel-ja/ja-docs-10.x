@@ -12,7 +12,7 @@
 
 Laravelは、シードクラスを使用してデータベースにデータをシード（種をまく、初期値の設定）する機能を持っています。すべてのシードクラスは`database/seeders`ディレクトリに保存します。デフォルトで、`DatabaseSeeder`クラスが定義されています。このクラスから、`call`メソッドを使用して他のシードクラスを実行し、シードの順序を制御できます。
 
-> **Note**
+> [!NOTE]
 > [複数代入](/docs/{{version}}/eloquent#mass-assignment)は、データベースのシード中では自動的に無効になります。
 
 <a name="writing-seeders"></a>
@@ -52,7 +52,7 @@ php artisan make:seeder UserSeeder
         }
     }
 
-> **Note**
+> [!NOTE]
 > `run`メソッドの引数として、タイプヒントにより必要な依存を指定できます。それらはLaravelの[サービスコンテナ](/docs/{{version}}/container)が自動的に依存解決します。
 
 <a name="using-model-factories"></a>

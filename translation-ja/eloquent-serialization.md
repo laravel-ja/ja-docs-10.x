@@ -13,7 +13,7 @@
 
 Laravelを使用してAPIを構築する場合、モデルとリレーションを配列またはJSONに変換する必要が頻繁にあります。Eloquentには、これらの変換を行うための便利な方法と、モデルのシリアル化された表現に含まれる属性を制御するための便利な方法が含まれています。
 
-> **Note**
+> [!NOTE]
 > EloquentモデルとコレクションのJSONシリアル化を処理するさらに堅牢な方法については、[Eloquent APIリソース](/docs/{{version}}/eloquent-resources)のドキュメントを確認してください。
 
 <a name="serializing-models-and-collections"></a>
@@ -91,7 +91,7 @@ EloquentモデルをJSONに変換すると、ロードずみのリレーショ�
         protected $hidden = ['password'];
     }
 
-> **Note**
+> [!NOTE]
 > リレーションを非表示にするには、リレーションのメソッド名をEloquentモデルの`$hidden`プロパティに追加します。
 
 もしくは、`visible`プロパティを使用して、モデルの配列とJSON表現に含める必要のある属性の「許可リスト」を定義することもできます。モデルが配列またはJSONに変換されると、`$visible`配列に存在しないすべての属性が非表示になります。

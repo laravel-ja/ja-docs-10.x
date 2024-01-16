@@ -133,7 +133,7 @@ form.setValidationTimeout(3000);
 </span>
 ```
 
-> **Warning**
+> [!WARNING]
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
 
 Precognitionでフォームの入力のサブセットをバリデートしている場合、エラーを手作業でクリアできると便利です。それには、フォームの`forgetError`関数を使用します。
@@ -175,7 +175,7 @@ const submit = () => form.submit()
 <a name="using-vue-and-inertia"></a>
 ### VueとInertiaの使用
 
-> **Note**
+> [!NOTE]
 > VueとInertiaを使ってLaravelアプリケーションを開発するとき、有利に開始したい場合は、[スターターキット](/docs/{{version}}/starter-kits)の一つを使うことを検討してください。Laravelのスターターキットは、新しいLaravelアプリケーションにバックエンドとフロントエンドの認証へスカフォールドを提供します。
 
 VueとInertiaと一緒にPrecognitionを使用する前に、より一般的な[VueでPrecognitionを使用する](#using-vue)ドキュメントを必ず確認してください。VueをInertiaで使用する場合、NPM経由でInertia互換のPrecognitionライブラリーをインストールする必要があります。
@@ -305,7 +305,7 @@ form.setValidationTimeout(3000);
 {form.invalid('email') && <span>❌</span>}
 ```
 
-> **Warning**
+> [!WARNING]
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
 
 Precognitionでフォーム入力のサブセットをバリデートしている場合、エラーを手作業でクリアできると便利です。それには、フォームの`forgetError`関数を使用します。
@@ -351,7 +351,7 @@ const submit = (e) => {
 <a name="using-react-and-inertia"></a>
 ### ReactとInertiaの使用
 
-> **Note**
+> [!NOTE]
 > ReactとInertiaを使ってLaravelアプリケーションを開発するとき、有利に開始したい場合は、[スターターキット](/docs/{{version}}/starter-kits)の一つを使うことを検討してください。Laravelのスターターキットは、新しいLaravelアプリケーションにバックエンドとフロントエンドの認証へスカフォールドを提供します。
 
 ReactとInertiaと一緒にPrecognitionを使用する前に、より一般的な[VueでPrecognitionを使用する](#using-vue)ドキュメントを必ず確認してください。VueをInertiaで使用する場合、NPM経由でInertia互換のPrecognitionライブラリーをインストールする必要があります。
@@ -498,7 +498,7 @@ form.setValidationTimeout(3000);
 </template>
 ```
 
-> **Warning**
+> [!WARNING]
 > フォーム入力が変更され、バリデーションレスポンスを受信した時点で、初めて有効または無効として表示されます。
 
 フォームの`processing`プロパティを調べれば、フォーム送信リクエストが処理中か判断できます。
@@ -571,7 +571,7 @@ window.axios.defaults.headers.common['Authorization'] = authToken;
 client.use(window.axios)
 ```
 
-> **Warning**
+> [!WARNING]
 > Inertia的なPrecognitionライブラリでは、設定したAxiosインスタンスのみをバリデーションリクエストに使用します。フォーム送信は常にInertiaが送信します。
 
 <a name="customizing-validation-rules"></a>

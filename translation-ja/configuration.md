@@ -50,7 +50,7 @@ Laravelのデフォルトの`.env`ファイルには、アプリケーション�
 
 チームで開発している場合は、アプリケーションに`.env.example`ファイルを含め続けることをお勧めします。サンプル設定ファイルにプレースホルダー値を配置することにより、チームの他の開発者は、アプリケーションを実行するために必要な環境変数を明確に確認できます。
 
-> **Note**
+> [!NOTE]
 > `.env`ファイルにあるすべての変数は、サーバレベルやシステムレベルで定義されている、外部の環境変数によってオーバーライドすることができます。
 
 <a name="environment-file-security"></a>
@@ -115,7 +115,7 @@ APP_NAME="My Application"
         // 環境はlocalかstaging
     }
 
-> **Note**
+> [!NOTE]
 > 現在のアプリケーション環境の検出は、サーバレベルの`APP_ENV`環境変数を定義することで上書きできます。
 
 <a name="encrypting-environment-files"></a>
@@ -138,7 +138,7 @@ php artisan env:encrypt
 php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 ```
 
-> **Note**
+> [!NOTE]
 > 指定するキーの長さは、使用する暗号化方式で要求される鍵の長さと合わせる必要があります。デフォルトでLaravelは、３２文字のキーを必要とする`AES-256-CBC`暗号を使用します。コマンド起動時に、`--cipher`オプションを指定すれば、Laravelの [暗号化](/docs/{{version}}/encryption)でサポートする暗号を自由に指定できます。
 
 アプリケーションで`.env`や`.env.staging`など、複数の環境ファイルを使用している場合は、`--env`オプションで環境名を指定することで、暗号化する環境ファイルを指定します。
@@ -213,7 +213,7 @@ php artisan env:decrypt --force
 php artisan config:clear
 ```
 
-> **Warning**
+> [!WARNING]
 > 開発過程の一環として`config:cache`コマンド実行を採用する場合は、必ず`env`関数を設定ファイルの中だけで使用してください。設定ファイルがキャッシュされると、`.env`ファイルはロードされません。したがって、`env`関数は外部システムレベルの環境変数のみを返すだけです。
 
 <a name="debug-mode"></a>
@@ -221,7 +221,7 @@ php artisan config:clear
 
 `config/app.php`設定ファイルの`debug`オプションは、エラーに関する情報が実際にユーザーに表示される量を決定します。デフォルトでは、このオプションは、`.env`ファイルに保存されている`APP_DEBUG`環境変数の値を尊重するように設定されています。
 
-> **Warning**
+> [!WARNING]
 > ローカル開発の場合は、`APP_DEBUG`環境変数を`true`に設定する必要があります。**実稼働環境では、この値は常に`false`である必要があります。本番環境で変数が`true`に設定されていると、機密性の高い設定値がアプリケーションのエンドユーザーに公開されるリスクがあります。**
 
 <a name="maintenance-mode"></a>
@@ -270,7 +270,7 @@ php artisan down --with-secret
 
 この隠しルートへアクセスすると、次にアプリケーションの`/`ルートへリダイレクトされます。ブラウザへこのクッキーが一度発行されると、メンテナンスモードでない状態と同様に、アプリケーションへ普通にブラウズできます。
 
-> **Note**
+> [!NOTE]
 > メンテナンスモードのシークレットは、通常、英数字とオプションでダッシュで構成されるべきです。URLの中で特別な意味を持つ文字、例えば`?`や`&`の使用は避けるべきです。
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>
@@ -302,7 +302,7 @@ php artisan down --redirect=/
 php artisan up
 ```
 
-> **Note**
+> [!NOTE]
 > `resources/views/errors/503.blade.php`を独自に定義することにより、メンテナンスモードのデフォルトテンプレートをカスタマイズできます。
 
 <a name="maintenance-mode-queues"></a>

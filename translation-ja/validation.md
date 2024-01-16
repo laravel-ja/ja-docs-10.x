@@ -202,7 +202,7 @@ Laravelの組み込み検証ルールには、それぞれエラーメッセー�
 
 さらに、このファイルを他の言語ディレクトリにコピーして、アプリケーションように言語用メッセージを翻訳することもできます。Laravelの多言語化の詳細については、完全な[多言語化のドキュメント](/docs/{{version}}/localization)をチェックしてみてください。
 
-> **Warning**
+> [!WARNING]
 > Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開してください。
 
 <a name="quick-xhr-requests-and-validation"></a>
@@ -321,7 +321,7 @@ php artisan make:request StorePostRequest
         ];
     }
 
-> **Note**
+> [!NOTE]
 > `rules`メソッドの引数で必要な依存関係をタイプヒントにより指定できます。それらはLaravel[サービスコンテナ](/docs/{{version}}/container)を介して自動的に依存解決されます。
 
 では、どのようにバリデーションルールを実行するのでしょうか？必要なのはこのリクエストをコントローラのメソッドで、タイプヒントを使い指定することです。受信フォームリクエストは、コントローラメソッドを呼び出す前にバリデーションを行います。つまり、コントローラにバリデーションロジックを取っ散らかす必要はありません。
@@ -347,7 +347,7 @@ php artisan make:request StorePostRequest
 
 バリデーションが失敗した場合、リダイレクトレスポンスを生成し、ユーザーを直前のページへ送り返します。エラーもセッ​​ションへ一時保存し、表示できるようにします。リクエストがXHRリクエストの場合、422ステータスコードで、[バリデーションエラーのJSON表現を含むHTTPレスポンス](#validation-error-response-format)がユーザーに返されます。
 
-> **Note**
+> [!NOTE]
 > Inertiaを搭載したLaravelのフロントエンドへ、リアルタイムのフォームリクエストバリデーションを追加する必要がありますか？[Laravel Precognition](/docs/{{version}}/precognition)をチェックしてください。
 
 <a name="performing-additional-validation-on-form-requests"></a>
@@ -468,7 +468,7 @@ public function after(): array
         return true;
     }
 
-> **Note**
+> [!NOTE]
 > `authorize`メソッドの引数で、必要な依存をタイプヒントにより指定できます。それらはLaravelの[サービスコンテナ](/docs/{{version}}/container)により、自動的に依存解決されます。
 
 <a name="customizing-the-error-messages"></a>
@@ -743,7 +743,7 @@ $validator->after([
     echo $errors->first('email');
 
 <a name="retrieving-all-error-messages-for-a-field"></a>
-#### 指定フィールドの全エラーメッセージ取得
+#### Retrieving All Error Messages for a Field
 
 指定したフィールドの全エラーメッセージを配列で取得したい場合は、`get`メソッドを使います。
 
@@ -784,7 +784,7 @@ Laravelの組み込み検証ルールには、それぞれエラーメッセー�
 
 さらに、このファイルを他の言語ディレクトリへコピーし、アプリケーションの言語用にメッセージを翻訳することもできます。Laravelの多言語化の詳細については、完全な[多言語化ドキュメント](/docs/{{version}}/localization)をチェックしてみてください。
 
-> **Warning**
+> [!WARNING]
 > Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 <a name="custom-messages-for-specific-attributes"></a>
@@ -808,7 +808,7 @@ Laravelの組み込みエラーメッセージの多くは、`:attribute`プレ�
         'email' => 'email address',
     ],
 
-> **Warning**
+> [!WARNING]
 > Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 <a name="specifying-values-in-language-files"></a>
@@ -834,7 +834,7 @@ The credit card number field is required when payment type is cc.
         ],
     ],
 
-> **Warning**
+> [!WARNING]
 > Laravelアプリケーションのスケルトンは、`lang`ディレクトリをデフォルトで用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開できます。
 
 この値を定義したら、バリデーションルールは次のエラーメッセージを生成します。
@@ -1226,7 +1226,7 @@ distinctはデフォルトで緩い比較を使用します。厳密な比較を
 
 PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに付属しており、Laravelバージョン5.8より前のLaravelのデフォルトの電子メールバリデーション動作でした。
 
-> **Warning**
+> [!WARNING]
 > `dns`および`spoof`バリデータには、PHPの`intl`拡張が必要です。
 
 <a name="rule-ends-with"></a>
@@ -1337,7 +1337,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
     'photo' => ['required', 'extensions:jpg,png'],
 
-> **Warning**
+> [!WARNING]
 > ユーザーが割り当てた拡張子だけでファイルをバリデートしてはいけません。このルールは通常、[`mimes`](#rule-mimes)または[`mimetypes`](#rule-mimetypes)ルールと組み合わせて使用する必要があります。
 
 <a name="rule-file"></a>
@@ -1412,7 +1412,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
 フィールドが整数値であることをバリデートします。
 
-> **Warning**
+> [!WARNING]
 > このバリデーションルールは、入力が「整数」変数タイプであるかを確認しません。入力がPHPの`FILTER_VALIDATE_INT`ルールで受け入れられるかバリデーションするだけです。入力を数値としてバリデーションする必要がある場合は、このルールを[`numeric`バリデーションルール](#rule-numeric)と組み合わせて使用​​してください。
 
 <a name="rule-ip"></a>
@@ -1551,7 +1551,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
 内部的にこのルールは、PHPの`preg_match`関数を使用しています。指定するパターンは有効なデリミタも含め、`preg_match`が要求するものと同じフォーマットに従う必要があります。例えば、`'email' => 'not_regex:/^.+$/i'`です。
 
-> **Warning**
+> [!WARNING]
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに配列を使用してバリデーションルールを指定する必要があります。
 
 <a name="rule-nullable"></a>
@@ -1569,7 +1569,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
 フィールドは、認証済みユーザーのパスワードと一致する必要があります。
 
-> **Warning**
+> [!WARNING]
 > このルールはLaravel9で削除するため、`current_password`へ名前を変更しました。代わりに[現在のパスワード](#rule-current-password)ルールを使用してください。
 
 <a name="rule-present"></a>
@@ -1673,7 +1673,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 
 内部的にこのルールはPHPの`preg_match`関数を使用しています。指定するパターンは有効なデリミタも含め、`preg_match`が要求するものと同じフォーマットに従う必要があります。例えば、`'email' => 'regex:/^.+@.+$/i'`です。
 
-> **Warning**
+> [!WARNING]
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに、配列でルールを指定する必要があります。
 
 <a name="rule-required"></a>
@@ -1825,7 +1825,7 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
         ],
     ]);
 
-> **Warning**
+> [!WARNING]
 > ユーザーがコントロールするリクエストの入力を`ignore`メソッドへ、決して渡してはいけません。代わりに、Eloquentモデルインスタンスの自動増分IDやUUIDのような、生成されたユニークなIDだけを渡してください。そうしなければ、アプリケーションがSQLインジェクション攻撃に対し、脆弱になります。
 
 モデルキーの値を`ignore`メソッドに渡す代わりに、モデルインスタンス全体を渡すこともできます。Laravelはモデルからキーを自動的に抽出します:
@@ -1909,7 +1909,7 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
 
 上の例では`email`フィールドが、`$data`配列の中に存在している場合のみバリデーションが実行されます。
 
-> **Note**
+> [!NOTE]
 > フィールドが常に存在しているが、空であることをバリデートする場合は、[この追加フィールドに対する注意事項](#a-note-on-optional-fields)を確認してください。
 
 <a name="complex-conditional-validation"></a>
@@ -1938,7 +1938,7 @@ The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://w
         return $input->games >= 100;
     });
 
-> **Note**
+> [!NOTE]
 > クロージャへ渡される`$input`パラメーターは、`Illuminate\Support\Fluent`のインスタンスであり、バリデーション下の入力とファイルへアクセスするために使用できます。
 
 <a name="complex-conditional-array-validation"></a>
@@ -2099,7 +2099,7 @@ Laravelでは、アップロードされたファイルを検証するため、`
         ],
     ]);
 
-> **Note**
+> [!NOTE]
 > 画像サイズのバリデーションに関するより詳しい情報は、[dimensionsルールのドキュメント](#rule-dimensions)に記載しています。
 
 <a name="validating-files-file-sizes"></a>
@@ -2368,5 +2368,5 @@ php artisan make:rule Uppercase
 php artisan make:rule Uppercase --implicit
 ```
 
-> **Warning**
+> [!WARNING]
 > 「暗黙の」ルールは、属性が必要であることを*暗黙的に*します。欠落している属性または空の属性を実際に無効にするかどうかは、あなた次第です。

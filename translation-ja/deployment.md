@@ -99,7 +99,7 @@ server {
 composer install --optimize-autoloader --no-dev
 ```
 
-> **Note**
+> [!NOTE]  
 > オートローダを最適化することに加え、プロジェクトのソースコントロールリポジトリへ、`composer.lock`ファイルをいつも確実に含めましょう。`composer.lock`ファイルが存在すると、プロジェクトの依存パッケージのインストールが、より早くなります。
 
 <a name="optimizing-configuration-loading"></a>
@@ -113,7 +113,7 @@ php artisan config:cache
 
 このコマンドは、Laravelの全設定ファイルをキャッシュされる一つのファイルへまとめるため、設定値をロードする場合に、フレームワークがファイルシステムを数多くアクセスする手間を大いに減らします。
 
-> **Warning**
+> [!WARNING]  
 > 開発時に`config:cache`コマンドを実行する場合は、設定ファイルの中だけで、`env`関数を呼び出していることを確認してください。設定ファイルがキャッシュされてしまうと、`.env`ファイルはロードされなくなり、`.env`変数に対する`env`関数の呼び出し結果はすべて`null`になります。
 
 <a name="caching-events"></a>
@@ -152,7 +152,7 @@ php artisan view:cache
 
 config/app.php設定ファイルのデバッグオプションは、エラーに関する情報が実際にユーザーに表示される程度を決定します。デフォルトでは、このオプションは、`.env`ファイルに保存されている`APP_DEBUG`環境変数の値を尊重するように設定しています。
 
-> **Warning**
+> [!WARNING]  
 > **実稼働環境下では、この値は常に`false`である必要があります。本番環境で`APP_DEBUG`変数が`true`に設定されていると、機密性の高い設定値がアプリケーションのエンドユーザーに公開されるリスクがあります。**
 
 <a name="deploying-with-forge-or-vapor"></a>
@@ -165,7 +165,7 @@ config/app.php設定ファイルのデバッグオプションは、エラーに
 
 Laravel ForgeはDigitalOcean、Linode、AWSなど数多くのインフラプロバイダ上に、サーバを作成できます。それに加え、ForgeはNginx、MySQL、Redis、Memcached、Beanstalkなどのような、堅牢なLaravelアプリケーションを構築するために必要なツールを全部インストールし、管理します。
 
-> **Note**
+> [!NOTE]  
 > Laravel Forgeでデプロイするための完全なガイドが必要ですか？[Laravel Bootcamp](https://bootcamp.laravel.com/deploying)と[Laracastsで視聴できるForgeのビデオシリーズ](https://laracasts.com/series/learn-laravel-forge-2022-edition)をご覧ください。
 
 <a name="laravel-vapor"></a>

@@ -36,7 +36,7 @@
 
 Laravelは、開発および実働用アセットをロードするため、公式プラグインとBladeディレクティブを提供し、Viteをシームレスに統合しています。
 
-> **Note**
+> [!NOTE]
 > Laravel Mixを実行していますか？新しいLaravelのインストールでは、Laravel MixをViteへ置き換えました。Mixのドキュメントは、[Laravel Mix](https://laravel-mix.com/)のウェブサイトをご覧ください。Viteに切り替えたい場合は、[移行ガイド](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite)を参照してください。
 
 <a name="vite-or-mix"></a>
@@ -54,7 +54,7 @@ Vite scaffoldingを使用して新しいLaravelアプリケーションを開始
 <a name="installation"></a>
 ## インストールと準備
 
-> **Note**
+> [!NOTE]
 > 以下のドキュメントでは、Laravel Viteプラグインを手作業でインストールし、設定する方法について説明しています。しかし、Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでにこのスカフォールドがすべて含まれており、LaravelとViteを始める最速の方法を用意しています。
 
 <a name="installing-node"></a>
@@ -346,7 +346,7 @@ export default defineConfig({
 });
 ```
 
-> **Note**
+> [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Vue、Viteの構成が含まれています。Laravel、Vue、Viteを最速で使い始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia)をチェックしてください。
 
 <a name="react"></a>
@@ -384,7 +384,7 @@ JSXを含むすべてのファイルの拡張子を確実に、`.jsx`または`.
 
 `@viteReactRefresh`ディレクティブは、`@vite`ディレクティブの前に呼び出す必要があります。
 
-> **Note**
+> [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、React、Viteの設定が含まれています。Laravel、React、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="inertia"></a>
@@ -407,7 +407,7 @@ createInertiaApp({
 });
 ```
 
-> **Note**
+> [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia、Viteの構成が含まれています。Laravel、Inertia、Viteを最速で始めるには、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="url-processing"></a>
@@ -454,7 +454,7 @@ export default {
 };
 ```
 
-> **Note**
+> [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、最初から適切なTailwind、PostCSS、Viteの構成を用意しています。また、スターターキットを使わずにTailwindとLaravelを使いたい場合は、[LaravelのためのTailwindインストールガイド](https://tailwindcss.com/docs/guides/laravel)をチェックしてください。
 
 <a name="working-with-blade-and-routes"></a>
@@ -680,7 +680,7 @@ node bootstrap/ssr/ssr.js
 php artisan inertia:start-ssr
 ```
 
-> **Note**
+> [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、すでに適切なLaravel、Inertia SSR、Viteの構成が含まれています。Laravel、Inertia SSR、Viteを最速で使い始めるため、[Laravel Breeze](/docs/{{version}}/starter-kits#breeze-and-inertia) をチェックしてください。
 
 <a name="script-and-style-attributes"></a>
@@ -806,7 +806,7 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ]);
 ```
 
-> **Warning**
+> [!WARNING]
 > Vite開発サーバが起動している間は、`$chunk`と`$manifest`引数は、`null`になります。
 
 <a name="advanced-customization"></a>
@@ -824,6 +824,9 @@ LaravelのViteプラグインは、ほとんどのアプリケーションで動
             ->useBuildDirectory('bundle') // ビルドディレクトリのカスタマイズ
             ->useManifestFilename('assets.json') // マニフェストファイル名のカスタマイズ
             ->withEntryPoints(['resources/js/app.js']) // エントリポイントの指定
+            ->createAssetPathsUsing(function (string $path, ?bool $secure) { // Customize the backend path generation for built assets...
+                return "https://cdn.example.com/{$path}";
+            })
     }}
 </head>
 ```

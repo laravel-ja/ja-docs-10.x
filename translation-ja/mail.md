@@ -284,7 +284,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
         );
     }
 
-> **Note**
+> [!NOTE]
 > すべてのメールテンプレートを格納するために`resources/views/emails`ディレクトリを作成することを推奨します。ただし、`resources/views`ディレクトリ内ならば好きな場所へ自由に配置できます。
 
 <a name="plain-text-emails"></a>
@@ -518,7 +518,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
 </body>
 ```
 
-> **Warning**
+> [!WARNING]
 > 平文ンテキストメッセージはインライン添付ファイルを利用しないため、`$message`変数は平文テキストメッセージテンプレートでは使用できません。
 
 <a name="embedding-raw-data-attachments"></a>
@@ -714,7 +714,7 @@ Thanks,<br>
 </x-mail::message>
 ```
 
-> **Note**
+> [!NOTE]
 > Markdownメールを書くときに余分なインデントを使用しないでください。Markdown標準に従って、Markdownパーサーはインデントされたコンテンツをコードブロックとしてレンダリングします。
 
 <a name="button-component"></a>
@@ -917,7 +917,7 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
         }
     }
 
-> **Note**
+> [!NOTE]
 > これらの問題の回避方法の詳細は、[キュー投入したジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
 <a name="rendering-mailables"></a>

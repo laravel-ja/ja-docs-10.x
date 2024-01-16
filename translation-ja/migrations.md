@@ -44,7 +44,7 @@ Laravelは、マイグレーションの名前からテーブル名と新しい�
 
 生成するマイグレーションのカスタムパスを指定する場合は、`make:migration`コマンドを実行するときに`--path`オプションを使用します。指定したパスは、アプリケーションのベースパスを基準にする必要があります。
 
-> **Note**
+> [!NOTE]
 > マイグレーションのスタブは[スタブのリソース公開](/docs/{{version}}/artisan#stub-customization)を使用してカスタマイズできます。
 
 <a name="squashing-migrations"></a>
@@ -70,7 +70,7 @@ php artisan schema:dump --database=testing --prune
 
 チームの新しい開発者がアプリケーションの初期データベース構造をすばやく作成できるようにするため、データベーススキーマファイルはソース管理にコミットすべきでしょう。
 
-> **Warning**
+> [!WARNING]
 > マイグレーションの圧縮は、MySQL、PostgreSQL、SQLiteデータベースでのみ利用可能で、データベースのコマンドラインクライアントを利用しています。スキーマダンプは、メモリ内SQLiteデータベースへ復元されない場合があります。
 
 <a name="migration-structure"></a>
@@ -111,7 +111,7 @@ php artisan schema:dump --database=testing --prune
     };
 
 <a name="setting-the-migration-connection"></a>
-#### マイグレーション接続の設定
+#### Setting the Migration Connection
 
 マイグレーションがアプリケーションのデフォルトのデータベース接続以外のデータベース接続を操作する場合は、マイグレーションの`$connection`プロパティを設定する必要があります。
 
@@ -161,11 +161,11 @@ php artisan migrate --pretend
 php artisan migrate --isolated
 ```
 
-> **Warning**
+> [!WARNING]
 > この機能を利用するには、アプリケーションで`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバをアプリケーションのデフォルトキャッシュドライバとして使用する必要があります。さらに、すべてのサーバから同じセントラルキャッシュサーバと通信する必要があります。
 
 <a name="forcing-migrations-to-run-in-production"></a>
-#### マイグレーションを強制的に本番環境で実行する
+#### Forcing Migrations to Run in Production
 
 一部のマイグレーション操作は破壊的です。つまり、データーが失われる可能性を持っています。本番データベースに対してこれらのコマンドを実行しないように保護するために、コマンドを実行する前に確認を求めるプロンプトが表示されます。プロンプトなしでコマンドを強制的に実行するには、`--force`フラグを使用します。
 
@@ -207,7 +207,7 @@ php artisan migrate:reset
 ```
 
 <a name="roll-back-migrate-using-a-single-command"></a>
-#### 単一コマンドでロールバックとマイグレーション実行
+#### Roll Back and Migrate Using a Single Command
 
 `migrate:refresh`コマンドは、すべてのマイグレーションをロールバックしてから、`migrate`コマンドを実行します。このコマンドは、データベース全体を効果的に再作成します。
 
@@ -225,7 +225,7 @@ php artisan migrate:refresh --step=5
 ```
 
 <a name="drop-all-tables-migrate"></a>
-#### すべてのテーブルを削除後にマイグレーション
+#### Drop All Tables and Migrate
 
 `migrate:fresh`コマンドは、データベースからすべてのテーブルを削除したあと、`migrate`コマンドを実行します。
 
@@ -241,7 +241,7 @@ php artisan migrate:fresh --seed
 php artisan migrate:fresh --database=admin
 ```
 
-> **Warning**
+> [!WARNING]
 > `migrate:fresh`コマンドは、プレフィックスに関係なく、すべてのデータベーステーブルを削除します。このコマンドは、他のアプリケーションと共有されているデータベースで開発している場合は注意して使用する必要があります。
 
 <a name="tables"></a>
@@ -278,7 +278,7 @@ php artisan migrate:fresh --database=admin
     }
 
 <a name="database-connection-table-options"></a>
-#### データベース接続とテーブルオプション
+#### Database Connection and Table Options
 
 アプリケーションのデフォルトではないデータベース接続でスキーマ操作を実行する場合は、`connection`メソッドを使用します。
 
@@ -1011,7 +1011,7 @@ Postgresを使用している場合は、`INET`カラムを作成します。
         }
     };
 
-> **Warning**
+> [!WARNING]
 > デフォルト式のサポートは、データベースドライバ、データベースのバージョン、フィールドタイプに依存します。お使いのデータベースのドキュメントを参照してください。
 
 <a name="column-order"></a>
@@ -1059,7 +1059,7 @@ use Illuminate\Database\DBAL\TimestampType;
 ],
 ```
 
-> **Warning**
+> [!WARNING]
 > `doctrine/dbal`パッケージを使用している場合、以下のカラムタイプを変更できます。`bigInteger`、`binary`、`boolean`、`char`、`date`、`dateTime`、`dateTimeTz`、`decimal`、`double`、`integer`、`json`、`longText`、`mediumText`、`smallInteger`、`string`、`text`、`time`、`tinyText`、`unsignedBigInteger`、`unsignedInteger`、`unsignedSmallInteger`、`ulid`、`uuid`
 
 <a name="renaming-columns"></a>
@@ -1184,7 +1184,7 @@ LaravelのスキーマビルダBlueprintクラスは、Laravelでサポートし
 
     $table->renameIndex('from', 'to')
 
-> **Warning**
+> [!WARNING]
 > アプリケーションでSQLiteデータベースを利用する場合、`renameIndex`メソッドを使用する前に、Composerパッケージマネージャで、`doctrine/dbal`パッケージをインストールしておく必要があります。
 
 <a name="dropping-indexes"></a>
@@ -1282,7 +1282,7 @@ Laravelは、データベースレベルで参照整合性を強制するため�
         // Constraints disabled within this closure...
     });
 
-> **Warning**
+> [!WARNING]
 > SQLiteは、デフォルトで外部キー制約を無効にします。SQLiteを使用する場合は、マイグレーションでデータベースを作成する前に、データベース設定の[外部キーサポートを有効にする](/docs/{{version}}/database#configuration)を確実に行ってください。さらに、SQLiteはテーブルの作成時にのみ外部キーをサポートし、[テーブルを変更する場合はサポートしません](https://www.sqlite.org/omitted.html)。
 
 <a name="events"></a>

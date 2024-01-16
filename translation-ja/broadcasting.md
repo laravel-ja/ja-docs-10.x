@@ -54,7 +54,7 @@
 
 Laravelはデフォルトで、[Pusherチャンネル](https://pusher.com/channels)と[Ably](https://ably.com)、２つのサーバ側ブロードキャストドライバを用意しています。ただし、[laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction)や[soketi](https://docs.soketi.app/)など、コミュニティ主導のパッケージでは、商用ブロードキャストプロバイダを必要としないドライバを提供しています。
 
-> **Note**
+> [!NOTE]
 > イベントブロードキャストに取り掛かる前に、[イベントとリスナ](/docs/{{version}}/events)に関するLaravelのドキュメントをしっかりと読んでください。
 
 <a name="server-side-installation"></a>
@@ -115,7 +115,7 @@ BROADCAST_DRIVER=pusher
 <a name="ably"></a>
 ### Ably
 
-> **Note**
+> [!NOTE]
 > 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
 [Ably](https://ably.com)を使用してイベントをブロードキャストする場合は、Composerパッケージマネージャを使用してAbly PHP SDKをインストールする必要があります。
@@ -185,7 +185,7 @@ window.Echo = new Echo({
 npm run build
 ```
 
-> **Note**
+> [!NOTE]
 > アプリケーションで使用しているJavaScriptリソースのコンパイルについて詳しく知りたい場合は、[Vite](/docs/{{version}}/vite)ドキュメントを参照してください。
 
 <a name="using-an-existing-client-instance"></a>
@@ -211,7 +211,7 @@ window.Echo = new Echo({
 <a name="client-ably"></a>
 ### Ably
 
-> **Note**
+> [!NOTE]
 > 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
 [Laravel Echo](https://github.com/laravel/echo)はJavaScriptライブラリであり、チャンネルをサブスクライブして、サーバ側のブロードキャストドライバがブロードキャストしたイベントを簡単にリッスンできます。NPMパッケージマネージャを介してEchoをインストールします。この例では、`pusher-js`パッケージもインストールしています。
@@ -250,7 +250,7 @@ Ably　Echo設定は`VITE_ABLY_PUBLIC_KEY`環境変数を参照しているこ�
 npm run dev
 ```
 
-> **Note**
+> [!NOTE]
 > アプリケーションで使用しているJavaScriptリソースのコンパイルについて詳しく知りたい場合は、[Vite](/docs/{{version}}/vite)ドキュメントを参照してください。
 
 <a name="concept-overview"></a>
@@ -260,7 +260,7 @@ Laravelのイベントブロードキャストを使用すると、WebSocketに�
 
 イベントは「チャンネル」を介してブロードキャストされます。チャンネルは、パブリックまたはプライベートとして指定できます。アプリケーションへの訪問者は全員、認証や認可なしにパブリックチャンネルをサブスクライブできます。ただし、プライベートチャンネルをサブスクライブするには、ユーザーが認証され、そのチャンネルをリッスンする認可を持っている必要があります。
 
-> **Note**
+> [!NOTE]
 > Pusherの代わりにオープンソースを使いたい場合は、[オープンソースの代替](#open-source-alternatives)を読んでください。
 
 <a name="using-example-application"></a>
@@ -522,7 +522,7 @@ Echo.private(`orders.${orderId}`)
         use SerializesModels;
     }
 
-> **Note**
+> [!NOTE]
 > こうした問題の回避方法の詳細は、[キュー投入済みジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
 <a name="authorizing-channels"></a>
@@ -614,7 +614,7 @@ HTTPルートと同様に、チャンネルルートも暗黙的および明示�
         return $user->id === $order->user_id;
     });
 
-> **Warning**
+> [!WARNING]
 > HTTPルートモデルバインディングとは異なり、チャンネルモデルバインディングは自動[暗黙的モデルバインディングスコープ](/docs/{{version}}/routing#implicit-model-binding-scoping)をサポートしていません。ただし、ほとんどのチャンネルは単一のモデルの一意の主キーに基づいてスコープを設定できるため、これが問題になることはめったにありません。
 
 <a name="authorization-callback-authentication"></a>
@@ -669,7 +669,7 @@ php artisan make:channel OrderChannel
         }
     }
 
-> **Note**
+> [!NOTE]
 > Laravelの他の多くのクラスと同様に、チャンネルクラスは[サービスコンテナ](/docs/{{version}}/container)によって自動的に依存解決されます。そのため、コンストラクターでチャンネルに必要な依存関係をタイプヒントすることができます。
 
 <a name="broadcasting-events"></a>
@@ -701,7 +701,7 @@ axios.post('/task', task)
 
 ただし、タスクの作成もブロードキャストすることを忘れないでください。JavaScriptアプリケーションがタスクリストにタスクを追加するためにこのイベントもリッスンしている場合、リストには重複するタスクが発生します。１つはエンドポイントからのもので、もう１つはブロードキャストからのものです。これを解決するには、`toOthers`メソッドを使用して、現在のユーザーにはイベントをブロードキャストしないようにブロードキャスタへ指示します。
 
-> **Warning**
+> [!WARNING]
 > `toOthers`メソッドを呼び出すには、イベントで`Illuminate\Broadcasting\InteractsWithSockets`トレイトをuseする必要があります。
 
 <a name="only-to-others-configuration"></a>
@@ -776,7 +776,7 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="stop-listening-for-events"></a>
-#### イベントリッスンの中止
+#### Stop Listening for Events
 
 [チャンネルから離れる](#leaving-a-channel)ことなく特定のイベントのリッスンを停止したい場合は、`stopListening`メソッドを使用します。
 
@@ -786,7 +786,7 @@ Echo.private(`orders.${this.order.id}`)
 ```
 
 <a name="leaving-a-channel"></a>
-### チャンネルの離脱
+### Leaving a Channel
 
 チャンネルを離れるには、Echoインスタンスで`leaveChannel`メソッドを呼び出してください。
 
@@ -902,7 +902,7 @@ Echo.join(`chat.${roomId}`)
 <a name="model-broadcasting"></a>
 ## モデルブロードキャスト
 
-> **Warning**
+> [!WARNING]
 > モデルブロードキャストに関する以降のドキュメントを読む前に、Laravelのモデルブロードキャストサービスの一般的なコンセプトや、ブロードキャストイベントを手作業で作成したり、リッスンしたりする方法に精通しておくことをおすすめします。
 
 アプリケーションの[Eloquentモデル](/docs/{{version}}/eloquent)が作成、更新、または削除されたときにイベントをブロードキャストするのは一般的です。もちろん、これは自前で[Eloquentモデルの状態変化を表すカスタムイベントを定義](/docs/{{version}}/eloquent#events)し、それらのイベントを`ShouldBroadcast`インターフェイスでマークすることで簡単に実現できます。
@@ -1091,7 +1091,7 @@ Echo.private(`App.Models.User.${this.user.id}`)
 <a name="client-events"></a>
 ## クライアントイベント
 
-> **Note**
+> [!NOTE]
 > [Pusherチャンネル](https://pusher.com/channels)を使用する場合は、クライアントイベントを送信するために[アプリケーションダッシュボード](https://dashboard.pusher.com/)の"App Settings"セクションの"Client Events"オプションを有効にする必要があります。
 
 Laravelアプリケーションにまったくアクセスせずに、接続済みの他のクライアントにイベントをブロードキャストしたい場合があります。これは、別のユーザーが特定の画面でメッセージを入力していることをアプリケーションのユーザーに警告する「入力」通知などに特に役立ちます。

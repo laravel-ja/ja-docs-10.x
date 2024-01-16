@@ -35,6 +35,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [preg_replace_array](#method-preg-replace-array)
 [Str::after](#method-str-after)
 [Str::afterLast](#method-str-after-last)
+[Str::apa](#method-str-apa)
 [Str::ascii](#method-str-ascii)
 [Str::before](#method-str-before)
 [Str::beforeLast](#method-str-before-last)
@@ -117,6 +118,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 
 [after](#method-fluent-str-after)
 [afterLast](#method-fluent-str-after-last)
+[apa](#method-fluent-str-apa)
 [append](#method-fluent-str-append)
 [ascii](#method-fluent-str-ascii)
 [basename](#method-fluent-str-basename)
@@ -277,6 +279,17 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
     $slice = Str::afterLast('App\Http\Controllers\Controller', '\');
 
     // 'Controller'
+
+<a name="method-str-apa"></a>
+#### `Str::apa()` {.collection-method}
+
+`Str::apa`メソッドは指定文字列を[APAガイドライン](https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case)に従ってタイトルケースに変換します。
+
+    use Illuminate\Support\Str;
+
+    $title = Str::apa('Creating A Project');
+
+    // 'Creating a Project'
 
 <a name="method-str-ascii"></a>
 #### `Str::ascii()` {.collection-method}
@@ -1313,6 +1326,17 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
     $slice = Str::of('App\Http\Controllers\Controller')->afterLast('\\');
 
     // 'Controller'
+
+<a name="method-fluent-str-apa"></a>
+#### `apa` {.collection-method}
+
+`apa`メソッドは指定文字列を[APAガイドライン](https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case)に従ってタイトルケースに変換します。
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::of('a nice title uses the correct case')->apa();
+
+    // A Nice Title Uses the Correct Case
 
 <a name="method-fluent-str-append"></a>
 #### `append` {.collection-method}

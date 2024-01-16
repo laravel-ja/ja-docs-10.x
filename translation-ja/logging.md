@@ -66,7 +66,7 @@ Laravelはメッセージをログに記録するときに、デフォルトで`
 
 </div>
 
-> **Note**
+> [!NOTE]
 > [高度なチャンネルのカスタマイズ](#monolog-channel-customization)のドキュメントをチェックして、`monolog`および`custom`ドライバの詳細を確認してください。
 
 <a name="channel-prerequisites"></a>
@@ -255,23 +255,39 @@ PHPやLaravelなどのライブラリは、その機能の一部が非推奨と�
         }
     }
 
-もし、*すべて*のログ収集チャンネルでコンテキスト情報を共有したい場合は、`Log::shareContext()`メソッドを呼び出してください。このメソッドは、作成したすべてのチャンネルと、以降に作成するすべてのチャンネルへ、コンテキスト情報を提供します。通常、`shareContext`メソッドは、アプリケーションサービスプロバイダの`boot`メソッドから呼び出すべきでしょう。
+*すべて*のログチャンネルでコンテキスト情報を共有したい場合は、`Log::shareContext()`メソッドを呼び出します。このメソッドは、作成したすべてのチャンネルと、その後に作成したすべてのチャンネルへ、コンテキスト情報を提供します。
 
+    <?php
+
+    namespace App\Http\Middleware;
+
+    use Closure;
+    use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Log;
     use Illuminate\Support\Str;
+    use Symfony\Component\HttpFoundation\Response;
 
-    class AppServiceProvider
+    class AssignRequestId
     {
         /**
-         * 全アプリケーションサービスの初期起動処理
+         * 受信リクエストの処理
+         *
+         * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
-        public function boot(): void
+        public function handle(Request $request, Closure $next): Response
         {
+            $requestId = (string) Str::uuid();
+
             Log::shareContext([
-                'invocation-id' => (string) Str::uuid(),
+                'request-id' => $requestId
             ]);
+
+            // ...
         }
     }
+
+> [!NOTE]
+> キュー投入したジョブの処理中にログコンテキストを共有する必要がある場合は、[ジョブミドルウェア](/docs/{{version}}/queues#job-middleware)を利用してください。
 
 <a name="writing-to-specific-channels"></a>
 ### 特定チャンネルへの書き込み
@@ -350,7 +366,7 @@ PHPやLaravelなどのライブラリは、その機能の一部が非推奨と�
         }
     }
 
-> **Note**
+> [!NOTE]
 > すべての「tap」クラスは[サービスコンテナ](/docs/{{version}}/container)によって解決されるため、必要なコンストラクターの依存関係は自動的に依存注入されます。
 
 <a name="creating-monolog-handler-channels"></a>
@@ -461,7 +477,7 @@ Laravel Pail（ペール：バケツ、手杓）は、Laravelアプリケーシ�
 <a name="pail-installation"></a>
 ### インストール
 
-> **Warning**
+> [!WARNING]
 > Laravel Pailには、[PHP8.2以上](https://php.net/releases/)と[PCNTL](https://www.php.net/manual/en/book.pcntl.php)拡張機能が必要です。
 
 使用開始するには、Composerパッケージマネージャを使い、プロジェクトにPailをインストールしてください。

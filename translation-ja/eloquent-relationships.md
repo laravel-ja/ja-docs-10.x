@@ -308,7 +308,7 @@ Eloquentはリレーションメソッドの名前を調べ、メソッド名の
     $posts = Post::whereBelongsTo($user, 'author')->get();
 
 <a name="has-one-of-many"></a>
-### Has One Of Many
+### Has One of Many
 
 あるモデルが多くの関連モデルを持つことがありますが、そのリレーションにおける「最新」または「最も古い」関連モデルを簡単に取得したい場合があります。たとえば、`User`モデルは多くの`Order`モデルと関連しており、ユーザーが発注した最新の注文を操作する便利な方法を定義したいとします。これの実現には、`hasOne`のリレーションタイプと`ofMany`メソッドを組み合わせて使います。
 
@@ -348,7 +348,7 @@ public function largestOrder(): HasOne
 }
 ```
 
-> **Warning**
+> [!WARNING]
 > PostgreSQLはUUID列に対する`MAX`関数の実行をサポートしていないため、今のところPostgreSQLのUUIDカラムと組み合わせて１対多の関係を使用できません。
 
 <a name="converting-many-relationships-to-has-one-relationships"></a>
@@ -682,7 +682,7 @@ return $this->throughEnvironments()->hasDeployments();
 
     return $this->belongsToMany(Role::class)->withTimestamps();
 
-> **Warning**
+> [!WARNING]
 > Eloquentが自動で維持するタイムスタンプを利用する中間テーブルには、`created_at`と`updated_at`両方のタイムスタンプカラムが必要です。
 
 <a name="customizing-the-pivot-attribute-name"></a>
@@ -781,7 +781,7 @@ return $this->throughEnvironments()->hasDeployments();
         // ...
     }
 
-> **Warning**
+> [!WARNING]
 > ピボットモデルは`SoftDeletes`トレイトを使用できません。ピボットレコードをソフトデリートする必要がある場合は、ピボットモデルを実際のEloquentモデルに変換することを検討してください。
 
 <a name="custom-pivot-models-and-incrementing-ids"></a>
@@ -1049,7 +1049,7 @@ public function bestImage(): MorphOne
 }
 ```
 
-> **Note**
+> [!NOTE]
 > より高度な「一対多」リレーションを構築することも可能です。詳しくは、[has one of manyのドキュメント](#advanced-has-one-of-many-relationships)を参照してください。
 
 <a name="many-to-many-polymorphic-relations"></a>
@@ -1077,7 +1077,7 @@ public function bestImage(): MorphOne
         taggable_id - integer
         taggable_type - string
 
-> **Note**
+> [!NOTE]
 > ポリモーフィックな多対多のリレーションへに飛び込む前に、典型的な[多対多の関係](#many-to-many)に関するドキュメントを読むとよいでしょう。
 
 <a name="many-to-many-polymorphic-model-structure"></a>
@@ -1189,7 +1189,7 @@ public function bestImage(): MorphOne
 
     $class = Relation::getMorphedModel($alias);
 
-> **Warning**
+> [!WARNING]
 > 既存のアプリケーションに「ポリモーフィックのマップ」を適用する場合、ポリモーフィックリレーションで使用していたそれまでの、完全修飾クラスを含むデータベース内の`*_type`カラム値はすべて、「マップ」名に変換する必要が起きます。
 
 <a name="dynamic-relationships"></a>
@@ -1206,7 +1206,7 @@ public function bestImage(): MorphOne
         return $orderModel->belongsTo(Customer::class, 'customer_id');
     });
 
-> **Warning**
+> [!WARNING]
 > 動的リレーションを定義するときは、常に明示的にキー名引数をEloquentリレーションメソッドの引数に渡してください。
 
 <a name="querying-relations"></a>
@@ -1330,7 +1330,7 @@ Eloquentリレーションクエリへ制約を追加する必要がない場合
         $query->where('content', 'like', 'code%');
     }, '>=', 10)->get();
 
-> **Warning**
+> [!WARNING]
 > Eloquentは現在、データベース間をまたぐリレーションの存在のクエリをサポートしていません。リレーションは同じデータベース内に存在する必要があります。
 
 <a name="inline-relationship-existence-queries"></a>
@@ -1672,7 +1672,7 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
 
     $books = Book::with('author:id,name,book_id')->get();
 
-> **Warning**
+> [!WARNING]
 > この機能を使用するときは、取得するカラムのリストで常に`id`カラムと関連する外部キーカラムを含める必要があります。
 
 <a name="eager-loading-by-default"></a>
@@ -1739,7 +1739,7 @@ select * from authors where id in (1, 2, 3, 4, 5, ...)
         $query->orderBy('created_at', 'desc');
     }])->get();
 
-> **Warning**
+> [!WARNING]
 > Eagerロードを制限する場合は、`limit`および`take`クエリビルダメソッドは使用できません。
 
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
@@ -1952,7 +1952,7 @@ Eloquentは、リレーションへ新しいモデルを追加する便利な手
 
 `findOrNew`、`firstOrNew`、`firstOrCreate`、`updateOrCreate`メソッドを使用して[関係のモデルを作成および更新](/docs/{{version}}/eloquent#upserts)することもできます。
 
-> **Note**
+> [!NOTE]
 > `create`メソッドを使用する前に、必ず[複数代入](/docs/{{version}}/eloquent#mass-assignment)のドキュメントを確認してください。
 
 <a name="updating-belongs-to-relationships"></a>
@@ -2087,5 +2087,5 @@ IDを使用して追加の中間テーブル値を渡すこともできます。
         }
     }
 
-> **Warning**
+> [!WARNING]
 > 親モデルのタイムスタンプは、Eloquentの`save`メソッドを使用して子モデルを更新した場合にのみ更新されます。

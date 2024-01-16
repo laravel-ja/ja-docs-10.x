@@ -17,7 +17,7 @@
 
 Laravelは、一般的なフォームベースの認証に加えて、[Laravel Socialite](https://github.com/laravel/socialite)(ソーシャライト：名士)を使用したOAuthプロバイダで認証するためのシンプルで便利な方法も提供します。Socialiteは現在、Facebook、Twitter、LinkedIn、Google、GitHub、GitLab、Bitbucket、Slackでの認証をサポートしています。
 
-> **Note**
+> [!NOTE]
 > 他のプラットフォームのアダプタは、コミュニティにより管理されている[Socialiteプロバイダ](https://socialiteproviders.com/)Webサイトから利用できます。
 
 <a name="installation"></a>
@@ -47,7 +47,7 @@ Socialiteを使用する前に、アプリケーションが利用するOAuthプ
         'redirect' => 'http://example.com/callback-url',
     ],
 
-> **Note**
+> [!NOTE]
 > `redirect`オプションが相対パスである場合、自動的に完全なURLへ解決されます。
 
 <a name="authentication"></a>
@@ -98,7 +98,7 @@ OAuthプロバイダからユーザーを取得したら、そのユーザーが
         return redirect('/dashboard');
     });
 
-> **Note**
+> [!NOTE]
 > 特定のOAuthプロバイダからどんなユーザー情報が得られるかについては、[ユーザー情報の取得](#retrieving-user-details)ドキュメントを参照してください。
 
 <a name="access-scopes"></a>
@@ -156,7 +156,7 @@ SlackのAPIは[さまざまなタイプのアクセストークン](https://api.
         ->with(['hd' => 'example.com'])
         ->redirect();
 
-> **Warning**
+> [!WARNING]
 > `with`メソッド使用時は、`state`や`response_type`などの予約キーワードを渡さないように注意してください。
 
 <a name="retrieving-user-details"></a>
@@ -215,5 +215,5 @@ SlackのAPIは[さまざまなタイプのアクセストークン](https://api.
 
     return Socialite::driver('google')->stateless()->user();
 
-> **Warning**
+> [!WARNING]
 > Twitter OAuth.0ドライバでは、ステートレス認証は利用できません。

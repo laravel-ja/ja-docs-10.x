@@ -62,7 +62,7 @@
 
     $firstName = $user->first_name;
 
-> **Note**
+> [!NOTE]
 > こうした計算値をモデルの配列／JSON表現に追加したい場合は、[手作業で追加する必要があります](/docs/{{version}}/eloquent-serialization#appending-values-to-json)。
 
 <a name="building-value-objects-from-multiple-attributes"></a>
@@ -261,7 +261,7 @@ protected function address(): Attribute
         'options' => 'object',
     ]);
 
-> **Warning**
+> [!WARNING]
 > `null`である属性はキャストしません。また、リレーションと同じ名前のキャスト（または属性）を定義したり、モデルの主キーにキャストを割り当てたりは、決してしないでください。
 
 <a name="stringable-casting"></a>
@@ -624,7 +624,7 @@ php artisan make:cast Json
 
     $user->save();
 
-> **Note**
+> [!NOTE]
 > 値オブジェクトを含むEloquentモデルをJSONまたは配列にシリアル化する場合は、値オブジェクトに`Illuminate\Contracts\Support\Arrayable`および`JsonSerializable`インターフェイスを実装する必要があります。
 
 <a name="value-object-caching"></a>

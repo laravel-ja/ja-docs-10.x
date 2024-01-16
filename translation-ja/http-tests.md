@@ -73,7 +73,7 @@ class ExampleTest extends TestCase
 
 通常、各テストはアプリケーションに対して 1 つのリクエストしか行わないようにしてください。１つのテストメソッドの中で複数のリクエストを実行すると、 予期せぬ動作が起きる可能性があります。
 
-> **Note**
+> [!NOTE]
 > 利便性を良くするため、テストの実行時にCSRFミドルウェアを自動で無効にします。
 
 <a name="customizing-request-headers"></a>
@@ -275,7 +275,7 @@ Laravelは、JSON APIとそのレスポンスをテストするためのヘル�
 
     $this->assertTrue($response['created']);
 
-> **Note**
+> [!NOTE]
 > `assertJson`メソッドはレスポンスを配列に変換し、`PHPUnit::assertArraySubset`を利用して、指定する配列がアプリケーションによって返されるJSONレスポンス内に存在することを確認しています。したがって、JSONレスポンスに他のプロパティがある場合でも、指定するフラグメントが存在する限り、このテストは合格します。
 
 <a name="verifying-exact-match"></a>
@@ -572,7 +572,7 @@ Laravelを使用すると、アプリケーションに対してシミュレー�
     $view->assertSee('Please provide a valid name.');
 
 <a name="rendering-blade-and-components"></a>
-### Bladeとコンポーネントのレンダ
+### Rendering Blade and Components
 
 必要に応じて、`blade`メソッドを使用して、素の[Blade](/docs/{{version}}/blade)文字列を評価およびレンダできます。`view`メソッドと同様に、`blade`メソッドは`Illuminate\Testing\TestView`のインスタンスを返します。
 
@@ -885,7 +885,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertJsonMissingValidationErrors($keys);
 
-> **Note**
+> [!NOTE]
 > より一般的な[assertValid](#assert-valid)メソッドを使用して、JSONで返されたレスポンスにバリデーションエラーがなく、**かつ**セッションストレージにエラーが一時保存されていないことを宣言できます。
 
 <a name="assert-json-path"></a>
@@ -993,7 +993,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertJsonValidationErrors(array $data, $responseKey = 'errors');
 
-> **Note**
+> [!NOTE]
 > より一般的な[assertInvalid](#assert-invalid)メソッドを使用して、JSONで返されたレスポンスにバリデーションエラーが存在した、**もしくは**エラーがセッションストレージに一時保存されたことを宣言できます。
 
 <a name="assert-json-validation-error-for"></a>
@@ -1211,7 +1211,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
         'name' => 'The given name was invalid.'
     ]);
 
-> **Note**
+> [!NOTE]
 > より一般的な[assertInvalid](#assert-invalid)メソッドを使用して、JSONで返されたレスポンスにバリデーションエラーが存在した、**もしくは**エラーがセッションストレージに一時保存されたことを宣言できます。
 
 <a name="assert-session-has-errors-in"></a>
@@ -1235,7 +1235,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
     $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
 
-> **Note**
+> [!NOTE]
 > より一般的な[assertValid](#assert-valid)メソッドを使用して、JSONで返されたレスポンスにバリデーションエラーがなく、**かつ**セッションストレージにエラーが一時保存されていないことを宣言できます。
 
 <a name="assert-session-missing"></a>

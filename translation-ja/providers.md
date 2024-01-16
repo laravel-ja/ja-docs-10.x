@@ -18,7 +18,7 @@ Laravelに含まれている`config/app.php`ファイルを開くと、`provider
 
 この概論ではサービスプロバイダの書き方と、Laravelアプリケーションに登録する方法を学びます。
 
-> **Note**
+> [!NOTE]
 > Laravelがリクエストをどのように処理し、内部で動作しているかについて詳しく知りたい場合は、Laravelの[リクエストライフサイクル](/docs/{{version}}/lifecycle)に関するドキュメントを確認してください。
 
 <a name="writing-service-providers"></a>

@@ -76,7 +76,7 @@ Bladeテンプレートを次のレベルに引き上げ、ダイナミックな
 Hello, {{ $name }}.
 ```
 
-> **Note**
+> [!NOTE]
 > Bladeの`{{ }}`エコー文は、XSS攻撃を防ぐために、PHPの`htmlspecialchars`関数を通して自動的に送信します。
 
 ビューに渡した変数の内容を表示するに留まりません。PHP関数の結果をエコーすることもできます。実際、Bladeエコーステートメント内に任意のPHPコードを入れることができます。
@@ -117,7 +117,7 @@ The current UNIX timestamp is {{ time() }}.
 Hello, {!! $name !!}.
 ```
 
-> **Warning**
+> [!WARNING]
 > アプリケーションのユーザーによって提供されるコンテンツをエコーするときは十分に注意してください。ユーザーが入力したデータを表示するときはXSS攻撃を防ぐために、通常はエスケープする二重中括弧構文を使用してください。
 
 <a name="blade-and-javascript-frameworks"></a>
@@ -170,7 +170,7 @@ JavaScript変数を初期化するために、配列をJSONとしてレンダリ
 </script>
 ```
 
-> **Warning**
+> [!WARNING]
 > 既存の変数をJSONとしてレンダするには、`Js::from`メソッドのみ使用してください。Bladeのテンプレートは正規表現に基づいているため、複雑な表現をディレクティブに渡そうとすると、予期せぬ失敗を引き起こす可能性があります。
 
 <a name="the-at-verbatim-directive"></a>
@@ -359,7 +359,7 @@ Switchステートメントは、`@switch`、`@case`、`@break`、`@default`、`
 @endwhile
 ```
 
-> **Note**
+> [!NOTE]
 > `foreach`ループの反復処理中に、[ループ変数](#the-loop-variable) を使い、ループの最初の反復処理や最後の反復処理というような、反復に関する役立つ情報を取得可能です。
 
 ループを使用する場合は、`@continue`および`@break`ディレクティブを使用して、現在の反復をスキップするか、ループを終了することもできます。
@@ -523,7 +523,7 @@ Switchステートメントは、`@switch`、`@case`、`@break`、`@default`、`
 <a name="including-subviews"></a>
 ### サブビューの読み込み
 
-> **Note**
+> [!NOTE]
 > `@include`ディレクティブは自由に使用できますが、Blade[コンポーネント](#components)は同様の機能を提供しつつ、データや属性のバインドなど`@include`ディレクティブに比べていくつかの利点があります。
 
 Bladeの`@include`ディレクティブを使用すると、別のビュー内からBladeビューを読み込めます。親ビューで使用できるすべての変数は、読み込むビューで使用できます。
@@ -564,11 +564,11 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
-> **Warning**
+> [!WARNING]
 > Bladeビューで`__DIR__`と`__FILE__`定数は使用しないでください。これらは、キャッシュされコンパイルされたビューの場所を参照するためです。
 
 <a name="rendering-views-for-collections"></a>
-#### コレクションのビューのレンダ
+#### Rendering Views for Collections
 
 ループと読み込みをBladeの`@each`ディレクティブで1行に組み合わせられます。
 
@@ -584,7 +584,7 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @each('view.name', $jobs, 'job', 'view.empty')
 ```
 
-> **Warning**
+> [!WARNING]
 > `@each`を使いレンダするビューは、親ビューから変数を継承しません。子ビューでそうした変数が必要な場合は、代わりに`@foreach`と`@include`ディレクティブを使用する必要があります。
 
 <a name="the-once-directive"></a>
@@ -944,7 +944,7 @@ public function __construct(
 </div>
 ```
 
-> **Warning**
+> [!WARNING]
 > コンポーネントタグ内での`@env`などのディレクティブの使用は、現時点でサポートしていません。たとえば、`<x-alert :live="@env('production')"/>`はコンパイルしません。
 
 <a name="default-merged-attributes"></a>
@@ -991,7 +991,7 @@ public function __construct(
 </button>
 ```
 
-> **Note**
+> [!NOTE]
 > マージした属性を受け取るべきではない他のHTML要素にクラスを条件付きでコンパイルする必要がある場合は、[`@class`ディレクティブ](#consitional-classes)を使用できます。
 
 <a name="non-class-attribute-merging"></a>
@@ -1243,7 +1243,7 @@ php artisan make:component Alert --inline
 <a name="manually-registering-components"></a>
 ### コンポーネントの手作業登録
 
-> **Warning**
+> [!WARNING]
 > コンポーネントの手作業登録に関する以下のドキュメントは、主にビューコンポーネントを含むLaravelのパッケージを作成している開発者に当てはまるものです。こうしたパッケージを書いていない場合は、コンポーネントに関する以下のドキュメントは、あなたに関係しないでしょう。
 
 独自のアプリケーション用コンポーネントを作成する場合、コンポーネントを`app/View/Components`ディレクトリと`resources/views/components`ディレクトリ内で自動的に検出します。
@@ -1393,7 +1393,7 @@ Bladeでは幸い、コンポーネントのテンプレートディレクトリ
 </li>
 ```
 
-> **Warning**
+> [!WARNING]
 > `@aware`ディレクティブは、HTML属性によって親コンポーネントに明示的に渡されていない親データにはアクセスできません。親コンポーネントに明示的に渡されていないデフォルトの`@props`値は、`@aware`ディレクティブではアクセスすることができません。
 
 <a name="anonymous-component-paths"></a>
@@ -1552,7 +1552,7 @@ Bladeでは幸い、コンポーネントのテンプレートディレクトリ
 
 この例では、`sidebar`のセクションは、`@parent`ディレクティブを利用して、(上書きするのではなく)、レイアウトのサイドバーにコンテンツを追加しています。`@parent`ディレクティブは、ビューをレンダするときにレイアウトの内容へ置き換えられます。
 
-> **Note**
+> [!NOTE]
 > 前の例とは反対に、この「サイドバー」のセクションは`@show`の代わりに`@endection`で終わります。`@endection`ディレクティブはセクションを定義するだけですが、一方の`@show`は定義し、そのセクションを**すぐに挿入**します。
 
 `@yield`ディレクティブは、デフォルト値を２番目の引数に取ります。この値は、生成するセクションが未定義の場合にレンダされます。
@@ -1794,7 +1794,7 @@ Bladeでは、`directive`メソッドを使用して独自のカスタムディ�
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> **Warning**
+> [!WARNING]
 > Bladeディレクティブのロジックを更新した後は、キャッシュ済みのBladeビューをすべて削除する必要があります。キャッシュ済みBladeビューは、`view:clear` Artisanコマンドを使用して削除できます。
 
 <a name="custom-echo-handlers"></a>

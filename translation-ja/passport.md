@@ -49,7 +49,7 @@
 
 [Laravel Passport](https://github.com/laravel/passport)は、Laravelアプリケーションへ完全なOAuth2サーバの実装を数分で提供します。Passportは、Andy MillingtonとSimon Hampがメンテナンスしている[League OAuth2 server](https://github.com/thephpleague/oauth2-server)の上に構築しています。
 
-> **Warning**
+> [!WARNING]
 > このドキュメントは、皆さんがOAuth2に慣れていることを前提にしています。OAuth2について知らなければ、この先を続けて読む前に、一般的な[用語](https://oauth2.thephpleague.com/terminology/)とOAuth2の機能について予習してください。
 
 <a name="passport-or-sanctum"></a>
@@ -80,7 +80,7 @@ php artisan migrate
 php artisan passport:install
 ```
 
-> **Note**
+> [!NOTE]
 > 自動増分整数の代わりに、Passportの`Client`モデルの主キー値としてUUIDを使用したい場合は、[`uuids`オプション](#client-uuids)を使いPassportをインストールしてください。
 
 `passport:install`コマンドを実行し終えたら、`Laravel\Passport\HasApiTokens`トレイトを`App\Models\User`モデルへ追加してください。このトレイトは認証済みユーザーのトークンとスコープを調べられるように、モデルへ数個のヘルパメソッドを提供します。すでに`Laravel\Sanctum\HasApiTokens`トレイトを使用している場合は、それを削除してください。
@@ -205,7 +205,7 @@ Passportの新しいメジャーバージョンにアップグレードすると
         Passport::personalAccessTokensExpireIn(now()->addMonths(6));
     }
 
-> **Warning**
+> [!WARNING]
 > Passportのデータベーステーブルの`expires_at`カラムは読み取り専用であり、表示のみを目的としています。トークンを発行するとき、Passportは署名および暗号化されたトークン内に有効期限情報を保存します。トークンを無効にする必要がある場合は、[取り消す](#revoking-tokens)必要があります。
 
 <a name="overriding-default-models"></a>
@@ -399,7 +399,7 @@ axios.delete('/oauth/clients/' + clientId)
 
 `prompt`値を指定しない場合、要求されたスコープに対する消費者側アプリケーションへのアクセスをそのユーザーへ以前に許可していない場合のみ、認可のためのプロンプトを表示します。
 
-> **Note**
+> [!NOTE]
 > `/oauth/authorize`ルートは、すでにPassportが定義づけていることを覚えておいてください。このルートを自分で定義する必要はありません。
 
 <a name="approving-the-request"></a>
@@ -462,7 +462,7 @@ php artisan vendor:publish --tag=passport-views
 
 この`/oauth/token`ルートは、`access_token`、`refresh_token`、`expires_in`属性を含むJSONレスポンスを返します。`expires_in`属性は、アクセストークンが無効になるまでの秒数を含んでいます。
 
-> **Note**
+> [!NOTE]
 > `/oauth/authorize`ルートと同様に、`/oauth/token`ルートはPassportによって定義されます。このルートを手作業で定義する必要はありません。
 
 <a name="tokens-json-api"></a>
@@ -653,7 +653,7 @@ stateパラメータが一致したら、要求側はアクセストークンを
 <a name="password-grant-tokens"></a>
 ## パスワードグラントのトークン
 
-> **Warning**
+> [!WARNING]
 > パスワードグラントトークンの使用は、現在推奨していません。代わりに、[OAuth2サーバが現在推奨しているグラントタイプ](https://oauth2.thephpleague.com/authorization-server/which-grant/) を選択する必要があります。
 
 OAuth2パスワードグラントにより、モバイルアプリケーションなどの他のファーストパーティクライアントは、電子メールアドレス／ユーザー名とパスワードを使用してアクセストークンを取得できます。これにより、ユーザーがOAuth2認証コードのリダイレクトフロー全体を実行しなくても、ファーストパーティクライアントにアクセストークンを安全に発行できます。
@@ -685,7 +685,7 @@ php artisan passport:client --password
 
     return $response->json();
 
-> **Note**
+> [!NOTE]
 > アクセストークンはデフォルトで、長期間有効であることを記憶しておきましょう。ただし、必要であれば自由に、[アクセストークンの最長持続時間を設定](#configuration)できます。
 
 <a name="requesting-all-scopes"></a>
@@ -710,7 +710,7 @@ php artisan passport:client --password
 アプリケーションが複数の[認証ユーザープロバイダ](/docs/{{version}}/authentication#introduction)を使用している場合は、`artisan passport:client --password`コマンドを介してクライアントを作成する時に、`--provider`オプションを指定することで、パスワードグラントクライアントが使用するユーザープロバイダを指定できます。指定するプロバイダ名は、アプリケーションの`config/auth.php`設定ファイルで定義している有効なプロバイダと一致する必要があります。次に、[ミドルウェアを使用してルートを保護](#via-middleware)して、ガードの指定するプロバイダのユーザーのみが許可されるようにすることができます。
 
 <a name="customizing-the-username-field"></a>
-### ユーザー名フィールドのカスタマイズ
+### Customizing the Username Field
 
 パスワードグラントを使用して認証する場合、Passportは認証可能なモデルの`email`属性を「ユーザー名」として使用します。ただし、モデルで`findForPassport`メソッドを定義することにより、この動作をカスタマイズできます。
 
@@ -765,7 +765,7 @@ php artisan passport:client --password
 <a name="implicit-grant-tokens"></a>
 ## 暗黙のグラントトークン
 
-> **Warning**
+> [!WARNING]
 > 暗黙的のグラント・トークンの使用は、現在推奨していません。代わりに、[OAuth2サーバが現在推奨しているグラントタイプ](https://oauth2.thephpleague.com/authorization-server/which-grant/) を選択する必要があります。
 
 暗黙的なグラントは、認証コードグラントに似ています。ただし、トークンは認証コードを交換せずにクライアントへ返します。このグラントは、クライアントの利用資格情報を安全に保存できないJavaScriptまたはモバイルアプリケーションで最も一般的に使用します。このグラントを有効にするには、アプリケーションの`App\Providers\AuthServiceProvider`クラスの`boot`メソッドで`enableImplicitGrant`メソッドを呼び出します。
@@ -797,7 +797,7 @@ php artisan passport:client --password
         return redirect('http://passport-app.test/oauth/authorize?'.$query);
     });
 
-> **Note**
+> [!NOTE]
 > `/oauth/authorize`ルートは、すでにPassportが定義づけていることを覚えておいてください。このルートを自分で定義する必要はありません。
 
 <a name="client-credentials-grant-tokens"></a>
@@ -852,7 +852,7 @@ php artisan passport:client --client
 
 ときどき、あなたのユーザーが典型的なコードリダイレクションフローに従うのではなく、自分たち自身でアクセストークンを発行したがることもあるでしょう。あなたのアプリケーションのUIを通じて、ユーザー自身のトークンを発行を許可することにより、あなたのAPIをユーザーに経験してもらう事ができますし、全般的なアクセストークン発行するシンプルなアプローチとしても役立つでしょう。
 
-> **Note**
+> [!NOTE]
 > あなたのアプリケーションが主にPassportを使用して個人アクセストークンを発行している場合、APIアクセストークンを発行するためのLaravelの軽量なファーストパーティーライブラリ、[Laravel Sanctum](/docs/{{version}}/sanctum)の使用を検討してください。
 
 <a name="creating-a-personal-access-client"></a>
@@ -958,7 +958,7 @@ Passportは、受信リクエストのアクセストークンを検証する[�
         // ...
     })->middleware('auth:api');
 
-> **Warning**
+> [!WARNING]
 > [クライアント認証情報グラント](#client-credentials-grant-tokens)を使用している場合、`auth:api`ミドルウェアではなく、[`client`ミドルウェア](#client-credentials-grant-tokens)でルートを保護する必要があります。
 
 <a name="multiple-authentication-guards"></a>
@@ -982,7 +982,7 @@ Passportは、受信リクエストのアクセストークンを検証する[�
         // ...
     })->middleware('auth:api-customers');
 
-> **Note**
+> [!NOTE]
 > Passportを使用する複数ユーザープロバイダ利用の詳細は、[パスワードグラントのドキュメント](#customizing-the-user-provider)を調べてください。
 
 <a name="passing-the-access-token"></a>
@@ -1037,7 +1037,7 @@ APIのスコープは、アプリケーションの`App\Providers\AuthServicePro
         'place-orders',
     ]);
 
-> **Note**
+> [!NOTE]
 > Passportのデフォルトスコープは、ユーザーによって生成される個人用アクセストークンには適用されません。
 
 <a name="assigning-scopes-to-tokens"></a>
@@ -1138,7 +1138,7 @@ API構築時にJavaScriptアプリケーションから、自分のAPIを利用�
         \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
     ],
 
-> **Warning**
+> [!WARNING]
 > ミドルウェアの指定の中で、`CreateFreshApiToken`ミドルウェアは確実に最後へリストしてください。
 
 このミドルウェアは、送信レスポンスに`laravel_token`クッキーを添付します。このクッキーには、PassportがJavaScriptアプリケーションからのAPIリクエストを認証するために使用する暗号化されたJWTが含まれています。JWTの有効期間は、`session.lifetime`設定値と同じです。これで、ブラウザは後続のすべてのリクエストでクッキーを自動的に送信するため、アクセストークンを明示的に渡さなくても、アプリケーションのAPIにリクエストを送信できます。
@@ -1166,7 +1166,7 @@ API構築時にJavaScriptアプリケーションから、自分のAPIを利用�
 
 この認証方法を使用する場合、リクエストのヘッダに有効なCSRFトークンを確実に含める必要があります。デフォルトのLaravel JavaScriptスカフォールドはAxiosインスタンスを含み、同一オリジンリクエスト上に`X-XSRF-TOKEN`ヘッダを送るために、暗号化された`XSRF-TOKEN`クッキーを自動的に使用します。
 
-> **Note**
+> [!NOTE]
 > `X-XSRF-TOKEN`の代わりに`X-CSRF-TOKEN`ヘッダを送る方法を取る場合は、`csrf_token()`により提供される復元したトークンを使用する必要があります。
 
 <a name="events"></a>

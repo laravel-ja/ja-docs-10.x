@@ -32,7 +32,7 @@
 - [ブロードキャスト通知](#broadcast-notifications)
     - [事前要件](#broadcast-prerequisites)
     - [ブロードキャスト通知のフォーマット](#formatting-broadcast-notifications)
-    - [通知のリッスン](#listening-for-notifications)
+    - [Listening for Notifications](#listening-for-notifications)
 - [SMS通知](#sms-notifications)
     - [事前要件](#sms-prerequisites)
     - [SMS通知のフォーマット](#formatting-sms-notifications)
@@ -95,7 +95,7 @@ php artisan make:notification InvoicePaid
 
     $user->notify(new InvoicePaid($invoice));
 
-> **Note**
+> [!NOTE]
 > どのモデルでも`Notifiable`トレイトを使用できることを忘れないでください。`User`モデルにだけに限定して含められるわけでありません。
 
 <a name="using-the-notification-facade"></a>
@@ -116,7 +116,7 @@ php artisan make:notification InvoicePaid
 
 すべての通知クラスは、通知を配信するチャンネルを決定する、`via`メソッドを持っています。通知は`mail`、`database`、`broadcast`、`vonage`、`slack`チャンネルへ配信されるでしょう。
 
-> **Note**
+> [!NOTE]
 > TelegramやPusherのような、他の配信チャンネルを利用したい場合は、コミュニティが管理している、[Laravel通知チャンネルのWebサイト](http://laravel-notification-channels.com)をご覧ください。
 
 `via`メソッドは、通知を送っているクラスのインスタンスである、`$notifiable`インスタンスを引数に受け取ります。`$notifiable`を使い、通知をどこのチャンネルへ配信するかを判定できます。
@@ -134,7 +134,7 @@ php artisan make:notification InvoicePaid
 <a name="queueing-notifications"></a>
 ### 通知のキューイング
 
-> **Warning**
+> [!WARNING]
 > 通知をキューへ投入する前に、キューを設定して[ワーカを起動](/docs/{{version}}/queues#running-the-queue-worker)する必要があります。
 
 通知の送信には時間がかかる場合があります。特に、チャンネルが通知を配信するために外部API呼び出しを行う必要がある場合に当てはまります。アプリケーションのレスポンス時間を短縮するには、クラスに`ShouldQueue`インターフェイスと`Queueable`トレイトを追加して、通知をキューに入れてください。インターフェイスとトレイトは、`make:notification`コマンドを使用して生成されたすべての通知であらかじめインポートされているため、すぐに通知クラスに追加できます。
@@ -287,7 +287,7 @@ php artisan make:notification InvoicePaid
         }
     }
 
-> **Note**
+> [!NOTE]
 > この問題の回避方法の詳細は、[キュー投入されるジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
 <a name="determining-if-the-queued-notification-should-be-sent"></a>
@@ -350,14 +350,14 @@ php artisan make:notification InvoicePaid
                     ->line('私達のアプリケーションをご利用いただき、ありがとうございます。');
     }
 
-> **Note**
+> [!NOTE]
 > `toMail`メソッドの中で、`$this->invoice->id`を使っていることに注意してください。通知メッセージを生成するために必要な情報は、どんなものでも通知のコンストラクタへ渡せます。
 
 この例では、挨拶、テキスト行、行動を促すフレーズ、そして別のテキスト行を登録します。`MailMessage`オブジェクトが提供するこれらのメソッドにより、小さなトランザクションメールを簡単かつ迅速にフォーマットできます。次に、メールチャンネルは、メッセージコンポーネントを、平文テキストと対応する美しいレスポンス性の高いHTML電子メールテンプレートに変換します。`mail`チャンネルが生成する電子メールの例を次に示します。
 
 <img src="https://laravel.com/img/docs/notification-example-2.png">
 
-> **Note**
+> [!NOTE]
 > メール通知を送信するときは、必ず`config/app.php`設定ファイルで`name`設定オプションを設定してください。この値は、メール通知メッセージのヘッダとフッターに使用されます。
 
 <a name="error-messages"></a>
@@ -407,7 +407,7 @@ php artisan make:notification InvoicePaid
 また、メッセージにプレーンテキストのビューしかない場合は、`text`メソッドを使うこともできます。
 
     /**
-     * Get the mail representation of the notification.
+     * 通知のメール表現取得
      */
     public function toMail(object $notifiable): MailMessage
     {
@@ -517,7 +517,7 @@ php artisan vendor:publish --tag=laravel-notifications
                     ->attach('/path/to/file');
     }
 
-> **Note**
+> [!NOTE]
 > 通知メールメッセージが提供する`attach`メソッドは、[Attachableオブジェクト](/docs/{{version}}/mail#attachable-objects)も受け付けます。詳細は、包括的な[Attachableオブジェクトのドキュメント](/docs/{{version}}/mail#attachable-objects)を参照してください。
 
 メッセージにファイルを添付するとき、`attach`メソッドの第２引数として配列を渡し、表示名やMIMEタイプの指定もできます。
@@ -774,7 +774,7 @@ php artisan vendor:publish --tag=laravel-mail
 このコマンドにより、`resources/views/vendor/mail`ディレクトリ下にMarkdownメールコンポーネントがリソース公開されます。`mail`ディレクトリ下に、`html`と`text`ディレクトリがあります。各ディレクトリは名前が示す形式で、利用できるコンポーネントすべてのレスポンシブなプレゼンテーションを持っています。これらのコンポーネントはお好きなよう、自由にカスタマイズしてください。
 
 <a name="customizing-the-css"></a>
-#### CSSのカスタマイズ
+#### Customizing the CSS
 
 コンポーネントをエクスポートすると、`resources/views/vendor/mail/html/themes`ディレクトリに、`default.css`ファイルが用意されます。このファイル中のCSSをカスタマイズすれば、Markdownメール通知変換後のHTML形式の中に、インラインCSSとして自動的に取り込まれます。
 
@@ -809,7 +809,7 @@ php artisan notifications:table
 php artisan migrate
 ```
 
-> **Note**
+> [!NOTE]
 > 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
 
 <a name="formatting-database-notifications"></a>
@@ -866,7 +866,7 @@ php artisan migrate
         echo $notification->type;
     }
 
-> **Note**
+> [!NOTE]
 > JavaScriptクライアントから通知にアクセスするには、現在のユーザーなどのnotifiableエンティティの通知を返す、通知コントローラをアプリケーションで定義する必要があります。次に、JavaScriptクライアントからそのコントローラのURLへHTTPリクエストを送信します。
 
 <a name="marking-notifications-as-read"></a>
@@ -1267,7 +1267,7 @@ Slackの通知を適切なSlackチームとチャンネルへ送るには、通�
 <a name="notifying-external-slack-workspaces"></a>
 ### 外部のSlackワークスペースへの通知
 
-> **Note**
+> [!NOTE]
 > 外部Slackワークスペースへ通知を送信する前に、Slackアプリを[配布](#slack-app-distribution)する必要があります。
 
 もちろん、アプリケーションのユーザーが所有するSlackワークスペースへ、通知を送りたいことも多いでしょう。そのためには、まずユーザーのSlack OAuthトークンを取得する必要があります。嬉しいことに、[Laravel Socialite](/docs/{{version}}/socialite)にはSlackドライバが含まれており、アプリケーションのユーザーをSlackで簡単に認証し、[ボットトークンを取得](/docs/{{version}}/socialite#slack-bot-scopes)できます。
@@ -1464,7 +1464,7 @@ Laravelを使用すると、HTTPリクエストの現在のロケール以外の
         ],
     ];
 
-> **Note**
+> [!NOTE]
 > `EventServiceProvider`でリスナを登録した後に、`event:generate` Artisanコマンドを使うと、リスナクラスが素早く生成できます。
 
 イベントリスナ内では、イベントの `notifiable`、`notification`、`channel`、`response`プロパティにアクセスして、通知先や通知自体の詳細を知ることができます。

@@ -65,7 +65,7 @@ npm run dev
 
 次に、ウェブブラウザでアプリケーションの`/login`か`/register` URLへアクセスしてください。Breezeのすべてのルートは、`routes/auth.php`ファイルに定義してあります。
 
-> **Note**
+> [!NOTE]
 > アプリケーションのCSSとJavaScriptのコンパイルについて詳しく知りたい方は、Laravelの[Viteドキュメント](/docs/{{version}}/vite#running-vite)を参照してください。
 
 <a name="breeze-and-livewire"></a>

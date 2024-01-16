@@ -22,7 +22,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-> **Note**
+> [!NOTE]
 > macOS上でLaravelアプリケーションをより簡単に開発する方法をお探しですか？[Laravel Herd](https://herd.laravel.com)をチェックしてください。Valet、PHP、Composerなど、Laravel開発を始めるために必要なものをHerdはすべて用意します。
 
 [Laravel Valet](https://github.com/laravel/valet)（バレット：従者）は、macOSミニマリスト向けのLaravel開発環境です。Larave lValetは、マシンの起動時に常にバックグラウンドで[Nginx](https://www.nginx.com/)を実行するようにMacを設定します。次に、[DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq)を使用して、Valetは`*.test`ドメイン上のすべてのリクエストをプロキシし、ローカルマシンにインストールしているサイトへ転送します。
@@ -69,7 +69,7 @@ Valetは以下をサポートしていますが、これらに限定されませ
 <a name="installation"></a>
 ## インストール
 
-> **Warning**
+> [!WARNING]
 > ValetにはmacOSと[Homebrew](https://brew.sh/)が必要です。インストールする前に、ApacheやNginxなどの他のプログラムがローカルマシンのポート80をバインドしていないことを確認する必要があります。
 
 開始するには、最初に`update`コマンドを使用してHomebrewが最新であることを確認する必要があります。
@@ -103,7 +103,7 @@ Valetをインストールしたら、`pingfoobar.test`などのコマンドを�
 <a name="php-versions"></a>
 #### PHPバージョン
 
-> **Note**
+> [!NOTE]
 > グローバルにPHPバージョンを変更する代わりに、`isolate` [コマンド](#per-site-php-versions)を使い、サイトごとのPHPバージョンを使用するようにValetへ指示できます。
 
 Valetでは、`valet use php@version`コマンドを使用してPHPのバージョンを切り替えることができます。Valetは、指定するPHPバージョンがまだインストールされていない場合、Homebrewを介してインストールします。
@@ -122,7 +122,7 @@ php=php@8.1
 
 このファイルを作成したら、`valet use`コマンドを実行してください。コマンドはファイルを読み、サイトで優先するPHPバージョンを決めます。
 
-> **Warning**
+> [!WARNING]
 > 複数のPHPバージョンをインストールしている場合でも、Valetは一度に一つのPHPバージョンのみを提供します。
 
 <a name="database"></a>
@@ -294,7 +294,7 @@ valet share
 
 サイトの共有を停止するには、`Control+C`キーを押してください。
 
-> **Warning**
+> [!WARNING]
 > カスタムDNSサーバ（`1.1.1.1`など）を使用している場合、ngrok共有が正しく動作しないかもしれません。このような場合は、Macのシステム設定を開き、ネットワーク設定へ行き、詳細設定を開き、DNSタブを開き、最初のDNSサーバとして`127.0.0.1`を追加します。
 
 <a name="sharing-sites-via-ngrok"></a>
@@ -306,7 +306,7 @@ ngrokを使用してサイトを共有するには、[ngrokアカウントの作
 valet set-ngrok-token YOUR_TOKEN_HERE
 ```
 
-> **Note**
+> [!NOTE]
 > `valet share --region=eu`のように、共有コマンドに追加のngrokパラメータを渡せます。詳しくは、[ngrokのドキュメント](https://ngrok.com/docs)を参照してください。
 
 <a name="sharing-sites-via-expose"></a>
@@ -418,7 +418,7 @@ valet proxies
         return false;
     }
 
-> **Warning**
+> [!WARNING]
 > `isStaticFile`メソッドは、リクエストのURIが`/`ではなく、`serves`メソッドで`true`が返された場合のみ呼びだされます。
 
 <a name="the-frontcontrollerpath-method"></a>
@@ -465,19 +465,19 @@ valet proxies
 
 <div class="overflow-auto">
 
-コマンド |  説明
---------------------|-----------------------------------------------------------------------------------
-`valet list` | 全Valetコマンドの一覧を表示します。
-`valet diagnose` | Valetのデバッグを支援するための診断結果を出力します。
-`valet directory-listing` | ディレクトリ一覧の動作を決定します。デフォルトは "off "で、ディレクトリに対して404ページを表示します。
-`valet forget` | "park"された（サイト検索の親ディレクトリとして登録された）ディレクトリでこのコマンドを実行し、サイト検索対象のディレクトリリストから外します。
-`valet log` | Valetサービスにより書き込まれたログリストを表示します。
-`valet paths` | "park"されたすべてのパスを表示します。
-`valet restart` | Valetデーモンをリスタートします。
-`valet start` | Valetデーモンをスタートします。
-`valet stop` | Valetデーモンを停止します。
-`valet trust` | Valetコマンド実行でパスワード入力をしなくて済むように、BrewとValetへsudoersファイルを追加します。
-`valet uninstall` | Valetをアンインストールします。手作業で削除する場合のインストラクションを表示します。`--force`パラメータを指定した場合は、Valetすべてを強制的に削除します。
+| コマンド                  | 説明                                                                                                                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `valet list`              | 全Valetコマンドの一覧を表示します。                                                                                                                         |
+| `valet diagnose`          | Valetのデバッグを支援するための診断結果を出力します。                                                                                                       |
+| `valet directory-listing` | ディレクトリ一覧の動作を決定します。デフォルトは "off "で、ディレクトリに対して404ページを表示します。                                                      |
+| `valet forget`            | "park"された（サイト検索の親ディレクトリとして登録された）ディレクトリでこのコマンドを実行し、サイト検索対象のディレクトリリストから外します。              |
+| `valet log`               | Valetサービスにより書き込まれたログリストを表示します。                                                                                                     |
+| `valet paths`             | "park"されたすべてのパスを表示します。                                                                                                                      |
+| `valet restart`           | Valetデーモンをリスタートします。                                                                                                                           |
+| `valet start`             | Valetデーモンをスタートします。                                                                                                                             |
+| `valet stop`              | Valetデーモンを停止します。                                                                                                                                 |
+| `valet trust`             | Valetコマンド実行でパスワード入力をしなくて済むように、BrewとValetへsudoersファイルを追加します。                                                           |
+| `valet uninstall`         | Valetをアンインストールします。手作業で削除する場合のインストラクションを表示します。`--force`パラメータを指定した場合は、Valetすべてを強制的に削除します。 |
 
 </div>
 

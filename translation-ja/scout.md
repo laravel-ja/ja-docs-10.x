@@ -98,7 +98,7 @@ Meilisearchの詳細については、[Meilisearchのドキュメント](https:/
 
 さらに、[Meilisearchのバイナリ互換のドキュメント](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch)を見て、自分が使っているMeilisearchのバイナリバージョンと互換性のあるバージョンの`meilisearch/meilisearch-php`をインストールしてください。
 
-> **Warning**
+> [!WARNING]
 > Meilisearchを利用しているアプリケーションのScoutをアップグレードする際には、常にMeilisearchサービス自体に[追加の破壊的な変更](https://github.com/meilisearch/Meilisearch/releases)がないか確認する必要があります。
 
 <a name="queueing"></a>
@@ -118,6 +118,10 @@ Scoutジョブで利用する接続とキューを指定するには、`queue`�
         'connection' => 'redis',
         'queue' => 'scout'
     ],
+
+もちろん、Scoutジョブが利用するコネクションやキューをカスタマイズする場合は、そのコネクションやキューでジョブを処理するキューワーカを実行する必要があります。
+
+    php artisan queue:work redis --queue=scout
 
 <a name="configuration"></a>
 ## 設定
@@ -308,7 +312,7 @@ SCOUT_IDENTIFY=true
 <a name="database-engine"></a>
 ### データベースエンジン
 
-> **Warning**
+> [!WARNING]
 > 現在、データベースエンジンは、MySQLとPostgreSQLをサポートしています。
 
 中規模のデータベースとやり取りするしたり、作業負荷が軽いアプリケーションでは、Scoutの「データベース」エンジンで始めるのが便利でしょう。データベースエンジンは、既存のデータベースから結果をフィルタリングする際に、「where like」句と全文インデックスを使用して、クエリの検索結果を決定します。
@@ -349,7 +353,7 @@ public function toSearchableArray(): array
 }
 ```
 
-> **Warning**
+> [!WARNING]
 > あるカラムへ、フルテキストクエリ制約の使用を指定する前に、そのカラムに[フルテキストインデックス](/docs/{{version}}/migrations#available-index-types)を割り当て済みであることを確認してください。
 
 <a name="collection-engine"></a>
@@ -404,7 +408,7 @@ php artisan scout:flush "App\Models\Post"
         return $query->with('author');
     }
 
-> **Warning**
+> [!WARNING]
 > キューを使用してモデルを一括インポートする場合、`makeAllSearchableUsing`メソッドは適さないでしょう。モデルコレクションをジョブで処理する際に、リレーションが[復元されない](/docs/{{バージョン}}/queues#handling-relationships)からです。
 
 <a name="adding-records"></a>
@@ -437,7 +441,7 @@ Eloquentリレーションインスタンスで `searchable`メソッドを呼�
 
     $orders->searchable();
 
-> **Note**
+> [!NOTE]
 > `searchable`メソッドは、「アップサート（upsert）」操作と考えるられます。つまり、モデルレコードがすでにインデックスに含まれている場合は、更新され、検索インデックスに存在しない場合は追加されます。
 
 <a name="updating-records"></a>
@@ -529,7 +533,7 @@ Eloquentクエリインスタンスで`searchable`メソッドを呼び出して
 
 `shouldBeSearchable`メソッドは、`save`および`create`メソッド、クエリ、またはリレーションを通してモデルを操作する場合にのみ適用されます。`searchable`メソッドを使用してモデルまたはコレクションを直接検索可能にすると、`shouldBeSearchable`メソッドの結果が上書きされます。
 
-> **Warning**
+> [!WARNING]
 > 検索可能なデータは常にデータベースへ保存されるため、`shouldBeSearchable`メソッドはScoutの「データベース」エンジンを使用する際には適用されません。データベースエンジン使用時に同様の動作をさせるには、代わりに[WHERE句](#where-clauses)を使用する必要があります。
 
 <a name="searching"></a>
@@ -586,7 +590,7 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
 
 検索インデックスはリレーショナルデータベースではないため、より高度な"where"節は現在サポートしていません。
 
-> **Warning**
+> [!WARNING]
 > アプリケーションでMeilisearchを使用している場合、Scoutの"where"句を利用する前に、アプリケーションの[filterable属性](#configuring-filterable-data-for-meilisearch)を設定する必要があります。
 
 <a name="pagination"></a>
@@ -623,7 +627,7 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
         return Order::search($request->input('query'))->paginate(15);
     });
 
-> **Warning**
+> [!WARNING]
 > 検索エンジンはEloquentモデルのグローバルスコープ定義を認識しないため、Scoutのペジネーションを利用するアプリケーションではグローバルスコープを使うべきでありません。それでも、Scoutにより検索する場合は、グローバルスコープの制約を再作成する必要があります。
 
 <a name="soft-deleting"></a>
@@ -643,7 +647,7 @@ Scoutを使用すると、検索クエリに単純な「where」節を追加で�
     // 結果の取得時に、削除済みレコードのみを対象とする
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 
-> **Note**
+> [!NOTE]
 > ソフトデリートされたモデルが、`forceDelete`により完全に削除されると、Scoutは自動的に検索インデックスから削除します。
 
 <a name="customizing-engine-searches"></a>

@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/topics/data-types#strings), [hashes](https://redis.io/topics/data-types#hashes), [lists](https://redis.io/topics/data-types#lists), [sets](https://redis.io/topics/data-types#sets), and [sorted sets](https://redis.io/topics/data-types#sorted-sets).
+[Redis](https://redis.io) is an open source, advanced key-value store. It is often referred to as a data structure server since keys can contain [strings](https://redis.io/docs/data-types/strings/), [hashes](https://redis.io/docs/data-types/hashes/), [lists](https://redis.io/docs/data-types/lists/), [sets](https://redis.io/docs/data-types/sets/), and [sorted sets](https://redis.io/docs/data-types/sorted-sets/).
 
 Before using Redis with Laravel, we encourage you to install and use the [PhpRedis](https://github.com/phpredis/phpredis) PHP extension via PECL. The extension is more complex to install compared to "user-land" PHP packages but may yield better performance for applications that make heavy use of Redis. If you are using [Laravel Sail](/docs/{{version}}/sail), this extension is already installed in your application's Docker container.
 
@@ -65,7 +65,7 @@ Each Redis server defined in your configuration file is required to have a name,
     ],
 
 <a name="configuring-the-connection-scheme"></a>
-#### Configuring The Connection Scheme
+#### Configuring the Connection Scheme
 
 By default, Redis clients will use the `tcp` scheme when connecting to your Redis servers; however, you may use TLS / SSL encryption by specifying a `scheme` configuration option in your Redis server's configuration array:
 
@@ -181,7 +181,7 @@ In addition to the default `scheme`, `host`, `port`, `database`, and `password` 
     ],
 
 <a name="phpredis-serialization"></a>
-#### PhpRedis Serialization & Compression
+#### PhpRedis Serialization and Compression
 
 The PhpRedis extension may also be configured to use a variety of serializers and compression algorithms. These algorithms can be configured via the `options` array of your Redis configuration:
 
@@ -263,7 +263,7 @@ The `Redis` facade's `transaction` method provides a convenient wrapper around R
         $redis->incr('total_visits', 1);
     });
 
-> **Warning**  
+> [!WARNING]  
 > When defining a Redis transaction, you may not retrieve any values from the Redis connection. Remember, your transaction is executed as a single, atomic operation and that operation is not executed until your entire closure has finished executing its commands.
 
 #### Lua Scripts
@@ -284,7 +284,7 @@ In this example, we will increment a counter, inspect its new value, and increme
         return counter
     LUA, 2, 'first-counter', 'second-counter');
 
-> **Warning**  
+> [!WARNING]  
 > Please consult the [Redis documentation](https://redis.io/commands/eval) for more information on Redis scripting.
 
 <a name="pipelining-commands"></a>

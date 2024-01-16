@@ -23,7 +23,7 @@ Laravelの[ファサード](/docs/{{version}}/facades)とヘルパ関数は、�
 クラスのコンストラクターでファサードをリクエストする必要がないファサードとは異なり、契約を使用すると、クラスの明示的な依存関係を定義できます。一部の開発者は、この方法で依存関係を明示的に定義することを好み、したがって契約を使用することを好みますが、他の開発者はファサードの便利さを楽しんでいます。**一般に、ほとんどのアプリケーションは開発中に問題なくファサードを使用できます。**
 
 <a name="when-to-use-contracts"></a>
-## 契約を使うとき
+## When to Use Contracts
 
 契約またはファサードを使用するかどうかの決定は、個人的な好みと開発チームの好みに依存します。契約とファサードの両方を使用して、堅牢で十分にテストされたLaravelアプリケーションを作成できます。契約とファサードは相互に排他的ではありません。アプリケーションの一部はファサードを使用し、他の部分は契約に依存できます。クラスの責任を集中させている限り、契約とファサードの使用の実際的な違いはほとんどありません。
 
@@ -71,11 +71,11 @@ Laravelの多種のクラスは、[サービスコンテナ](/docs/{{version}}/c
 
 この一覧表は、すべてのLaravel契約とそれに該当するファサードのクイックリファレンスです。
 
-| 契約                                                                                                                                               | 参照ファサード         |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------|
-| [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php)                 |  &nbsp;                   |
+| 契約                                                                                                                                                   | 参照ファサード            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------- |
+| [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php)                 | &nbsp;                    |
 | [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php)                                 | `Gate`                    |
-| [Illuminate\Contracts\Auth\Authenticatable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Authenticatable.php)                         |  &nbsp;                   |
+| [Illuminate\Contracts\Auth\Authenticatable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Authenticatable.php)                         | &nbsp;                    |
 | [Illuminate\Contracts\Auth\CanResetPassword](https://github.com/illuminate/contracts/blob/{{version}}/Auth/CanResetPassword.php)                       | &nbsp;                    |
 | [Illuminate\Contracts\Auth\Factory](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Factory.php)                                         | `Auth`                    |
 | [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Guard.php)                                             | `Auth::guard()`           |
@@ -119,7 +119,7 @@ Laravelの多種のクラスは、[サービスコンテナ](/docs/{{version}}/c
 | [Illuminate\Contracts\Pagination\LengthAwarePaginator](https://github.com/illuminate/contracts/blob/{{version}}/Pagination/LengthAwarePaginator.php)   | &nbsp;                    |
 | [Illuminate\Contracts\Pagination\Paginator](https://github.com/illuminate/contracts/blob/{{version}}/Pagination/Paginator.php)                         | &nbsp;                    |
 | [Illuminate\Contracts\Pipeline\Hub](https://github.com/illuminate/contracts/blob/{{version}}/Pipeline/Hub.php)                                         | &nbsp;                    |
-| [Illuminate\Contracts\Pipeline\Pipeline](https://github.com/illuminate/contracts/blob/{{version}}/Pipeline/Pipeline.php)                               | `Pipeline`;                    |
+| [Illuminate\Contracts\Pipeline\Pipeline](https://github.com/illuminate/contracts/blob/{{version}}/Pipeline/Pipeline.php)                               | `Pipeline`;               |
 | [Illuminate\Contracts\Queue\EntityResolver](https://github.com/illuminate/contracts/blob/{{version}}/Queue/EntityResolver.php)                         | &nbsp;                    |
 | [Illuminate\Contracts\Queue\Factory](https://github.com/illuminate/contracts/blob/{{version}}/Queue/Factory.php)                                       | `Queue`                   |
 | [Illuminate\Contracts\Queue\Job](https://github.com/illuminate/contracts/blob/{{version}}/Queue/Job.php)                                               | &nbsp;                    |

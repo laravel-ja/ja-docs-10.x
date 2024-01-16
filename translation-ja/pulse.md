@@ -32,7 +32,7 @@
 <a name="installation"></a>
 ## インストール
 
-> **Warning**
+> [!WARNING]
 > Pulseのファーストパーティストレージの実装は、現在MySQLかPostgreSQLデータベースを使っています。別のデータベースエンジンを使用している場合は別に、Pulseデータ用のMySQL／PostgreSQLデータベースが必要になります。
 
 Pulseは現在ベータ版なため、ベータリリース版のパッケージをインストールできるように、アプリケーションの`composer.json`ファイルを調整する必要があるでしょう。
@@ -62,7 +62,7 @@ php artisan migrate
 
 Pulseのデータベースマイグレーションを完了したら、`/pulse`ルートでPulseダッシュボードへアクセスできます。
 
-> **Note**
+> [!NOTE]
 > パルスデータをアプリケーションのプライマリデータベースに保存したくない場合は、[専用のデータベース接続を指定](#using-a-different-database)できます。
 
 <a name="configuration"></a>
@@ -165,8 +165,8 @@ public function boot(): void
 }
 ```
 
-> **Note**
-> `Laravel\Pulse\Contracts\ResolvesUsers`契約を実装し、Laravelの[サービスコンテナ](/docs/{{ version }}/container#binding-a-singleton)でバインドすることで、認証されたユーザーを取得する方法を完全にカスタマイズできます。
+> [!NOTE]
+> `Laravel\Pulse\Contracts\ResolvesUsers`契約を実装し、Laravelの[サービスコンテナ](/docs/{{version}}/container#binding-a-singleton)でバインドすることで、認証されたユーザーを取得する方法を完全にカスタマイズできます。
 
 <a name="dashboard-cards"></a>
 ### カード
@@ -191,7 +191,7 @@ public function boot(): void
 
 Pulseがユーザー情報を取得・表示する方法をカスタマイズする方法については、[ユーザーの解決](#dashboard-resolving-users)のドキュメントを参照してください。
 
-> **Note**
+> [!NOTE]
 > アプリケーションがたくさんのリクエストを受け取ったり、たくさんのジョブをディスパッチしたりする場合は、[サンプリング](#sampling)を有効にするとよいでしょう。詳しくは、[ユーザーリクエストのレコーダ](#user-requests-recorder)、[ユーザージョブのレコーダ](#user-jobs-recorder)、[遅いジョブのレコーダ](#slow-jobs-recorder)のドキュメントを参照してください。
 
 <a name="exceptions-card"></a>
@@ -246,7 +246,7 @@ Pulseがユーザー情報を取得・表示する方法をカスタマイズす
 php artisan pulse:check
 ```
 
-> **Note**
+> [!NOTE]
 > `pulse:check`プロセスをバックグラウンドで永続的に実行し続けるには、Supervisorのようなプロセスモニタを使い、コマンドの実行が止まらないようにする必要があります。
 
 <a name="recorders"></a>
@@ -401,7 +401,7 @@ PULSE_DB_CONNECTION=pulse
 <a name="ingest"></a>
 ### Redis統合
 
-> **Warning**
+> [!WARNING]
 > Redisを使用するには、Redis6.2以上と、アプリケーションの設定済みRedisクライアントドライバに、`phpredis`または`predis`が必要です。
 
 Pulseはデフォルトで、HTTPレスポンスがクライアントに送信した後、またはジョブを処理した後に、[設定されたデータベース接続](#using-a-different-database)に直接エントリを保存します。しかし、PulseのRedisインジェストドライバを代わりに使用し、Redisストリームへエントリを送信することもできます。これは`PULSE_INGEST_DRIVER`環境変数を設定すると有効になります。
@@ -422,7 +422,7 @@ Redisインジェストを使用する場合は、`pulse:work`コマンドを実
 php artisan pulse:work
 ```
 
-> **Note**
+> [!NOTE]
 > `pulse:work`プロセスをバックグラウンドで永久に実行し続けるには、Supervisorのようなプロセスモニタを使い、Pulseワーカの実行を止めないようにする必要があります。
 
 <a name="sampling"></a>
@@ -514,7 +514,7 @@ Livewireコンポーネントとテンプレートを定義したら、そのカ
 </x-pulse>
 ```
 
-> **Note**
+> [!NOTE]
 > カードがパッケージに含まれている場合、`Livewire::component`メソッドを使用してコンポーネントをLivewireに登録する必要があります。
 
 <a name="custom-card-styling"></a>
@@ -628,7 +628,7 @@ Pulse::record('user_sale', $user->id, $sale->amount)
 * `min`
 * `sum`
 
-> **Note**
+> [!NOTE]
 > 現在認証済みのユーザーIDをキャプチャするカードパッケージを構築するときは、`Pulse::resolveAuthenticatedUserId()` メソッドを使うべきでしょう。これは、アプリケーションに対して行う、[ユーザーリゾルバのカスタマイズ](#dashboard-resolving-users)を尊重します。
 
 <a name="custom-card-data-retrieval"></a>

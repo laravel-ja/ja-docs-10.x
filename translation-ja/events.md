@@ -28,7 +28,7 @@ Laravelのイベントは、単純なオブザーバーパターンの実装を�
 １つのイベントに、相互に依存しない複数のリスナを含めることができるため、イベントは、アプリケーションのさまざまな側面を分離するための優れた方法として機能します。たとえば、注文が発送されるたびにユーザーにSlack通知を送信したい場合があります。注文処理コードをSlack通知コードに結合する代わりに、リスナが受信してSlack通知をディスパッチするために使用できる`App\Events\OrderShipped`イベントを発生させることができます。
 
 <a name="registering-events-and-listeners"></a>
-## イベントとリスナの登録
+## Registering Events and Listeners
 
 Laravelアプリケーションに含まれている`App\Providers\EventServiceProvider`は、アプリケーションのすべてのイベントリスナを登録するための便利な場所を提供しています。`listen`プロパティには、すべてのイベント(キー)とそのリスナ(値)の配列が含まれています。アプリケーションが必要とするイベントをこの配列へ全部追加できます。例として、`OrderShipped`イベントを追加してみましょう。
 
@@ -46,7 +46,7 @@ Laravelアプリケーションに含まれている`App\Providers\EventServiceP
         ],
     ];
 
-> **Note**
+> [!NOTE]
 > `event:list`コマンドを使用して、アプリケーションによって登録されたすべてのイベントとリスナのリストを表示できます。
 
 <a name="generating-events-and-listeners"></a>
@@ -244,7 +244,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
         }
     }
 
-> **Note**
+> [!NOTE]
 > イベントリスナは、コンストラクタに必要な依存関係をタイプヒントすることもできます。すべてのイベントリスナはLaravel[サービスコンテナ](/docs/{{version}}/container)を介して依存解決されるため、依存関係は自動的に注入されます。
 
 <a name="stopping-the-propagation-of-an-event"></a>
@@ -529,7 +529,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
 
     OrderShipped::dispatchUnless($condition, $order);
 
-> **Note**
+> [!NOTE]
 > テストの際、あるイベントが実際にリスナを起動することなくディスパッチされたことをアサートできると役立ちます。Laravelに[組み込み済みのテストヘルパ](#testing)は、これを簡単に実現します。
 
 <a name="dispatching-events-after-database-transactions"></a>
@@ -729,7 +729,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
         SendShipmentNotification::class
     );
 
-> **Warning**
+> [!WARNING]
 > `Event::fake()`を呼び出した後は、イベントリスナが実行されることはありません。したがって、テストがイベントに依存するモデルファクトリを使用している場合、例えば、モデルの`creating`イベント中にUUIDを作成する場合、ファクトリを使用した**後**に、`Event::fake()`を呼び出す必要があります。
 
 <a name="faking-a-subset-of-events"></a>

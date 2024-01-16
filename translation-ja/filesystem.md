@@ -37,7 +37,7 @@ Laravelのファイルシステム設定ファイルは`config/filesystems.php`�
 
 `local`ドライバは、Laravelアプリケーションを実行しているサーバでローカルに保存されているファイルを操作し、`s3`ドライバはAmazonのS3クラウドストレージサービスへの書き込みに使用します。
 
-> **Note**
+> [!NOTE]
 > 必要な数のディスクを構成でき、同じドライバを使用する複数のディスクを使用することもできます。
 
 <a name="the-local-driver"></a>
@@ -202,7 +202,7 @@ LaravelのFlysystemインテグレーションでMinIOを使用する際に、�
 AWS_URL=http://localhost:9000/local
 ```
 
-> **Warning**
+> [!WARNING]
 > MinIOを使用する場合、`temporaryUrl`メソッドによる一時保存用URLの生成はサポートしていません。
 
 <a name="obtaining-disk-instances"></a>
@@ -277,7 +277,7 @@ $disk->put('image.jpg', $content);
 
 `local`ドライバを使用する場合、パブリックにアクセス可能である必要があるすべてのファイルは、`storage/app/public`ディレクトリに配置する必要があります。さらに、`storage/app/public`ディレクトリを指す`public/storage`に[シンボリックリンクを作成](#the-public-disk)する必要があります。
 
-> **Warning**
+> [!WARNING]
 > `local`ドライバを使用する場合、`url`の戻り値はURLエンコードされません。このため、常に有効なURLを作成する名前を使用してファイルを保存することをお勧めします。
 
 <a name="url-host-customization"></a>
@@ -347,7 +347,7 @@ $disk->put('image.jpg', $content);
 <a name="temporary-upload-urls"></a>
 #### 一時的なアップロードURL
 
-> **Warning**
+> [!WARNING]
 > 一時的なアップロードURLの生成機能は、`s3`ドライバのみサポートしています。
 
 クライアントサイドのアプリケーションから、直接ファイルをアップロードするために使用する一時的なURLを生成する必要がある場合は、`temporaryUploadUrl`メソッドを使用します。このメソッドには、パスとURLの有効期限を指定する`DateTime`インスタンスを指定します。`temporaryUploadUrl`メソッドからは、アップロードURLとアップロードリクエストに含めるべきヘッダを連想配列で返します。
@@ -498,7 +498,7 @@ Webアプリケーションでは、ファイルを保存するための最も�
         'avatars', $request->file('avatar'), $request->user()->id
     );
 
-> **Warning**
+> [!WARNING]
 > 印刷できない無効なUnicode文字はファイルパスから自動的に削除されます。したがって、Laravelのファイルストレージメソッドに渡す前に、ファイルパスをサニタイズすることをお勧めします。ファイルパスは、`League\Flysystem\WhitespacePathNormalizer::normalizePath`メソッドを使用して正規化されます。
 
 <a name="specifying-a-disk"></a>
@@ -675,7 +675,7 @@ LaravelのFlysystem統合では、「可視性」は複数のプラットフォ�
 
 `fake`メソッドはデフォルトで、テンポラリディレクトリのファイルをすべて削除します。もしこれらのファイルを残しておきたい場合は、代わりに"persistentFake"メソッドを使用してください。ファイルアップロードのテストに関するより詳しい情報は、[ファイルアップロードに関するHTTPテストのドキュメント](/docs/{{version}}/http-tests#testing-file-uploads)を参照してください。
 
-> **Warning**
+> [!WARNING]
 > `image`メソッドには、[GD拡張](https://www.php.net/manual/ja/book.image.php)が必要です。
 
 <a name="custom-filesystems"></a>

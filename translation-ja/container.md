@@ -134,7 +134,7 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 });
 ```
 
-> **Note**
+> [!NOTE]
 > クラスがどのインターフェイスにも依存しない場合、クラスをコンテナに結合する必要はありません。コンテナは、リフレクションを使用してこれらのオブジェクトを自動的に解決できるため、これらのオブジェクトの作成方法を指示する必要はありません。
 
 <a name="binding-a-singleton"></a>

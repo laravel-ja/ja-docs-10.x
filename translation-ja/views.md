@@ -35,7 +35,7 @@
         return view('greeting', ['name' => 'James']);
     });
 
-> **Note**
+> [!NOTE]
 > Bladeテンプレートの作成方法の詳細をお探しですか？最初に完全な[Bladeドキュメント](/docs/{{version}}/blade)を確認してください。
 
 <a name="writing-views-in-react-or-vue"></a>
@@ -77,7 +77,7 @@ php artisan make:view greeting
 
     return view('admin.profile', $data);
 
-> **Warning**
+> [!WARNING]
 > ビューのディレクトリ名には、`.`文字を含めてはいけません。
 
 <a name="creating-the-first-available-view"></a>
@@ -192,7 +192,7 @@ php artisan make:view greeting
         }
     }
 
-> **Warning**
+> [!WARNING]
 > 新しいサービスプロバイダをビューコンポーザ登録のために作成した場合は、`config/app.php`設定ファイルの`providers`配列へ追加する必要があるのを忘れないでください。
 
 コンポーザを登録したので、`profile`ビューがレンダされるたびに`App\View\Composers\ProfileComposer`クラスの`compose`メソッドが実行されます。コンポーザクラスの例を見てみましょう。

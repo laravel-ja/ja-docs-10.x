@@ -25,8 +25,8 @@
     - [機能の削除](#purging-features)
 - [テスト](#testing)
 - [カスタム機能ドライバの追加](#adding-custom-pennant-drivers)
-    - [ドライバの実装](#implementing-the-driver)
-    - [ドライバの登録](#registering-the-driver)
+    - [Implementing the Driver](#implementing-the-driver)
+    - [Registering the Driver](#registering-the-driver)
 - [イベント](#events)
 
 <a name="introduction"></a>
@@ -141,7 +141,7 @@ class NewApi
 }
 ```
 
-> **Note** 機能クラスは、[コンテナ](/docs/{{version}}/container)により依存解決されるため、必要に応じ機能クラスのコンストラクタに依存を注入できます。
+> [!NOTE] Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
 
 <a name="checking-features"></a>
 ## 機能のチェック
@@ -200,7 +200,7 @@ Feature::allAreInactive(['new-api', 'site-redesign']);
 Feature::someAreInactive(['new-api', 'site-redesign']);
 ```
 
-> **Note**
+> [!NOTE]
 > PennantをHTTPコンテキスト外で使う場合、例えばArtisanコマンドや、キュー投入したジョブでは、機能のスコープを通常[明示的に指定](#specifying-the-scope)する必要があります。あるいは、認証済みHTTPコンテキストと、認証されていないコンテキストの両方を考慮した、[デフォルトスコープ](#default-scope)を定義することもできます。
 
 <a name="checking-class-based-features"></a>
@@ -583,7 +583,7 @@ $color = Feature::value('purchase-button');
 @endfeature
 ```
 
-> **Note** リッチな値を使用する場合、その機能が`false`以外の値なら、「アクティブ」とみなすことを知っておいてください。
+> [!NOTE] When using rich values, it is important to know that a feature is considered "active" when it has any value other than `false`.
 
 [条件付き`when`](#conditional-execution)メソッドを呼び出すと、その機能のリッチな値が最初のクロージャに提供されます。
 
@@ -751,7 +751,7 @@ Feature::activateForEveryone('purchase-button', 'seafoam-green');
 Feature::deactivateForEveryone('new-api');
 ```
 
-> **Note** これは、Pennantのストレージドライバにより保存された、解決済みの機能値のみを更新します。アプリケーションの機能定義も更新する必要があります。
+> [!NOTE] This will only update the resolved feature values that have been stored by Pennant's storage driver. You will also need to update the feature definition in your application.
 
 <a name="purging-features"></a>
 ### 機能の削除
@@ -873,7 +873,7 @@ class RedisFeatureDriver implements Driver
 
 あとは、Redis接続を使う、これらのメソッドを実装するだけです。それぞれのメソッドの実装例は、[Pennantのソースコード](https://github.com/laravel/pennant/blob/1.x/src/Drivers/DatabaseDriver.php)にある、`Laravel\Pennant\Drivers\DatabaseDriver`を見てください。
 
-> **Note**
+> [!NOTE]
 > Laravelは、拡張機能を格納するディレクトリを用意していません。好きな場所に自由に配置できます。この例では、`RedisFeatureDriver`を格納するために、`Extensions`ディレクトリを作成しました。
 
 <a name="registering-the-driver"></a>

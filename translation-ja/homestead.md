@@ -42,7 +42,7 @@ Laravelはローカル開発環境を含め、PHP開発体験全体を楽しい�
 
 Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP、MySQL、PostgreSQL、Redis、Memcached、Node、その他すばらしいLaravelアプリケーションの開発に必要なすべてのソフトウェアを含んでいます。
 
-> **Warning**
+> [!WARNING]
 > Windowsを使用している場合は、ハードウェア仮想化(VT-x)を有効にする必要があります。通常、BIOSにより有効にできます。UEFI system上のHyper-Vを使用している場合は、VT-xへアクセスするため、さらにHyper-Vを無効にする必要があります。
 
 <a name="included-software"></a>
@@ -189,7 +189,7 @@ init.bat
 
     provider: virtualbox
 
-> **Warning**
+> [!WARNING]
 > Apple Siliconを使用する場合は、Parallelsプロバイダが必要です。
 
 <a name="configuring-shared-folders"></a>
@@ -203,7 +203,7 @@ folders:
       to: /home/vagrant/project1
 ```
 
-> **Warning**
+> [!WARNING]
 > Windowsユーザーはパスを`~/`記法を使わず、代わりにたとえば`C:\Users\user\Code\project1`のように、プロジェクトのフルパスを使ってください。
 
 すべてのアプリケーションを含む単一の大きなディレクトリをマッピングするのではなく、常に個々のアプリケーションを独自のフォルダマッピングにマッピングする必要があります。フォルダをマップするとき、仮想マシンはフォルダ内の**すべての**ファイルのすべてのディスクIOを追跡する必要があります。フォルダ内に多数のファイルがある場合、パフォーマンスの下する可能性があります。
@@ -216,7 +216,7 @@ folders:
       to: /home/vagrant/project2
 ```
 
-> **Warning**
+> [!WARNING]
 > Homesteadを使用する場合、`.`（カレントディレクトリ）をマウントしないでください。そうすると、Vagrantはカレントフォルダを`/vagrant`へマップしない状況が起き、オプションの機能が壊れ、プロビジョン中に予期せぬ結果が起きます。
 
 [NFS](https://developer.hashicorp.com/vagrant/docs/synced-folders/nfs)を有効にするには、フォルダのマッピングで`type`オプションを付けます。
@@ -228,7 +228,7 @@ folders:
       type: "nfs"
 ```
 
-> **Warning**
+> [!WARNING]
 > Windows上でNFSを使用する場合は、[vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd)プラグインのインストールを考慮すべきでしょう。このプラグインは、Homestead仮想マシン下のファイルとディレクトリのユーザー／グループパーミッションを正しく維持します。
 
 さらに、Vagrantの[同期フォルダ](https://developer.hashicorp.com/vagrant/docs/synced-folders/basic_usage)でサポートされている任意のオプションを、`options`キーの下に列挙して渡すことができます。
@@ -256,7 +256,7 @@ sites:
 
 `sites`プロパティをHomestead仮想環境のプロビジョニング後に変更した場合、仮想マシンのNginx設定を更新するため、`vagrant reload --provision`をターミナルで実行する必要があります。
 
-> **Warning**
+> [!WARNING]
 > Homesteadのスクリプトは可能な限り冪等性を保つように組まれています。しかしながら、プロビジョニング中に問題が起きたら、`vagrant destroy && vagrant up`コマンドを実行し、マシンを壊してから、再構築してください。
 
 <a name="hostname-resolution"></a>
@@ -290,7 +290,7 @@ services:
 指定したサービスは、`enabled`および`disabled`ディレクティブの順序に基づいて開始または停止されます。
 
 <a name="launching-the-vagrant-box"></a>
-### Vagrant Boxの実行
+### Launching the Vagrant Box
 
 `Homestead.yaml`のリンクを編集終えたら、Homesteadディレクトリで`vagrant up`コマンドを実行してください。Vagrantは仮想マシンを起動し、共有フォルダとNginxサイトを自動的に設定します。
 
@@ -372,7 +372,7 @@ features:
 
 サポートしているElasticsearchのバージョンを指定できます。これは、正確なバージョン番号(major.minor.patch)である必要があります。デフォルトのインストールでは、`homestead`という名前のクラスターを作成します。Elasticsearchにオペレーティングシステムのメモリの半分以上を割り当てないでください。そのため、Homestead仮想マシンでElasticsearchの割り当てが最低２倍あることを確認してください。
 
-> **Note**
+> [!NOTE]
 > [Elasticsearchドキュメント](https://www.elastic.co/guide/en/elasticsearch/reference/current)をチェックして、設定をカスタマイズする方法を確認してください。
 
 <a name="mariadb"></a>
@@ -470,7 +470,7 @@ sites:
       to: /home/vagrant/project2/public
 ```
 
-> **Warning**
+> [!WARNING]
 > サイトを追加する前に、プロジェクトのディレクトリに[フォルダマッピング](#configuring-shared-folders)を確実に設定してください。
 
 Vagrantが"hosts"ファイルを自動的に管理しない場合は、新しいサイトを追加する必要があります。このファイルはmacOSとLinuxでは、`/etc/hosts`にあります。Windowsでは、`C:\Windows\System32\drivers\etc\hosts`に位置します。
@@ -608,7 +608,7 @@ php82
 
 `homestead`データベースは、MySQLとPostgreSQLの両方へすぐに設定できます。ホストマシンのデータベースクライアントからMySQLまたはPostgreSQLデータベースに接続するには、ポート`33060`（MySQL）または`54320`（PostgreSQL）で`127.0.0.1`へ接続してください。両方のデータベースのユーザー名とパスワードは`homestead`／`secret`です。
 
-> **Warning**
+> [!WARNING]
 > ホストマシンからデータベースに接続する場合にのみ、これらの非標準ポートを使用する必要があります。Laravelは仮想マシン内で実行するため、Laravelアプリケーションの`database`設定ファイルではデフォルトの3306ポートと5432ポートを使用しています。
 
 <a name="database-backups"></a>
@@ -725,7 +725,7 @@ share homestead.test -region=eu -subdomain=laravel
 
 HTTPではなくHTTPSでコンテンツを共有する必要がある場合は、`share`の代わりに`sshare`コマンドを使用すれば可能です。
 
-> **Warning**
+> [!WARNING]
 > Vagrantは本質的に安全ではなく、`share`コマンドを実行するときに仮想マシンをインターネットに公開していることを忘れないでください。
 
 <a name="debugging-and-profiling"></a>
@@ -738,7 +738,7 @@ Homesteadは、[Xdebug](https://xdebug.org)を使用したステップデバッ�
 
 Xdebugはデフォルトではじめから実行しており、接続を受け付ける準備ができています。CLIでXdebugを有効にする必要がある場合は、Homestead仮想マシン内で`sudo　php　enmod　xdebug`コマンドを実行します。次に、IDEの指示に従ってデバッグを有効にします。最後に、拡張機能または[ブックマークレット](https://www.jetbrains.com/phpstorm/marklets/)を使用してXdebugをトリガーするようにブラウザを構成します。
 
-> **Warning**
+> [!WARNING]
 > Xdebugを使用すると、PHPの実行速度が大幅に低下します。Xdebugを無効にするには、Homestead仮想マシン内で`sudo phpdismod xdebug`を実行し、それからFPMサービスを再起動します。
 
 <a name="autostarting-xdebug"></a>

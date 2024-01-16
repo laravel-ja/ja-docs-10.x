@@ -32,7 +32,7 @@
 
 Laravelのデフォルトアプリケーション構造はアプリケーションの大小にかかわらず、素晴らしいスタートを切ってもらえることを意図しています。アプリケーションは皆さんのお好みに応じ、自由に体系立ててください。クラスがComposerによりオートローディングできるならば、Laravelはクラスをどこに配置するか強制することはまずありません。
 
-> **Note**
+> [!NOTE]  
 > Laravelは初めてですか？[Laravel Bootcamp](https://bootcamp.laravel.com)では、Laravelのフレームワークを実際に体験しながら、Laravelアプリケーションを構築することができます。
 
 <a name="the-root-directory"></a>
@@ -107,7 +107,7 @@ Laravelのデフォルトアプリケーション構造はアプリケーショ�
 
 クラス生成のための`make` Artisanコマンドを使用することで、さまざまなディレクトリが`app`ディレクトリ内に作成されます。たとえば、`app/Jobs`ディレクトリは、ジョブクラスを生成する`make:job` Artisanコマンドを実行するまで存在していません。
 
-> **Note**
+> [!NOTE]  
 > Artisanコマンドにより、`app`ディレクトリ下にたくさんのクラスが生成されます。使用可能なコマンドを確認するには、`php artisan list make`コマンドをターミナルで実行してください。
 
 <a name="the-broadcasting-directory"></a>

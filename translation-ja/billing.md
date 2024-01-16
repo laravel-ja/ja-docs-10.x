@@ -24,7 +24,7 @@
 - [支払い方法](#payment-methods)
     - [支払い方法の保存](#storing-payment-methods)
     - [支払い方法の取得](#retrieving-payment-methods)
-    - [顧客に支払い方法があるか判定](#check-for-a-payment-method)
+    - [支払い方法の存在](#payment-method-presence)
     - [デフォルト支払い方法の変更](#updating-the-default-payment-method)
     - [支払い方法の追加](#adding-payment-methods)
     - [支払い方法の削除](#deleting-payment-methods)
@@ -81,7 +81,7 @@
 
 キャッシャーの新しいバージョンにアップグレードするときは、[アップグレードガイド](https://github.com/laravel/cashier-stripe/blob/master/UPGRADE.md)を注意深く確認することが重要です。
 
-> **Warning**
+> [!WARNING]
 > 重大な変更を防ぐために、Cashierは固定のStripe APIバージョンを使用します。Cashier15はStripe APIバージョン`2023-10-16`を利用しています。Stripe APIバージョンは、新しいStripe機能と改善点を利用するために、マイナーリリースで更新されます。
 
 <a name="installation"></a>
@@ -115,7 +115,7 @@ php artisan vendor:publish --tag="cashier-config"
 
 最後に、CashierがすべてのStripeイベントを適切に処理できるように、[Cashierのウェブフック処理を設定](#handling-stripe-webhooks)するのを忘れないでください。
 
-> **Warning**
+> [!WARNING]
 > Stripeは、Stripe識別子の格納に使用するカラムでは、大文字と小文字を区別することを推奨しています。したがって、MySQLを使用する場合は、`stripe_id`列の列照合順序を確実に`utf8_bin`へ設定する必要があります。これに関する詳細は、[Stripeドキュメント](https://stripe.com/docs/upgrades#what-c​​hanges-does-stripe-consider-to-be-backwards-compatible)にあります。
 
 <a name="configuration"></a>
@@ -146,7 +146,7 @@ CashierはLaravelに同梱されている`App\Models\User`クラスをBillable�
         Cashier::useCustomerModel(User::class);
     }
 
-> **Warning**
+> [!WARNING]
 > Laravelが提供する`App\Models\User`モデル以外のモデルを使用する場合は、提供している[Cashierマイグレーション](#installation)をリソース公開し、代替モデルのテーブル名と一致するように変更する必要があります。
 
 <a name="api-keys"></a>
@@ -160,7 +160,7 @@ STRIPE_SECRET=your-stripe-secret
 STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
 ```
 
-> **Warning**
+> [!WARNING]
 > アプリケーションの`.env`ファイルで、`STRIPE_WEBHOOK_SECRET`環境変数を確実に定義してください。この変数は、受け取ったWebhookが実際にStripeから送られたものであることを確認するために使用します。
 
 <a name="currency-configuration"></a>
@@ -178,7 +178,7 @@ Cashierの通貨の設定に加え、請求書に表示するの金額の値を�
 CASHIER_CURRENCY_LOCALE=nl_BE
 ```
 
-> **Warning**
+> [!WARNING]
 > `en`以外のロケールを使用するは、`ext-intl` PHP拡張機能をサーバへ確実にインストール・設定してください。
 
 <a name="tax-configuration"></a>
@@ -200,7 +200,7 @@ CASHIER_CURRENCY_LOCALE=nl_BE
 
 この機能を正常に動作させるためには、顧客の氏名、住所、課税IDなどの請求情報がStripeに同期されている必要があります。そのために、Cashierが提供する[顧客データの同期](#syncing-customer-data-with-stripe)や[課税ID](#tax-ids)のメソッドを使用できます。
 
-> **Warning**
+> [!WARNING]
 > [一回限りの課金](#single-charges)や[一回限りの支払い](#single-charge-checkouts)では税金が計算されません。
 
 <a name="logging"></a>
@@ -246,7 +246,7 @@ StripeへのAPI呼び出しで発生した例外は、アプリケーション�
 <a name="quickstart-selling-products"></a>
 ### プロダクトの販売
 
-> **Note**
+> [!NOTE]
 > Stripeチェックアウトを利用する前に、Stripeダッシュボードにより、固定価格で商品を定義してください。さらに、[CashierのWebフック処理を設定](#handling-stripe-webhooks)する必要もあります。
 
 アプリケーションで商品や定期購入の課金を提供するのは、敷居が高いかもしれません。しかし、Cashierと[Stripe Checkout](https://stripe.com/payments/checkout)のおかげで、モダンで堅牢な決済統合を簡単に構築できます。
@@ -323,7 +323,7 @@ StripeへのAPI呼び出しで発生した例外は、アプリケーション�
 <a name="quickstart-selling-subscriptions"></a>
 ### サブスクリプションの販売
 
-> **Note**
+> [!NOTE]
 > Stripe Checkoutを利用する前に、Stripeダッシュボードで固定価格の商品を定義してください。さらに、[CashierのWebフック処理を設定](#handling-stripe-webhooks)する必要もあります。
 
 アプリケーションで商品やサブスクリプションの課金を提供するのは、敷居が高いかもしれません。しかし、Cashierと[Stripe Checkout](https://stripe.com/payments/checkout)のおかげで、モダンで堅牢な決済統合を簡単に構築できます。
@@ -425,7 +425,7 @@ endif
         return $request->user()->redirectToBillingPortal(route('dashboard'));
     })->middleware(['auth'])->name('billing');
 
-> **Note**
+> [!NOTE]
 > CashierのWebフック処理を設定している限り、CashierはStripeから受信するWebフックを調べ、アプリケーションのCashier関連データベーステーブルを自動的に同期します。例えば、ユーザーがStripeの顧客支払いポータル経由で定期購入をキャンセルすると、Cashierは対応するWebフックを受信し、アプリケーションのデータベースで定期購入を「キャンセル」としてマークします。
 
 <a name="customers"></a>
@@ -646,7 +646,7 @@ cardButton.addEventListener('click', async (e) => {
 
 Stripeがカードを検証したあとに、結果の`setupIntent.payment_method`識別子をLaravelアプリケーションに渡し、顧客にアタッチします。支払い方法は、[新しい支払い方法として追加](#adding-payment-methods)または[デフォルトの支払い方法の更新に使用](#updating-the-default-payment-method)のいずれかです。すぐに支払い方法識別子を使用して[新しいサブスクリプションを作成](#creating-subscriptions)することもできます。
 
-> **Note**
+> [!NOTE]
 > Setup Intentsと顧客の支払いの詳細の収集について詳しく知りたい場合は、[Stripeが提供しているこの概要を確認してください](https://stripe.com/docs/payments/save-and-reuse#php)。
 
 <a name="payment-methods-for-single-charges"></a>
@@ -722,8 +722,8 @@ Billableなモデルインスタンスの`paymentMethods`メソッドは、`Lara
 
     $paymentMethod = $user->findPaymentMethod($paymentMethodId);
 
-<a name="check-for-a-payment-method"></a>
-### 顧客に支払い方法があるか判定
+<a name="payment-method-presence"></a>
+### 支払い方法の存在
 
 Billableなモデルのアカウントにデフォルトの支払い方法が関連付けられているかどうかを確認するには、`hasDefaultPaymentMethod`メソッドを呼び出します。
 
@@ -754,7 +754,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
 
     $user->updateDefaultPaymentMethodFromStripe();
 
-> **Warning**
+> [!WARNING]
 > 顧客のデフォルトの支払い方法は、新しいサブスクリプションの請求と作成にのみ使用できます。Stripeの制約により、１回だけの請求には使用できません。
 
 <a name="adding-payment-methods"></a>
@@ -764,7 +764,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
 
     $user->addPaymentMethod($paymentMethod);
 
-> **Note**
+> [!NOTE]
 > 支払い方法の識別子を取得する方法については、[支払い方法の保存に関するドキュメント](#storing-payment-methods)を確認してください。
 
 <a name="deleting-payment-methods"></a>
@@ -786,7 +786,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
 
     $user->deletePaymentMethods('sepa_debit');
 
-> **Warning**
+> [!WARNING]
 > ユーザーがアクティブなサブスクリプションを持っている場合、アプリケーションはユーザーがデフォルトの支払い方法を削除することを許してはいけません。
 
 <a name="subscriptions"></a>
@@ -813,7 +813,7 @@ Billableなモデルのアカウントにデフォルトの支払い方法が関
 
 [Stripe支払い方法識別子](#storing-payment-methods)またはStripe`PaymentMethod`オブジェクトを引数に取る`create`メソッドは、サブスクリプションを開始するのと同時に、BillableなモデルのStripe顧客IDおよびその他の関連する課金情報でデータベースを更新します。
 
-> **Warning**
+> [!WARNING]
 > 支払い方法識別子を`create`サブスクリプションメソッドへ直接渡すと、ユーザーの保存済み支払い方法にも自動的に追加されます。
 
 <a name="collecting-recurring-payments-via-invoice-emails"></a>
@@ -993,7 +993,7 @@ Stripeダッシュボード自体からも、サブスクリプションを作�
         // ...
     }
 
-> **Warning**
+> [!WARNING]
 > ユーザーが同じタイプのサブスクリプションを２つ持っている場合、`subscription`メソッドは最新のサブスクリプションを常に返します。たとえば、ユーザーが`default`というタイプのサブスクリプションレコードを２つ持っているとします。この場合、サブスクリプションの１つは古い期限切れのサブスクリプションであり、もう１つは現在のアクティブなサブスクリプションである可能性があります。最新のサブスクリプションを常に返しますが、古いサブスクリプションは履歴レビューのためにデータベースに保持されます。
 
 <a name="cancelled-subscription-status"></a>
@@ -1053,7 +1053,7 @@ Stripeダッシュボード自体からも、サブスクリプションを作�
         Cashier::keepIncompleteSubscriptionsActive();
     }
 
-> **Warning**
+> [!WARNING]
 > サブスクリプションが`incomplete`状態の場合、支払いが確認されるまで変更できません。したがって、サブスクリプションが`incomplete`状態の場合、`swap`メソッドと`updateQuantity`メソッドは例外を投げます。
 
 <a name="subscription-scopes"></a>
@@ -1115,7 +1115,7 @@ Stripeダッシュボード自体からも、サブスクリプションを作�
 
 サブスクリプションの比例按分について詳しくは、[Stripeドキュメント](https://stripe.com/docs/billing/subscriptions/prorations)を参照してください。
 
-> **Warning**
+> [!WARNING]
 > `swapAndInvoice`メソッドの前に`noProrate`メソッドを実行しても、比例按分には影響しません。請求書は常に発行されます。
 
 <a name="subscription-quantity"></a>
@@ -1200,7 +1200,7 @@ Stripeダッシュボード自体からも、サブスクリプションを作�
 
     $user->subscription('default')->removePrice('price_chat');
 
-> **Warning**
+> [!WARNING]
 > サブスクリプションの最後の価格は削除できません。代わりに、単にサブスクリプションをキャンセルしてください。
 
 <a name="swapping-prices"></a>
@@ -1253,7 +1253,7 @@ Stripeは複数商品を持つサブスクリプションに価格を追加ま�
 
     $user->subscription('default')->updateQuantity(10, 'price_chat');
 
-> **Warning**
+> [!WARNING]
 > サブスクリプションに複数の価格がある場合、`Subscription`モデルの`stripe_plan`属性と`quantity`属性は`null`になります。個々の価格属性にアクセスするには、`Subscription`モデルで使用可能な`items`リレーションを使用する必要があります。
 
 <a name="subscription-items"></a>
@@ -1385,7 +1385,7 @@ Stripeの顧客は, サブスクリプションを同時に複数利用可能で
 <a name="subscription-taxes"></a>
 ### サブスクリプションの税率
 
-> **Warning**
+> [!WARNING]
 > 税率を手作業で計算する代わりに、[Stripe Taxを使って自動的に税金を計算](#tax-configuration)できます。
 
 ユーザーがサブスクリプションで支払う税率を指定するには、Billableなモデルに`taxRates`メソッドを実装し、Stripe税率IDを含む配列を返す必要があります。これらの税率は、[Stripeダッシュボード](https://dashboard.stripe.com/test/tax-rates)で定義します。
@@ -1416,7 +1416,7 @@ Stripeの顧客は, サブスクリプションを同時に複数利用可能で
         ];
     }
 
-> **Warning**
+> [!WARNING]
 > `taxRates`メソッドはサブスクリプション料金にのみ適用されます。Cashierを使用して「１回限り」の料金を請求する場合は、その時点で税率を手作業で指定する必要があります。
 
 <a name="syncing-tax-rates"></a>
@@ -1441,7 +1441,7 @@ Cashierは、顧客が非課税であるかどうかを判断するために、`
     $user->isNotTaxExempt();
     $user->reverseChargeApplies();
 
-> **Warning**
+> [!WARNING]
 > これらのメソッドは、すべての`Laravel\Cashier\Invoice`オブジェクトでも使用できます。ただし、`Invoice`オブジェクトで呼び出した場合、メソッドは請求書が作成された時点の免税状態を用います。
 
 <a name="subscription-anchor-date"></a>
@@ -1529,7 +1529,7 @@ Cashierは、顧客が非課税であるかどうかを判断するために、`
 
 このメソッドは、データベース内のサブスクリプションレコードに無料トライアル期間の終了日を設定し、この日付が過ぎるまで顧客への請求を開始しないようにStripeに指示します。`trialDays`メソッドを使用すると、CashierはStripeの価格に設定しているデフォルトの無料トライアル期間を上書きします。
 
-> **Warning**
+> [!WARNING]
 > 無料トライアル期間の終了日より前に顧客がそのサブスクリプションをキャンセルしなかった場合、無料トライアル期間の終了時にすぐ課金されるため、無料トライアル期間の終了日をユーザーに必ず通知する必要があります。
 
 `trialUntil`メソッドを使用すると、無料トライアル期間をいつ終了するかを指定する`DateTime`インスタンスを渡せます。
@@ -1581,7 +1581,7 @@ Cashierは、顧客が非課税であるかどうかを判断するために、`
         'trial_ends_at' => now()->addDays(10),
     ]);
 
-> **Warning**
+> [!WARNING]
 > Billableなモデルのクラス定義内の`trial_ends_at`属性に[日付のキャスト](/docs/{{version}}/eloquent-mutators#date-casting)を必ず追加してください。
 
 Cashierはこのタイプの無料トライアル期間を「一般的な無料トライアル期間（generic trial）」と呼んでいます。これは、既存のサブスクリプションに関連付けられていないからです。Billableなモデルインスタンスの`onTrial`メソッドは、現在の日付が`trial_ends_at`の値を超えていない場合に`true`を返します。
@@ -1630,7 +1630,7 @@ Cashierはこのタイプの無料トライアル期間を「一般的な無料�
 <a name="handling-stripe-webhooks"></a>
 ## StripeのWebフックの処理
 
-> **Note**
+> [!NOTE]
 > [Stripe CLI](https://stripe.com/docs/stripe-cli)を使用して、ローカル開発中にWebhookをテストすることができます。
 
 Stripeは、Webフックを介してさまざまなイベントをアプリケーションに通知できます。デフォルトでは、CashierのWebフックコントローラを指すルートは、Cashierサービスプロバイダにより自動的に登録されます。このコントローラは、すべての受信Webフックリクエストを処理します。
@@ -1672,7 +1672,7 @@ php artisan cashier:webhook --api-version="2019-12-03"
 php artisan cashier:webhook --disabled
 ```
 
-> **Warning**
+> [!WARNING]
 > Cashierに含まれる[Webフック署名の確認](#verifying-webhook-signatures)ミドルウェアを使って、受信するStripe Webフックリクエストを保護してください。
 
 <a name="webhooks-csrf-protection"></a>
@@ -1777,7 +1777,7 @@ Webフックの検証を有効にするには、`STRIPE_WEBHOOK_SECRET`環境変
         // ...
     }
 
-> **Warning**
+> [!WARNING]
 > `charge`メソッドは、アプリケーションで使用する通貨の最小単位で支払額を引数に取ります。例えば、顧客が米ドルで支払う場合、金額はペニーで指定する必要があります。
 
 <a name="charge-with-invoice"></a>
@@ -1809,7 +1809,7 @@ Webフックの検証を有効にするには、`STRIPE_WEBHOOK_SECRET`環境変
 
 `invoiceFor`メソッドを使用することもできますが、あらかじめ価格を設定し、`invoicePrice`メソッドや`tabPrice`メソッドの使用を推奨します。それにより、商品ごとの売上に関するより良い分析・データへ、Stripeのダッシュボードによりアクセスできます。
 
-> **Warning**
+> [!WARNING]
 > `invoice`、`invoicePrice`、`invoiceFor`メソッドは、課金に失敗した場合に再試行する、Stripeインボイスを作成します。請求の失敗時に再試行したくない場合は、最初の請求が失敗した後に、Stripe APIを使用し、そのインボイスを閉じる必要があります。
 
 <a name="creating-payment-intents"></a>
@@ -1841,7 +1841,7 @@ Billableモデルのインスタンスで、`pay`メソッドを呼び出すと�
         return $payment->client_secret;
     });
 
-> **Warning**
+> [!WARNING]
 > `pay`と`payWith`メソッドは、アプリケーションで使用する通貨の最小単位で支払額を引数に取ります。例えば、顧客が米ドルで支払う場合、金額はペニーで指定する必要があります。
 
 <a name="refunding-charges"></a>
@@ -2046,13 +2046,13 @@ Stripe Checkoutはデフォルトで、[ユーザーが商品に使用できる�
         return $request->user()->checkoutCharge(1200, 'T-Shirt', 5);
     });
 
-> **Warning**
+> [!WARNING]
 > `checkoutCharge`メソッドを使用すると、Stripeは常にStripeダッシュボードに新しい製品と価格を作成します。そのため、代わりにStripeダッシュボードで事前に商品を作成し、`checkout`メソッドを使用することを推奨します。
 
 <a name="subscription-checkouts"></a>
 ### サブスクリプションの支払い
 
-> **Warning**
+> [!WARNING]
 > Stripe Checkoutのサブスクリプションを使用するには、Stripeダッシュボードで`customer.subscription.created` Webフックを有効にする必要があります。このWebフックは、データベースにサブスクリプションレコードを作成し、すべてのサブスクリプション関連アイテムを保存します。
 
 サブスクリプションを開始するため、Stripe Checkoutを使用することもできます。Cashierのサブスクリプションビルダメソッドを使用してサブスクリプションを定義した後に、`checkout`メソッドを呼び出せます。顧客がこのルートを訪れると、Stripeのチェックアウトページへリダイレクトされます。
@@ -2089,7 +2089,7 @@ Stripe Checkoutはデフォルトで、[ユーザーが商品に使用できる�
             ->checkout();
     });
 
-> **Warning**
+> [!WARNING]
 > 残念ながらStripe Checkoutはサブスクリプションを開始するとき、すべてのサブスクリプション請求オプションをサポートしていません。サブスクリプションビルダの`anchorBillingCycleOn`メソッドの使用や、比例配分の動作の設定、支払い動作の設定は、Stripeチェックアウトセッション中は全く効果がありません。どのパラメータが利用可能であるかを確認するには、[Stripe CheckoutセッションAPIのドキュメント](https://stripe.com/docs/api/checkout/sessions/create)を参照してください。
 
 <a name="stripe-checkout-trial-periods"></a>
@@ -2104,7 +2104,7 @@ Stripe Checkoutはデフォルトで、[ユーザーが商品に使用できる�
 ただし、無料トライアル期間は最低４８時間でなければならず、これはStripe Checkoutでサポートされている試行時間の最短時間です。
 
 <a name="stripe-checkout-subscriptions-and-webhooks"></a>
-#### サブスクリプションとWebフック
+#### Subscriptions and Webhooks
 
 StripeとCashierはWebフックを使いサブスクリプションの状態を更新することを覚えておいてください。そのため、顧客が支払い情報を入力した後にアプリケーションへ戻った時点で、サブスクリプションが有効になっていない可能性があります。このシナリオに対応するため、ユーザーに支払いやサブスクリプションが保留中であることを知らせるメッセージの表示を推奨します。
 
@@ -2117,7 +2117,7 @@ Checkoutは、顧客の課税IDの収集もサポートしています。チェ�
 
 このメソッドを呼び出すと、顧客が会社として購入するかを示すための新しいチェックボックスが利用可能になります。会社として購入する場合は、課税IDを入力してもらいます。
 
-> **Warning**
+> [!WARNING]
 > アプリケーションのサービスプロバイダで[自動徴税](#tax-configuration)を設定済みであれば、この機能は自動的に有効になり、`collectTaxIds`メソッドを呼び出す必要はありません。
 
 <a name="guest-checkouts"></a>
@@ -2233,7 +2233,7 @@ Checkoutは、顧客の課税IDの収集もサポートしています。チェ�
 
 あなたのビジネスがヨーロッパに拠点を置いているか、顧客がヨーロッパにいる場合は、ＥＵの強力な顧客認証（ＳＣＡ）法令を遵守する必要があります。これらの法令は、支払い詐欺を防ぐために２０１９年９月に欧州連合によって課されました。幸いにして、StripeとCashierは、ＳＣＡ準拠のアプリケーションを構築する準備ができています。
 
-> **Warning**
+> [!WARNING]
 > 使用開始前に、[PSD2とSCAに関するStripeのガイド](https://stripe.com/guides/strong-customer-authentication)と[新しいSCA APIに関するドキュメント](https://stripe.com/docs/strong-customer-authentication)を確認してください。
 
 <a name="payments-requiring-additional-confirmation"></a>
@@ -2261,7 +2261,7 @@ CASHIER_PAYMENT_NOTIFICATION=Laravel\Cashier\Notifications\ConfirmPayment
 
 オフセッションでの支払い確認通知が確実に配信されるようにするため、アプリケーションで[Stripe Webフックが設定されている](#handling-stripe-webhooks)ことと、Stripeダッシュボードで`invoice.payment_action_required`webhookが有効になっていることを確認してください。さらに、`Billable`モデルでLaravelの`Illuminate\Notifications\Notifiable`トレイトを使用していることも確認する必要があります。
 
-> **Warning**
+> [!WARNING]
 > 顧客が追加の確認を必要とする支払いを手作業で行う場合でも、通知は送信されます。残念ながら、支払いが手作業なのか「オフセッション」で行われたかをStripeが知る方法はありません。ただし、顧客が支払いを確認した後に支払いページへアクセスすると、「支払いが成功しました（Payment Successful）」というメッセージが表示されます。謝って顧客へ同じ支払いを２回確認させ、２回目の請求を行ってしまうことはありません。
 
 <a name="stripe-sdk"></a>
@@ -2298,5 +2298,5 @@ Cashierを使用するアプリケーションをテストする場合、Stripe 
 
 これで、テスト中にCashierとやり取りするたびに、実際のAPIリクエストがStripeテスト環境に送信されます。便宜上、Stripeテストアカウントに、テスト中に使用できるサブスクリプション/価格を事前に入力する必要があります。
 
-> **Note**
+> [!NOTE]
 > クレジットカードの拒否や失敗など、さまざまな請求シナリオをテストするため、Stripeが提供しているさまざまな[カード番号とトークンのテスト](https://stripe.com/docs/testing)を使用できます。

@@ -62,7 +62,7 @@ php artisan sail:install
 ./vendor/bin/sail up
 ```
 
-> **Warning**
+> [!WARNING]
 > Linux用のDocker Desktopを使用している場合は、`docker context use default`コマンドを実行して、`default` Dockerコンテキストを使用する必要があります。
 
 <a name="adding-additional-services"></a>
@@ -263,7 +263,7 @@ AWS_URL=http://localhost:9000/local
 
 `http://localhost:8900`のMinIOコンソールからバケットを作成できます。MinIOコンソールのデフォルトユーザー名は`sail`、パスワードは`password`です。
 
-> **Warning**
+> [!WARNING]
 > MinIOを使用している場合の、`temporaryUrl`メソッドによる一時保存用URL生成はサポートしていません。
 
 <a name="running-tests"></a>
@@ -443,7 +443,7 @@ sail share
 sail share --subdomain=my-sail-site
 ```
 
-> **Note**
+> [!NOTE]
 > `share`コマンドは、[BeyondCode](https://beyondco.de)によるオープンソースのトンネリングサービスである[Expose](https://github.com/beyondcode/expose)により提供しています。
 
 <a name="debugging-with-xdebug"></a>
@@ -491,7 +491,7 @@ Webブラウザでアプリケーションを操作しながらデバッグす�
 
 PhpStormを使用している場合は、[設定なしのデバッグ](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html)に関するJetBrainのドキュメントを確認してください。
 
-> **Warning**
+> [!WARNING]
 > Laravel Sailはアプリケーション提供を`artisan serve`に依存しています。`artisan serve`コマンドは、Laravelバージョン8.53.0以降では、`XDEBUG_CONFIG`と`XDEBUG_MODE`変数のみを受け付けます。古いバージョンのLaravel（8.52.0以下）では、これらの変数をサポートしていないため、デバッグ接続を受け付けません。
 
 <a name="sail-customization"></a>

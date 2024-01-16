@@ -94,7 +94,7 @@ LaravelをAPIバックエンドとして利用するSPAを構築している場�
         ];
     }
 
-> **Note**
+> [!NOTE]
 > 利便性向上のため、[テスト実行](/docs/{{version}}/testing)時に、CSRFミドルウェアはすべてのルートで自動的に無効になります。
 
 <a name="csrf-x-csrf-token"></a>
@@ -123,5 +123,5 @@ Laravelはフレームワークが生成する各レスポンスに含める`XSR
 
 AngularやAxiosなどの一部のJavaScriptフレームワークとライブラリは、同じオリジンのリクエストでその値を自動的に`X-XSRF-TOKEN`ヘッダへ配置するため、このクッキーは主に開発者の利便性のために送信されます。
 
-> **Note**
+> [!NOTE]
 > デフォルトで、`resources/js/bootstrap.js`ファイルにはAxios HTTPライブラリが含まれており、`X-XSRF-TOKEN`ヘッダを自動的に送信します。
