@@ -86,7 +86,7 @@ php artisan make:notification InvoicePaid
 
     class User extends Authenticatable
     {
-     * @return \Illuminate\Notifications\Message\SlackMessage
+        use Notifiable;
     }
 
 このトレイトが提供する`notify`メソッドは、通知インスタンスを引数に受けます。
