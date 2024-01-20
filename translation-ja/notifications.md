@@ -32,7 +32,7 @@
 - [ブロードキャスト通知](#broadcast-notifications)
     - [事前要件](#broadcast-prerequisites)
     - [ブロードキャスト通知のフォーマット](#formatting-broadcast-notifications)
-    - [Listening for Notifications](#listening-for-notifications)
+    - [通知のリッスン](#listening-for-notifications)
 - [SMS通知](#sms-notifications)
     - [事前要件](#sms-prerequisites)
     - [SMS通知のフォーマット](#formatting-sms-notifications)
