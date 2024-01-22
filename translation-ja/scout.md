@@ -2,8 +2,11 @@
 
 - [イントロダクション](#introduction)
 - [インストール](#installation)
-    - [ドライバの事前要件](#driver-prerequisites)
     - [キュー投入](#queueing)
+- [ドライバ動作要件](#driver-prerequisites)
+    - [Algolia](#algolia)
+    - [Meilisearch](#meilisearch)
+    - [Typesense](#typesense)
 - [設定](#configuration)
     - [モデルインデックスの設定](#configuring-model-indexes)
     - [検索可能データの設定](#configuring-searchable-data)
@@ -32,7 +35,7 @@
 
 [Laravel Scout](https://github.com/laravel/scout)（Scout、斥候）は、[Eloquentモデル](/docs/{{version}}/eloquent)へ、シンプルなドライバベースのフルテキストサーチを提供します。モデルオブサーバを使い、Scoutは検索インデックスを自動的にEloquentレコードと同期します。
 
-現在、Scoutは[Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), MySQL／PostgreSQL (`database`) ドライバを用意しています。さらに、Scoutはローカル開発用途に設計された、外部依存やサードパーティサービスを必要としない「コレクション」ドライバも用意しています。加えて、カスタムドライバの作成も簡単で、独自の検索実装でScoutを自由に拡張可能です。
+現在、Scoutは[Algolia](https://www.algolia.com/)、[Meilisearch](https://www.meilisearch.com)、 [Typesense](https://typesense.org)、MySQL／PostgreSQL (`database`)ドライバを用意しています。さらに、Scoutはローカル開発用途に設計した、外部依存やサードパーティサービスを必要としない「コレクション」ドライバも用意しています。加えて、カスタムドライバの作成も簡単で、独自の検索実装でScoutを自由に拡張可能です。
 
 <a name="installation"></a>
 ## インストール
@@ -63,11 +66,33 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
         use Searchable;
     }
 
+<a name="queueing"></a>
+### キュー投入
+
+Scoutを使用するのに厳密には必須ではありませんが、ライブラリを使用する前に[キュードライバ](/docs/{{version}}/queues)の設定を考慮すべきです。キューワーカを実行することで、Scoutはモデル情報を検索インデックスに同期する全ての操作をキューに投入し、アプリケーションのWebインターフェイスのレスポンス時間を大幅に改善できます。
+
+キュードライバを設定したら、`config/scout.php`設定ファイルの`queue`オプションの値を`true`へ設定してください。
+
+    'queue' => true,
+
+`queue`オプションを`false`に設定している場合でも、AlgoliaやMeilisearchのようないくつかのScoutドライバは、常に非同期でレコードをインデックスすることを覚えておくことは重要です。つまり、Laravelアプリケーション内でインデックス操作が完了しても、検索エンジン自体には新しいレコードや更新されたレコードがすぐに反映されない可能性があります。
+
+Scouジョブで使用する接続とキューを指定するには、`queue`設定オプションを配列で定義してください。
+
+    'queue' => [
+        'connection' => 'redis',
+        'queue' => 'scout'
+    ],
+
+もちろん、Scoutジョブが利用するコネクションやキューをカスタマイズする場合は、そのコネクションやキューでジョブを処理するキューワーカを実行する必要があります。
+
+    php artisan queue:work redis --queue=scout
+
 <a name="driver-prerequisites"></a>
-### ドライバの事前要件
+## ドライバ動作要件
 
 <a name="algolia"></a>
-#### Algolia
+### Algolia
 
 Algoliaドライバを使用する場合、Algolia `id`と`secret`接続情報を`config/scout.php`設定ファイルで設定する必要があります。接続情報を設定し終えたら、Algolia PHP SDKをComposerパッケージマネージャで、インストールする必要があります。
 
@@ -76,7 +101,7 @@ composer require algolia/algoliasearch-client-php
 ```
 
 <a name="meilisearch"></a>
-#### Meilisearch
+### Meilisearch
 
 [Meilisearch](https://www.meilisearch.com)は、非常に高速なオープンソースの検索エンジンです。ローカルマシンにMeilisearchをインストールする方法がわからない場合は、Laravelの公式サポートのDocker開発環境である[Laravel Sail](/docs/{{version}}/sail#meilisearch)を利用できます。
 
@@ -101,27 +126,86 @@ Meilisearchの詳細については、[Meilisearchのドキュメント](https:/
 > [!WARNING]
 > Meilisearchを利用しているアプリケーションのScoutをアップグレードする際には、常にMeilisearchサービス自体に[追加の破壊的な変更](https://github.com/meilisearch/Meilisearch/releases)がないか確認する必要があります。
 
-<a name="queueing"></a>
-### キュー投入
+<a name="typesense"></a>
+### Typesense
 
-厳密にはScoutを使用する必要はありませんが、ライブラリを使用する前に、[キュードライバ](/docs/{{version}}/queues)の設定を強く考慮する必要があります。キューワーカを実行すると、Scoutはモデル情報を検索インデックスに同期するすべての操作をキューに入れることができ、アプリケーションのWebインターフェイスのレスポンス時間が大幅に短縮されます。
+[Typesense](https://typesense.org)は、光のように早いオープンソース検索エンジンで、キーワード検索、セマンティック検索、ジオ検索、ベクトル検索をサポートしています。
 
-キュードライバを設定したら、`config/scout.php`設定ファイルの`queue`オプションの値を`true`に設定します。
+Typesenseを[セルフホスト](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting)することも、[Typesense Cloud](https://cloud.typesense.org)を利用することもできます。
 
-    'queue' => true,
+ScoutでTypesenseを使用開始するには、Composerパッケージマネージャにより、Typesense PHP SDKをインストールします。
 
-`queue`オプションを`false`に設定している場合でも、AlgoliaやMeilisearchなど、一部のScoutドライバは常に非同期でレコードをインデックスしていることを覚えておくことが重要です。つまり、Laravelアプリケーション内でインデックス操作が完了しても、検索エンジン自体には新しいレコードや更新されたレコードがすぐに反映されない可能性があります。
+```shell
+composer require typesense/typesense-php
+```
 
-Scoutジョブで利用する接続とキューを指定するには、`queue`設定オプションを配列として定義します。
+次に、アプリケーションの.envファイルで、`SCOUT_DRIVER`環境変数と、TypesenseホストとAPIキーの認証情報を設定します。
 
-    'queue' => [
-        'connection' => 'redis',
-        'queue' => 'scout'
+```env
+SCOUT_DRIVER=typesense
+TYPESENSE_API_KEY=masterKey
+TYPESENSE_HOST=localhost
+```
+
+必要に応じて、インストールのポート、パス、プロトコルを指定することもできます。
+
+```env
+TYPESENSE_PORT=8108
+TYPESENSE_PATH=
+TYPESENSE_PROTOCOL=http
+```
+
+Typesenseコレクションの追加設定とスキーマ定義は、アプリケーションの`config/scout.php`設定ファイルにあります。Typesenseに関するより詳しい情報は、[Typesenseドキュメント](https://typesense.org/docs/guide/#quick-start)を参照してください。
+
+<a name="preparing-data-for-storage-in-typesense"></a>
+#### Typesenseに保存するデータの準備
+
+Typesenseを利用するとき、Searchableなモデルには、モデルの主キーを文字列へ、作成日時をUNIXタイムスタンプへキャストする、`toSearchableArray`メソッドを定義する必要があります。
+
+```php
+/**
+ * モデルのインデックス可能なデータ配列の取得
+ *
+ * @return array<string, mixed>
+ */
+public function toSearchableArray()
+{
+    return array_merge($this->toArray(),[
+        'id' => (string) $this->id,
+        'created_at' => $this->created_at->timestamp,
+    ]);
+}
+```
+
+Searchableなモデルがソフトデリート可能である場合、アプリケーションの`config/scout.php`設定ファイル内の、モデルに対応するTypesenseスキーマに`__soft_deleted`フィールドを定義する必要があります。
+
+```php
+User::class => [
+    'collection-schema' => [
+        'fields' => [
+            // ...
+            [
+                'name' => '__soft_deleted',
+                'type' => 'int32',
+                'optional' => true,
+            ],
+        ],
     ],
+],
+```
 
-もちろん、Scoutジョブが利用するコネクションやキューをカスタマイズする場合は、そのコネクションやキューでジョブを処理するキューワーカを実行する必要があります。
+<a name="typesense-dynamic-search-parameters"></a>
+#### 動的検索パラメータ
 
-    php artisan queue:work redis --queue=scout
+Typesenseでは、`withSearchParameters`メソッドを使い、検索操作時に[検索パラメータ](https://typesense.org/docs/latest/api/search.html#search-parameters)を動的に変更できます。
+
+```php
+use App\Models\Todo;
+
+Todo::search('Groceries')->withSearchParameters([
+    'query_by' => 'title, description'
+])->get();
+```
 
 <a name="configuration"></a>
 ## 設定
@@ -323,7 +407,7 @@ SCOUT_IDENTIFY=true
 SCOUT_DRIVER=database
 ```
 
-データベースエンジンを好みのドライバに指定したら、[検索可能なデータの設定](#configuring-searchable-data)を行う必要があります。次に、モデルに対して[検索クエリの実行](#searching)を開始します。データベースエンジンを使用する場合、AlgoliaやMeilisearchのように、検索エンジンのインデックス作成は必要ありません。
+データベースエンジンを好みのドライバに指定したら、[検索可能なデータの設定](#configuring-searchable-data)を行う必要があります。次に、モデルに対して[検索クエリの実行](#searching)を開始します。データベースエンジンを使用する場合、AlgoliaやMeilisearch、Typesenseのように、検索エンジンのインデックス作成は必要ありません。
 
 #### データベース検索戦略のカスタマイズ
 
@@ -359,7 +443,7 @@ public function toSearchableArray(): array
 <a name="collection-engine"></a>
 ### コレクションエンジン
 
-ローカル開発時には、AlgoliaやMeilisearchの検索エンジンを自由に使用することができますが、「コレクション（collection）」エンジンでスタートした方が便利な場合もあります。コレクション・エンジンは、既存データベースからの結果に対して、"where"節とコレクション・フィルタリングを用いて、クエリに該当する検索結果を決定します。このエンジンを使用する場合、Searchableモデルをインデックス化する必要はなく、シンプルにローカル・データベースから検索します。
+ローカル開発時には、AlgoliaやMeilisearch、Typesenseの検索エンジンを自由に使用することができますが、「コレクション（collection）」エンジンでスタートした方が便利な場合もあります。コレクション・エンジンは、既存データベースからの結果に対して、"where"節とコレクション・フィルタリングを用いて、クエリに該当する検索結果を決定します。このエンジンを使用する場合、Searchableモデルをインデックス化する必要はなく、シンプルにローカル・データベースから検索します。
 
 コレクションエンジンを使用するには，環境変数`SCOUT_DRIVER`の値を`collection`に設定するか，アプリケーションの`scout`設定ファイルで`collection`ドライバを直接指定します。
 
@@ -367,7 +451,7 @@ public function toSearchableArray(): array
 SCOUT_DRIVER=collection
 ```
 
-コレクションドライバを使用ドライバに指定したら、モデルに対して[検索クエリの実行](#searching)を開始できます。コレクションエンジンを使用する場合、AlgoliaやMeilisearchのインデックスのシードに必要なインデックス作成などの検索エンジンのインデックス作成は不要です。
+コレクションドライバを使用ドライバに指定したら、モデルに対して[検索クエリの実行](#searching)を開始できます。コレクションエンジンを使用する場合、AlgoliaやMeilisearch、Typesenseのインデックスのシードに必要なインデックス作成などの検索エンジンのインデックス作成は不要です。
 
 #### データベースエンジンとの違い
 

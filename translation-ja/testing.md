@@ -81,7 +81,7 @@ php artisan make:test UserTest --unit --pest
     }
 
 > [!WARNING]
-> テストクラスに独自の`setUp`メソッドを定義する場合は、親のクラスの`parent::setUp()`／`parent::tearDown()`を確実に呼び出してください。
+> テストクラスに独自の`setUp`メソッドを定義する場合は、親のクラスの`parent::setUp()`／`parent::tearDown()`を確実に呼び出してください。通常、`parent::setUp()`は自分の `setUp`メソッドの最初で、`parent::tearDown()`は自分の`tearDown`メソッドの最後で呼び出します。
 
 <a name="running-tests"></a>
 ## テストの実行

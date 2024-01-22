@@ -20,7 +20,7 @@
     - [データベース接続](#connecting-to-databases)
     - [データベースのバックアップ](#database-backups)
     - [Cronスケジュール設定](#configuring-cron-schedules)
-    - [MailHogの設定](#configuring-mailhog)
+    - [Mailpitの設定](#configuring-mailpit)
     - [Minioの設定](#configuring-minio)
     - [Laravel Dusk](#laravel-dusk)
     - [環境の共有](#sharing-your-environment)
@@ -58,8 +58,9 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 
 <div id="software-list" markdown="1">
 
-- Ubuntu 20.04
+- Ubuntu 22.04
 - Git
+- PHP 8.3
 - PHP 8.2
 - PHP 8.1
 - PHP 8.0
@@ -80,7 +81,7 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 - Redis
 - Memcached
 - Beanstalkd
-- Mailhog
+- Mailpit
 - avahi
 - ngrok
 - Xdebug
@@ -116,7 +117,6 @@ Homesteadは、Windows、macOS、Linuxシステムで実行でき、Nginx、PHP�
 - Grafana
 - InfluxDB
 - Logstash
-- Mailpit <small>(Mailhogから置き換え)</small>
 - MariaDB
 - Meilisearch
 - MinIO
@@ -346,12 +346,10 @@ features:
     - grafana: true
     - influxdb: true
     - logstash: true
-    - mailpit: true
     - mariadb: true
     - meilisearch: true
     - minio: true
     - mongodb: true
-    - mysql: true
     - neo4j: true
     - ohmyzsh: true
     - openresty: true
@@ -558,7 +556,7 @@ ports:
 - **MySQL:** 33060 &rarr; フォワード先 3306
 - **PostgreSQL:** 54320 &rarr; フォワード先 5432
 - **MongoDB:** 27017 &rarr; フォワード先 27017
-- **Mailhog:** 8025 &rarr; フォワード先 8025
+- **Mailpit:** 8025 &rarr; フォワード先 8025
 - **Minio:** 9600 &rarr; フォワード先 9600
 
 </div>
@@ -566,7 +564,7 @@ ports:
 <a name="php-versions"></a>
 ### PHPバージョン
 
-Homesteadは、同じ仮想マシンで複数のバージョンのPHPを実行するためサポートしています。`Homestead.yaml`ファイル内の特定のサイトに使用するPHPのバージョンを指定できます。使用可能なPHPバージョンは、"5.6", "7.0", "7.1", "7.2", "7.3", "7.4"、"8.0"、"8.1","8.2"（デフォルト）です。
+Homesteadは、同じ仮想マシンで複数のバージョンのPHPを実行するためサポートしています。`Homestead.yaml`ファイル内の特定のサイトに使用するPHPのバージョンを指定できます。使用可能なPHPバージョンは、"5.6", "7.0", "7.1", "7.2", "7.3", "7.4"、"8.0"、"8.1"、"8.2"、"8.3"（デフォルト）です。
 
 ```yaml
 sites:
@@ -587,6 +585,7 @@ php7.4 artisan list
 php8.0 artisan list
 php8.1 artisan list
 php8.2 artisan list
+php8.3 artisan list
 ```
 
 Homestead仮想マシン内から以下のコマンドを実行すれば、CLIで使用するPHPのデフォルトバージョンを変更できます。
@@ -601,6 +600,7 @@ php74
 php80
 php81
 php82
+php83
 ```
 
 <a name="connecting-to-databases"></a>
@@ -636,10 +636,10 @@ sites:
 
 サイトのcronジョブは、Homestead仮想マシンの`/etc/cron.d`ディレクトリで定義します。
 
-<a name="configuring-mailhog"></a>
-### MailHogの設定
+<a name="configuring-mailpit"></a>
+### Mailpitの設定
 
-[MailHog](https://github.com/mailhog/MailHog)を使用すると、実際に受信者にメールを送信しなくても、送信メールを傍受して調査できます。使用するには、以下のメール設定を使用するためアプリケーションの`.env`ファイルを更新します。
+[Mailpit](https://github.com/axllent/mailpit)を使用すると、実際に受信者にメールを送信しなくても、送信メールを傍受して調査できます。使用するには、以下のメール設定を使用するためアプリケーションの`.env`ファイルを更新します。
 
 ```ini
 MAIL_MAILER=smtp
@@ -650,7 +650,7 @@ MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
 ```
 
-MailHogを設定したら、`http://localhost:8025`にあるMailHogダッシュボードにアクセスできます。
+Mailpitを設定したら、`http://localhost:8025`にある、Mailpitダッシュボードにアクセスできます。
 
 <a name="configuring-minio"></a>
 ### Minioの設定

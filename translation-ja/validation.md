@@ -934,7 +934,6 @@ The credit card number field is required when payment type is credit card.
 [正規表現不一致](#rule-not-regex)
 [NULL許可](#rule-nullable)
 [数値](#rule-numeric)
-[パスワード](#rule-password)
 [存在](#rule-present)
 [条件一致時存在](#rule-present-if)
 [条件非一致時存在](#rule-present-unless)
@@ -1563,14 +1562,6 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 #### numeric
 
 フィールドは[数値](https://www.php.net/manual/ja/function.is-numeric.php)であることをバリデートします。
-
-<a name="rule-password"></a>
-#### password
-
-フィールドは、認証済みユーザーのパスワードと一致する必要があります。
-
-> [!WARNING]
-> このルールはLaravel9で削除するため、`current_password`へ名前を変更しました。代わりに[現在のパスワード](#rule-current-password)ルールを使用してください。
 
 <a name="rule-present"></a>
 #### present
