@@ -111,7 +111,7 @@ php artisan schema:dump --database=testing --prune
     };
 
 <a name="setting-the-migration-connection"></a>
-#### Setting the Migration Connection
+#### マイグレーション接続の指定
 
 マイグレーションがアプリケーションのデフォルトのデータベース接続以外のデータベース接続を操作する場合は、マイグレーションの`$connection`プロパティを設定する必要があります。
 
@@ -165,7 +165,7 @@ php artisan migrate --isolated
 > この機能を利用するには、アプリケーションで`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバをアプリケーションのデフォルトキャッシュドライバとして使用する必要があります。さらに、すべてのサーバから同じセントラルキャッシュサーバと通信する必要があります。
 
 <a name="forcing-migrations-to-run-in-production"></a>
-#### Forcing Migrations to Run in Production
+#### 本番環境におけるマイグレーション強制
 
 一部のマイグレーション操作は破壊的です。つまり、データーが失われる可能性を持っています。本番データベースに対してこれらのコマンドを実行しないように保護するために、コマンドを実行する前に確認を求めるプロンプトが表示されます。プロンプトなしでコマンドを強制的に実行するには、`--force`フラグを使用します。
 
@@ -207,7 +207,7 @@ php artisan migrate:reset
 ```
 
 <a name="roll-back-migrate-using-a-single-command"></a>
-#### Roll Back and Migrate Using a Single Command
+#### ロールバック後マイグレーション実行
 
 `migrate:refresh`コマンドは、すべてのマイグレーションをロールバックしてから、`migrate`コマンドを実行します。このコマンドは、データベース全体を効果的に再作成します。
 
@@ -225,7 +225,7 @@ php artisan migrate:refresh --step=5
 ```
 
 <a name="drop-all-tables-migrate"></a>
-#### Drop All Tables and Migrate
+#### 全テーブル削除後マイグレーション
 
 `migrate:fresh`コマンドは、データベースからすべてのテーブルを削除したあと、`migrate`コマンドを実行します。
 
@@ -278,7 +278,7 @@ php artisan migrate:fresh --database=admin
     }
 
 <a name="database-connection-table-options"></a>
-#### Database Connection and Table Options
+#### データベース接続とテーブルオプション
 
 アプリケーションのデフォルトではないデータベース接続でスキーマ操作を実行する場合は、`connection`メソッドを使用します。
 
