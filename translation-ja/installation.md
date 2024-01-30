@@ -64,7 +64,7 @@ composer create-project laravel/laravel example-app
 もしくは、Composerを使い、[Laravelインストーラ](https://github.com/laravel/installer)をグローバルにインストールして、新しいLaravelプロジェクトを作成することもできます。
 
 ```nothing
-composer global require laravel/installer
+composer global require laravel/installer:^5.4
 
 laravel new example-app
 ```
@@ -244,7 +244,7 @@ cd example-app
 <a name="choosing-your-sail-services"></a>
 ### Sailサービスの選択
 
-Sailで新しいLaravelアプリケーションを作成する際に、`with`というクエリ文字列変数を使って、新しいアプリケーションの`docker-compose.yml`ファイルで設定するサービスを選択できます。利用可能なサービスは、`mysql`、`pgsql`、`mariadb`、`redis`、`memcached`、`meilisearch`、`minio`、`selenium`、`mailpit`です。
+Sailで新しいLaravelアプリケーションを作成する際に、`with`というクエリ文字列変数を使って、新しいアプリケーションの`docker-compose.yml`ファイルで設定するサービスを選択できます。利用可能なサービスは、`mysql`、`pgsql`、`mariadb`、`redis`、`memcached`、`meilisearch`、`typesence`、`minio`、`selenium`、`mailpit`です。
 
 ```shell
 curl -s "https://laravel.build/example-app?with=mysql,redis" | bash

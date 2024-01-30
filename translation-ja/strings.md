@@ -100,6 +100,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::ucsplit](#method-str-ucsplit)
 [Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
+[Str::unwrap](#method-str-unwrap)
 [Str::uuid](#method-str-uuid)
 [Str::wordCount](#method-str-word-count)
 [Str::wordWrap](#method-str-word-wrap)
@@ -195,6 +196,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
+[unwrap](#method-fluent-str-unwrap)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
@@ -1203,6 +1205,21 @@ use Illuminate\Support\Str;
 
 $date = Carbon::createFromId((string) Str::ulid());
 ```
+
+<a name="method-str-unwrap"></a>
+#### `Str::unwrap()` {.collection-method}
+
+`Str::unwrap`メソッドは、指定文字列の先頭と末尾から指定文字列を取り除きます。
+
+    use Illuminate\Support\Str;
+
+    Str::unwrap('-Laravel-', '-');
+
+    // Laravel
+
+    Str::unwrap('{framework: "Laravel"}', '{', '}');
+
+    // framework: "Laravel"
 
 <a name="method-str-uuid"></a>
 #### `Str::uuid()` {.collection-method}
@@ -2420,6 +2437,21 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $string = Str::of('Foo Bar')->ucsplit();
 
     // collect(['Foo', 'Bar'])
+
+<a name="method-fluent-str-unwrap"></a>
+#### `unwrap` {.collection-method}
+
+`unwrap`メソッドは、指定文字列の先頭と末尾から指定文字列を取り除きます。
+
+    use Illuminate\Support\Str;
+
+    Str::of('-Laravel-')->unwrap('-');
+
+    // Laravel
+
+    Str::of('{framework: "Laravel"}')->unwrap('{', '}');
+
+    // framework: "Laravel"
 
 <a name="method-fluent-str-upper"></a>
 #### `upper` {.collection-method}

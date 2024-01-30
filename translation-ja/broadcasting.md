@@ -52,7 +52,7 @@
 <a name="supported-drivers"></a>
 #### サポートしているドライバ
 
-Laravelはデフォルトで、[Pusherチャンネル](https://pusher.com/channels)と[Ably](https://ably.com)、２つのサーバ側ブロードキャストドライバを用意しています。ただし、[laravel-websockets](https://beyondco.de/docs/laravel-websockets/getting-started/introduction)や[soketi](https://docs.soketi.app/)など、コミュニティ主導のパッケージでは、商用ブロードキャストプロバイダを必要としないドライバを提供しています。
+Laravelはデフォルトで、[Pusherチャンネル](https://pusher.com/channels)と[Ably](https://ably.com)、２つのサーバ側ブロードキャストドライバを用意しています。ただし、[soketi](https://docs.soketi.app/)などのコミュニティ主導のパッケージでは、商用ブロードキャストプロバイダを必要としないドライバを提供しています。
 
 > [!NOTE]
 > イベントブロードキャストに取り掛かる前に、[イベントとリスナ](/docs/{{version}}/events)に関するLaravelのドキュメントをしっかりと読んでください。
@@ -110,7 +110,7 @@ BROADCAST_DRIVER=pusher
 <a name="pusher-compatible-open-source-alternatives"></a>
 #### オープンソースによるPusherの代替
 
-[laravel-websockets](https://github.com/beyondcode/laravel-websockets)と[soketi](https://docs.soketi.app/)パッケージは、Laravel用のPusher互換WebSocketサーバを提供します。これらのパッケージを使用することにより、商用WebSocketプロバイダーを使わずとも、Laravelブロードキャストの機能をフルに活用できます。これらのパッケージのインストールと使用に関する詳細は、[オープンソース代替](#open-source-alternatives)のドキュメントを参照してください。
+[soketi](https://docs.soketi.app/)は、Laravel用のPusher互換WebSocketサーバを提供しており、商用WebSocketプロバイダーを使わずにLaravelブロードキャストのフルパワーを活用できます。ブロードキャスト用のオープンソースパッケージのインストールと使用の詳細については、[オープンソースの代替](#open-source-alternatives)のドキュメントを参照してください。
 
 <a name="ably"></a>
 ### Ably
@@ -140,11 +140,6 @@ BROADCAST_DRIVER=ably
 
 <a name="open-source-alternatives"></a>
 ### オープンソースの代替
-
-<a name="open-source-alternatives-php"></a>
-#### PHP
-
-[laravel-websockets](https://github.com/beyondcode/laravel-websockets)パッケージは、PHP製のLaravel用Pusher互換WebSocketパッケージです。このパッケージを使用すると、商用WebSocketプロバイダを使用せずとも、Laravelブロードキャストの全機能を活用できます。このパッケージのインストールと使用の詳細は、[公式ドキュメント](https://beyondco.de/docs/laravel-websockets)を参照してください。
 
 <a name="open-source-alternatives-node"></a>
 #### Node

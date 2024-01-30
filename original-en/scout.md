@@ -177,6 +177,8 @@ public function toSearchableArray()
 }
 ```
 
+You should also define your Typesense collection schemas in your application's `config/scout.php` file. A collection schema describes the data types of each field that is searchable via Typesense. For more information on all available schema options, please consult the [Typesense documentation](https://typesense.org/docs/latest/api/collections.html#schema-parameters). If you need to change your Typesense collection's schema after it has been defined, you must do so via Typesense's API.
+
 If your searchable model is soft deletable, you should define a `__soft_deleted` field in the model's corresponding Typesense schema within your application's `config/scout.php` configuration file:
 
 ```php
@@ -197,12 +199,12 @@ User::class => [
 <a name="typesense-dynamic-search-parameters"></a>
 #### Dynamic Search Parameters
 
-Typesense allows you to modify your [search parameters](https://typesense.org/docs/latest/api/search.html#search-parameters) dynamically when performing a search operation via the `withSearchParameters` method:
+Typesense allows you to modify your [search parameters](https://typesense.org/docs/latest/api/search.html#search-parameters) dynamically when performing a search operation via the `options` method:
 
 ```php
 use App\Models\Todo;
 
-Todo::search('Groceries')->withSearchParameters([
+Todo::search('Groceries')->options([
     'query_by' => 'title, description'
 ])->get();
 ```

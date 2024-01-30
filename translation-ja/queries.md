@@ -56,7 +56,6 @@ Laravelクエリビルダは、PDOパラメーターバインディングを使�
 
     namespace App\Http\Controllers;
 
-    use App\Http\Controllers\Controller;
     use Illuminate\Support\Facades\DB;
     use Illuminate\View\View;
 

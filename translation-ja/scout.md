@@ -177,6 +177,8 @@ public function toSearchableArray()
 }
 ```
 
+また、アプリケーションの`config/scout.php`ファイルで、Typesenseコレクションのスキーマを定義する必要もあります。コレクションスキーマは、Typesenseを使い検索可能な各フィールドのデータ型を記述します。利用可能なスキーマオプションの詳細については、[Typesenseのドキュメント](https://typesense.org/docs/latest/api/collections.html#schema-parameters)を参照してください。もし、Typesense コレクションのスキーマを定義した後に変更の必要がおきたら、TypesenseのAPIを使用し、変更する必要があります。
+
 Searchableなモデルがソフトデリート可能である場合、アプリケーションの`config/scout.php`設定ファイル内の、モデルに対応するTypesenseスキーマに`__soft_deleted`フィールドを定義する必要があります。
 
 ```php
@@ -197,12 +199,12 @@ User::class => [
 <a name="typesense-dynamic-search-parameters"></a>
 #### 動的検索パラメータ
 
-Typesenseでは、`withSearchParameters`メソッドを使い、検索操作時に[検索パラメータ](https://typesense.org/docs/latest/api/search.html#search-parameters)を動的に変更できます。
+Typesenseでは、`options`メソッドを使い、検索操作時に[検索パラメータ](https://typesense.org/docs/latest/api/search.html#search-parameters)を動的に変更できます。
 
 ```php
 use App\Models\Todo;
 
-Todo::search('Groceries')->withSearchParameters([
+Todo::search('Groceries')->options([
     'query_by' => 'title, description'
 ])->get();
 ```

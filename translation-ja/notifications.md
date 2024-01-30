@@ -325,6 +325,13 @@ php artisan make:notification InvoicePaid
         'barrett@example.com' => 'Barrett Blair',
     ])->notify(new InvoicePaid($invoice));
 
+routes`メソッドを使用すると、一度に複数の通知チャネルに対してアドホックなルーティング情報を提供できます。
+
+    Notification::routes([
+        'mail' => ['barrett@example.com' => 'Barrett Blair'],
+        'vonage' => '5555555555',
+    ])->notify(new InvoicePaid($invoice));
+
 <a name="mail-notifications"></a>
 ## メール通知
 

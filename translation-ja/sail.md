@@ -14,6 +14,7 @@
     - [MySQL](#mysql)
     - [Redis](#redis)
     - [Meilisearch](#meilisearch)
+    - [Typesense](#typesense)
 - [ファイルストレージ](#file-storage)
 - [テスト実行](#running-tests)
     - [Laravel Dusk](#laravel-dusk)
@@ -237,6 +238,20 @@ sail yarn
 Sailのインストール時に[Meilisearch](https://www.meilisearch.com)サービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルには、[Laravel Scout](/docs/{{version}}/scout)と[コンパチブル](https://github.com/meilisearch/meilisearch-laravel-scout)である、この強力な検索エンジンのエントリが含まれます。コンテナを起動したら、環境変数`MEILISEARCH_HOST`に`http://meilisearch:7700`を設定すると、アプリケーション内のMeilisearchインスタンスに接続できます。
 
 ローカルマシンから、Webブラウザの`http://localhost:7700`に移動して、MeilisearchのWebベース管理パネルへアクセスできます。
+
+<a name="typesense"></a>
+### Typesense
+
+Sailインストール時に、[Typesense](https://typesense.org)サービスのインストールを選択した場合、これとネイティブに統合済みで、光のように速いオープンソース検索エンジンである[Laravel Scout](/docs/{{version}}/scout#typesense)のエントリが含まれます。コンテナを起動したら、以下の環境変数を設定することで、アプリケーション内からTypesenseインスタンスへ接続できます。
+
+```ini
+TYPESENSE_HOST=typesense
+TYPESENSE_PORT=8108
+TYPESENSE_PROTOCOL=http
+TYPESENSE_API_KEY=xyz
+```
+
+ローカルマシンから、`http://localhost:8108`により、TypesenseのAPIへアクセスできます。
 
 <a name="file-storage"></a>
 ## ファイルストレージ

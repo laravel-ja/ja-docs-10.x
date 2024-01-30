@@ -920,7 +920,7 @@ Stripeがサポートしている[顧客](https://stripe.com/docs/api/customers/
 <a name="creating-subscriptions-from-the-stripe-dashboard"></a>
 #### Stripeダッシュボードからのサブスクリプション作成
 
-Stripeダッシュボード自体からも、サブスクリプションを作成できます。その際、Cashierは新しく追加したサブスクリプションを同期し、それらに`default`のタイプを割り当てます。ダッシュボードから作成するサブスクリプションに割り当てるサブスクリプション名をカスタマイズするには、[`WebhookController`を拡張](#defining-webhook-event-handlers)し、`newSubscriptionType`メソッドを上書きします。
+Stripeダッシュボード自体からも、サブスクリプションを作成できます。その際、Cashierは新しく追加したサブスクリプションを同期し、それらに`default`のタイプを割り当てます。ダッシュボードから作成するサブスクリプションに割り当てるサブスクリプション名をカスタマイズするには、[Webフックイベントハンドラを定義](#defining-webhook-event-handlers)してください。
 
 また、Stripeダッシュボードから作成できるサブスクリプションのタイプは１つだけです。アプリケーションが異なるタイプを使用する複数のサブスクリプションを提供している場合でも、Stripeダッシュボードから追加できるサブスクリプションのタイプは１つのみです。
 
