@@ -1,4 +1,4 @@
-# Strings
+# 文字列
 
 - [イントロダクション](#introduction)
 - [利用可能なメソッド](#available-methods)
