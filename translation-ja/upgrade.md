@@ -130,11 +130,7 @@ app()->usePublicPath(__DIR__.'/public');
 
 **影響の可能性： 中程度**
 
-Redisの[キャッシュタグ](/docs/{{version}}/cache#cache-tags)サポートは、パフォーマンスとストレージ効率向上のために書き直しました。以前のLaravelのリリースでは、アプリケーションのキャッシュドライバにRedisを使用すると、古いキャッシュタグがキャッシュに蓄積していました。
-
-そこで、古くなったキャッシュタグエントリーを適切に整理するため、Laravelの新しい`cache:prune-stale-tags` Artisanコマンドをアプリケーションの`App\Console\Kernel`クラスで[定期実行](/docs/{{version}}/scheduling)してください。
-
-    $schedule->command('cache:prune-stale-tags')->hourly();
+`Cache::tags()` は、Memcachedを使用しているアプリケーションにのみに推奨します。アプリケーションのキャッシュドライバとしてRedisを使用している場合は、Memcachedへ移行するか、別のソリューションの使用を検討すべきです。
 
 ### データベース
 

@@ -185,6 +185,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [squish](#method-fluent-str-squish)
 [start](#method-fluent-str-start)
 [startsWith](#method-fluent-str-starts-with)
+[stripTags](#method-fluent-str-strip-tags)
 [studly](#method-fluent-str-studly)
 [substr](#method-fluent-str-substr)
 [substrReplace](#method-fluent-str-substrreplace)
@@ -2294,6 +2295,21 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $result = Str::of('This is my name')->startsWith('This');
 
     // true
+
+<a name="method-fluent-str-strip-tags"></a>
+#### `stripTags` {.collection-method}
+
+`stripTags`メソッドは、文字列からすべてのHTMLタグとPHPタグを削除します。
+
+    use Illuminate\Support\Str;
+
+    $result = Str::of('<a href="https://laravel.com">Taylor <b>Otwell</b></a>')->stripTags();
+
+    // Taylor Otwell
+
+    $result = Str::of('<a href="https://laravel.com">Taylor <b>Otwell</b></a>')->stripTags('<b>');
+
+    // Taylor <b>Otwell</b>
 
 <a name="method-fluent-str-studly"></a>
 #### `studly` {.collection-method}

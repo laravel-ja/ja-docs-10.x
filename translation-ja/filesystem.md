@@ -73,6 +73,12 @@ php artisan storage:link
         public_path('images') => storage_path('app/images'),
     ],
 
+設定したシンボリックリンクを破棄するには、`storage:unlink` コマンドを使用します。
+
+```shell
+php artisan storage:unlink
+```
+
 <a name="driver-prerequisites"></a>
 ### ドライバの動作要件
 

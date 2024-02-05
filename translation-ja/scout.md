@@ -177,7 +177,9 @@ public function toSearchableArray()
 }
 ```
 
-また、アプリケーションの`config/scout.php`ファイルで、Typesenseコレクションのスキーマを定義する必要もあります。コレクションスキーマは、Typesenseを使い検索可能な各フィールドのデータ型を記述します。利用可能なスキーマオプションの詳細については、[Typesenseのドキュメント](https://typesense.org/docs/latest/api/collections.html#schema-parameters)を参照してください。もし、Typesense コレクションのスキーマを定義した後に変更の必要がおきたら、TypesenseのAPIを使用し、変更する必要があります。
+また、アプリケーションの`config/scout.php`ファイルで、Typesenseコレクションのスキーマを定義する必要もあります。コレクションスキーマは、Typesenseを使い検索可能な各フィールドのデータ型を記述します。利用可能なスキーマオプションの詳細については、[Typesenseのドキュメント](https://typesense.org/docs/latest/api/collections.html#schema-parameters)を参照してください。
+
+もし、Typesense コレクションのスキーマを定義後に変更する必要がある場合は、`scout:flush`と`scout:import` を実行し、既存のインデックス済みデータを全て削除し、スキーマを再作成します。あるいは、TypesenseのAPIを使い、インデックス済みデータを削除せずにコレクションのスキーマを変更することもできます。
 
 Searchableなモデルがソフトデリート可能である場合、アプリケーションの`config/scout.php`設定ファイル内の、モデルに対応するTypesenseスキーマに`__soft_deleted`フィールドを定義する必要があります。
 

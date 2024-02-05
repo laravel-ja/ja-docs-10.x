@@ -61,7 +61,7 @@
 使用を開始するには、[Google Chrome](https://www.google.com/chrome)をインストールして、プロジェクトに`Laravel/Dusk` Composer依存パッケージを追加する必要があります。
 
 ```shell
-composer require --dev laravel/dusk
+composer require laravel/dusk --dev
 ```
 
 > [!WARNING]

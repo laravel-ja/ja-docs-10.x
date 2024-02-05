@@ -94,6 +94,10 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Number::currency](#method-number-currency)
 [Number::fileSize](#method-number-file-size)
 [Number::forHumans](#method-number-for-humans)
+[Number::ordinal](#method-number-ordinal)
+[Number::spell](#method-number-spell)
+[Number::useLocale](#method-number-use-locale)
+[Number::withLocale](#method-number-with-locale)
 
 </div>
 
@@ -1220,6 +1224,87 @@ $classes = Arr::toCssStyles($array);
 
     // 1.23 million
 
+<a name="method-number-ordinal"></a>
+#### `Number::ordinal()` {.collection-method}
+
+`Number::ordinal`メソッドは、数値の序数英語表現を返します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::ordinal(1);
+
+    // 1st
+
+    $number = Number::ordinal(2);
+
+    // 2nd
+
+    $number = Number::ordinal(21);
+
+    // 21st
+
+<a name="method-number-spell"></a>
+#### `Number::spell()` {.collection-method}
+
+Number::spell`メソッドは、指定する数字を単語の文字列へ変換します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::spell(102);
+
+    // one hundred and two
+
+    $number = Number::spell(88, locale: 'fr');
+
+    // quatre-vingt-huit
+
+
+`after`引数は、これより大きい数字は文字へ変換する値を指定します。
+
+    $number = Number::spell(10, after: 10);
+
+    // 10
+
+    $number = Number::spell(11, after: 10);
+
+    // eleven
+
+`until`引数は、これより大きい数字は文字へ変換する値を指定します。
+
+    $number = Number::spell(5, until: 10);
+
+    // five
+
+    $number = Number::spell(10, until: 10);
+
+    // 10
+
+<a name="method-number-use-locale"></a>
+#### `Number::useLocale()` {.collection-method}
+
+`Number::useLocale`メソッドはデフォルトの数値ロケールをグローバルに指定します。この指定は、以降に実行する`Number`クラスのメソッドの数字や金額のフォーマットに影響を与えます。
+
+    use Illuminate\Support\Number;
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        Number::useLocale('de');
+    }
+
+<a name="method-number-with-locale"></a>
+#### `Number::withLocale()` {.collection-method}
+
+`Number::withLocale`メソッドは、指定ロケールを用いてクロージャを実行し、コールバック実行後に元のロケールに戻します。
+
+    use Illuminate\Support\Number;
+
+    $number = Number::withLocale('de', function () {
+        return Number::format(1500);
+    });
+
 <a name="paths"></a>
 ## パス
 
@@ -1268,7 +1353,7 @@ $classes = Arr::toCssStyles($array);
 
     $path = lang_path('en/messages.php');
 
-> [!NOTE]  
+> [!NOTE]
 > Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開することができます。
 
 <a name="method-mix"></a>
@@ -1614,7 +1699,7 @@ dispatch_sync`関数は、指定ジョブを即時処理する[sync](/docs/{{ver
 
     $env = env('APP_ENV', 'production');
 
-> [!WARNING]  
+> [!WARNING]
 > 開発手順の中で`config:cache`コマンドを実行する場合は、必ず設定ファイルの中からだけ、`env`関数を使用してください。設定ファイルがキャッシュされると、`.env`ファイルはロードされなくなり、`env`関数の呼び出しはすべて`null`を返します。
 
 <a name="method-event"></a>
