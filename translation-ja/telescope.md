@@ -37,7 +37,7 @@
 
 [Laravel Telescope](https://github.com/laravel/telescope)（テレスコープ、望遠鏡）は、ローカルLaravel開発環境の素晴らしい相棒になります。Telescopeは、アプリケーションが受信するリクエスト、例外、ログエントリ、データベースクエリ、キュー投入したジョブ、メール、通知、キャッシュ操作、スケジュール済みタスク、変数ダンプなどに関する眼力を与えてくれます。
 
-<img src="/img/telescope.png" width="100%">
+<img src="https://laravel.com/img/docs/telescope-example.png">
 
 <a name="installation"></a>
 ## インストレーション
@@ -140,7 +140,7 @@ Telescopeダッシュボードは、`/telescope`ルートでアクセスでき�
         });
     }
 
-> [!WARNING]  
+> [!WARNING]
 > 実行環境では、`APP_ENV`環境変数を必ず`production`に変更してください。それ以外の値の場合、Telescopeインストールは一般公開されます。
 
 <a name="upgrading-telescope"></a>
