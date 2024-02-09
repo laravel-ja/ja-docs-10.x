@@ -47,7 +47,7 @@ Laravelの認証機能は、基本的に「ガード」と「プロバイダ」�
 
 さっそく始めたいですか？新しいLaravelアプリケーションに[Laravelアプリケーションスターターキット](/docs/{{version}}/starter-kits)をインストールしてください。データベースをマイグレーションした後に、ブラウザで`/register`やアプリケーションに割り当てた他のURLへアクセスしてください。スターターキットは、認証システム全体のスカフォールドの面倒を見ます。
 
-**最終的にLaravelアプリケーションでスターターキットを使用しないことを選択した場合でも、[Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze)スターターキットをインストールすることは、Laravelのすべての認証機能を実際のLaravelプロジェクトに実装する方法を学ぶ素晴らしい機会になるでしょう。**Laravel Breezeは認証コントローラ、ルート、ビューを作成するため、これらのファイル内のコードを調べて、Laravelの認証機能を実装する方法を学べます。
+**最終的にLaravelアプリケーションでスターターキットを使用しないことを選択した場合でも、[Laravel Breeze](/docs/{{version}}/starter-kits#laravel-breeze)スターターキットをインストールすることは、Laravelのすべての認証機能を実際のLaravelプロジェクトに実装する方法を学ぶ素晴らしい機会になるでしょう。**　Laravel Breezeは認証コントローラ、ルート、ビューを作成するため、これらのファイル内のコードを調べて、Laravelの認証機能を実装する方法を学べます。
 
 <a name="introduction-database-considerations"></a>
 ### データベースの検討

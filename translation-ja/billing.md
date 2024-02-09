@@ -48,7 +48,7 @@
     - [Webフックイベントハンドラの定義](#defining-webhook-event-handlers)
     - [Webフック署名の確認](#verifying-webhook-signatures)
 - [一回限りの支払い](#single-charges)
-      - [シンプルな支払い](#simple-charge)
+    - [シンプルな支払い](#simple-charge)
     - [インボイス付きの支払い](#charge-with-invoice)
     - [支払いインテントの作成](#creating-payment-intents)
     - [支払いの払い戻し](#refunding-charges)

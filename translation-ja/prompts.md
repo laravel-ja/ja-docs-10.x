@@ -2,7 +2,7 @@
 
 - [イントロダクション](#introduction)
 - [インストール](#installation)
-  - [利用可能なプロンプト](#available-prompts)
+- [利用可能なプロンプト](#available-prompts)
     - [テキスト](#text)
     - [パスワード](#password)
     - [確認](#confirm)

@@ -397,7 +397,7 @@ php artisan dusk --group=foo
 
 `fitContent`メソッドは、コンテンツのサイズに一致するようにブラウザウィンドウのサイズを変更します。
 
-   $browser->fitContent();
+    $browser->fitContent();
 
 テスト失敗時にDuskはスクリーンショットを取るために、以前のコンテンツに合うようブラウザを自動的にリサイズします。この機能を無効にするには、テストの中で`disableFitOnFailure`メソッドを呼び出してください。
 
