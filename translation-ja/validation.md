@@ -970,12 +970,12 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-accepted"></a>
 #### accepted
 
-フィールドが、`"yes"`、`"on"`、`1`、または`true`であることをバリデートします。これは、「利用規約」の承認または同様のフィールドをバリデーションするのに役立ちます。
+フィールドが、`"yes"`、`"on"`、`1`、`"1"`、`true`、`"true"`であることをバリデートします。これは、「利用規約」の承認または同様のフィールドをバリデーションするのに役立ちます。
 
 <a name="rule-accepted-if"></a>
 #### accepted_if:他のフィールド,値,...
 
-他のフィールドが指定した値と等しい場合、このフィールドは `"yes"`、`"on"`、`1`、`true`であることをバリデートします。これは、「利用規則」の了承や似たようなフィールドをバリデートするのに便利です。
+他のフィールドが指定した値と等しい場合、このフィールドは `"yes"`、`"on"`、`1`、`"1"`、`"true"`、`true`であることをバリデートします。これは、「利用規則」の了承や似たようなフィールドをバリデートするのに便利です。
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -1131,12 +1131,12 @@ The credit card number field is required when payment type is credit card.
 <a name="rule-declined"></a>
 #### declined
 
-フィールドが`"no"`、`"off"`、`0`、`false`であることをバリデートします。
+The field under validation must be `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"`.
 
 <a name="rule-declined-if"></a>
 #### declined_if:他のフィールド,値,...
 
-他のフィールドが指定した値と等しい場合、このフィールドは`"no"`, `"off"`, `0`, or `false`であることをバリデートします。
+The field under validation must be `"no"`, `"off"`, `0`, `"0"`, `false`, or `"false"` if another field under validation is equal to a specified value.
 
 <a name="rule-different"></a>
 #### different:_フィールド_
@@ -1702,7 +1702,7 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
 <a name="rule-required-if-accepted"></a>
 #### required_if_accepted:_他のフィールド_,...
 
-*他のフィールド*が`yes`、`on`、`1`、`"1"`、`true`、`"true"`と等しい場合、検証対象のフィールドが存在し、かつ空でないことをバリデートします。
+The field under validation must be present and not empty if the _anotherfield_ field is equal to `"yes"`, `"on"`, `1`, `"1"`, `true`, or `"true"`.
 
 <a name="rule-required-unless"></a>
 #### required\_unless:_他のフィールド_,_値_,...

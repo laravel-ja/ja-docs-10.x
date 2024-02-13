@@ -219,6 +219,13 @@ BugSnagやRollbarなどのサードパーティのログサービスを使用し
 
 非推奨にしていた`Bus::dispatchNow`と`dispatch_now`メソッドを削除しました。代わりに、アプリケーションでは、それぞれ`Bus::dispatchSync`か`dispatch_sync`メソッドを使用する必要があります。
 
+<a name="dispatch-return"></a>
+#### `dispatch()`ヘルパの戻り値
+
+**影響の可能性： 低い**
+
+`Illuminate\Contracts\Queue`を実装していないクラスで、`dspatch`を起動すると、以前はそのクラスの`handle`メソッドの結果を返していました。しかし、これは `Illuminate\Foundation\Bus\PendingBatch`インスタンスを返すようになりました。以前の動作を再現するには、`dispatch_sync()`を使ってください。
+
 ### ルート
 
 <a name="middleware-aliases"></a>
@@ -283,6 +290,22 @@ public function rules()
         },
     ],
 }
+```
+
+<a name="validation-messages-and-closure-rules"></a>
+#### バリデーションメッセージとクロージャルール
+
+**影響の可能性： かなり低い**
+
+以前は、クロージャベースのバリデーションルールへ注入する、`$fail`コールバックに配列を指定し、個別のキーへ失敗メッセージを割り当て可能でした。しかし、現行では、第１引数にキー、第２引数に失敗メッセージを指定する必要があります。
+
+```php
+Validator::make([
+    'foo' => 'string',
+    'bar' => [function ($attribute, $value, $fail) {
+        $fail('foo', 'Something went wrong!');
+    }],
+]);
 ```
 
 <a name="form-request-after-method"></a>

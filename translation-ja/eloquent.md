@@ -188,7 +188,7 @@ Eloquentは、各モデルの対応するデータベーステーブルに`id`�
     class Flight extends Model
     {
         /**
-         * 自動増分IDのデータ型
+         * 主キーIDのデータ型
          *
          * @var string
          */

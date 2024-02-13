@@ -629,6 +629,12 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @use('App\Models\Flight')
 ```
 
+インポートしたクラスのエイリアスを指定するために、`@use`ディレクティブに第２引数を指定できます。
+
+```php
+@use('App\Models\Flight', 'FlightModel')
+```
+
 <a name="comments"></a>
 ### コメント
 
@@ -1146,6 +1152,20 @@ public function __construct(
 
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
+```
+
+そのスロットにコンテンツが含まれているかを判断するには、`isEmpty`メソッドを呼び出します。
+
+```blade
+<span class="alert-title">{{ $title }}</span>
+
+<div class="alert alert-danger">
+    @if ($slot->isEmpty())
+        This is default content if the slot is empty.
+    @else
+        {{ $slot }}
+    @endif
+</div>
 ```
 
 <a name="scoped-slots"></a>

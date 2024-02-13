@@ -64,7 +64,7 @@ composer create-project laravel/laravel example-app
 もしくは、Composerを使い、[Laravelインストーラ](https://github.com/laravel/installer)をグローバルにインストールして、新しいLaravelプロジェクトを作成することもできます。
 
 ```nothing
-composer global require laravel/installer:^5.4
+composer global require laravel/installer
 
 laravel new example-app
 ```

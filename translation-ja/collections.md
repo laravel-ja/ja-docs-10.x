@@ -16,7 +16,7 @@
 
 `Illuminate\Support\Collection`クラスは配列データを操作するための、書きやすく使いやすいラッパーです。以下の例をご覧ください。配列から新しいコレクションインスタンスを作成するために`collect`ヘルパを使用し、各要素に対し`strtoupper`を実行し、それから空の要素を削除しています。
 
-    $collection = collect(['taylor', 'abigail', null])->map(function (string $name) {
+    $collection = collect(['taylor', 'abigail', null])->map(function (?string $name) {
         return strtoupper($name);
     })->reject(function (string $name) {
         return empty($name);

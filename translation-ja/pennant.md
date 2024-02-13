@@ -143,6 +143,28 @@ class NewApi
 
 > [!NOTE] Feature classes are resolved via the [container](/docs/{{version}}/container), so you may inject dependencies into the feature class's constructor when needed.
 
+#### 機能の保存名のカスタマイズ
+
+デフォルトで、Pennantは機能クラスの完全修飾クラス名を保存します。保存する機能名をアプリケーションの内部構造から切り離したい場合は、機能クラスで`$name`プロパティを指定してください。このプロパティの値をクラス名の代わりに格納します。
+
+```php
+<?php
+
+namespace App\Features;
+
+class NewApi
+{
+    /**
+     * 機能の保存名
+     *
+     * @var string
+     */
+    public $name = 'new-api';
+
+    // ...
+}
+```
+
 <a name="checking-features"></a>
 ## 機能のチェック
 
