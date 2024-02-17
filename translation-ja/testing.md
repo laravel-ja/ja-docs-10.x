@@ -182,7 +182,7 @@ php artisan test --parallel --recreate-databases
     }
 
 <a name="accessing-the-parallel-testing-token"></a>
-#### Accessing the Parallel Testing Token
+#### 並列テストトークンへのアクセス
 
 アプリケーションのテストコードの他の場所から、現在の並列プロセスの「トークン」にアクセスしたい場合は、`token`メソッドを使用します。このトークンは個々のテストプロセスのための一意な文字列の識別子であり、並列テストプロセス間でリソースを分割するために使用できます。たとえば、Laravelは各並行テストプロセスで作成するテストデータベースの末尾に、このトークンを自動的に付加します。
 
