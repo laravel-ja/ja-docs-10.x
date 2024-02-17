@@ -30,7 +30,7 @@
     - [キーワードの使用](#using-the-keyboard)
     - [マウスの使用](#using-the-mouse)
     - [JavaScriptダイアログ](#javascript-dialogs)
-    - [Interacting With Inline Frames](#interacting-with-iframes)
+    - [インラインフレーム操作](#interacting-with-iframes)
     - [セレクタの範囲指定](#scoping-selectors)
     - [要素の待機](#waiting-for-elements)
     - [要素のビュー内へのスクロール](#scrolling-an-element-into-view)
@@ -847,7 +847,7 @@ JavaScriptダイアログにプロンプ​​トが含​​まれている場�
     $browser->dismissDialog();
 
 <a name="interacting-with-iframes"></a>
-### Interacting With Inline Frames
+### インラインフレーム操作
 
 iframe内の要素をやり取りする必要がある場合は、`withinFrame`メソッドを使用する必要があります。`withinFrame`メソッドへ渡たすクロージャ内で行う全ての要素の操作は、指定したiframeのコンテキストにスコープされます。
 
