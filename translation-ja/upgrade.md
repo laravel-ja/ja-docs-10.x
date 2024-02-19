@@ -224,7 +224,7 @@ BugSnagやRollbarなどのサードパーティのログサービスを使用し
 
 **影響の可能性： 低い**
 
-`Illuminate\Contracts\Queue`を実装していないクラスで、`dspatch`を起動すると、以前はそのクラスの`handle`メソッドの結果を返していました。しかし、これは `Illuminate\Foundation\Bus\PendingBatch`インスタンスを返すようになりました。以前の動作を再現するには、`dispatch_sync()`を使ってください。
+`Illuminate\Contracts\Queue`を実装していないクラスで、`dispatch`を起動すると、以前はそのクラスの`handle`メソッドの結果を返していました。しかし、これは `Illuminate\Foundation\Bus\PendingBatch`インスタンスを返すようになりました。以前の動作を再現するには、`dispatch_sync()`を使ってください。
 
 ### ルート
 
