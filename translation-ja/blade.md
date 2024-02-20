@@ -1126,7 +1126,7 @@ public function __construct(
 
 ```blade
 <x-alert>
-    <strong>Whoops!</strong> Something went wrong!
+    <strong>おっと！</strong> なにかおかしいようです！
 </x-alert>
 ```
 
@@ -1150,7 +1150,7 @@ public function __construct(
         Server Error
     </x-slot>
 
-    <strong>Whoops!</strong> Something went wrong!
+    <strong>おっと！</strong> なにかおかしいようです！
 </x-alert>
 ```
 
@@ -1161,11 +1161,19 @@ public function __construct(
 
 <div class="alert alert-danger">
     @if ($slot->isEmpty())
-        This is default content if the slot is empty.
+        ここはスロットが空の場合のデフォルトコンテンツ.
     @else
         {{ $slot }}
     @endif
 </div>
+```
+
+さらに、`hasActualContent`メソッドを使用して、スロットにHTMLコメントではない「本当」のコンテンツが含まれているかを判定できます。
+
+```blade
+@if ($slot->hasActualContent())
+    コメントではないコンテンツを持つスコープ。
+@endif
 ```
 
 <a name="scoped-slots"></a>
@@ -1179,7 +1187,7 @@ VueのようなJavaScriptフレームワークを使用している方は「ス�
         {{ $component->formatAlert('Server Error') }}
     </x-slot>
 
-    <strong>Whoops!</strong> Something went wrong!
+    <strong>おっと！</strong> なにかおかしいようです！
 </x-alert>
 ```
 

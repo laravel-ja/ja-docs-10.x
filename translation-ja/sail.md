@@ -96,7 +96,7 @@ php artisan sail:install --devcontainer
 しかし、Sailコマンドを実行するため、`vendor/bin/sail`、と繰り返しタイプする代わりに、Sailのコマンドをより簡単に実行できるようなシェルエイリアスを設定したいと思うでしょう。
 
 ```shell
-alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 ```
 
 これを常に利用できるようにするには、ホームディレクトリにあるシェルの設定ファイル、例えば `~/.zshrc` や `~/.bashrc` へ追加後、シェルを再起動するとよいでしょう。

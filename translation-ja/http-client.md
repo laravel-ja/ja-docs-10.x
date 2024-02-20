@@ -231,6 +231,18 @@ $response = Http::withHeaders([
 
     $response = Http::retry(3, 100)->post(/* ... */);
 
+試行間にスリープするミリ秒数を手作業で計算したい場合は、`retry`メソッドの第２引数へクロージャを渡してください。
+
+    use Exception;
+
+    $response = Http::retry(3, function (int $attempt, Exception $exception) {
+        return $attempt * 100;
+    })->post(/* ... */);
+
+使いやすいように、`retry`メソッドの第１引数へ配列を指定することもできます。この配列は、次の試行までの間に何ミリ秒スリープするか決めるために使われます。
+
+    $response = Http::retry([100, 200])->post(/* ... */);
+
 必要であれば、`retry`メソッドに第３引数を渡せます。第３引数には、実際に再試行を行うかどうかを決定するCallableを指定します。例えば、最初のリクエストで`ConnectionException`が発生した場合にのみ、リクエストを再試行したいとしましょう。
 
     use Exception;

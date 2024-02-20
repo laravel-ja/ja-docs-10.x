@@ -174,6 +174,18 @@ Laravelアプリケーションの`config/app.php`設定ファイルには、Lar
 
     echo trans('courier::messages.welcome');
 
+`loadJsonTranslationsFrom`メソッドを使うと、パッケージへJSON翻訳ファイルを登録できます。このメソッドで、パッケージのJSON翻訳ファイルがあるディレクトリパスを指定します。
+
+```php
+/**
+ * パッケージの全サービスの起動処理
+ */
+public function boot(): void
+{
+    $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
+}
+```
+
 <a name="publishing-language-files"></a>
 #### 言語ファイルのリソース公開
 

@@ -31,7 +31,7 @@
 
     $collection = collect([1, 2, 3]);
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquent](/docs/{{version}}/eloquent)クエリの結果は、常に`Collection`インスタンスを返します。
 
 <a name="extending-collections"></a>
@@ -184,6 +184,7 @@
 [replaceRecursive](#method-replacerecursive)
 [reverse](#method-reverse)
 [search](#method-search)
+[select](#method-select)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
 [skip](#method-skip)
@@ -374,7 +375,7 @@
 
     // [1, 2, 3]
 
-> [!NOTE]  
+> [!NOTE]
 > `collect`メソッドは`Enumerable`のインスタンスがあり、それをレイジーコレクションでなくする必要がある場合、とくに便利です。`collect()`は`Enumerable`契約の一部であり、`Collection`インスタンスを取得するため安全に使用できます。
 
 <a name="method-combine"></a>
@@ -467,7 +468,7 @@
 
 このメソッドは、[`contains`](#method-contains)メソッドと使用方法は同じです。しかし、「厳密」な値の比較を行います。
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いが変わります。
 
 <a name="method-count"></a>
@@ -578,7 +579,7 @@
 
     // [1, 3, 5]
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
 
 <a name="method-diffassoc"></a>
@@ -798,7 +799,7 @@
 
     return $collection->ensure('int');
 
-> [!WARNING]  
+> [!WARNING]
 > `ensure`メソッドは、後から異なる型の要素がコレクションへ追加されないことを保証しません。
 
 <a name="method-every"></a>
@@ -837,7 +838,7 @@
 
 `except`の正反対の機能は、[only](#method-only)メソッドです。
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
 
 <a name="method-filter"></a>
@@ -1020,7 +1021,7 @@
 
     // ['framework' => 'laravel']
 
-> [!WARNING]  
+> [!WARNING]
 > 他のコレクションメソッドとは異なり、`forget`は更新された新しいコレクションを返しません。呼び出しもとのコレクションを更新します。
 
 <a name="method-forpage"></a>
@@ -1223,7 +1224,7 @@
 
     // [0 => 'Desk', 2 => 'Chair']
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
 
 <a name="method-intersectAssoc"></a>
@@ -1412,7 +1413,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
     // [2, 4, 6, 8, 10]
 
-> [!WARNING]  
+> [!WARNING]
 > 他のコレクションと同様に`map`は新しいコレクションインスタンスを返します。呼び出し元のコレクションは変更しません。もしオリジナルコレクションを変更したい場合は[`transform`](#method-transform)メソッドを使います。
 
 <a name="method-mapinto"></a>
@@ -1669,7 +1670,7 @@ staticの`make`メソッドは、新しいコレクションインスタンス�
 
 `only`の正反対の機能は、 [except](#method-except)メソッドです。
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
 
 <a name="method-pad"></a>
@@ -2142,6 +2143,27 @@ $percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3)
 
     // 2
 
+<a name="method-select"></a>
+#### `select()` {.collection-method}
+
+`select`メソッドは、SQLの`SELECT`文と似ており、コレクションから指定キーを取得します。
+
+```php
+$users = collect([
+    ['name' => 'Taylor Otwell', 'role' => 'Developer', 'status' => 'active'],
+    ['name' => 'Victoria Faith', 'role' => 'Researcher', 'status' => 'active'],
+]);
+
+$users->select(['name', 'role']);
+
+/*
+    [
+        ['name' => 'Taylor Otwell', 'role' => 'Developer'],
+        ['name' => 'Victoria Faith', 'role' => 'Researcher'],
+    ],
+*/
+```
+
 <a name="method-shift"></a>
 #### `shift()` {.collection-method}
 
@@ -2220,7 +2242,7 @@ $percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3)
 
     // [3, 4]
 
-> [!WARNING]  
+> [!WARNING]
 > 指定した値が見つからないか、コールバックが`true`を返さなかった場合、`skipUntil`メソッドは空のコレクションを返します。
 
 <a name="method-skipwhile"></a>
@@ -2238,7 +2260,7 @@ $percentage = $collection->percentage(fn ($value) => $value === 1, precision: 3)
 
     // [4]
 
-> [!WARNING]  
+> [!WARNING]
 > コールバックが`false`を返さなかった場合、`skipWhile`メソッドは空のコレクションを返します。
 
 <a name="method-slice"></a>
@@ -2347,7 +2369,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
 より高度なソートを行いたい場合は`sort`にコールバックを渡し、自分のアルゴリズムを実行できます。コレクションの`sort`メソッドが使用している[`uasort`](http://php.net/manual/en/function.uasort.php#refsect1-function.usort-parameters)のPHPドキュメントを参照してください。
 
-> [!NOTE]  
+> [!NOTE]
 > ネストした配列やオブジェクトのコレクションのソートは、[`sortBy`](#method-sortby)と[`sortByDesc`](#method-sortbydesc)メソッドを参照してください。
 
 <a name="method-sortby"></a>
@@ -2691,7 +2713,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
     // [1, 2]
 
-> [!WARNING]  
+> [!WARNING]
 > 指定値が見つからない、もしくはコールバックが`true`を返さない場合、`takeUntil`メソッドはコレクションの全アイテムを返します。
 
 <a name="method-takewhile"></a>
@@ -2709,7 +2731,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
     // [1, 2]
 
-> [!WARNING]  
+> [!WARNING]
 > コールバックが`false`を返さない場合、`takeWhile`メソッドはコレクション中の全アイテムを返します。
 
 <a name="method-tap"></a>
@@ -2754,7 +2776,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
         ]
     */
 
-> [!WARNING]  
+> [!WARNING]
 > `toArray`は、ネストした`Arrayable`インスタンスのオブジェクトすべてを配列へ変換します。コレクションの裏の素の配列をそのまま取得したい場合は、代わりに[`all`](#method-all)メソッドを使用してください。
 
 <a name="method-tojson"></a>
@@ -2783,7 +2805,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
     // [2, 4, 6, 8, 10]
 
-> [!WARNING]  
+> [!WARNING]
 > 他のコレクションメソッドとは異なり、`transform`はコレクション自身を更新します。代わりに新しいコレクションを生成したい場合は、 [`map`](#method-map)メソッドを使用してください。
 
 <a name="method-undot"></a>
@@ -2887,7 +2909,7 @@ sliceメソッドはデフォルトでキー値を保持したまま返します
 
 `unique`メソッドは、アイテムの判定に「緩い」比較を使用します。つまり、同じ値の文字列と整数値は等しいと判定します。「厳密」な比較でフィルタリングしたい場合は、[`uniqueStrict`](#method-uniquestrict)メソッドを使用してください。
 
-> [!NOTE]  
+> [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
 
 <a name="method-uniquestrict"></a>
@@ -3396,7 +3418,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 <a name="lazy-collection-introduction"></a>
 ### イントロダクション
 
-> [!WARNING]  
+> [!WARNING]
 > Laravelのレイジーコレクションを学ぶ前に、[PHPジェネレータ](https://www.php.net/manual/ja/language.generators.overview.php)に慣れるために時間を取ってください。
 
 すでに強力な`Collection`クラスを補足するために、`LazyCollection`クラスはPHPの[PHPジェネレータ](https://www.php.net/manual/ja/language.generators.overview.php)を活用しています。巨大なデータセットをメモリ使用を抑えて利用する目的のためです。
@@ -3587,7 +3609,7 @@ staticの`wrap`メソッドは適用可能であれば、指定値をコレク�
 
 </div>
 
-> [!WARNING]  
+> [!WARNING]
 > `shift`、`pop`、`prepend`などのように、コレクションを変異させるメソッドは、`LazyCollection`クラスでは使用**できません**。
 
 <a name="lazy-collection-methods"></a>

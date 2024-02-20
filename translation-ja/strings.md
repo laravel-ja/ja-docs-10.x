@@ -95,6 +95,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::swap](#method-str-swap)
 [Str::take](#method-take)
 [Str::title](#method-title-case)
+[Str::toBase64](#method-str-to-base64)
 [Str::toHtmlString](#method-str-to-html-string)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
@@ -194,6 +195,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [tap](#method-fluent-str-tap)
 [test](#method-fluent-str-test)
 [title](#method-fluent-str-title)
+[toBase64](#method-fluent-str-to-base64)
 [trim](#method-fluent-str-trim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
@@ -1144,6 +1146,17 @@ $repeat = Str::repeat($string, 5);
     $converted = Str::title('a nice title uses the correct case');
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-str-to-base64"></a>
+#### `Str::toBase64()` {.collection-method}
+
+`Str::toBase64`メソッドは、指定文字列をBase64へ変換します。
+
+    use Illuminate\Support\Str;
+
+    $base64 = Str::toBase64('Laravel');
+
+    // TGFyYXZlbA==
 
 <a name="method-str-to-html-string"></a>
 #### `Str::toHtmlString()` {.collection-method}
@@ -2416,6 +2429,17 @@ The `snake` method converts the given string to `snake`メソッドは、文字�
     $converted = Str::of('a nice title uses the correct case')->title();
 
     // A Nice Title Uses The Correct Case
+
+<a name="method-fluent-str-to-base64"></a>
+#### `toBase64()` {.collection-method}
+
+`toBase64`メソッドは、指定文字列をBase64に変換します。
+
+    use Illuminate\Support\Str;
+
+    $base64 = Str::of('Laravel')->toBase64();
+
+    // TGFyYXZlbA==
 
 <a name="method-fluent-str-trim"></a>
 #### `trim` {.collection-method}

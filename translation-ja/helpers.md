@@ -69,6 +69,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
 [Arr::sortRecursiveDesc](#method-array-sort-recursive-desc)
+[Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
 [Arr::undot](#method-array-undot)
@@ -842,10 +843,31 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
     $sorted = Arr::sortRecursiveDesc($array);
 
+<a name="method-array-take"></a>
+#### `Arr::take()` {.collection-method}
+
+`Arr::take`メソッドは、指定数のアイテムを持つ新しい配列を返します。
+
+    use Illuminate\Support\Arr;
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, 3);
+
+    // [0, 1, 2]
+
+負の整数を渡し、配列の末尾から指定数の項目を取り出すこともできます。
+
+    $array = [0, 1, 2, 3, 4, 5];
+
+    $chunk = Arr::take($array, -2);
+
+    // [4, 5]
+
 <a name="method-array-to-css-classes"></a>
 #### `Arr::toCssClasses()` {.collection-method}
 
-`Arr::toCssClasses`は、CSSクラス文字列を条件付きでコンパイルします。この方法はクラスの配列を引数に取り、配列キーに追加したいクラス、値は論理式です。配列要素に数字キーがある場合は、レンダするクラスリストへ常に含めます。
+`Arr::toCssClasses`メソッドは、CSSクラス文字列を条件付きでコンパイルします。この方法はクラスの配列を引数に取り、配列キーに追加したいクラス、値は論理式です。配列要素に数字キーがある場合は、レンダするクラスリストへ常に含めます。
 
     use Illuminate\Support\Arr;
 
@@ -866,6 +888,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 `Arr::toCssStyles`は、CSSスタイルの文字列を条件付きでコンパイルします。このメソッドはクラスの配列を受け付けます。配列のキーには追加するクラスを含め、値には論理値を指定します。配列のキーが数値の場合は、レンダーするクラスのリストへ常に含めます。
 
 ```php
+use Illuminate\Support\Arr;
+
 $hasColor = true;
 
 $array = ['background-color: blue', 'color: blue' => $hasColor];

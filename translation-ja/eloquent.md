@@ -35,7 +35,7 @@
 - [モデルの比較](#comparing-models)
 - [イベント](#events)
     - [クロージャの使用](#events-using-closures)
-    - [オブザーバー](#observers)
+    - [オブザーバ](#observers)
     - [イベントのミュート](#muting-events)
 
 <a name="introduction"></a>
@@ -1210,7 +1210,22 @@ php artisan make:scope AncientScope
 <a name="applying-global-scopes"></a>
 #### グローバルスコープの適用
 
-モデルにグローバルスコープを割り当てるには、モデルの`booted`メソッドをオーバーライドし、モデルの`addGlobalScope`メソッドを呼び出す必要があります。`addGlobalScope`メソッドは、スコープのインスタンスだけを引数に取ります。
+モデルにグローバルスコープを割り当てるには、モデルへ`ScopedBy`アトリビュートを指定します。
+
+    <?php
+
+    namespace App\Models;
+
+    use App\Models\Scopes\AncientScope;
+    use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+
+    #[ScopedBy([AncientScope::class])]
+    class User extends Model
+    {
+        //
+    }
+
+あるいは、モデルの`booted`メソッドをオーバーライドして、モデルの`addGlobalScope`メソッドを呼び出せば、手作業でグローバルスコープを登録することも可能です。`addGlobalScope`メソッドは、唯一スコープのインスタンスを引数に取ります。
 
     <?php
 
@@ -1457,15 +1472,15 @@ Eloquentイベントを定義してマッピングした後は、そのイベン
 ### オブザーバ
 
 <a name="defining-observers"></a>
-#### オブザーバーの定義
+#### オブザーバの定義
 
-特定のモデルで多くのイベントをリッスンしている場合は、オブザーバーを使用してすべてのリスナを1つのクラスにグループ化できます。オブザーバークラスは、リッスンするEloquentイベントを反映するメソッド名を持っています。これらの各メソッドは、唯一影響を受けるモデルを引数に取ります。`make:observer` Artisanコマンドは、新しいオブザーバークラスを作成するもっとも簡単な方法です。
+特定のモデルで多くのイベントをリッスンしている場合は、オブザーバを使用してすべてのリスナを1つのクラスにグループ化できます。オブザーバクラスは、リッスンするEloquentイベントを反映するメソッド名を持っています。これらの各メソッドは、唯一影響を受けるモデルを引数に取ります。`make:observer` Artisanコマンドは、新しいオブザーバクラスを作成するもっとも簡単な方法です。
 
 ```shell
 php artisan make:observer UserObserver --model=User
 ```
 
-このコマンドは、新しいオブザーバーを`app/Observers`ディレクトリに配置します。このディレクトリが存在しない場合は、Artisanが作成します。新しいオブザーバーは以下のようになります。
+このコマンドは、新しいオブザーバを`app/Observers`ディレクトリに配置します。このディレクトリが存在しない場合は、Artisanが作成します。新しいオブザーバは以下のようになります。
 
     <?php
 
@@ -1516,7 +1531,18 @@ php artisan make:observer UserObserver --model=User
         }
     }
 
-オブザーバーを登録するには、監視するモデルで`observe`メソッドを呼び出す必要があります。アプリケーションの`App\Providers\EventServiceProvider`サービスプロバイダの`boot`メソッドにオブザーバーを登録できます。
+オブザーバを登録するには、対応するモデルへ`ObservedBy`アトリビュートを指定します。
+
+    use App\Observers\UserObserver;
+    use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+
+    #[ObservedBy([UserObserver::class])]
+    class User extends Authenticatable
+    {
+        //
+    }
+
+あるいは、監視したいモデル上で`observe`メソッドを呼び出し、手作業でオブザーバを登録することもできます。アプリケーションの `AppProviders`サービスプロバイダの、`boot`メソッドでオブザーバを登録します。
 
     use App\Models\User;
     use App\Observers\UserObserver;
@@ -1529,22 +1555,8 @@ php artisan make:observer UserObserver --model=User
         User::observe(UserObserver::class);
     }
 
-あるいは、アプリケーションの`App\Providers\EventServiceProvider`クラスの`$observers`プロパティへオブザーバをリストすることもできます。
-
-    use App\Models\User;
-    use App\Observers\UserObserver;
-
-    /**
-     * アプリケーションのモデルオブザーバ
-     *
-     * @var array
-     */
-    protected $observers = [
-        User::class => [UserObserver::class],
-    ];
-
 > [!NOTE]
-> オブザーバーがリッスンできる他のイベントには、`saving`や`retrieved`などがあります。こうしたイベントについては、[イベント](#events)のドキュメントで説明しています。
+> オブザーバがリッスンできる他のイベントには、`saving`や`retrieved`などがあります。こうしたイベントについては、[イベント](#events)のドキュメントで説明しています。
 
 <a name="observers-and-database-transactions"></a>
 #### オブザーバとデータベーストランザクション
