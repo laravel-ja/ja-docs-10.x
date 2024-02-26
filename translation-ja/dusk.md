@@ -782,6 +782,8 @@ Duskは`withKeyboard`メソッドも提供しており、`Laravel\Dusk\Keyboard`
 
     $browser->doubleClick();
 
+    $browser->doubleClick('.selector');
+
 `rightClick`メソッドを使用して、マウスの右クリックをシミュレートできます。
 
     $browser->rightClick();
@@ -790,6 +792,8 @@ Duskは`withKeyboard`メソッドも提供しており、`Laravel\Dusk\Keyboard`
 
 `clickAndHold`メソッドを使用して、マウスボタンがクリックされたままにしている状況をシミュレートできます。その後の`releaseMouse`メソッドの呼び出しは、この動作を元に戻し、マウスボタンを離します。
 
+    $browser->clickAndHold('.selector');
+
     $browser->clickAndHold()
             ->pause(1000)
             ->releaseMouse();
@@ -797,6 +801,8 @@ Duskは`withKeyboard`メソッドも提供しており、`Laravel\Dusk\Keyboard`
 `controlClick`メソッドは、ブラウザの`ctrl+click`イベントをシミュレートするために使います。
 
     $browser->controlClick();
+
+    $browser->controlClick('.selector');
 
 <a name="mouseover"></a>
 #### マウスオーバ

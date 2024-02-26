@@ -22,7 +22,7 @@ Laravelはユニットテストも考慮して構築されています。実際�
 <a name="environment"></a>
 ## 環境
 
-テストを実行すると、Laravelは`phpunit.xml`ファイルで定義してある[設定環境](/docs/{{version}}/configuration#environment-configuration)により、設定環境を自動的に`testing`に設定します。Laravelはまた、テスト中にセッションとキャッシュを`array`ドライバに自動的に設定します。つまり、テスト中のセッションまたはキャッシュデータが保持されることはありません。
+When running tests, Laravel will automatically set the [configuration environment](/docs/{{version}}/configuration#environment-configuration) to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver so that no session or cache data will be persisted while testing.
 
 必要に応じて、他のテスト環境設定値を自由に定義できます。`testing`環境変数はアプリケーションの`phpunit.xml`ファイルで設定していますが、テストを実行する前は必ず`config:clear` Artisanコマンドを使用して設定のキャッシュをクリアしてください。
 
