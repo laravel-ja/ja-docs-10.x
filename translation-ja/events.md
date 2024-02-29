@@ -711,7 +711,7 @@ Laravelは、PHPのリフレクションサービスを使用してリスナク�
             // あるイベントがディスパッチされないことをアサート
             Event::assertNotDispatched(OrderFailedToShip::class);
 
-            // 度のイベントもディスパッチされなかったことをアサート
+            // どのイベントもディスパッチされなかったことをアサート
             Event::assertNothingDispatched();
         }
     }
