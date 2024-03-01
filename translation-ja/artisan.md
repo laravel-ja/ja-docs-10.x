@@ -503,7 +503,7 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
     $options = $this->options();
 
 <a name="prompting-for-input"></a>
-### Prompting for Input
+### 入力のプロンプト
 
 > [!NOTE]
 > [Laravel Prompts](/docs/{{version}}/prompts) は、美しくユーザーフレンドリーなUIをコマンドラインアプリケーションに追加するためのPHPパッケージで、プレースホルダテキストやバリデーションなどのブラウザライクな機能を備えています。
