@@ -56,6 +56,8 @@ php artisan telescope:install
 php artisan migrate
 ```
 
+これで、`/telescope`により、Telescopeダッシュボードへアクセスできます。
+
 <a name="migration-customization"></a>
 #### マイグレーションのカスタマイズ
 

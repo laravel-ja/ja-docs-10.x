@@ -11,7 +11,7 @@
 
 Laravelには、簡単に使用できるレート制限の抽象化機能があり、アプリケーションの[cache](/docs/{{version}}/cache)と連携して、指定した時間帯のアクションを制限する簡単な方法を提供します。
 
-> [!NOTE]  
+> [!NOTE]
 > 受信HTTPリクエストのレートを制限したい場合は、[レート制限ミドルウェアのドキュメント](/docs/{{version}}/routing#rate-limiting)を参照してください。
 
 <a name="cache-configuration"></a>
@@ -66,19 +66,23 @@ Laravelには、簡単に使用できるレート制限の抽象化機能があ�
         return 'Too many attempts!';
     }
 
-    RateLimiter::hit('send-message:'.$user->id);
+    RateLimiter::increment('send-message:'.$user->id);
 
     // メッセージ送信処理…
 
-他にも、`remaining`メソッドを使って、指定キーの残りの試行回数を取得することも可能です。指定キーに再試行回数が残っている場合は、`hit`メソッドを呼び出して総試行回数を増やせます。
+他にも、`remaining`メソッドを使って、指定キーの残りの試行回数を取得することも可能です。指定キーに再試行回数が残っている場合は、`increment`メソッドを呼び出して総試行回数を増やせます。
 
     use Illuminate\Support\Facades\RateLimiter;
 
     if (RateLimiter::remaining('send-message:'.$user->id, $perMinute = 5)) {
-        RateLimiter::hit('send-message:'.$user->id);
+        RateLimiter::increment('send-message:'.$user->id);
 
         // メッセージ送信処理…
     }
+
+指定するレートリミッターキーの値を１以上増やしたい場合は、`increment`メソッドへ希望する量を指定してください。
+
+    RateLimiter::increment('send-message:'.$user->id, amount: 5);
 
 <a name="determining-limiter-availability"></a>
 #### 使用可能時間の判断
@@ -93,7 +97,7 @@ Laravelには、簡単に使用できるレート制限の抽象化機能があ�
         return 'You may try again in '.$seconds.' seconds.';
     }
 
-    RateLimiter::hit('send-message:'.$user->id);
+    RateLimiter::increment('send-message:'.$user->id);
 
     // メッセージ送信処理…
 

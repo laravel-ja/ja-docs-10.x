@@ -1245,6 +1245,28 @@ PHPの`filter_var`関数を使用する`filter`バリデータは、Laravelに�
         'status' => [Rule::enum(ServerStatus::class)],
     ]);
 
+`Enum`ルールの`only`メソッドと`except`メソッドを使用し、有効な列挙ケースを制限できます。
+
+    Rule::enum(ServerStatus::class)
+        ->only([ServerStatus::Pending, ServerStatus::Active]);
+
+    Rule::enum(ServerStatus::class)
+        ->except([ServerStatus::Pending, ServerStatus::Active]);
+
+`when`メソッドは、`Enum`ルールを条件付きで変更するために使います。
+
+```php
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+
+Rule::enum(ServerStatus::class)
+    ->when(
+        Auth::user()->isAdmin(),
+        fn ($rule) => $rule->only(...),
+        fn ($rule) => $rule->only(...),
+    );
+```
+
 <a name="rule-exclude"></a>
 #### exclude
 

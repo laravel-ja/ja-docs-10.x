@@ -380,6 +380,26 @@ DB::table('users')->where('active', false)
                 $join->on('users.id', '=', 'latest_posts.user_id');
             })->get();
 
+<a name="lateral-joins"></a>
+#### ラテラルJoin
+
+> [!WARNING]
+> 現在、ラテラルJoinはPostgreSQL、MySQL8.0.14以上、SQL Serverでサポートされています。
+
+`joinLateral` メソッドと `leftJoinLateral` メソッドを使用すると、サブクエリとの「ラテラル結合」を行えます。これらのメソッドはそれぞれ２つの引数を取ります。サブクエリとそのテーブルエイリアスです。結合条件は、指定するサブクエリの中で、`where`節で指定する必要があります。ラテラル結合は行ごとに評価され、サブクエリ外の列を参照できます。
+
+この例では、ユーザーのコレクションと同時に、各ユーザーの最新ブログ記事を３つ取得しています。各ユーザーは結果セットへ最大３つの行を生成できます: 最新ブログ投稿それぞれに対して１つずつです。結合条件は、サブクエリ内の`whereColumn`節で指定し、現在のユーザー行を参照しています。
+
+    $latestPosts = DB::table('posts')
+                       ->select('id as post_id', 'title as post_title', 'created_at as post_created_at')
+                       ->whereColumn('user_id', 'users.id')
+                       ->orderBy('created_at', 'desc')
+                       ->limit(3);
+
+    $users = DB::table('users')
+                ->joinLateral($latestPosts, 'latest_posts')
+                ->get();
+
 <a name="unions"></a>
 ## UNION
 

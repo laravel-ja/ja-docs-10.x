@@ -11,6 +11,7 @@
     - [候補](#suggest)
     - [検索](#search)
     - [マルチ検索](#multisearch)
+    - [一時停止](#pause)
 - [情報メッセージ](#informational-messages)
 - [テーブル](#tables)
 - [スピン](#spin)
@@ -610,8 +611,19 @@ $ids = multisearch(
 
 `options`クロージャが連想配列を返す場合、クロージャは選択済みのキーを受け取ります。そうでない場合は、選択済みの値を受け取ります。クロージャはエラーメッセージを返すか、バリデーションに合格した場合は`null`を返します。
 
+<a name="pause"></a>
+### 一時停止
+
+`pause`関数は、ユーザーへ情報テキストを表示し、Enter/Returnキーが押されるのを待つことにより、ユーザーの続行の意思を確認するために使用します。
+
+```php
+use function Laravel\Prompts\pause;
+
+pause('Press ENTER to continue.');
+```
+
 <a name="informational-messages"></a>
-### 情報メッセージ
+## 情報メッセージ
 
 `note`、`info`、`warning`、`error`、`alert`関数は、情報メッセージを表示するために使用します。
 
@@ -622,7 +634,7 @@ info('Package installed successfully.');
 ```
 
 <a name="tables"></a>
-### テーブル
+## テーブル
 
 `table`関数を使うと、複数の行や列のデータを簡単に表示できます。指定する必要があるのは、カラム名とテーブルのデータだけです。
 
@@ -636,7 +648,7 @@ table(
 ```
 
 <a name="spin"></a>
-### スピン
+## スピン
 
 `spin`関数は、指定したコールバックを実行している間、オプションのメッセージとともにスピナーを表示します。これは進行中の処理を示す役割を果たし、完了するとコールバックの結果を返します。
 
@@ -705,7 +717,7 @@ $progress->finish();
 ```
 
 <a name="terminal-considerations"></a>
-### ターミナルの考察
+## ターミナルの考察
 
 <a name="terminal-width"></a>
 #### ターミナルの横幅
@@ -718,7 +730,7 @@ $progress->finish();
 `scroll`引数を受け入れるプロンプトの場合、設定済み値は、検証メッセージ用のスペースを含めて、ユーザーの端末の高さに合わせて自動的に縮小されます。
 
 <a name="fallbacks"></a>
-### 未サポートの環境とフォールバック
+## 未サポートの環境とフォールバック
 
 Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。Windows版のPHPの制限により、現在のところWSL以外のWindowsでは、Laravel Promptsを使用できません。
 

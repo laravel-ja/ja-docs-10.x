@@ -334,24 +334,6 @@ php artisan make:resource UserCollection
 }
 ```
 
-`data`の代わりにカスタムキーを使用したい場合は、リソースクラスに`$wrap`属性を定義します。
-
-    <?php
-
-    namespace App\Http\Resources;
-
-    use Illuminate\Http\Resources\Json\JsonResource;
-
-    class UserResource extends JsonResource
-    {
-        /**
-         * 適用する「データ」ラッパー
-         *
-         * @var string|null
-         */
-        public static $wrap = 'user';
-    }
-
 最も外側のリソースのラッピングを無効にする場合は、ベースの`Illuminate\Http\Resources\Json\JsonResource`クラスで`withoutWrapping`メソッドを呼び出す必要があります。通常、このメソッドは、アプリケーションへのすべてのリクエストで読み込まれる`AppServiceProvider`か、別の[サービスプロバイダ](/docs/{{version}}/provider)から呼び出す必要があります。
 
     <?php

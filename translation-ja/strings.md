@@ -559,6 +559,10 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 
     // false
 
+`isUrl` メソッドは幅広いプロトコルを有効とみなします。しかし、`isUrl`メソッドへ有効なプロトコルを指定することもできます。
+
+    $isUrl = Str::isUrl('http://example.com', ['http', 'https']);
+
 <a name="method-str-is-ulid"></a>
 #### `Str::isUlid()` {.collection-method}
 
@@ -1757,6 +1761,10 @@ Fluent文字列は読み書きしやすい（fluent）、オブジェクト指�
     $result = Str::of('Taylor')->isUrl();
 
     // false
+
+`isUrl`メソッドは幅広いプロトコルを有効とみなします。しかし、`isUrl`メソッドへ有効なプロトコルを指定することもできます。
+
+    $result = Str::of('http://example.com')->isUrl(['http', 'https']);
 
 <a name="method-fluent-str-is-uuid"></a>
 #### `isUuid` {.collection-method}

@@ -185,16 +185,30 @@ php artisan env:decrypt --force
 <a name="accessing-configuration-values"></a>
 ## 設定値へのアクセス
 
-アプリケーションのどこからでもグローバルの`config`関数を使用し、設定値へ簡単にアクセスできます。設定値はファイルとオプションの名前を含む「ドット」記法を使いアクセスします。デフォルト値も指定でき、設定オプションが存在しない場合に、返されます。
+アプリケーションのどこからでも、`Config`ファサードと`config`グローバル関数を使い、簡単に設定値にアクセスできます。設定値には「ドット」構文を使いアクセスでき、アクセスしたいファイル名とオプション名を指定します。デフォルト値を指定することもでき、その設定オプションが存在しない場合に返します。
+
+    use Illuminate\Support\Facades\Config;
+
+    $value = Config::get('app.timezone');
 
     $value = config('app.timezone');
 
     // 設定値が存在しない場合、デフォルト値を取得する
     $value = config('app.timezone', 'Asia/Seoul');
 
-実行時に設定値をセットするには、`config`関数へ配列で渡してください。
+実行時に設定値をセットするには、`Config`ファサードの`set`メソッドを呼び出すか、`config` 関数に配列を渡します。
+
+    Config::set('app.timezone', 'America/Chicago');
 
     config(['app.timezone' => 'America/Chicago']);
+
+静的解析を支援するため、`Config`ファサードは型付き設定値取得メソッドも提供しています。取得した設定値が期待している型と一致しない場合は、例外を投げます。
+
+    Config::string('config-key');
+    Config::integer('config-key');
+    Config::float('config-key');
+    Config::boolean('config-key');
+    Config::array('config-key');
 
 <a name="configuration-caching"></a>
 ## 設定キャッシュ
