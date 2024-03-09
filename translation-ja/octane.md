@@ -75,7 +75,7 @@ php artisan octane:install
 ./vendor/bin/sail artisan octane:install --server=frankenphp
 ```
 
-最後に、アプリケーションの`docker-compose.yml`ファイル内の`laravel.test`サービス定義へ、`SUPERVISOR_PHP_COMMAND`環境変数を追加します。この環境変数には、SailがPHP開発サーバの代わりにOctaneを使用してアプリケーションを提供する際に使用するコマンを格納します。
+最後に、アプリケーションの`docker-compose.yml`ファイル内の`laravel.test`サービス定義へ、`SUPERVISOR_PHP_COMMAND`環境変数を追加します。この環境変数には、SailがPHP開発サーバの代わりにOctaneを使用してアプリケーションを提供する際に使用するコマンドを格納します。
 
 ```yaml
 services:
