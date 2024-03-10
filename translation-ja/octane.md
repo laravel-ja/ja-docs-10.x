@@ -147,7 +147,7 @@ pecl install openswoole
 Laravel OctaneとOpen Swooleを併用することで、同時並行タスク、tick、intervalなどSwooleが提供する機能と同じものが使えるようになります。
 
 <a name="swoole-via-laravel-sail"></a>
-#### Swoole via Laravel Sail
+#### Laravel Sailを使用するSwoole
 
 > [!WARNING]
 > Sailを介してOctaneアプリケーションを動作させる前に、最新バージョンのLaravel Sailであることを確認し、アプリケーションのルートディレクトリ内で`./vendor/bin/sail build --no-cache`を実行してください。
