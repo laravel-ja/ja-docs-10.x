@@ -1897,7 +1897,7 @@ php artisan queue:work redis --tries=3 --backoff=3
         /**
          * ジョブの失敗を処理
          */
-        public function failed(Throwable $exception): void
+        public function failed(?Throwable $exception): void
         {
             // ユーザーへ失敗を通知するなど…
         }

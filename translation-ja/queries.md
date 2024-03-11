@@ -13,6 +13,7 @@
     - [WHERE句](#where-clauses)
     - [OR WHERE句](#or-where-clauses)
     - [WHERE NOT句](#where-not-clauses)
+    - [Where Any／All句](#where-any-all-clauses)
     - [JSON WHERE句](#json-where-clauses)
     - [その他のWHERE句](#additional-where-clauses)
     - [論理グループ化](#logical-grouping)
@@ -500,6 +501,53 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
                               ->orWhere('price', '<', 10);
                     })
                     ->get();
+
+<a name="where-any-all-clauses"></a>
+### Where Any／All句
+
+複数の列に同じクエリ制約を適用する必要が起きる場合があります。例えば、指定リスト内のカラムが指定値と`LIKE`である全レコードを取得したい場合です。この場合は、`whereAny`メソッドを使用します。
+
+    $users = DB::table('users')
+                ->where('active', true)
+                ->whereAny([
+                    'name',
+                    'email',
+                    'phone',
+                ], 'LIKE', 'Example%')
+                ->get();
+
+上記のクエリは以下のSQLになります。
+
+```sql
+SELECT *
+FROM users
+WHERE active = true AND (
+    name LIKE 'Example%' OR
+    email LIKE 'Example%' OR
+    phone LIKE 'Example%'
+)
+```
+
+同様に`whereAll`メソッドは、指定列のすべてが、指定した制約と一致するレコードを検索するために使用します。
+
+    $posts = DB::table('posts')
+                ->where('published', true)
+                ->whereAll([
+                    'title',
+                    'content',
+                ], 'LIKE', '%Laravel%')
+                ->get();
+
+上記のクエリは以下のSQLになります。
+
+```sql
+SELECT *
+FROM posts
+WHERE published = true AND (
+    title LIKE '%Laravel%' AND
+    content LIKE '%Laravel%'
+)
+```
 
 <a name="json-where-clauses"></a>
 ### JSON WHERE句

@@ -82,7 +82,63 @@ services:
   laravel.test:
     environment:
       SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --server=frankenphp --host=0.0.0.0 --admin-port=2019 --port=80" # [tl! add]
+      XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
+      XDG_DATA_HOME:  /var/www/html/data # [tl! add]
 ```
+
+HTTPS、HTTP/2、HTTP/3を有効にするには、代わりに以下の修正をしてください。
+
+```yaml
+services:
+  laravel.test:
+    ports:
+        - '${APP_PORT:-80}:80'
+        - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        - '443:443' # [tl! add]
+        - '443:443/udp' # [tl! add]
+    environment:
+      SUPERVISOR_PHP_COMMAND: "/usr/bin/php -d variables_order=EGPCS /var/www/html/artisan octane:start --host=localhost --port=443 --admin-port=2019 --https" # [tl! add]
+      XDG_CONFIG_HOME:  /var/www/html/config # [tl! add]
+      XDG_DATA_HOME:  /var/www/html/data # [tl! add]
+```
+
+通常、FrankenPHP Sailアプリケーションは、`https://localhost`よりアクセスします。`https://127.0.0.1`を使うには追加の設定が必要であり、[推奨していません](https://frankenphp.dev/docs/known-issues/#using-https127001-with-docker) 。
+
+<a name="frankenphp-via-docker"></a>
+#### DockerでのFrankenPHPの利用
+
+FrankenPHPの公式Dockerイメージを使用すれば、パフォーマンスを向上させ、FrankenPHPの静的インストールには含まれていない拡張機能も使用できます。さらに、FrankenPHPの公式Dockerイメージは、 WindowsのようなFrankenPHPがネイティブにサポートしていないプラットフォームでの実行をサポートしています。FrankenPHPの公式Dockerイメージは、ローカルでの開発にも、本番環境での使用にも適しています。
+
+FrankenPHPで動くLaravelアプリケーションをコンテナ化する出発点として、以下のDockerfileを使用してください。
+
+```dockerfile
+FROM dunglas/frankenphp
+
+RUN install-php-extensions \
+    pcntl
+    # ここに他のPHP拡張…
+
+COPY . /app
+
+ENTRYPOINT ["php", "artisan", "octane:frankenphp"]
+```
+
+開発中はアプリケーションを実行するため、以下のDocker Composeファイルを利用してください。
+
+```yaml
+# compose.yaml
+services:
+  frankenphp:
+    build:
+      context: .
+    entrypoint: php artisan octane:frankenphp --max-requests=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+```
+
+FrankenPHPをDockerで実行するための詳細は、[FrankenPHP公式ドキュメント](https://frankenphp.dev/docs/docker/)を参照してください。
 
 <a name="roadrunner"></a>
 ### RoadRunner
