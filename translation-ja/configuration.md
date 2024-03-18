@@ -202,14 +202,6 @@ php artisan env:decrypt --force
 
     config(['app.timezone' => 'America/Chicago']);
 
-静的解析を支援するため、`Config`ファサードは型付き設定値取得メソッドも提供しています。取得した設定値が期待している型と一致しない場合は、例外を投げます。
-
-    Config::string('config-key');
-    Config::integer('config-key');
-    Config::float('config-key');
-    Config::boolean('config-key');
-    Config::array('config-key');
-
 <a name="configuration-caching"></a>
 ## 設定キャッシュ
 

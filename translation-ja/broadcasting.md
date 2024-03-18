@@ -3,10 +3,12 @@
 - [イントロダクション](#introduction)
 - [サーバ側インストール](#server-side-installation)
     - [設定](#configuration)
+    - [Reverb](#reverb)
     - [Pusherチャンネル](#pusher-channels)
     - [Ably](#ably)
     - [オープンソースの代替](#open-source-alternatives)
 - [クライアント側インストール](#client-side-installation)
+    - [Reverb](#client-reverb)
     - [Pusherチャンネル](#client-pusher-channels)
     - [Ably](#client-ably)
 - [概論](#concept-overview)
@@ -52,7 +54,7 @@
 <a name="supported-drivers"></a>
 #### サポートしているドライバ
 
-Laravelはデフォルトで、[Pusherチャンネル](https://pusher.com/channels)と[Ably](https://ably.com)、２つのサーバ側ブロードキャストドライバを用意しています。ただし、[soketi](https://docs.soketi.app/)などのコミュニティ主導のパッケージでは、商用ブロードキャストプロバイダを必要としないドライバを提供しています。
+By default, Laravel includes three server-side broadcasting drivers for you to choose from: [Laravel Reverb](https://reverb.laravel.com), [Pusher Channels](https://pusher.com/channels), and [Ably](https://ably.com).
 
 > [!NOTE]
 > イベントブロードキャストに取り掛かる前に、[イベントとリスナ](/docs/{{version}}/events)に関するLaravelのドキュメントをしっかりと読んでください。
@@ -78,6 +80,23 @@ Laravelのイベントブロードキャストの使用を開始するには、L
 #### キュー設定
 
 また、[キューワーカ](/docs/{{version}}/queues)を設定して実行する必要があります。すべてのイベントブロードキャストはジョブをキュー投入し実行されるため、アプリケーションの応答時間は、ブロードキャストするイベントによる深刻な影響を受けません。
+
+<a name="reverb"></a>
+### Reverb
+
+ReverbはComposerパッケージマネージャを使い、インストールしてください。Reverbは現在ベータ版のため、明示的にベータ版をインストールする必要があります。
+
+```sh
+composer require laravel/reverb:@beta
+```
+
+パッケージをインストールしたら、Reverbのインストールコマンドを実行、設定をリソース公開、アプリケーションのブロードキャスト設定を更新、Reverbで必要な環境変数を追加してください。
+
+```sh
+php artisan reverb:install
+```
+
+Reverbのインストールと使い方の詳しい説明は、[Reverbのドキュメント](/docs/{{version}}/reverb)にあります。
 
 <a name="pusher-channels"></a>
 ### Pusherチャンネル
@@ -148,6 +167,43 @@ BROADCAST_DRIVER=ably
 
 <a name="client-side-installation"></a>
 ## クライアント側インストール
+
+<a name="client-reverb"></a>
+### Reverb
+
+[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャストドライバによりブロードキャストされるチャンネルやイベントを簡単にサブスクライブできるJavaScriptライブラリです。EchoはNPMパッケージマネージャでインストールできます。この例では、ReverbがWebSocketサブスクリプション、チャンネル、メッセージにPusherプロトコルを利用しているため、`pusher-js`パッケージもインストールしています。
+
+```shell
+npm install --save-dev laravel-echo pusher-js
+```
+
+Echoをインストールしたら、アプリケーションのJavaScriptで新しいEchoインスタンスを生成する準備が整いました。これを行うのに最適な場所は、Laravelフレームワークが用意している`resources/js/bootstrap.js`ファイルの一番下です。デフォルトで、Echoの設定例をあらかじめこのファイルに準備してあります。コメントを解除して、`broadcaster`設定オプションを`reverb`に更新するだけです。
+
+```js
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT,
+    wssPort: import.meta.env.VITE_REVERB_PORT,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
+});
+```
+
+次に、アプリケーションのアセットをコンパイルしてください。
+
+```shell
+npm run build
+```
+
+> [!WARNING]
+> Laravel Echoの`reverb`ブロードキャスタには、laravel-echoのv1.16.0以上が必要です。
 
 <a name="client-pusher-channels"></a>
 ### Pusherチャンネル

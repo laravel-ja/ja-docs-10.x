@@ -76,6 +76,7 @@
 - `doctrine/dbal`を`^3.0`
 - `spatie/laravel-ignition`を`^2.0`
 - `laravel/passport`を`^11.0` ([アップグレードガイド](https://github.com/laravel/passport/blob/11.x/UPGRADE.md))
+- `laravel/ui`を`^4.0`
 
 </div>
 
