@@ -20,7 +20,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-アクセサ、ミューテタ、および属性キャストを使用すると、Eloquentモデルインスタンスで属性値を取得または設定するときに、それらの属性値を変換できます。たとえば、[Laravel暗号化](/docs/{{version}}/encoding)を使用して、データベースに保存されている値を暗号化し、Eloquentモデル上でそれにアクセスしたときに属性を自動的に復号できます。他に、Eloquentモデルを介してアクセスするときに、データベースに格納されているJSON文字列を配列に変換することもできます。
+アクセサ、ミューテタ、および属性キャストを使用すると、Eloquentモデルインスタンスで属性値を取得または設定するときに、それらの属性値を変換できます。たとえば、[Laravelの暗号化](/docs/{{version}}/encoding)を使用して、データベースに保存している値を暗号化し、Eloquentモデル上でアクセスしたときにその属性を自動的に復号できます。他に、Eloquentモデルを介してアクセスするときに、データベースに格納済みのJSON文字列を配列に変換することもできます。
 
 <a name="accessors-and-mutators"></a>
 ## アクセサ／ミューテタ
@@ -28,7 +28,7 @@
 <a name="defining-an-accessor"></a>
 ### アクセサの定義
 
-アクセサは、Eloquentの属性値にアクセスが合った時に、その値を変換するものです。アクセサを定義するには、アクセス可能な属性を表すprotectedなメソッドをモデル上に作成します。このメソッド名は、裏に存在するモデル属性やデータベースカラムの「キャメルケース」表現に対応させる必要があります。
+アクセサは、Eloquentの属性値へアクセス時に、その値を変換するものです。アクセサを定義するには、アクセス可能な属性を表すprotectedなメソッドをモデル上に作成します。このメソッド名は、裏に存在するモデル属性やデータベースカラムの「キャメルケース」表現に対応させる必要があります。
 
 この例では、`first_name`属性に対するアクセサを定義します。このアクセサは、`first_name`属性の値を取得しようとしたときに、Eloquentから自動的に呼び出されます。すべての属性アクセサ/ミューテタメソッドは、戻り値のタイプヒントを`Illuminate\Database\Eloquent\Casts\Attribute`で宣言する必要があります。
 
@@ -63,7 +63,7 @@
     $firstName = $user->first_name;
 
 > [!NOTE]
-> こうした計算値をモデルの配列／JSON表現に追加したい場合は、[手作業で追加する必要があります](/docs/{{version}}/eloquent-serialization#appending-values-to-json)。
+> こうした計算値をモデルの配列／JSON表現へ追加したい場合は、[手作業で追加する必要があります](/docs/{{version}}/eloquent-serialization#appending-values-to-json)。
 
 <a name="building-value-objects-from-multiple-attributes"></a>
 #### 複数の属性からの値オブジェクト構築
@@ -91,7 +91,7 @@ protected function address(): Attribute
 <a name="accessor-caching"></a>
 #### アクセサのキャッシュ
 
-アクセサから値オブジェクトを返すとき、値オブジェクトに加えられたすべての変更は、モデルが保存される前に自動的にモデルに同期して戻されます。これはEloquentがアクセサから返したインスタンスを保持し、アクセサが呼び出されるたびに同じインスタンスを返すことができるためです。
+アクセサから値オブジェクトを返すとき、値オブジェクトに加えられたすべての変更は、モデルを保存する前にモデルと同期して自動的に戻されます。これはEloquentがアクセサから返したインスタンスを保持し、アクセサが呼び出されるたびに同じインスタンスを返すことができるためです。
 
     use App\Models\User;
 
@@ -102,7 +102,7 @@ protected function address(): Attribute
 
     $user->save();
 
-しかし、文字列やブーリアンなどのプリミティブな値については、特に計算量が多い場合、キャッシュを有効にしたい場合が起きます。その場合は、アクセサを定義するときに、`shouldCache`メソッドを呼び出してください。
+しかし、文字列や論理値などのプリミティブな値については、特に計算量が多い場合、キャッシュを有効にしたい場合が起きます。その場合は、アクセサを定義するときに、`shouldCache`メソッドを呼び出してください。
 
 ```php
 protected function hash(): Attribute
@@ -133,7 +133,7 @@ protected function address(): Attribute
 <a name="defining-a-mutator"></a>
 ### ミューテタの定義
 
-ミューテタはEloquentの属性値を設定するときに、その値を変換するものです。ミューテタを定義するには、属性を定義するときに `set` という引数を指定します。ここでは、`first_name`属性に対してミューテタを定義してみましょう。このミューテタは、モデルの`first_name`属性の値を設定しようとすると、自動的に呼び出されます。
+ミューテタはEloquentの属性値を設定するときに、その値を変換するものです。ミューテタを定義するには、属性を定義するときに`set`という引数を指定します。ここでは、`first_name`属性に対してミューテタを定義してみましょう。このミューテタは、モデルの`first_name`属性の値を設定しようとすると、自動的に呼び出されます。
 
     <?php
 
@@ -226,7 +226,7 @@ protected function address(): Attribute
 
 </div>
 
-属性のキャストをデモンストレートするため、データベースに整数(`0`または`1`)として格納している`is_admin`属性をブール値にキャストしてみましょう。
+属性のキャストをデモンストレートするため、データベースに整数(`0`または`1`)として格納している`is_admin`属性を論理値へキャストしてみましょう。
 
     <?php
 
@@ -246,7 +246,7 @@ protected function address(): Attribute
         ];
     }
 
-キャストを定義した後、基になる値が整数としてデータベースに格納されていても、アクセス時`is_admin`属性は常にブール値にキャストされます。
+キャストを定義した後、基になる値が整数としてデータベースに格納されていても、アクセス時`is_admin`属性は常に論理値へキャストされます。
 
     $user = App\Models\User::find(1);
 
@@ -262,7 +262,7 @@ protected function address(): Attribute
     ]);
 
 > [!WARNING]
-> `null`である属性はキャストしません。また、リレーションと同じ名前のキャスト（または属性）を定義したり、モデルの主キーにキャストを割り当てたりは、決してしないでください。
+> `null`値の属性はキャストしません。また、リレーションと同じ名前のキャスト（または属性）を定義したり、モデルの主キーにキャストを割り当てたりは、決してしないでください。
 
 <a name="stringable-casting"></a>
 #### Stringableのキャスト
@@ -291,7 +291,7 @@ protected function address(): Attribute
 <a name="array-and-json-casting"></a>
 ### 配列とJSONのキャスト
 
-`array`キャストは、シリアル化されたJSONとして保存されているカラムを操作するときに特に役立ちます。たとえば、データベースにシリアル化されたJSONを含む`JSON`または`TEXT`フィールドタイプがある場合、その属性へ`array`キャストを追加すると、Eloquentモデル上でアクセス時に、属性がPHP配列へ自動的に逆シリアル化されます。
+`array`キャストは、シリアル化済みJSONとして保存しているカラムを操作するとき、特に役立ちます。たとえば、データベースにシリアル化済みJSONを含む`JSON`または`TEXT`フィールドタイプがある場合、その属性へ`array`キャストを追加すると、Eloquentモデル上でアクセス時に、属性がPHP配列へ自動的に逆シリアル化されます。
 
     <?php
 
@@ -311,7 +311,7 @@ protected function address(): Attribute
         ];
     }
 
-このキャストを定義すると、`options`属性にアクセスでき、JSONからPHP配列に自動的に逆シリアル化されます。`options`属性の値を設定すると、指定する配列が自動的にシリアル化されてJSONに戻されて保存されます。
+このキャストを定義すると、`options`属性にアクセスでき、JSONからPHP配列へ自動的に逆シリアル化します。`options`属性の値を設定すると、指定する配列を自動的にシリアル化し、JSONに戻して保存します。
 
     use App\Models\User;
 
@@ -340,7 +340,7 @@ protected function address(): Attribute
 
     $user->options['key'] = $value;
 
-これを解決するために、Laravelは、JSON属性を[ArrayObject](https://www.php.net/manual/ja/class.arrayobject.php)クラスにキャストする`asArrayObject`キャストを提供します。この機能はLaravelの[カスタムキャスト](#custom-cast)の実装を使用しており、Laravelがインテリジェントにキャッシュし、PHPエラーを引き起こすことなく、個々のオフセットを変更できるように、ミューテートしたオブジェクトを変換することができます。AsArrayObject`のキャストを使用するには、単純に属性に割り当てるだけです。
+これを解決するために、Laravelは、JSON属性を[ArrayObject](https://www.php.net/manual/ja/class.arrayobject.php)クラスへキャストする、`asArrayObject`キャストを提供しています。この機能はLaravelの[カスタムキャスト](#custom-cast)の実装を使用しており、Laravelがインテリジェントにキャッシュし、PHPエラーを引き起こすことなく、個々のオフセットを変更できるように、ミューテートしたオブジェクトを変換できます。`AsArrayObject`のキャストを使用するには、単純に属性に割り当てるだけです。
 
     use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
@@ -383,7 +383,7 @@ protected function address(): Attribute
 <a name="date-casting"></a>
 ### 日付のキャスト
 
-デフォルトでは、Eloquentは`created_at`カラムと`updated_at`カラムを[Carbon](https://github.com/briannesbitt/Carbon)のインスタンスへキャストします。これによりPHPの`DateTime`クラスを拡張した、多くの便利なメソッドが提供されます。モデルの`$casts`プロパティ配列内で日付キャストを追加定義すれば、他の日付属性をキャストできます。通常、日付は`datetime`か`immutable_datetime`キャストタイプを使用してキャストする必要があります。
+Eloquentはデフォルトで、`created_at`カラムと`updated_at`カラムを[Carbon](https://github.com/briannesbitt/Carbon)のインスタンスへキャストします。これによりPHPの`DateTime`クラスを拡張した、多くの便利なメソッドを提供しています。モデルの`$casts`プロパティ配列内で日付キャストを追加定義すれば、他の日付属性をキャストできます。通常、日付は`datetime`か`immutable_datetime`キャストタイプを使用してキャストする必要があります。
 
 `date`または`datetime`キャストを定義するときに、日付の形式を指定することもできます。この形式は、[モデルが配列またはJSONにシリアル化される](/docs/{{version}}/eloquent-serialization)場合に使用されます。
 
@@ -396,7 +396,7 @@ protected function address(): Attribute
         'created_at' => 'datetime:Y-m-d',
     ];
 
-カラムが日付へキャストされる場合、対応するモデル属性の値として、UNIXのタイムスタンプ、日付文字列（`Y-m-d`）、日付時間文字列、または`DateTime`／`Carbon`インスタンスを設定することができます。日付の値は正しく変換され、データベースへ保存されます。
+カラムを日付へキャストする場合、対応するモデル属性の値として、UNIXのタイムスタンプ、日付文字列（`Y-m-d`）、日付時間文字列、`DateTime`／`Carbon`インスタンスが設定できます。日付の値は正しく変換され、データベースへ保存されます。
 
 モデルに`serializeDate`メソッドを定義することで、モデルのすべての日付のデフォルトのシリアル化形式をカスタマイズできます。この方法は、データベースへ保存するために日付をフォーマットする方法には影響しません。
 
@@ -427,7 +427,7 @@ protected function address(): Attribute
 <a name="enum-casting"></a>
 ### Enumキャスト
 
-Eloquentは、属性値をPHPの[Enum](https://www.php.net/manual/ja/language.enumerations.backed.php) にキャストすることも可能です。これを実現するには、モデルの`$casts`プロパティ配列にキャストしたい属性と列挙型を指定します。
+Eloquentは、属性値をPHPの[Enum](https://www.php.net/manual/ja/language.enumerations.backed.php) へキャストすることも可能です。これを実現するには、モデルの`$casts`プロパティ配列にキャストしたい属性と列挙型を指定します。
 
     use App\Enums\ServerStatus;
 
@@ -468,9 +468,9 @@ Eloquentは、属性値をPHPの[Enum](https://www.php.net/manual/ja/language.en
 <a name="encrypted-casting"></a>
 ### 暗号化キャスト
 
-`encrypted`キャストは、Laravelに組み込まれた[暗号化](/docs/{{version}}/encryption)機能を使って、モデルの属性値を暗号化します。さらに、`encrypted:array`、`encrypted:collection`、`encrypted:object`、`AsEncryptedArrayObject`、`AsEncryptedCollection`のキャストは、暗号化されていないものと同様の動作をしますが、ご期待通りにデータベースに保存される際に、基本的な値を暗号化します。
+`encrypted`キャストは、Laravel組み込み済みの[暗号化](/docs/{{version}}/encryption)機能を使って、モデルの属性値を暗号化します。さらに、`encrypted:array`、`encrypted:collection`、`encrypted:object`、`AsEncryptedArrayObject`、`AsEncryptedCollection`のキャストは、暗号化していないものと同様の動作をしますが、期待通りにデータベースへ保存する際に、もとの値を暗号化します。
 
-暗号化したテキストの最終的な長さは予測できず、プレーンテキストのものよりも長くなるので、関連するデータベースのカラムが `TEXT` 型以上であることを確認してください。さらに、値はデータベース内で暗号化されているので、暗号化された属性値を問い合わせたり検索したりすることはできません。
+暗号化したテキストの最終的な長さは予測できず、プレーンテキストのものよりも長くなるため、関連するデータベースのカラムは、確実に`TEXT`型以上にしてください。さらに、値はデータベース内で暗号化してあるため、暗号化された属性値を問い合わせたり、検索したりできません。
 
 <a name="key-rotation"></a>
 #### キーの変更
@@ -567,7 +567,7 @@ php artisan make:cast Json
 <a name="value-object-casting"></a>
 ### 値オブジェクトのキャスト
 
-値をプリミティブ型にキャストすることに限定されません。オブジェクトへ値をキャストすることもできます。オブジェクトへ値をキャストするカスタムキャストの定義は、プリミティブ型へのキャストと非常によく似ています。ただし、`set`メソッドは、モデルに素の保存可能な値を設定するために使用するキー／値のペアの配列を返す必要があります。
+値をプリミティブ型にキャストすることに限定しません。オブジェクトへ値をキャストすることもできます。オブジェクトへ値をキャストするカスタムキャストの定義は、プリミティブ型へのキャストと非常によく似ています。ただし、`set`メソッドは、モデルに素の保存可能な値を設定するために使用するキー／値のペアの配列を返す必要があります。
 
 例として、複数のモデル値を単一の`Address`値オブジェクトにキャストするカスタムキャストクラスを定義します。`Address`値には、`lineOne`と`lineTwo`の２つのパブリックプロパティがあると想定します。
 
@@ -614,7 +614,7 @@ php artisan make:cast Json
         }
     }
 
-値オブジェクトにキャストする場合、値オブジェクトに加えられた変更は、モデルが保存される前に自動的にモデルに同期されます。
+値オブジェクトにキャストする場合、値オブジェクトに加えられた変更はモデルを保存する前に、自動的にモデルへ同期します。
 
     use App\Models\User;
 
@@ -646,9 +646,9 @@ class Address implements CastsAttributes
 <a name="array-json-serialization"></a>
 ### 配列／JSONのシリアル化
 
-Eloquentモデルを`toArray`および`toJson`メソッドを使用して配列やJSONへ変換する場合、カスタムキャスト値オブジェクトは通常、`Illuminate\Contracts\Support\Arrayable`および`JsonSerializable`インターフェイスを実装している限りシリアル化されます。しかし、サードパーティライブラリによって提供される値オブジェクトを使用する場合、これらのインターフェイスをオブジェクトに追加できない場合があります。
+Eloquentモデルを`toArray`および`toJson`メソッドを使用して配列やJSONへ変換する場合、カスタムキャスト値オブジェクトは通常、`Illuminate\Contracts\Support\Arrayable`および`JsonSerializable`インターフェイスを実装している限りシリアル化されます。しかし、サードパーティライブラリが提供する値オブジェクトを使用する場合、これらのインターフェイスをオブジェクトへ追加できない場合があります。
 
-したがって、カスタムキャストクラスが値オブジェクトのシリアル化を担当するように指定できます。そのためには、カスタムクラスキャストで`Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes`インターフェイスを実装する必要があります。このインターフェイスは、クラスに「serialize」メソッドが含まれている必要があることを示しています。このメソッドは、値オブジェクトのシリアル化された形式を返す必要があります。
+そのため、カスタムキャストクラスが値オブジェクトのシリアル化を担当するように指定できます。これを行うには、カスタムクラスキャストで`Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes`インターフェイスを実装する必要があります。このインターフェイスは、クラスに"serialize"メソッドが含まれている必要があることを示しています。このメソッドは、値オブジェクトのシリアル化された表現を返す必要があります。
 
     /**
      * 値をシリアル化した表現の取得
@@ -717,9 +717,9 @@ php artisan make:cast Hash --inbound
     ];
 
 <a name="castables"></a>
-### Castables
+### Castable
 
-アプリケーションの値オブジェクトが独自のカスタムキャストクラスを定義できるようにすることができます。カスタムキャストクラスをモデルにアタッチする代わりに、`Illuminate\Contracts\Database\Eloquent\Castable`インターフェイスを実装する値オブジェクトクラスをアタッチすることもできます。
+アプリケーションの値オブジェクトで、独自のカスタムキャストクラスを定義することもできます。カスタムキャストクラスをモデルにアタッチする代わりに、`Illuminate\Contracts\Database\Eloquent\Castable`インターフェイスを実装した値オブジェクトクラスをアタッチしてください。
 
     use App\ValueObjects\Address;
 
@@ -749,7 +749,7 @@ php artisan make:cast Hash --inbound
         }
     }
 
-`Castable`クラスを使用する場合でも、`$casts`定義に引数を指定できます。引数は`castUsing`メソッドに渡されます。
+`Castable`クラスを使用する場合でも、`$casts`定義に引数を指定できます。引数は`castUsing`メソッドへ渡します。
 
     use App\ValueObjects\Address;
 
